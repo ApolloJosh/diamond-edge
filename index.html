@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Diamond Edge · MLB Matchup Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#0a0e1a;color:#e5e7eb;font-family:'DM Mono','Courier New',monospace;overflow:hidden;}
+  ::-webkit-scrollbar{width:4px;}
+  ::-webkit-scrollbar-track{background:#0a0e1a;}
+  ::-webkit-scrollbar-thumb{background:#1e2d40;}
+  .game-btn:hover{border-color:#f0b429!important;background:#1a2234!important;}
+  .sort-btn:hover{background:#1e2d40!important;}
+  .matchup-row:hover{background:#1a2234!important;}
+  .tab-btn{transition:all 0.15s;cursor:pointer;border:none;font-family:'DM Mono',monospace;}
+  .tab-btn:hover{background:#1a2234!important;}
+  .home-card:hover{border-color:#f0b429!important;background:#1a2234!important;transform:translateY(-1px);}
+  .scan-btn:hover{opacity:0.9;transform:scale(1.02);}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .fade-in{animation:fadeIn 0.25s ease-out both;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+  .loading-pulse{animation:pulse 1.5s ease-in-out infinite;}
+  @keyframes glow{0%,100%{box-shadow:0 0 8px #f0b42930}50%{box-shadow:0 0 20px #f0b42960}}
+  .glow-border{animation:glow 2s ease-in-out infinite;}
+  .edge-bar-fill{transition:width 0.6s ease-out;}
+  .trend-arrow{display:inline-block;font-size:9px;margin-left:3px;vertical-align:middle;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useMemo, useCallback, useRef } = React;
+const BASE = "https://statsapi.mlb.com/api/v1";
+const C = {
+  bg:"#0a0e1a",card:"#111827",border:"#1e2d40",gold:"#f0b429",
+  green:"#22c55e",red:"#ef4444",blue:"#38bdf8",muted:"#6b7280",
+  text:"#e5e7eb",subtext:"#9ca3af",purple:"#a78bfa",orange:"#fb923c"
+};
+
+/* ─── Helpers ─── */
+function statColor(avg){
+  if(!avg||avg==="---") return C.subtext;
+  const v=parseFloat(avg);
+  if(v>=0.350) return "#22c55e";
+  if(v>=0.300) return "#86efac";
+  if(v>=0.250) return C.text;
+  if(v>=0.200) return "#fca5a5";
+  return "#ef4444";
+}
+function fmtAvg(val){
+  if(val===null||val===undefined||val==="") return "---";
+  const v=parseFloat(val);
+  if(isNaN(v)) return "---";
+  return v.toFixed(3).replace(/^0/,"");
+}
+function fmtOps(val){
+  if(val===null||val===undefined||val==="") return "---";
+  const v=parseFloat(val);
+  if(isNaN(v)) return "---";
+  return v.toFixed(3);
+}
+function fmtEra(val){
+  if(val===null||val===undefined||val==="") return "---";
+  const v=parseFloat(val);
+  if(isNaN(v)) return "---";
+  return v.toFixed(2);
+}
+function eraColor(era){
+  if(!era||era==="---") return C.subtext;
+  const v=parseFloat(era);
+  if(v<=2.50) return "#22c55e";
+  if(v<=3.50) return "#86efac";
+  if(v<=4.50) return C.text;
+  if(v<=5.50) return "#fca5a5";
+  return "#ef4444";
+}
+
+/* ─── Edge Score Engine ─── */
+function computeEdgeScore(bvpStat, seasonStat, pa){
+  if(!bvpStat) return 0;
+  let score = 50;
+  const bvpAvg = parseFloat(bvpStat.avg)||0;
+  const bvpOps = parseFloat(bvpStat.ops)||0;
+  const bvpPA = parseInt(pa)||parseInt(bvpStat.plateAppearances)||0;
+  score += (bvpAvg - 0.250) * 100;
+  score += (bvpOps - 0.700) * 25;
+  const sampleFactor = Math.min(bvpPA / 30, 1.5);
+  score = 50 + (score - 50) * sampleFactor;
+  const hrs = parseInt(bvpStat.homeRuns)||0;
+  if(hrs >= 3) score += 8;
+  else if(hrs >= 1) score += 4;
+  const abs = parseInt(bvpStat.atBats)||1;
+  const ks = parseInt(bvpStat.strikeOuts)||0;
+  const kRate = ks/abs;
+  if(kRate > 0.35) score -= 8;
+  if(seasonStat){
+    const sAvg = parseFloat(seasonStat.avg)||0;
+    const sOps = parseFloat(seasonStat.ops)||0;
+    if(sAvg >= 0.300) score += 6;
+    else if(sAvg >= 0.270) score += 3;
+    else if(sAvg < 0.200) score -= 5;
+    if(sOps >= 0.850) score += 5;
+    else if(sOps < 0.600) score -= 4;
+  }
+  return Math.max(0, Math.min(99, Math.round(score)));
+}
+function edgeGrade(score){
+  if(score >= 80) return {grade:"A+",color:"#22c55e"};
+  if(score >= 70) return {grade:"A",color:"#4ade80"};
+  if(score >= 62) return {grade:"B+",color:"#86efac"};
+  if(score >= 55) return {grade:"B",color:C.text};
+  if(score >= 45) return {grade:"C",color:C.subtext};
+  if(score >= 35) return {grade:"D",color:"#fca5a5"};
+  return {grade:"F",color:"#ef4444"};
+}
+function pitcherEdgeScore(matchups){
+  if(!matchups||matchups.length===0) return 50;
+  const totalPA = matchups.reduce((s,m)=>s+(parseInt(m.stat.plateAppearances)||0),0);
+  const totalAB = matchups.reduce((s,m)=>s+(parseInt(m.stat.atBats)||0),0);
+  const totalH = matchups.reduce((s,m)=>s+(parseInt(m.stat.hits)||0),0);
+  const totalK = matchups.reduce((s,m)=>s+(parseInt(m.stat.strikeOuts)||0),0);
+  const totalHR = matchups.reduce((s,m)=>s+(parseInt(m.stat.homeRuns)||0),0);
+  const totalBB = matchups.reduce((s,m)=>s+(parseInt(m.stat.baseOnBalls)||0),0);
+  if(totalAB===0) return 50;
+  const avgAgainst = totalH/totalAB;
+  const kRate = totalK/totalAB;
+  const bbRate = totalBB/totalPA;
+  const hrRate = totalHR/totalAB;
+  let score = 50;
+  score += (0.250 - avgAgainst) * 120;
+  score += (kRate - 0.22) * 60;
+  score += (0.08 - bbRate) * 40;
+  score += (0.03 - hrRate) * 80;
+  const sampleFactor = Math.min(totalPA / 60, 1.3);
+  score = 50 + (score - 50) * sampleFactor;
+  return Math.max(0, Math.min(99, Math.round(score)));
+}
+
+/* ─── API Fetchers ─── */
+async function fetchJSON(url){
+  const r=await fetch(url);
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  return r.json();
+}
+async function getTodayGames(){
+  const today=new Date().toISOString().slice(0,10);
+  const data=await fetchJSON(BASE+"/schedule?sportId=1&date="+today+"&hydrate=probablePitcher,team,linescore");
+  const games=[];
+  for(const date of data.dates||[]) for(const g of date.games||[]) games.push(g);
+  return games;
+}
+async function getRoster(teamId){
+  const data=await fetchJSON(BASE+"/teams/"+teamId+"/roster?rosterType=active");
+  return (data.roster||[]).filter(function(p){return p.position&&p.position.abbreviation!=="P";});
+}
+async function getBvPSplits(batterId,pitcherId){
+  try{
+    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=vsPlayer&opposingPlayerId="+pitcherId+"&sportId=1&group=hitting");
+    for(const sg of data.stats||[]){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        const split=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
+        if(split) return split;
+      }
+    }
+    return null;
+  }catch(e){return null;}
+}
+async function getSeasonStats(playerId, group){
+  group=group||"hitting";
+  try{
+    const year=new Date().getFullYear();
+    const data=await fetchJSON(BASE+"/people/"+playerId+"/stats?stats=season&season="+year+"&group="+group);
+    for(const sg of data.stats||[]){
+      if(sg.group&&sg.group.displayName===group){
+        const split=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
+        if(split) return split;
+      }
+    }
+    return null;
+  }catch(e){return null;}
+}
+
+/* ─── Shared Components ─── */
+function TrendArrow({bvpVal, seasonVal}){
+  if(!bvpVal||!seasonVal||bvpVal==="---"||seasonVal==="---") return null;
+  const bvp=parseFloat(bvpVal);
+  const ssn=parseFloat(seasonVal);
+  if(isNaN(bvp)||isNaN(ssn)) return null;
+  const diff=ssn-bvp;
+  if(Math.abs(diff)<0.020) return <span className="trend-arrow" style={{color:C.muted}}>▸</span>;
+  if(diff>0) return <span className="trend-arrow" style={{color:C.green}}>▲</span>;
+  return <span className="trend-arrow" style={{color:C.red}}>▼</span>;
+}
+
+function EdgeBadge({score}){
+  const {grade,color}=edgeGrade(score);
+  return(
+    <div style={{display:"flex",alignItems:"center",gap:6}}>
+      <div style={{
+        width:32,height:22,borderRadius:4,display:"flex",alignItems:"center",justifyContent:"center",
+        background:color+"18",border:"1px solid "+color+"40",
+        fontSize:11,fontWeight:600,color:color,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
+      }}>{grade}</div>
+      <div style={{width:40,height:4,background:C.border,borderRadius:2,overflow:"hidden"}}>
+        <div className="edge-bar-fill" style={{height:"100%",width:score+"%",borderRadius:2,
+          background:score>=65?C.green:score>=45?C.gold:C.red
+        }}/>
+      </div>
+      <span style={{fontSize:9,color:C.muted,minWidth:16}}>{score}</span>
+    </div>
+  );
+}
+
+function StatPill({label,value,color}){
+  return(
+    <div style={{background:"#0d1220",borderRadius:6,padding:"6px 12px",minWidth:90}}>
+      <div style={{fontSize:8,letterSpacing:1,color:C.muted,marginBottom:2}}>{label.toUpperCase()}</div>
+      <div style={{fontSize:14,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1,color:color}}>{value}</div>
+    </div>
+  );
+}
+
+function PitcherSummaryCard({pitcher, matchups, seasonStat, side}){
+  if(!pitcher) return null;
+  const totalPA = matchups.reduce(function(s,m){return s+(parseInt(m.stat.plateAppearances)||0);},0);
+  const totalAB = matchups.reduce(function(s,m){return s+(parseInt(m.stat.atBats)||0);},0);
+  const totalH = matchups.reduce(function(s,m){return s+(parseInt(m.stat.hits)||0);},0);
+  const totalK = matchups.reduce(function(s,m){return s+(parseInt(m.stat.strikeOuts)||0);},0);
+  const totalBB = matchups.reduce(function(s,m){return s+(parseInt(m.stat.baseOnBalls)||0);},0);
+  const totalHR = matchups.reduce(function(s,m){return s+(parseInt(m.stat.homeRuns)||0);},0);
+  const avgAgainst = totalAB>0?(totalH/totalAB):0;
+  const kRate = totalAB>0?(totalK/totalAB):0;
+  const pEdge = pitcherEdgeScore(matchups);
+  const eg=edgeGrade(pEdge);
+  const label = side==="home" ? "HOME SP" : "AWAY SP";
+  return(
+    <div className="fade-in" style={{background:C.card,border:"1px solid "+C.border,borderRadius:10,padding:16,marginBottom:16}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
+        <div>
+          <div style={{fontSize:9,letterSpacing:2,color:C.muted,marginBottom:4}}>{label} — DOMINANCE PROFILE</div>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:2,color:C.blue}}>{pitcher.fullName}</div>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <div style={{fontSize:9,letterSpacing:1,color:C.muted,marginBottom:4}}>PITCHER EDGE</div>
+          <div style={{
+            padding:"4px 12px",borderRadius:6,fontSize:18,fontWeight:700,
+            fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,
+            background:eg.color+"18",border:"1px solid "+eg.color+"40",color:eg.color
+          }}>{eg.grade} <span style={{fontSize:12,color:C.muted}}>{pEdge}</span></div>
+        </div>
+      </div>
+      <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
+        <StatPill label="BvP AVG Against" value={fmtAvg(avgAgainst.toFixed(3))} color={statColor((0.500-avgAgainst).toFixed(3))} />
+        <StatPill label="BvP K Rate" value={(kRate*100).toFixed(1)+"%"} color={kRate>=0.25?C.green:kRate>=0.18?C.text:C.red} />
+        <StatPill label="BvP HR Allowed" value={totalHR.toString()} color={totalHR<=2?C.green:totalHR<=5?C.text:C.red} />
+        <StatPill label="BvP BB" value={totalBB.toString()} color={totalBB<=3?C.green:C.text} />
+        <StatPill label="BvP Sample" value={totalPA+" PA"} color={totalPA>=40?C.green:totalPA>=20?C.text:C.muted} />
+        {seasonStat && <>
+          <StatPill label="Season ERA" value={fmtEra(seasonStat.era)} color={eraColor(seasonStat.era)} />
+          <StatPill label="Season WHIP" value={seasonStat.whip?parseFloat(seasonStat.whip).toFixed(2):"---"} color={parseFloat(seasonStat.whip)<=1.10?C.green:parseFloat(seasonStat.whip)<=1.35?C.text:C.red} />
+          <StatPill label="Season K/9" value={seasonStat.strikeoutsPer9Inn?parseFloat(seasonStat.strikeoutsPer9Inn).toFixed(1):"---"} color={parseFloat(seasonStat.strikeoutsPer9Inn)>=9?C.green:C.text} />
+        </>}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Matchup Table (Enhanced) ─── */
+function MatchupTable({rows, showEdge, showSeason, showGame}){
+  var baseHeaders = ["BATTER","TEAM","vs PITCHER","PA","AB","H","HR","RBI","BB","K","AVG","OBP","SLG","OPS"];
+  if(showGame) baseHeaders = ["BATTER","TEAM","vs PITCHER","GAME","PA","AB","H","HR","RBI","BB","K","AVG","OBP","SLG","OPS"];
+  var headers = showEdge ? ["EDGE"].concat(baseHeaders) : baseHeaders;
+  var seasonHeaders = showSeason ? ["szAVG","szOPS"] : [];
+  var allHeaders = headers.concat(seasonHeaders);
+
+  return(
+    <div style={{borderRadius:8,overflow:"hidden",border:"1px solid "+C.border}}>
+      <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
+        <thead>
+          <tr style={{background:"#0d1220",borderBottom:"1px solid "+C.border}}>
+            {allHeaders.map(function(h){return(
+              <th key={h} style={{padding:"8px 10px",textAlign:h==="BATTER"||h==="vs PITCHER"||h==="GAME"?"left":"center",fontSize:10,letterSpacing:1,color:h==="EDGE"?C.gold:h.startsWith("sz")?C.purple:C.muted,fontWeight:400,whiteSpace:"nowrap"}}>{h}</th>
+            );})}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(function(m,i){return(
+            <tr key={i} className="matchup-row fade-in" style={{borderBottom:"1px solid "+C.border,background:i%2===0?C.card:"#0f1825",transition:"background 0.1s",cursor:"default",animationDelay:i*30+"ms"}}>
+              {showEdge&&(
+                <td style={{padding:"9px 10px"}}><EdgeBadge score={m.edgeScore||0}/></td>
+              )}
+              <td style={{padding:"9px 10px",fontWeight:500}}>{m.batter.fullName}</td>
+              <td style={{padding:"9px 10px",color:C.subtext,fontSize:11}}>{m.batterTeam}</td>
+              <td style={{padding:"9px 10px",color:C.blue}}>{m.pitcher.fullName}</td>
+              {showGame&&(
+                <td style={{padding:"9px 10px",color:C.subtext,fontSize:10}}>{m.gameLabel||""}</td>
+              )}
+              <td style={{padding:"9px 10px",textAlign:"center"}}>{m.stat.plateAppearances||0}</td>
+              <td style={{padding:"9px 10px",textAlign:"center"}}>{m.stat.atBats||0}</td>
+              <td style={{padding:"9px 10px",textAlign:"center"}}>{m.stat.hits||0}</td>
+              <td style={{padding:"9px 10px",textAlign:"center",color:(m.stat.homeRuns||0)>0?C.gold:C.text}}>{m.stat.homeRuns||0}</td>
+              <td style={{padding:"9px 10px",textAlign:"center"}}>{m.stat.rbi||0}</td>
+              <td style={{padding:"9px 10px",textAlign:"center"}}>{m.stat.baseOnBalls||0}</td>
+              <td style={{padding:"9px 10px",textAlign:"center",color:(m.stat.strikeOuts||0)>=5?C.red:C.text}}>{m.stat.strikeOuts||0}</td>
+              <td style={{padding:"9px 10px",textAlign:"center",fontWeight:600,color:statColor(m.stat.avg),fontFamily:"'Bebas Neue',sans-serif",fontSize:15,letterSpacing:1}}>
+                {fmtAvg(m.stat.avg)}
+              </td>
+              <td style={{padding:"9px 10px",textAlign:"center",color:statColor(m.stat.obp)}}>{fmtAvg(m.stat.obp)}</td>
+              <td style={{padding:"9px 10px",textAlign:"center",color:statColor(m.stat.slg)}}>{fmtAvg(m.stat.slg)}</td>
+              <td style={{padding:"9px 10px",textAlign:"center",fontWeight:600,color:statColor(parseFloat(m.stat.ops)/2)}}>{fmtOps(m.stat.ops)}</td>
+              {showSeason&&(
+                <>
+                  <td style={{padding:"9px 10px",textAlign:"center",color:C.purple,fontSize:11}}>
+                    {m.seasonStat?fmtAvg(m.seasonStat.avg):<span style={{color:C.muted}}>---</span>}
+                    <TrendArrow bvpVal={m.stat.avg} seasonVal={m.seasonStat?m.seasonStat.avg:null}/>
+                  </td>
+                  <td style={{padding:"9px 10px",textAlign:"center",color:C.purple,fontSize:11}}>
+                    {m.seasonStat?fmtOps(m.seasonStat.ops):<span style={{color:C.muted}}>---</span>}
+                    <TrendArrow bvpVal={m.stat.ops} seasonVal={m.seasonStat?m.seasonStat.ops:null}/>
+                  </td>
+                </>
+              )}
+            </tr>
+          );})}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function TopEdgesBanner({matchups}){
+  var top = matchups.slice().sort(function(a,b){return (b.edgeScore||0)-(a.edgeScore||0);}).slice(0,5);
+  if(top.length===0) return null;
+  return(
+    <div className="fade-in" style={{background:"linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)",border:"1px solid "+C.gold+"30",borderRadius:10,padding:16,marginBottom:20}}>
+      <div style={{fontSize:10,letterSpacing:2,color:C.gold,marginBottom:10}}>TOP EDGES</div>
+      <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
+        {top.map(function(m,i){
+          var eg=edgeGrade(m.edgeScore||0);
+          return(
+            <div key={i} style={{background:"#0a0e1a80",borderRadius:8,padding:"8px 14px",border:"1px solid "+C.border,minWidth:160}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                <span style={{fontWeight:600,fontSize:12}}>{m.batter.fullName}</span>
+                <span style={{fontSize:13,fontWeight:700,color:eg.color,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1}}>{eg.grade}</span>
+              </div>
+              <div style={{fontSize:10,color:C.subtext}}>
+                vs {m.pitcher.fullName} · <span style={{color:statColor(m.stat.avg)}}>{fmtAvg(m.stat.avg)}</span> · {m.stat.plateAppearances||0} PA
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────── */
+/* ─── HOME PAGE: League-Wide Edge Scanner ────── */
+/* ─────────────────────────────────────────────── */
+function HomePage({games, onSelectGame, onScanComplete, allEdges, scanState, onStartScan}){
+  var topEdges = allEdges.filter(function(m){return m.edgeScore>=55;}).sort(function(a,b){return b.edgeScore-a.edgeScore;});
+
+  return(
+    <div style={{padding:24,overflowY:"auto",height:"100%"}}>
+      {/* Hero */}
+      <div className="fade-in" style={{textAlign:"center",marginBottom:32,paddingTop:20}}>
+        <div style={{fontSize:56,marginBottom:8}}>&#9918;</div>
+        <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:36,letterSpacing:4,color:C.gold,marginBottom:4}}>DIAMOND EDGE</div>
+        <div style={{color:C.muted,fontSize:12,letterSpacing:2,marginBottom:20}}>MLB MATCHUP INTELLIGENCE</div>
+
+        {scanState==="idle"&&(
+          <button className="scan-btn" onClick={onStartScan}
+            style={{padding:"12px 32px",fontSize:13,fontWeight:600,letterSpacing:2,
+              background:"linear-gradient(135deg,"+C.gold+" 0%,#d4a017 100%)",color:"#000",
+              border:"none",borderRadius:8,cursor:"pointer",fontFamily:"'Bebas Neue',sans-serif",
+              fontSize:18,transition:"all 0.15s"}}>
+            &#9889; SCAN ALL GAMES FOR EDGES
+          </button>
+        )}
+        {scanState==="scanning"&&(
+          <div style={{color:C.gold}} className="loading-pulse">
+            <div style={{fontSize:13,letterSpacing:2,marginBottom:8}}>SCANNING TODAY'S SLATE...</div>
+          </div>
+        )}
+        {scanState==="done"&&(
+          <div className="fade-in">
+            <div style={{color:C.green,fontSize:12,letterSpacing:1,marginBottom:4}}>SCAN COMPLETE</div>
+            <button className="scan-btn" onClick={onStartScan}
+              style={{padding:"8px 20px",fontSize:10,letterSpacing:1,
+                background:C.card,color:C.gold,border:"1px solid "+C.gold+"40",
+                borderRadius:6,cursor:"pointer",fontFamily:"'DM Mono',monospace",
+                transition:"all 0.15s",marginTop:6}}>
+              RESCAN
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Scan Progress */}
+      {scanState==="scanning"&&(
+        <div className="fade-in" style={{maxWidth:500,margin:"0 auto 24px"}}>
+          <ScanProgress games={games} allEdges={allEdges}/>
+        </div>
+      )}
+
+      {/* Top Edges (B grade and above, 55+) */}
+      {topEdges.length>0&&(
+        <div className="fade-in" style={{marginBottom:32}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.green}}>&#9889; TOP EDGES TODAY</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>GRADE B AND ABOVE</div>
+            <div style={{
+              padding:"3px 10px",borderRadius:10,background:C.green+"20",border:"1px solid "+C.green+"40",
+              color:C.green,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
+            }}>{topEdges.length}</div>
+          </div>
+
+          {/* Edge Cards Grid */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(320px, 1fr))",gap:12,marginBottom:16}}>
+            {topEdges.map(function(m,i){
+              var eg=edgeGrade(m.edgeScore);
+              return(
+                <div key={i} className="home-card fade-in" onClick={function(){onSelectGame(m.gamePk);}}
+                  style={{background:C.card,border:"1px solid "+C.border,borderRadius:10,padding:16,
+                    cursor:"pointer",transition:"all 0.15s",animationDelay:i*40+"ms"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+                    <div>
+                      <div style={{fontWeight:600,fontSize:14,marginBottom:2}}>{m.batter.fullName}</div>
+                      <div style={{fontSize:10,color:C.subtext}}>{m.batterTeam} vs {m.pitcher.fullName}</div>
+                    </div>
+                    <div style={{
+                      padding:"4px 12px",borderRadius:6,fontFamily:"'Bebas Neue',sans-serif",
+                      fontSize:20,letterSpacing:2,fontWeight:700,
+                      background:eg.color+"18",border:"1px solid "+eg.color+"40",color:eg.color
+                    }}>{m.edgeScore}</div>
+                  </div>
+                  <div style={{display:"flex",gap:16,fontSize:11}}>
+                    <div>
+                      <span style={{color:C.muted}}>BvP AVG </span>
+                      <span style={{color:statColor(m.stat.avg),fontWeight:600}}>{fmtAvg(m.stat.avg)}</span>
+                    </div>
+                    <div>
+                      <span style={{color:C.muted}}>OPS </span>
+                      <span style={{fontWeight:600,color:statColor(parseFloat(m.stat.ops)/2)}}>{fmtOps(m.stat.ops)}</span>
+                    </div>
+                    <div>
+                      <span style={{color:C.muted}}>PA </span>
+                      <span>{m.stat.plateAppearances||0}</span>
+                    </div>
+                    <div>
+                      <span style={{color:C.muted}}>HR </span>
+                      <span style={{color:(m.stat.homeRuns||0)>0?C.gold:C.text}}>{m.stat.homeRuns||0}</span>
+                    </div>
+                  </div>
+                  <div style={{fontSize:9,color:C.muted,marginTop:8,letterSpacing:1}}>{m.gameLabel} · Click to view full matchups</div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Full table */}
+          <div style={{fontSize:10,letterSpacing:2,color:C.subtext,marginBottom:8}}>ALL TOP MATCHUPS — FULL STATS</div>
+          <MatchupTable rows={topEdges} showEdge={true} showSeason={true} showGame={true}/>
+        </div>
+      )}
+
+      {scanState==="done"&&topEdges.length===0&&(
+        <div className="fade-in" style={{textAlign:"center",padding:40,color:C.muted}}>
+          <div style={{fontSize:32,marginBottom:12}}>&#128064;</div>
+          <div style={{fontSize:14,letterSpacing:1}}>No matchups scored B or above today.</div>
+          <div style={{fontSize:11,marginTop:6,color:C.subtext}}>Try selecting individual games to explore all edges, or check back closer to game time for updated probable pitchers.</div>
+        </div>
+      )}
+
+      {/* Today's Games Quick Grid */}
+      {games.length>0&&(
+        <div style={{marginBottom:24}}>
+          <div style={{fontSize:10,letterSpacing:2,color:C.muted,marginBottom:10}}>TODAY'S GAMES — CLICK TO EXPLORE</div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(200px, 1fr))",gap:8}}>
+            {games.map(function(g){
+              var away=g.teams.away.team.abbreviation;
+              var home=g.teams.home.team.abbreviation;
+              var awayP=g.teams.away.probablePitcher?g.teams.away.probablePitcher.fullName:"TBD";
+              var homeP=g.teams.home.probablePitcher?g.teams.home.probablePitcher.fullName:"TBD";
+              var time=new Date(g.gameDate).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+              var gameEdges=allEdges.filter(function(e){return e.gamePk===g.gamePk&&e.edgeScore>=55;});
+              return(
+                <button key={g.gamePk} className="home-card" onClick={function(){onSelectGame(g.gamePk);}}
+                  style={{background:C.card,border:"1px solid "+C.border,borderRadius:8,padding:12,
+                    cursor:"pointer",textAlign:"left",color:C.text,fontFamily:"'DM Mono',monospace",transition:"all 0.15s"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                    <span style={{fontSize:14,fontWeight:600,letterSpacing:1}}>{away} @ {home}</span>
+                    {gameEdges.length>0&&(
+                      <span style={{fontSize:10,color:C.green,fontWeight:600}}>{gameEdges.length} edges</span>
+                    )}
+                  </div>
+                  <div style={{fontSize:10,color:C.muted,marginTop:4}}>{time}</div>
+                  <div style={{fontSize:9,color:C.subtext,marginTop:2}}>{awayP.split(" ").pop()} / {homeP.split(" ").pop()}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ScanProgress({games, allEdges}){
+  var gamesWithPitchers = games.filter(function(g){return g.teams.home.probablePitcher||g.teams.away.probablePitcher;});
+  var scannedGames = {};
+  allEdges.forEach(function(e){scannedGames[e.gamePk]=true;});
+  var scannedCount = Object.keys(scannedGames).length;
+  var total = gamesWithPitchers.length||1;
+  var pct = Math.round(scannedCount/total*100);
+  var topCount = allEdges.filter(function(e){return e.edgeScore>=55;}).length;
+
+  return(
+    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:10,padding:16}}>
+      <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:C.muted,marginBottom:8}}>
+        <span>Scanning {scannedCount}/{total} games</span>
+        <span style={{color:C.green}}>{topCount} edges found so far</span>
+      </div>
+      <div style={{height:6,background:C.border,borderRadius:3,overflow:"hidden"}}>
+        <div style={{height:"100%",width:pct+"%",background:"linear-gradient(90deg,"+C.gold+","+C.green+")",
+          borderRadius:3,transition:"width 0.4s ease-out"}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main App ─── */
+function App(){
+  var _s=useState; // alias to keep lines shorter
+  var ref_=useRef;
+  const [games,setGames]=_s([]);
+  const [selectedGame,setSelectedGame]=_s(null);
+  const [matchups,setMatchups]=_s([]);
+  const [pitcherSeasonStats,setPitcherSeasonStats]=_s({});
+  const [loading,setLoading]=_s(false);
+  const [gamesLoading,setGamesLoading]=_s(true);
+  const [error,setError]=_s(null);
+  const [minPA,setMinPA]=_s(5);
+  const [sortBy,setSortBy]=_s("edge");
+  const [expandedSide,setExpandedSide]=_s("both");
+  const [progress,setProgress]=_s("");
+  const [viewMode,setViewMode]=_s("batter");
+  const [showSeason,setShowSeason]=_s(true);
+  const [page,setPage]=_s("home"); // "home" | "game"
+
+  // League-wide scan state
+  const [allEdges,setAllEdges]=_s([]);
+  const [scanState,setScanState]=_s("idle"); // "idle" | "scanning" | "done"
+  const scanAbort=ref_(false);
+
+  useEffect(function(){
+    setGamesLoading(true);
+    getTodayGames().then(function(g){setGames(g);setGamesLoading(false);})
+      .catch(function(e){setError("Failed to load games: "+e.message);setGamesLoading(false);});
+  },[]);
+
+  /* ─── Full Slate Scanner ─── */
+  async function scanAllGames(){
+    scanAbort.current=false;
+    setScanState("scanning");
+    setAllEdges([]);
+    var accumulated=[];
+
+    for(var gi=0;gi<games.length;gi++){
+      if(scanAbort.current) break;
+      var game=games[gi];
+      var homeId=game.teams.home.team.id;
+      var awayId=game.teams.away.team.id;
+      var homePitcher=game.teams.home.probablePitcher;
+      var awayPitcher=game.teams.away.probablePitcher;
+      if(!homePitcher&&!awayPitcher) continue;
+
+      var awayAbbr=game.teams.away.team.abbreviation;
+      var homeAbbr=game.teams.home.team.abbreviation;
+      var gameLabel=awayAbbr+" @ "+homeAbbr;
+
+      try{
+        var rosters=await Promise.all([getRoster(homeId),getRoster(awayId)]);
+        var homeRoster=rosters[0];
+        var awayRoster=rosters[1];
+
+        if(homePitcher){
+          for(var bi=0;bi<awayRoster.length;bi++){
+            if(scanAbort.current) break;
+            var batter=awayRoster[bi];
+            var results=await Promise.all([
+              getBvPSplits(batter.person.id,homePitcher.id),
+              getSeasonStats(batter.person.id,"hitting")
+            ]);
+            var stat=results[0];
+            var seasonStat=results[1];
+            if(stat&&(parseInt(stat.plateAppearances)||0)>=5){
+              var edgeScore=computeEdgeScore(stat,seasonStat,stat.plateAppearances);
+              accumulated.push({batter:batter.person,pitcher:homePitcher,
+                pitcherTeam:game.teams.home.team.name,
+                batterTeam:awayAbbr,side:"away",stat:stat,seasonStat:seasonStat,
+                edgeScore:edgeScore,gamePk:game.gamePk,gameLabel:gameLabel});
+            }
+          }
+        }
+        if(awayPitcher){
+          for(var bi2=0;bi2<homeRoster.length;bi2++){
+            if(scanAbort.current) break;
+            var batter2=homeRoster[bi2];
+            var results2=await Promise.all([
+              getBvPSplits(batter2.person.id,awayPitcher.id),
+              getSeasonStats(batter2.person.id,"hitting")
+            ]);
+            var stat2=results2[0];
+            var seasonStat2=results2[1];
+            if(stat2&&(parseInt(stat2.plateAppearances)||0)>=5){
+              var edgeScore2=computeEdgeScore(stat2,seasonStat2,stat2.plateAppearances);
+              accumulated.push({batter:batter2.person,pitcher:awayPitcher,
+                pitcherTeam:game.teams.away.team.name,
+                batterTeam:homeAbbr,side:"home",stat:stat2,seasonStat:seasonStat2,
+                edgeScore:edgeScore2,gamePk:game.gamePk,gameLabel:gameLabel});
+            }
+          }
+        }
+      }catch(e){
+        // skip game on error, continue scanning
+      }
+      // Update state after each game so user sees progress
+      setAllEdges(accumulated.slice());
+    }
+    setAllEdges(accumulated.slice());
+    setScanState("done");
+  }
+
+  function handleSelectGameFromHome(gamePk){
+    var game=games.find(function(g){return g.gamePk===gamePk;});
+    if(game){
+      setPage("game");
+      loadMatchups(game);
+    }
+  }
+
+  function goHome(){
+    setPage("home");
+    setSelectedGame(null);
+    setMatchups([]);
+    setError(null);
+  }
+
+  async function loadMatchups(game){
+    setSelectedGame(game);
+    setMatchups([]);
+    setPitcherSeasonStats({});
+    setLoading(true);
+    setError(null);
+    setProgress("");
+    try{
+      var homeId=game.teams.home.team.id;
+      var awayId=game.teams.away.team.id;
+      var homePitcher=game.teams.home.probablePitcher;
+      var awayPitcher=game.teams.away.probablePitcher;
+      var both=await Promise.all([getRoster(homeId),getRoster(awayId)]);
+      var homeRoster=both[0];
+      var awayRoster=both[1];
+
+      var pitcherStats={};
+      var pf=[];
+      if(homePitcher) pf.push(getSeasonStats(homePitcher.id,"pitching").then(function(s){pitcherStats[homePitcher.id]=s;}));
+      if(awayPitcher) pf.push(getSeasonStats(awayPitcher.id,"pitching").then(function(s){pitcherStats[awayPitcher.id]=s;}));
+      await Promise.all(pf);
+      setPitcherSeasonStats(pitcherStats);
+
+      var results=[];
+      var done=0;
+      var total=(homePitcher?awayRoster.length:0)+(awayPitcher?homeRoster.length:0);
+
+      if(homePitcher){
+        for(var i=0;i<awayRoster.length;i++){
+          var batter=awayRoster[i];
+          var r=await Promise.all([getBvPSplits(batter.person.id,homePitcher.id),getSeasonStats(batter.person.id,"hitting")]);
+          done++;
+          setProgress("Querying "+done+"/"+total+" matchups...");
+          if(r[0]&&(r[0].plateAppearances||0)>=1){
+            var es=computeEdgeScore(r[0],r[1],r[0].plateAppearances);
+            results.push({batter:batter.person,pitcher:homePitcher,pitcherTeam:game.teams.home.team.name,
+              batterTeam:game.teams.away.team.abbreviation||game.teams.away.team.name,
+              side:"away",stat:r[0],seasonStat:r[1],edgeScore:es});
+          }
+        }
+      }
+      if(awayPitcher){
+        for(var j=0;j<homeRoster.length;j++){
+          var batter2=homeRoster[j];
+          var r2=await Promise.all([getBvPSplits(batter2.person.id,awayPitcher.id),getSeasonStats(batter2.person.id,"hitting")]);
+          done++;
+          setProgress("Querying "+done+"/"+total+" matchups...");
+          if(r2[0]&&(r2[0].plateAppearances||0)>=1){
+            var es2=computeEdgeScore(r2[0],r2[1],r2[0].plateAppearances);
+            results.push({batter:batter2.person,pitcher:awayPitcher,pitcherTeam:game.teams.away.team.name,
+              batterTeam:game.teams.home.team.abbreviation||game.teams.home.team.name,
+              side:"home",stat:r2[0],seasonStat:r2[1],edgeScore:es2});
+          }
+        }
+      }
+      setMatchups(results);
+      setProgress("");
+    }catch(e){
+      setError("Error loading matchup data: "+e.message);
+    }
+    setLoading(false);
+  }
+
+  var filtered = useMemo(function(){
+    var f=matchups.filter(function(m){return (m.stat.plateAppearances||0)>=minPA;});
+    if(expandedSide!=="both") f=f.filter(function(m){return m.side===expandedSide;});
+    f.sort(function(a,b){
+      if(sortBy==="edge") return (b.edgeScore||0)-(a.edgeScore||0);
+      if(sortBy==="avg") return (parseFloat(b.stat.avg)||0)-(parseFloat(a.stat.avg)||0);
+      if(sortBy==="ops") return (parseFloat(b.stat.ops)||0)-(parseFloat(a.stat.ops)||0);
+      if(sortBy==="hr") return (b.stat.homeRuns||0)-(a.stat.homeRuns||0);
+      if(sortBy==="pa") return (b.stat.plateAppearances||0)-(a.stat.plateAppearances||0);
+      return 0;
+    });
+    return f;
+  },[matchups,minPA,expandedSide,sortBy]);
+
+  var hotMatchups=filtered.filter(function(m){return parseFloat(m.stat.avg)>=0.300;});
+  var coldMatchups=filtered.filter(function(m){return parseFloat(m.stat.avg)<0.200;});
+
+  var pitcherGroups = useMemo(function(){
+    if(!selectedGame) return [];
+    var groups=[];
+    var hp=selectedGame.teams.home.probablePitcher;
+    var ap=selectedGame.teams.away.probablePitcher;
+    if(hp){
+      var m=matchups.filter(function(x){return x.pitcher.id===hp.id;});
+      groups.push({pitcher:hp,matchups:m,side:"home",team:selectedGame.teams.home.team.name,
+        vsTeam:selectedGame.teams.away.team.name,seasonStat:pitcherSeasonStats[hp.id]});
+    }
+    if(ap){
+      var m2=matchups.filter(function(x){return x.pitcher.id===ap.id;});
+      groups.push({pitcher:ap,matchups:m2,side:"away",team:selectedGame.teams.away.team.name,
+        vsTeam:selectedGame.teams.home.team.name,seasonStat:pitcherSeasonStats[ap.id]});
+    }
+    return groups;
+  },[selectedGame,matchups,pitcherSeasonStats]);
+
+  return(
+    <div style={{fontFamily:"'DM Mono','Courier New',monospace",background:C.bg,height:"100vh",color:C.text,display:"flex",flexDirection:"column"}}>
+      {/* ── Header ── */}
+      <div style={{borderBottom:"1px solid "+C.border,padding:"14px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"#0d1220",flexShrink:0}}>
+        <div style={{display:"flex",alignItems:"center",gap:16}}>
+          <div onClick={goHome} style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,color:C.gold,cursor:"pointer"}}>&#9918; DIAMOND EDGE</div>
+          {page==="game"&&(
+            <button onClick={goHome} style={{padding:"4px 12px",fontSize:10,background:"transparent",color:C.muted,
+              border:"1px solid "+C.border,borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",letterSpacing:1}}>
+              &#8592; HOME
+            </button>
+          )}
+          {page==="home"&&(
+            <div style={{color:C.muted,fontSize:10,letterSpacing:2,paddingTop:4}}>MLB MATCHUP INTELLIGENCE</div>
+          )}
+        </div>
+        {page==="game"&&selectedGame&&(
+          <div style={{display:"flex",gap:2}}>
+            <button className="tab-btn" onClick={function(){setViewMode("batter");}}
+              style={{padding:"6px 16px",fontSize:10,letterSpacing:1,borderRadius:"6px 0 0 6px",
+                background:viewMode==="batter"?C.gold:"#0d1220",color:viewMode==="batter"?"#000":C.muted,
+                border:"1px solid "+(viewMode==="batter"?C.gold:C.border)}}>
+              BATTER EDGE
+            </button>
+            <button className="tab-btn" onClick={function(){setViewMode("pitcher");}}
+              style={{padding:"6px 16px",fontSize:10,letterSpacing:1,borderRadius:"0 6px 6px 0",
+                background:viewMode==="pitcher"?C.blue:"#0d1220",color:viewMode==="pitcher"?"#000":C.muted,
+                border:"1px solid "+(viewMode==="pitcher"?C.blue:C.border)}}>
+              PITCHER EDGE
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div style={{display:"flex",flex:1,overflow:"hidden"}}>
+        {/* ── Sidebar ── */}
+        <div style={{width:240,borderRight:"1px solid "+C.border,overflowY:"auto",padding:"12px 0",flexShrink:0}}>
+          {/* Home Link */}
+          <button className="game-btn" onClick={goHome}
+            style={{width:"calc(100% - 8px)",margin:"0 4px 8px",textAlign:"left",
+              background:page==="home"?"#1a2234":"transparent",
+              border:"1px solid "+(page==="home"?C.gold:"transparent"),
+              borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,
+              fontFamily:"'DM Mono',monospace"}}>
+            <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.gold}}>&#9889; TODAY'S EDGES</div>
+            <div style={{fontSize:10,color:C.muted,marginTop:2}}>League-wide scanner</div>
+          </button>
+
+          <div style={{padding:"0 14px 10px",fontSize:10,letterSpacing:2,color:C.muted}}>GAMES</div>
+          {gamesLoading&&<div style={{padding:"20px 14px",color:C.muted,fontSize:12}} className="loading-pulse">Loading schedule...</div>}
+          {!gamesLoading&&games.length===0&&<div style={{padding:"20px 14px",color:C.muted,fontSize:11}}>No games scheduled today.</div>}
+          {games.map(function(g){
+            var away=g.teams.away.team.abbreviation;
+            var home=g.teams.home.team.abbreviation;
+            var awayP=g.teams.away.probablePitcher?g.teams.away.probablePitcher.fullName.split(" ").pop():"TBD";
+            var homeP=g.teams.home.probablePitcher?g.teams.home.probablePitcher.fullName.split(" ").pop():"TBD";
+            var isSelected=selectedGame&&selectedGame.gamePk===g.gamePk&&page==="game";
+            var time=new Date(g.gameDate).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZoneName:"short"});
+            var gameTopCount=allEdges.filter(function(e){return e.gamePk===g.gamePk&&e.edgeScore>=55;}).length;
+            return(
+              <button key={g.gamePk} className="game-btn" onClick={function(){setPage("game");loadMatchups(g);}}
+                style={{width:"calc(100% - 8px)",margin:"0 4px",textAlign:"left",background:isSelected?"#1a2234":"transparent",border:"1px solid "+(isSelected?C.gold:"transparent"),borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,marginBottom:2,transition:"all 0.15s",fontFamily:"'DM Mono',monospace"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <span style={{fontSize:13,fontWeight:500,letterSpacing:1}}>{away} <span style={{color:C.muted}}>@</span> {home}</span>
+                  {gameTopCount>0&&<span style={{fontSize:9,color:C.green,fontWeight:600}}>{gameTopCount}&#9889;</span>}
+                </div>
+                <div style={{fontSize:10,color:C.muted,marginTop:2}}>{time}</div>
+                <div style={{fontSize:10,color:C.subtext,marginTop:1}}>{awayP} / {homeP}</div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ── Main Panel ── */}
+        <div style={{flex:1,overflowY:"auto"}}>
+
+          {/* HOME PAGE */}
+          {page==="home"&&(
+            <HomePage
+              games={games}
+              onSelectGame={handleSelectGameFromHome}
+              allEdges={allEdges}
+              scanState={scanState}
+              onStartScan={scanAllGames}
+            />
+          )}
+
+          {/* GAME PAGE */}
+          {page==="game"&&(
+            <div style={{padding:20}}>
+              {selectedGame&&(
+                <>
+                  <div style={{marginBottom:16}}>
+                    <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3}}>
+                      {selectedGame.teams.away.team.name} <span style={{color:C.muted,fontSize:18}}>@</span> {selectedGame.teams.home.team.name}
+                    </div>
+                    <div style={{display:"flex",gap:20,marginTop:6,fontSize:11,color:C.subtext}}>
+                      <span>Away SP: <span style={{color:C.blue}}>{selectedGame.teams.away.probablePitcher?selectedGame.teams.away.probablePitcher.fullName:"TBD"}</span></span>
+                      <span>Home SP: <span style={{color:C.blue}}>{selectedGame.teams.home.probablePitcher?selectedGame.teams.home.probablePitcher.fullName:"TBD"}</span></span>
+                    </div>
+                  </div>
+
+                  {/* Controls */}
+                  <div style={{display:"flex",gap:10,marginBottom:16,flexWrap:"wrap",alignItems:"center"}}>
+                    <div style={{display:"flex",gap:5,alignItems:"center"}}>
+                      <span style={{fontSize:10,color:C.muted,letterSpacing:1}}>MIN PA:</span>
+                      {[1,5,10,15,20].map(function(n){return(
+                        <button key={n} className="sort-btn" onClick={function(){setMinPA(n);}}
+                          style={{padding:"4px 9px",fontSize:10,background:minPA===n?C.gold:C.card,color:minPA===n?"#000":C.text,border:"1px solid "+(minPA===n?C.gold:C.border),borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace"}}>
+                          {n}+
+                        </button>
+                      );})}
+                    </div>
+                    <div style={{display:"flex",gap:5,alignItems:"center"}}>
+                      <span style={{fontSize:10,color:C.muted,letterSpacing:1}}>SORT:</span>
+                      {["edge","avg","ops","hr","pa"].map(function(s){return(
+                        <button key={s} className="sort-btn" onClick={function(){setSortBy(s);}}
+                          style={{padding:"4px 9px",fontSize:10,background:sortBy===s?C.gold:C.card,color:sortBy===s?"#000":C.text,border:"1px solid "+(sortBy===s?C.gold:C.border),borderRadius:4,cursor:"pointer",textTransform:"uppercase",fontFamily:"'DM Mono',monospace"}}>
+                          {s==="edge"?"&#9889; EDGE":s}
+                        </button>
+                      );})}
+                    </div>
+                    <div style={{display:"flex",gap:5,alignItems:"center"}}>
+                      <span style={{fontSize:10,color:C.muted,letterSpacing:1}}>SIDE:</span>
+                      {[["both","Both"],["away","Away Bat"],["home","Home Bat"]].map(function(pair){return(
+                        <button key={pair[0]} className="sort-btn" onClick={function(){setExpandedSide(pair[0]);}}
+                          style={{padding:"4px 9px",fontSize:10,background:expandedSide===pair[0]?C.gold:C.card,color:expandedSide===pair[0]?"#000":C.text,border:"1px solid "+(expandedSide===pair[0]?C.gold:C.border),borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace"}}>
+                          {pair[1]}
+                        </button>
+                      );})}
+                    </div>
+                    <button className="sort-btn" onClick={function(){setShowSeason(!showSeason);}}
+                      style={{padding:"4px 9px",fontSize:10,background:showSeason?C.purple:C.card,color:showSeason?"#000":C.text,border:"1px solid "+(showSeason?C.purple:C.border),borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",marginLeft:4}}>
+                      {showSeason?"SEASON ✓":"SEASON"}
+                    </button>
+                  </div>
+
+                  {loading&&(
+                    <div style={{textAlign:"center",padding:48,color:C.muted}}>
+                      <div style={{fontSize:32,marginBottom:12}} className="loading-pulse">&#9881;&#65039;</div>
+                      <div style={{fontSize:13,letterSpacing:2}}>LOADING MATCHUP DATA...</div>
+                      <div style={{fontSize:11,marginTop:8,color:C.subtext}}>{progress||"Querying MLB Stats API..."}</div>
+                      <div style={{width:200,height:3,background:C.border,borderRadius:2,margin:"12px auto 0",overflow:"hidden"}}>
+                        <div style={{height:"100%",background:C.gold,borderRadius:2,transition:"width 0.3s",
+                          width:progress?(parseInt(progress.match(/\d+/)[0]||0)/parseInt((progress.match(/\/(\d+)/)||[])[1]||1)*100)+"%":"10%"
+                        }}/>
+                      </div>
+                    </div>
+                  )}
+
+                  {error&&(
+                    <div style={{background:"#1f1010",border:"1px solid #7f1d1d",borderRadius:8,padding:16,color:"#fca5a5",fontSize:12}}>{error}</div>
+                  )}
+
+                  {!loading&&matchups.length===0&&!error&&(
+                    <div style={{textAlign:"center",padding:48,color:C.muted,fontSize:13}}>
+                      No matchups found. Probable pitchers may not be announced yet.
+                    </div>
+                  )}
+
+                  {/* BATTER EDGE VIEW */}
+                  {!loading&&filtered.length>0&&viewMode==="batter"&&(
+                    <>
+                      <TopEdgesBanner matchups={filtered}/>
+                      {hotMatchups.length>0&&(
+                        <div style={{marginBottom:20}} className="fade-in">
+                          <div style={{fontSize:10,letterSpacing:2,color:C.green,marginBottom:8}}>&#128293; HOT MATCHUPS <span style={{color:C.muted}}>(.300+ BvP AVG)</span></div>
+                          <MatchupTable rows={hotMatchups} showEdge={true} showSeason={showSeason}/>
+                        </div>
+                      )}
+                      <div style={{marginBottom:20}} className="fade-in">
+                        <div style={{fontSize:10,letterSpacing:2,color:C.subtext,marginBottom:8}}>ALL QUALIFIED MATCHUPS ({filtered.length})</div>
+                        <MatchupTable rows={filtered} showEdge={true} showSeason={showSeason}/>
+                      </div>
+                      {coldMatchups.length>0&&(
+                        <div style={{marginBottom:20}} className="fade-in">
+                          <div style={{fontSize:10,letterSpacing:2,color:C.red,marginBottom:8}}>&#129482; COLD MATCHUPS <span style={{color:C.muted}}>(sub-.200 BvP AVG)</span></div>
+                          <MatchupTable rows={coldMatchups} showEdge={true} showSeason={showSeason}/>
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  {/* PITCHER EDGE VIEW */}
+                  {!loading&&matchups.length>0&&viewMode==="pitcher"&&(
+                    <div className="fade-in">
+                      {pitcherGroups.map(function(pg,i){
+                        var pgFiltered=pg.matchups.filter(function(m){return (m.stat.plateAppearances||0)>=minPA;});
+                        var pgSorted=pgFiltered.slice().sort(function(a,b){
+                          if(sortBy==="edge") return (b.edgeScore||0)-(a.edgeScore||0);
+                          if(sortBy==="avg") return (parseFloat(b.stat.avg)||0)-(parseFloat(a.stat.avg)||0);
+                          if(sortBy==="ops") return (parseFloat(b.stat.ops)||0)-(parseFloat(a.stat.ops)||0);
+                          return 0;
+                        });
+                        return(
+                          <div key={i} style={{marginBottom:28}}>
+                            <PitcherSummaryCard pitcher={pg.pitcher} matchups={pgFiltered} seasonStat={pg.seasonStat} side={pg.side}/>
+                            {pgSorted.length>0?(
+                              <>
+                                <div style={{fontSize:10,letterSpacing:2,color:C.subtext,marginBottom:8}}>
+                                  vs {pg.vsTeam} LINEUP ({pgSorted.length} matchups with {minPA}+ PA)
+                                </div>
+                                <MatchupTable rows={pgSorted} showEdge={true} showSeason={showSeason}/>
+                              </>
+                            ):(
+                              <div style={{color:C.muted,fontSize:12,padding:16,textAlign:"center"}}>
+                                No qualified matchups at {minPA}+ PA threshold
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Footer ── */}
+      <div style={{borderTop:"1px solid "+C.border,padding:"6px 24px",display:"flex",justifyContent:"space-between",fontSize:9,color:C.muted,background:"#0d1220",flexShrink:0}}>
+        <span>Data via MLB Stats API · Career BvP splits + {new Date().getFullYear()} season stats</span>
+        <span>Edge scores are weighted composites — not financial advice</span>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
