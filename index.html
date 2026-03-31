@@ -49,6 +49,119 @@ const C = {
   text:"#e5e7eb",subtext:"#9ca3af",purple:"#a78bfa",orange:"#fb923c"
 };
 
+/* ─── Stadium Coordinates & HP→CF Bearing (MLB Stats API venue IDs as keys) ─── */
+/* dome: true = fully enclosed (wind N/A), retractable = roof may be open */
+const VENUE_DATA = {
+  15:  {lat:33.445,lon:-112.067,bearing:175,name:"Chase Field",retractable:true}, // ARI
+  4705:{lat:33.891,lon:-84.468,bearing:195,name:"Truist Park"},           // ATL
+  2:   {lat:39.284,lon:-76.622,bearing:210,name:"Camden Yards"},          // BAL
+  3:   {lat:42.346,lon:-71.098,bearing:200,name:"Fenway Park"},           // BOS
+  17:  {lat:41.948,lon:-87.656,bearing:210,name:"Wrigley Field"},         // CHC
+  4:   {lat:41.830,lon:-87.634,bearing:200,name:"Guaranteed Rate"},       // CWS
+  2602:{lat:39.098,lon:-84.507,bearing:195,name:"Great American BP"},     // CIN
+  5:   {lat:41.496,lon:-81.685,bearing:195,name:"Progressive Field"},     // CLE
+  19:  {lat:39.756,lon:-104.994,bearing:205,name:"Coors Field"},          // COL
+  2394:{lat:42.339,lon:-83.049,bearing:210,name:"Comerica Park"},         // DET
+  2392:{lat:29.757,lon:-95.355,bearing:195,name:"Minute Maid Park",retractable:true}, // HOU
+  7:   {lat:39.051,lon:-94.481,bearing:210,name:"Kauffman Stadium"},      // KC
+  1:   {lat:33.800,lon:-117.883,bearing:200,name:"Angel Stadium"},        // LAA
+  22:  {lat:34.074,lon:-118.240,bearing:205,name:"Dodger Stadium"},       // LAD
+  4169:{lat:25.778,lon:-80.220,bearing:175,name:"loanDepot Park",retractable:true}, // MIA
+  32:  {lat:43.028,lon:-87.971,bearing:200,name:"American Family"},       // MIL
+  3312:{lat:44.982,lon:-93.278,bearing:210,name:"Target Field"},          // MIN
+  3289:{lat:40.757,lon:-73.846,bearing:200,name:"Citi Field"},            // NYM
+  3313:{lat:40.829,lon:-73.926,bearing:195,name:"Yankee Stadium"},        // NYY
+  10:  {lat:37.752,lon:-122.201,bearing:200,name:"Oakland Coliseum"},     // OAK
+  2681:{lat:39.906,lon:-75.166,bearing:200,name:"Citizens Bank Park"},    // PHI
+  31:  {lat:40.447,lon:-80.006,bearing:205,name:"PNC Park"},              // PIT
+  2680:{lat:32.751,lon:-117.157,bearing:195,name:"Petco Park"},           // SD
+  2395:{lat:37.778,lon:-122.389,bearing:205,name:"Oracle Park"},          // SF
+  680: {lat:47.591,lon:-122.333,bearing:185,name:"T-Mobile Park"},        // SEA
+  2889:{lat:38.623,lon:-90.193,bearing:195,name:"Busch Stadium"},         // STL
+  12:  {lat:27.768,lon:-82.653,bearing:175,name:"Tropicana Field",dome:true}, // TB
+  5325:{lat:32.751,lon:-97.083,bearing:195,name:"Globe Life Field",retractable:true}, // TEX
+  14:  {lat:43.641,lon:-79.389,bearing:195,name:"Rogers Centre",retractable:true}, // TOR
+  3309:{lat:38.873,lon:-77.007,bearing:195,name:"Nationals Park"},        // WSH
+};
+
+/* ─── Weather Functions ─── */
+async function fetchWeather(lat, lon, gameDate){
+  try{
+    var dateStr = gameDate ? new Date(gameDate).toISOString().slice(0,10) : new Date().toISOString().slice(0,10);
+    var url = "https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon
+      +"&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m"
+      +"&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FChicago"
+      +"&start_date="+dateStr+"&end_date="+dateStr;
+    var resp = await fetch(url);
+    var data = await resp.json();
+    if(!data.hourly) return null;
+    // Use ~7pm local (index 19) for night games, ~2pm (index 14) for day
+    var gameHour = gameDate ? new Date(gameDate).getHours() : 19;
+    var idx = gameHour < 17 ? 14 : 19;
+    if(idx >= data.hourly.time.length) idx = data.hourly.time.length - 1;
+    return {
+      temp: Math.round(data.hourly.temperature_2m[idx]),
+      humidity: Math.round(data.hourly.relative_humidity_2m[idx]),
+      windSpeed: Math.round(data.hourly.wind_speed_10m[idx]),
+      windDir: Math.round(data.hourly.wind_direction_10m[idx])
+    };
+  }catch(e){ return null; }
+}
+
+function computeWindEffect(windDir, windSpeed, stadiumBearing){
+  // windDir = meteorological (direction wind comes FROM, in degrees)
+  // stadiumBearing = direction from home plate to center field
+  // "blowing out" = wind traveling FROM home plate TOWARD center field
+  // Wind blows TO = (windDir + 180) % 360
+  var windTo = (windDir + 180) % 360;
+  var diff = windTo - stadiumBearing;
+  // Normalize to -180..180
+  if(diff > 180) diff -= 360;
+  if(diff < -180) diff += 360;
+  var absDiff = Math.abs(diff);
+
+  var direction, factor;
+  if(absDiff <= 45){
+    direction = "OUT";
+    // Scale: 0° diff = full effect, 45° = half
+    factor = 1.0 - (absDiff / 90);
+  } else if(absDiff >= 135){
+    direction = "IN";
+    factor = -(1.0 - ((180 - absDiff) / 90));
+  } else {
+    direction = "CROSS";
+    factor = 0;
+  }
+
+  // Compute score adjustment: wind speed matters
+  // Light wind (<5mph) = minimal effect, strong (>15mph) = big effect
+  var magnitude = Math.min(windSpeed / 15, 1.5);
+  var scoreAdj = Math.round(factor * magnitude * 8); // max ~±12
+
+  return {direction: direction, scoreAdj: scoreAdj, windSpeed: windSpeed, windDir: windDir};
+}
+
+async function getGameWeather(venueId, gameDate){
+  var venue = VENUE_DATA[venueId];
+  if(!venue) return null;
+  var raw = await fetchWeather(venue.lat, venue.lon, gameDate);
+  if(!raw) return null;
+  var isDome = venue.dome === true;
+  var isRetractable = venue.retractable === true;
+  var wind = isDome ? {direction:"DOME",scoreAdj:0} : computeWindEffect(raw.windDir, raw.windSpeed, venue.bearing);
+  return {
+    temp: raw.temp,
+    humidity: raw.humidity,
+    windSpeed: isDome ? 0 : raw.windSpeed,
+    windDirDeg: raw.windDir,
+    windLabel: isDome ? "DOME" : (isRetractable ? wind.direction+"*" : wind.direction),
+    windScoreAdj: isDome ? 0 : wind.scoreAdj,
+    venueName: venue.name,
+    isDome: isDome,
+    isRetractable: isRetractable
+  };
+}
+
 /* ─── Helpers ─── */
 function statColor(avg){
   if(!avg||avg==="---") return C.subtext;
@@ -88,8 +201,8 @@ function eraColor(era){
 }
 
 /* ─── Edge Score Engine ─── */
-function computeEdgeScore(bvpStat, seasonStat, pa, venueStat){
-  if(!bvpStat) return {score:0, parkDelta:0};
+function computeEdgeScore(bvpStat, seasonStat, pa, venueStat, weather){
+  if(!bvpStat) return {score:0, parkDelta:0, weatherDelta:0};
   let score = 50;
   const bvpAvg = parseFloat(bvpStat.avg)||0;
   const bvpOps = parseFloat(bvpStat.ops)||0;
@@ -129,7 +242,20 @@ function computeEdgeScore(bvpStat, seasonStat, pa, venueStat){
     parkDelta = Math.round(raw * vFactor);
     score += parkDelta;
   }
-  return {score:Math.max(0, Math.min(99, Math.round(score))), parkDelta:parkDelta};
+  // Weather / wind factor (batter edge only)
+  var weatherDelta = 0;
+  if(weather && weather.windScoreAdj){
+    weatherDelta = weather.windScoreAdj;
+    score += weatherDelta;
+  }
+  // Temperature bonus: hot air = more carry
+  if(weather && weather.temp){
+    if(weather.temp >= 90) { weatherDelta += 3; score += 3; }
+    else if(weather.temp >= 80) { weatherDelta += 1; score += 1; }
+    else if(weather.temp <= 45) { weatherDelta -= 3; score -= 3; }
+    else if(weather.temp <= 55) { weatherDelta -= 1; score -= 1; }
+  }
+  return {score:Math.max(0, Math.min(99, Math.round(score))), parkDelta:parkDelta, weatherDelta:weatherDelta};
 }
 function edgeGrade(score){
   if(score >= 80) return {grade:"A+",color:"#22c55e"};
@@ -1280,6 +1406,7 @@ function App(){
   const scanAbort=ref_(false);
   const [whiffScores,setWhiffScores]=_s({});
   const [teamKRates,setTeamKRates]=_s({});
+  const [gameWeather,setGameWeather]=_s(null);
 
   useEffect(function(){
     setGamesLoading(true);
@@ -1411,6 +1538,7 @@ function App(){
     setMatchups([]);
     setPitcherSeasonStats({});
     setPitcherExtras({});
+    setGameWeather(null);
     setLoading(true);
     setError(null);
     setProgress("");
@@ -1444,10 +1572,17 @@ function App(){
       // Fetch team K rates for both teams
       pf.push(getTeamSeasonStats(homeId).then(function(s){if(s) tkRates[homeId]=s;}));
       pf.push(getTeamSeasonStats(awayId).then(function(s){if(s) tkRates[awayId]=s;}));
+      // Fetch weather for this game's venue
+      var weatherData = null;
+      var venueId = game.venue ? game.venue.id : null;
+      if(venueId){
+        pf.push(getGameWeather(venueId, game.gameDate).then(function(w){ weatherData = w; }));
+      }
       await Promise.all(pf);
       setPitcherSeasonStats(pitcherStats);
       setPitcherExtras(pExtras);
       setTeamKRates(tkRates);
+      setGameWeather(weatherData);
 
       var results=[];
       var done=0;
@@ -1465,11 +1600,11 @@ function App(){
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
           if(r[0]&&(r[0].plateAppearances||0)>=1){
-            var esResult=computeEdgeScore(r[0],r[1],r[0].plateAppearances,r[2]);
+            var esResult=computeEdgeScore(r[0],r[1],r[0].plateAppearances,r[2],weatherData);
             results.push({batter:batter.person,pitcher:homePitcher,pitcherTeam:game.teams.home.team.name,
               batterTeam:game.teams.away.team.abbreviation||game.teams.away.team.name,
               side:"away",stat:r[0],seasonStat:r[1],venueStat:r[2],
-              edgeScore:esResult.score,parkDelta:esResult.parkDelta,batterKHistory:r[3]});
+              edgeScore:esResult.score,parkDelta:esResult.parkDelta,weatherDelta:esResult.weatherDelta,batterKHistory:r[3]});
           }
         }
       }
@@ -1485,11 +1620,11 @@ function App(){
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
           if(r2[0]&&(r2[0].plateAppearances||0)>=1){
-            var esResult2=computeEdgeScore(r2[0],r2[1],r2[0].plateAppearances,r2[2]);
+            var esResult2=computeEdgeScore(r2[0],r2[1],r2[0].plateAppearances,r2[2],weatherData);
             results.push({batter:batter2.person,pitcher:awayPitcher,pitcherTeam:game.teams.away.team.name,
               batterTeam:game.teams.home.team.abbreviation||game.teams.home.team.name,
               side:"home",stat:r2[0],seasonStat:r2[1],venueStat:r2[2],
-              edgeScore:esResult2.score,parkDelta:esResult2.parkDelta,batterKHistory:r2[3]});
+              edgeScore:esResult2.score,parkDelta:esResult2.parkDelta,weatherDelta:esResult2.weatherDelta,batterKHistory:r2[3]});
           }
         }
       }
@@ -1670,6 +1805,20 @@ function App(){
                         <span style={{color:C.orange}}>🏟 {selectedGame.venue.name}</span>
                       )}
                     </div>
+                    {/* Weather Pills */}
+                    {gameWeather&&(
+                      <div style={{display:"flex",gap:10,marginTop:8,flexWrap:"wrap",alignItems:"center"}}>
+                        <StatPill label="TEMP" value={gameWeather.temp+"°F"} color={gameWeather.temp>=85?C.red:gameWeather.temp<=50?C.blue:C.text}/>
+                        <StatPill label="WIND" value={gameWeather.windSpeed+" mph"} color={gameWeather.windSpeed>=15?C.gold:C.text}/>
+                        <StatPill label="WIND DIR" value={gameWeather.windLabel}
+                          color={gameWeather.windLabel==="OUT"?C.green:gameWeather.windLabel==="IN"?C.red:C.subtext}/>
+                        <StatPill label="HUMIDITY" value={gameWeather.humidity+"%"} color={C.text}/>
+                        {gameWeather.windScoreAdj!==0&&(
+                          <StatPill label="WIND EDGE" value={(gameWeather.windScoreAdj>0?"+":"")+gameWeather.windScoreAdj}
+                            color={gameWeather.windScoreAdj>0?C.green:C.red}/>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Controls */}
