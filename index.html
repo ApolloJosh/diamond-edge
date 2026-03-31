@@ -213,6 +213,89 @@ function pitcherEdgeScore(matchups, extras){
   return {score:Math.max(0, Math.min(99, Math.round(score))), parkDelta:parkDelta};
 }
 
+function computeWhiffScore(pitcher, seasonStat, extras, oppTeamKRate, matchups){
+  if(!pitcher) return {score:50, factors:{}};
+  var score = 50;
+  var factors = {};
+
+  // 1. Pitcher K/9
+  var k9 = parseFloat(seasonStat && seasonStat.strikeoutsPer9Inn)||0;
+  if(k9 >= 10.0) factors.pitcherK9 = 12;
+  else if(k9 >= 9.0) factors.pitcherK9 = 8;
+  else if(k9 >= 8.0) factors.pitcherK9 = 4;
+  else if(k9 < 6.0) factors.pitcherK9 = -8;
+  else if(k9 < 7.0) factors.pitcherK9 = -4;
+  else factors.pitcherK9 = 0;
+  score += factors.pitcherK9;
+
+  // 2. Opposing team K rate
+  if(oppTeamKRate >= 0.260) factors.oppTeamK = 10;
+  else if(oppTeamKRate >= 0.240) factors.oppTeamK = 6;
+  else if(oppTeamKRate >= 0.220) factors.oppTeamK = 3;
+  else if(oppTeamKRate < 0.180) factors.oppTeamK = -8;
+  else if(oppTeamKRate < 0.200) factors.oppTeamK = -4;
+  else factors.oppTeamK = 0;
+  score += factors.oppTeamK;
+
+  // 3. BvP K rate vs this lineup
+  var totalAB = 0, totalK = 0;
+  if(matchups && Array.isArray(matchups)){
+    for(var m of matchups){
+      totalAB += parseInt(m.stat.atBats)||0;
+      totalK += parseInt(m.stat.strikeOuts)||0;
+    }
+  }
+  var bvpKRate = totalAB > 0 ? (totalK / totalAB) : 0;
+  if(bvpKRate >= 0.30) factors.bvpK = 10;
+  else if(bvpKRate >= 0.25) factors.bvpK = 6;
+  else if(bvpKRate >= 0.20) factors.bvpK = 3;
+  else if(bvpKRate < 0.12) factors.bvpK = -8;
+  else if(bvpKRate < 0.15) factors.bvpK = -4;
+  else factors.bvpK = 0;
+  score += factors.bvpK;
+
+  // 4. Park ERA as K-friendliness proxy
+  factors.parkK = 0;
+  if(extras && extras.venueStat && (extras.venueStat.gamesPlayed||0) >= 3){
+    var parkEra = parseFloat(extras.venueStat.stat.era)||0;
+    if(parkEra <= 3.00) factors.parkK = 4;
+    else if(parkEra >= 5.00) factors.parkK = -4;
+  }
+  score += factors.parkK;
+
+  // 5. Home/Road split K/9
+  factors.splitK = 0;
+  if(extras && extras.splitStat){
+    var splitK9 = parseFloat(extras.splitStat.strikeoutsPer9Inn)||0;
+    if(splitK9 >= 9.5) factors.splitK = 4;
+    else if(splitK9 <= 6.5) factors.splitK = -4;
+  }
+  score += factors.splitK;
+
+  // 6. Last 3 starts K/9
+  factors.recentK = 0;
+  if(extras && extras.lastThree){
+    var l3K9 = parseFloat(extras.lastThree.kPer9)||0;
+    if(l3K9 >= 10.0) factors.recentK = 6;
+    else if(l3K9 >= 9.0) factors.recentK = 3;
+    else if(l3K9 < 6.0) factors.recentK = -6;
+    else if(l3K9 < 7.0) factors.recentK = -3;
+  }
+  score += factors.recentK;
+
+  return {score:Math.max(0, Math.min(99, Math.round(score))), factors:factors, bvpKRate:bvpKRate};
+}
+
+function whiffGrade(score){
+  if(score >= 80) return {grade:"A+",color:"#c084fc"};
+  if(score >= 70) return {grade:"A",color:"#d8b4fe"};
+  if(score >= 62) return {grade:"B+",color:"#e9d5ff"};
+  if(score >= 55) return {grade:"B",color:C.purple};
+  if(score >= 45) return {grade:"C",color:C.subtext};
+  if(score >= 35) return {grade:"D",color:"#fca5a5"};
+  return {grade:"F",color:"#ef4444"};
+}
+
 /* ─── API Fetchers ─── */
 async function fetchJSON(url){
   const r=await fetch(url);
@@ -342,6 +425,49 @@ async function getSeasonStats(playerId, group){
       }
     }
     return null;
+  }catch(e){return null;}
+}
+
+async function getTeamSeasonStats(teamId){
+  try{
+    const year=new Date().getFullYear();
+    const data=await fetchJSON(BASE+"/teams/"+teamId+"/stats?stats=season&group=hitting&season="+year);
+    for(const sg of data.stats||[]){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        const stat=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
+        if(stat){
+          var strikeOuts=parseInt(stat.strikeOuts)||0;
+          var atBats=parseInt(stat.atBats)||0;
+          var kRate=atBats>0?(strikeOuts/atBats):0;
+          return {kRate:kRate, strikeOuts:strikeOuts, atBats:atBats};
+        }
+      }
+    }
+    return null;
+  }catch(e){return null;}
+}
+
+async function getBatterKRateHistory(playerId){
+  try{
+    var year=new Date().getFullYear();
+    var totalAB=0, totalK=0;
+    var fetches=[];
+    for(var y=year;y>=year-1;y--){
+      fetches.push(fetchJSON(BASE+"/people/"+playerId+"/stats?stats=season&group=hitting&season="+y));
+    }
+    var results=await Promise.all(fetches);
+    for(var data of results){
+      for(var sg of data.stats||[]){
+        if(sg.group&&sg.group.displayName==="hitting"){
+          var sp=sg.splits&&sg.splits[0];
+          if(sp&&sp.stat){
+            totalAB+=parseInt(sp.stat.atBats)||0;
+            totalK+=parseInt(sp.stat.strikeOuts)||0;
+          }
+        }
+      }
+    }
+    return {kRate:totalAB>0?(totalK/totalAB):0, strikeOuts:totalK, atBats:totalAB};
   }catch(e){return null;}
 }
 
@@ -494,6 +620,136 @@ function SplitDetailRow({label, stat}){
       <span>K <span style={{color:C.text}}>{stat.strikeOuts||0}</span></span>
       <span>BB <span style={{color:C.text}}>{stat.baseOnBalls||0}</span></span>
       <span>HR <span style={{color:(parseInt(stat.homeRuns)||0)>=5?C.red:C.text}}>{stat.homeRuns||0}</span></span>
+    </div>
+  );
+}
+
+function WhiffCard({pitcher, matchups, seasonStat, side, extras, whiffData}){
+  if(!pitcher||!whiffData) return null;
+  const [expanded, setExpanded] = useState(false);
+  const wg = whiffGrade(whiffData.score);
+  const label = side==="home" ? "HOME SP" : "AWAY SP";
+  var l3 = extras ? extras.lastThree : null;
+  var venueStatP = extras ? extras.venueStat : null;
+  var relevantSplit = extras ? (side==="home" ? extras.homeSplit : extras.awaySplit) : null;
+
+  return(
+    <div className="fade-in" style={{background:C.card,border:"1px solid "+C.border,borderRadius:10,padding:16,marginBottom:16}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
+        <div>
+          <div style={{fontSize:9,letterSpacing:2,color:C.muted,marginBottom:4}}>🌬️ {label} — WHIFF EDGE</div>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:2,color:C.purple}}>{pitcher.fullName}</div>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <div style={{fontSize:9,letterSpacing:1,color:C.muted,marginBottom:4}}>WHIFF SCORE</div>
+          <div style={{
+            padding:"4px 12px",borderRadius:6,fontSize:18,fontWeight:700,
+            fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,
+            background:wg.color+"18",border:"1px solid "+wg.color+"40",color:wg.color
+          }}>{wg.grade} <span style={{fontSize:12,color:C.muted}}>{whiffData.score}</span></div>
+        </div>
+      </div>
+
+      {/* Key K Stats Pills */}
+      <div style={{display:"flex",gap:16,flexWrap:"wrap",marginBottom:12}}>
+        <StatPill label="Season K/9" value={seasonStat && seasonStat.strikeoutsPer9Inn ? parseFloat(seasonStat.strikeoutsPer9Inn).toFixed(1) : "---"} color={seasonStat && parseFloat(seasonStat.strikeoutsPer9Inn)>=9 ? C.green : C.text}/>
+        <StatPill label="Opp Team K%" value={(whiffData.oppTeamKRate * 100).toFixed(1)+"%"} color={whiffData.oppTeamKRate >= 0.240 ? C.green : C.text}/>
+        <StatPill label="BvP K Rate" value={(whiffData.bvpKRate * 100).toFixed(1)+"%"} color={whiffData.bvpKRate >= 0.22 ? C.green : C.text}/>
+        {l3 && <StatPill label={"Last 3 K/9"} value={l3.kPer9} color={parseFloat(l3.kPer9)>=9?C.green:C.text}/>}
+      </div>
+
+      {/* Score Factor Breakdown */}
+      <div style={{background:"#0d1220",borderRadius:8,padding:12,marginBottom:12}}>
+        <div style={{fontSize:9,letterSpacing:2,color:C.purple,marginBottom:8}}>WHIFF SCORE BREAKDOWN</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8,fontSize:10}}>
+          <div style={{padding:6}}>
+            <div style={{color:C.muted,fontSize:8,marginBottom:2}}>PITCHER K/9</div>
+            <div style={{color:whiffData.factors.pitcherK9>0?C.green:whiffData.factors.pitcherK9<0?C.red:C.text,fontWeight:600}}>
+              {whiffData.factors.pitcherK9>0?"+":""}{whiffData.factors.pitcherK9}
+            </div>
+          </div>
+          <div style={{padding:6}}>
+            <div style={{color:C.muted,fontSize:8,marginBottom:2}}>OPP TEAM K%</div>
+            <div style={{color:whiffData.factors.oppTeamK>0?C.green:whiffData.factors.oppTeamK<0?C.red:C.text,fontWeight:600}}>
+              {whiffData.factors.oppTeamK>0?"+":""}{whiffData.factors.oppTeamK}
+            </div>
+          </div>
+          <div style={{padding:6}}>
+            <div style={{color:C.muted,fontSize:8,marginBottom:2}}>BvP K RATE</div>
+            <div style={{color:whiffData.factors.bvpK>0?C.green:whiffData.factors.bvpK<0?C.red:C.text,fontWeight:600}}>
+              {whiffData.factors.bvpK>0?"+":""}{whiffData.factors.bvpK}
+            </div>
+          </div>
+          <div style={{padding:6}}>
+            <div style={{color:C.muted,fontSize:8,marginBottom:2}}>PARK FACTOR</div>
+            <div style={{color:whiffData.factors.parkK>0?C.green:whiffData.factors.parkK<0?C.red:C.text,fontWeight:600}}>
+              {whiffData.factors.parkK>0?"+":""}{whiffData.factors.parkK}
+            </div>
+          </div>
+          <div style={{padding:6}}>
+            <div style={{color:C.muted,fontSize:8,marginBottom:2}}>SPLIT K/9</div>
+            <div style={{color:whiffData.factors.splitK>0?C.green:whiffData.factors.splitK<0?C.red:C.text,fontWeight:600}}>
+              {whiffData.factors.splitK>0?"+":""}{whiffData.factors.splitK}
+            </div>
+          </div>
+          <div style={{padding:6}}>
+            <div style={{color:C.muted,fontSize:8,marginBottom:2}}>RECENT FORM</div>
+            <div style={{color:whiffData.factors.recentK>0?C.green:whiffData.factors.recentK<0?C.red:C.text,fontWeight:600}}>
+              {whiffData.factors.recentK>0?"+":""}{whiffData.factors.recentK}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Expand/Collapse Toggle */}
+      {matchups&&(
+        <button onClick={function(){setExpanded(!expanded);}}
+          style={{background:"transparent",border:"1px solid "+C.border,borderRadius:4,padding:"4px 12px",
+            fontSize:9,letterSpacing:1,color:C.muted,cursor:"pointer",fontFamily:"'DM Mono',monospace"}}>
+          {expanded?"▾ HIDE K BREAKDOWN":"▸ SHOW K BREAKDOWN"}
+        </button>
+      )}
+
+      {/* Expandable K Rate Detail Table */}
+      {expanded&&matchups&&(
+        <div style={{marginTop:12,paddingTop:12,borderTop:"1px solid "+C.border}}>
+          <div style={{fontSize:9,letterSpacing:2,color:C.purple,marginBottom:6}}>PER-BATTER K BREAKDOWN</div>
+          <div style={{borderRadius:8,overflow:"hidden",border:"1px solid "+C.border}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:10}}>
+              <thead>
+                <tr style={{background:"#0d1220",borderBottom:"1px solid "+C.border}}>
+                  <th style={{padding:"8px 10px",textAlign:"left",fontSize:9,letterSpacing:1,color:C.muted,fontWeight:400}}>BATTER</th>
+                  <th style={{padding:"8px 10px",textAlign:"center",fontSize:9,letterSpacing:1,color:C.muted,fontWeight:400}}>2yr K%</th>
+                  <th style={{padding:"8px 10px",textAlign:"center",fontSize:9,letterSpacing:1,color:C.muted,fontWeight:400}}>BvP ABs</th>
+                  <th style={{padding:"8px 10px",textAlign:"center",fontSize:9,letterSpacing:1,color:C.muted,fontWeight:400}}>BvP Ks</th>
+                  <th style={{padding:"8px 10px",textAlign:"center",fontSize:9,letterSpacing:1,color:C.muted,fontWeight:400}}>BvP K%</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matchups.map(function(m,i){
+                  var mAb = parseInt(m.stat.atBats)||0;
+                  var mK = parseInt(m.stat.strikeOuts)||0;
+                  var mKRate = mAb > 0 ? (mK / mAb) : 0;
+                  var seasonKRate = m.batterKHistory ? m.batterKHistory.kRate : null;
+                  return(
+                    <tr key={i} style={{borderBottom:"1px solid "+C.border,background:i%2===0?C.card:"#0f1825"}}>
+                      <td style={{padding:"9px 10px",fontWeight:500}}>{m.batter.fullName}</td>
+                      <td style={{padding:"9px 10px",textAlign:"center",color:seasonKRate!==null&&seasonKRate>=0.25?C.red:seasonKRate!==null&&seasonKRate>=0.20?C.gold:C.text,fontWeight:600}}>
+                        {seasonKRate!==null?(seasonKRate*100).toFixed(1)+"%":"---"}
+                      </td>
+                      <td style={{padding:"9px 10px",textAlign:"center"}}>{mAb}</td>
+                      <td style={{padding:"9px 10px",textAlign:"center",color:mK>=2?C.red:C.text}}>{mK}</td>
+                      <td style={{padding:"9px 10px",textAlign:"center",color:mKRate>=0.25?C.red:mKRate>=0.20?C.gold:C.text,fontWeight:600}}>
+                        {(mKRate*100).toFixed(0)}%
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -783,8 +1039,9 @@ function TopEdgesBanner({matchups}){
 /* ─────────────────────────────────────────────── */
 /* ─── HOME PAGE: League-Wide Edge Scanner ────── */
 /* ─────────────────────────────────────────────── */
-function HomePage({games, onSelectGame, onScanComplete, allEdges, scanState, onStartScan}){
+function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, scanState, onStartScan}){
   var topEdges = allEdges.filter(function(m){return m.edgeScore>=55;}).sort(function(a,b){return b.edgeScore-a.edgeScore;});
+  var topWhiffs = allWhiffScores.filter(function(w){return w.score>=55;}).sort(function(a,b){return b.score-a.score;});
 
   return(
     <div style={{padding:24,overflowY:"auto",height:"100%"}}>
@@ -890,7 +1147,46 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, scanState, onS
         </div>
       )}
 
-      {scanState==="done"&&topEdges.length===0&&(
+      {/* Top Whiff Scores (B grade and above, 55+) */}
+      {topWhiffs.length>0&&(
+        <div className="fade-in" style={{marginBottom:32}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.purple}}>🌬️ GET A WHIFF OF THIS</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>STRIKEOUT POTENTIAL LEADERS</div>
+            <div style={{
+              padding:"3px 10px",borderRadius:10,background:C.purple+"20",border:"1px solid "+C.purple+"40",
+              color:C.purple,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
+            }}>{topWhiffs.length}</div>
+          </div>
+
+          {/* Whiff Cards Grid */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(320px, 1fr))",gap:12,marginBottom:16}}>
+            {topWhiffs.map(function(w,i){
+              var wg=whiffGrade(w.score);
+              return(
+                <div key={i} className="home-card fade-in" onClick={function(){onSelectGame(w.gamePk);}}
+                  style={{background:C.card,border:"1px solid "+C.border,borderRadius:10,padding:16,
+                    cursor:"pointer",transition:"all 0.15s",animationDelay:i*40+"ms"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+                    <div>
+                      <div style={{fontWeight:600,fontSize:14,marginBottom:2}}>{w.pitcher.fullName}</div>
+                      <div style={{fontSize:10,color:C.subtext}}>Game: {w.gameLabel}</div>
+                    </div>
+                    <div style={{
+                      padding:"4px 12px",borderRadius:6,fontFamily:"'Bebas Neue',sans-serif",
+                      fontSize:20,letterSpacing:2,fontWeight:700,
+                      background:wg.color+"18",border:"1px solid "+wg.color+"40",color:wg.color
+                    }}>{w.score}</div>
+                  </div>
+                  <div style={{fontSize:10,color:C.muted,marginTop:8,letterSpacing:1}}>Click to view full whiff analysis</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {scanState==="done"&&topEdges.length===0&&topWhiffs.length===0&&(
         <div className="fade-in" style={{textAlign:"center",padding:40,color:C.muted}}>
           <div style={{fontSize:32,marginBottom:12}}>&#128064;</div>
           <div style={{fontSize:14,letterSpacing:1}}>No matchups scored B or above today.</div>
@@ -979,8 +1275,11 @@ function App(){
 
   // League-wide scan state
   const [allEdges,setAllEdges]=_s([]);
+  const [allWhiffScores,setAllWhiffScores]=_s([]);
   const [scanState,setScanState]=_s("idle"); // "idle" | "scanning" | "done"
   const scanAbort=ref_(false);
+  const [whiffScores,setWhiffScores]=_s({});
+  const [teamKRates,setTeamKRates]=_s({});
 
   useEffect(function(){
     setGamesLoading(true);
@@ -993,7 +1292,9 @@ function App(){
     scanAbort.current=false;
     setScanState("scanning");
     setAllEdges([]);
+    setAllWhiffScores([]);
     var accumulated=[];
+    var whiffAccum=[];
 
     for(var gi=0;gi<games.length;gi++){
       if(scanAbort.current) break;
@@ -1013,6 +1314,17 @@ function App(){
         var homeRoster=rosters[0];
         var awayRoster=rosters[1];
 
+        // Fetch team K rates for whiff scores
+        var teamKRatesLocal={};
+        var tkFetches=[
+          getTeamSeasonStats(homeId).then(function(s){if(s) teamKRatesLocal[homeId]=s;}),
+          getTeamSeasonStats(awayId).then(function(s){if(s) teamKRatesLocal[awayId]=s;})
+        ];
+        await Promise.all(tkFetches);
+
+        var homeMatchupsForWhiff=[];
+        var awayMatchupsForWhiff=[];
+
         if(homePitcher){
           for(var bi=0;bi<awayRoster.length;bi++){
             if(scanAbort.current) break;
@@ -1029,6 +1341,7 @@ function App(){
                 pitcherTeam:game.teams.home.team.name,
                 batterTeam:awayAbbr,side:"away",stat:stat,seasonStat:seasonStat,
                 edgeScore:esr.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
+              homeMatchupsForWhiff.push({stat:stat,batter:batter.person});
             }
           }
         }
@@ -1048,16 +1361,33 @@ function App(){
                 pitcherTeam:game.teams.away.team.name,
                 batterTeam:homeAbbr,side:"home",stat:stat2,seasonStat:seasonStat2,
                 edgeScore:esr2.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
+              awayMatchupsForWhiff.push({stat:stat2,batter:batter2.person});
             }
           }
+        }
+
+        // Compute whiff scores for this game's pitchers (without extras, just basics)
+        if(homePitcher && homeMatchupsForWhiff.length > 0){
+          var homeSeasonStat=await getSeasonStats(homePitcher.id,"pitching");
+          var oppKRate=teamKRatesLocal[awayId] ? teamKRatesLocal[awayId].kRate : 0.200;
+          var homeWhiffResult=computeWhiffScore(homePitcher, homeSeasonStat, null, oppKRate, homeMatchupsForWhiff);
+          whiffAccum.push({pitcher:homePitcher, score:homeWhiffResult.score, gamePk:game.gamePk, gameLabel:gameLabel});
+        }
+        if(awayPitcher && awayMatchupsForWhiff.length > 0){
+          var awaySeasonStat=await getSeasonStats(awayPitcher.id,"pitching");
+          var oppKRate2=teamKRatesLocal[homeId] ? teamKRatesLocal[homeId].kRate : 0.200;
+          var awayWhiffResult=computeWhiffScore(awayPitcher, awaySeasonStat, null, oppKRate2, awayMatchupsForWhiff);
+          whiffAccum.push({pitcher:awayPitcher, score:awayWhiffResult.score, gamePk:game.gamePk, gameLabel:gameLabel});
         }
       }catch(e){
         // skip game on error, continue scanning
       }
       // Update state after each game so user sees progress
       setAllEdges(accumulated.slice());
+      setAllWhiffScores(whiffAccum.slice());
     }
     setAllEdges(accumulated.slice());
+    setAllWhiffScores(whiffAccum.slice());
     setScanState("done");
   }
 
@@ -1098,9 +1428,10 @@ function App(){
       var homeRoster=both[0];
       var awayRoster=both[1];
 
-      // Fetch pitcher season stats + extras (including venue) in parallel
+      // Fetch pitcher season stats + extras (including venue) + team K rates in parallel
       var pitcherStats={};
       var pExtras={};
+      var tkRates={};
       var pf=[];
       if(homePitcher){
         pf.push(getSeasonStats(homePitcher.id,"pitching").then(function(s){pitcherStats[homePitcher.id]=s;}));
@@ -1110,9 +1441,13 @@ function App(){
         pf.push(getSeasonStats(awayPitcher.id,"pitching").then(function(s){pitcherStats[awayPitcher.id]=s;}));
         pf.push(fetchAllPitcherExtras(awayPitcher.id,false,isDayGame,homeId).then(function(e){pExtras[awayPitcher.id]=e;}));
       }
+      // Fetch team K rates for both teams
+      pf.push(getTeamSeasonStats(homeId).then(function(s){if(s) tkRates[homeId]=s;}));
+      pf.push(getTeamSeasonStats(awayId).then(function(s){if(s) tkRates[awayId]=s;}));
       await Promise.all(pf);
       setPitcherSeasonStats(pitcherStats);
       setPitcherExtras(pExtras);
+      setTeamKRates(tkRates);
 
       var results=[];
       var done=0;
@@ -1124,7 +1459,8 @@ function App(){
           var r=await Promise.all([
             getBvPSplits(batter.person.id,homePitcher.id),
             getSeasonStats(batter.person.id,"hitting"),
-            safeVenueStat(batter.person.id,homeId,false,"hitting")
+            safeVenueStat(batter.person.id,homeId,false,"hitting"),
+            getBatterKRateHistory(batter.person.id)
           ]);
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
@@ -1133,7 +1469,7 @@ function App(){
             results.push({batter:batter.person,pitcher:homePitcher,pitcherTeam:game.teams.home.team.name,
               batterTeam:game.teams.away.team.abbreviation||game.teams.away.team.name,
               side:"away",stat:r[0],seasonStat:r[1],venueStat:r[2],
-              edgeScore:esResult.score,parkDelta:esResult.parkDelta});
+              edgeScore:esResult.score,parkDelta:esResult.parkDelta,batterKHistory:r[3]});
           }
         }
       }
@@ -1143,7 +1479,8 @@ function App(){
           var r2=await Promise.all([
             getBvPSplits(batter2.person.id,awayPitcher.id),
             getSeasonStats(batter2.person.id,"hitting"),
-            safeVenueStat(batter2.person.id,homeId,true,"hitting")
+            safeVenueStat(batter2.person.id,homeId,true,"hitting"),
+            getBatterKRateHistory(batter2.person.id)
           ]);
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
@@ -1152,11 +1489,30 @@ function App(){
             results.push({batter:batter2.person,pitcher:awayPitcher,pitcherTeam:game.teams.away.team.name,
               batterTeam:game.teams.home.team.abbreviation||game.teams.home.team.name,
               side:"home",stat:r2[0],seasonStat:r2[1],venueStat:r2[2],
-              edgeScore:esResult2.score,parkDelta:esResult2.parkDelta});
+              edgeScore:esResult2.score,parkDelta:esResult2.parkDelta,batterKHistory:r2[3]});
           }
         }
       }
       setMatchups(results);
+
+      // Compute whiff scores for both pitchers
+      var whiffResults = {};
+      if(homePitcher && results.length > 0){
+        var homeMatchups = results.filter(function(m){return m.pitcher.id === homePitcher.id;});
+        var oppKRate = tkRates[awayId] ? tkRates[awayId].kRate : 0.200;
+        var whiffRes = computeWhiffScore(homePitcher, pitcherStats[homePitcher.id], pExtras[homePitcher.id], oppKRate, homeMatchups);
+        whiffRes.oppTeamKRate = oppKRate;
+        whiffResults[homePitcher.id] = whiffRes;
+      }
+      if(awayPitcher && results.length > 0){
+        var awayMatchups = results.filter(function(m){return m.pitcher.id === awayPitcher.id;});
+        var oppKRate2 = tkRates[homeId] ? tkRates[homeId].kRate : 0.200;
+        var whiffRes2 = computeWhiffScore(awayPitcher, pitcherStats[awayPitcher.id], pExtras[awayPitcher.id], oppKRate2, awayMatchups);
+        whiffRes2.oppTeamKRate = oppKRate2;
+        whiffResults[awayPitcher.id] = whiffRes2;
+      }
+      setWhiffScores(whiffResults);
+
       setProgress("");
     }catch(e){
       setError("Error loading matchup data: "+e.message);
@@ -1223,16 +1579,22 @@ function App(){
         {page==="game"&&selectedGame&&(
           <div style={{display:"flex",gap:2}}>
             <button className="tab-btn" onClick={function(){setViewMode("batter");}}
-              style={{padding:"6px 16px",fontSize:10,letterSpacing:1,borderRadius:"6px 0 0 6px",
+              style={{padding:"6px 16px",fontSize:10,letterSpacing:1,borderRadius:"6px 0 0 0",
                 background:viewMode==="batter"?C.gold:"#0d1220",color:viewMode==="batter"?"#000":C.muted,
                 border:"1px solid "+(viewMode==="batter"?C.gold:C.border)}}>
               BATTER EDGE
             </button>
             <button className="tab-btn" onClick={function(){setViewMode("pitcher");}}
-              style={{padding:"6px 16px",fontSize:10,letterSpacing:1,borderRadius:"0 6px 6px 0",
+              style={{padding:"6px 16px",fontSize:10,letterSpacing:1,borderRadius:"0",
                 background:viewMode==="pitcher"?C.blue:"#0d1220",color:viewMode==="pitcher"?"#000":C.muted,
                 border:"1px solid "+(viewMode==="pitcher"?C.blue:C.border)}}>
               PITCHER EDGE
+            </button>
+            <button className="tab-btn" onClick={function(){setViewMode("whiff");}}
+              style={{padding:"6px 16px",fontSize:10,letterSpacing:1,borderRadius:"0 6px 6px 0",
+                background:viewMode==="whiff"?C.purple:"#0d1220",color:viewMode==="whiff"?"#000":C.muted,
+                border:"1px solid "+(viewMode==="whiff"?C.purple:C.border)}}>
+              WHIFF EDGE
             </button>
           </div>
         )}
@@ -1286,6 +1648,7 @@ function App(){
               games={games}
               onSelectGame={handleSelectGameFromHome}
               allEdges={allEdges}
+              allWhiffScores={allWhiffScores}
               scanState={scanState}
               onStartScan={scanAllGames}
             />
@@ -1420,6 +1783,20 @@ function App(){
                                 No qualified matchups at {minPA}+ PA threshold
                               </div>
                             )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* WHIFF EDGE VIEW */}
+                  {!loading&&matchups.length>0&&viewMode==="whiff"&&(
+                    <div className="fade-in">
+                      {pitcherGroups.map(function(pg,i){
+                        var whiffData = whiffScores[pg.pitcher.id];
+                        return(
+                          <div key={i} style={{marginBottom:28}}>
+                            <WhiffCard pitcher={pg.pitcher} matchups={pg.matchups} seasonStat={pg.seasonStat} side={pg.side} extras={pg.extras} whiffData={whiffData}/>
                           </div>
                         );
                       })}
