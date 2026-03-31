@@ -858,7 +858,7 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
       {pParkDelta!==0&&(
         <div style={{display:"inline-flex",alignItems:"center",gap:6,marginBottom:6,padding:"3px 10px",borderRadius:4,
           background:(pParkDelta>0?C.green:C.red)+"18",border:"1px solid "+(pParkDelta>0?C.green:C.red)+"40"}}>
-          <span style={{fontSize:9,letterSpacing:1,color:C.muted}}>&#127965; PARK FACTOR</span>
+          <span style={{fontSize:9,letterSpacing:1,color:C.muted}}>🏟 PARK FACTOR</span>
           <span style={{fontSize:11,fontWeight:600,color:pParkDelta>0?C.green:C.red}}>
             {pParkDelta>0?"+":""}{pParkDelta} pts
           </span>
@@ -901,7 +901,7 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
           </div>
           {/* Ballpark Factor */}
           <div>
-            <div style={{fontSize:9,letterSpacing:2,color:C.orange,marginBottom:6}}>&#127965; BALLPARK FACTOR</div>
+            <div style={{fontSize:9,letterSpacing:2,color:C.orange,marginBottom:6}}>🏟 BALLPARK FACTOR</div>
             {venueStatP&&venueStatP.gamesPlayed>=1?(
               <div>
                 <SplitDetailRow label={"At Park ("+venueStatP.gamesPlayed+" GS)"} stat={venueStatP.stat}/>
@@ -1047,7 +1047,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
     <div style={{padding:24,overflowY:"auto",height:"100%"}}>
       {/* Hero */}
       <div className="fade-in" style={{textAlign:"center",marginBottom:32,paddingTop:20}}>
-        <div style={{fontSize:56,marginBottom:8}}>&#9918;</div>
+        <div style={{fontSize:56,marginBottom:8}}>⚾</div>
         <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:36,letterSpacing:4,color:C.gold,marginBottom:4}}>DIAMOND EDGE</div>
         <div style={{color:C.muted,fontSize:12,letterSpacing:2,marginBottom:20}}>MLB MATCHUP INTELLIGENCE</div>
 
@@ -1057,7 +1057,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
               background:"linear-gradient(135deg,"+C.gold+" 0%,#d4a017 100%)",color:"#000",
               border:"none",borderRadius:8,cursor:"pointer",fontFamily:"'Bebas Neue',sans-serif",
               fontSize:18,transition:"all 0.15s"}}>
-            &#9889; SCAN ALL GAMES FOR EDGES
+            ⚡ SCAN ALL GAMES FOR EDGES
           </button>
         )}
         {scanState==="scanning"&&(
@@ -1090,7 +1090,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
       {topEdges.length>0&&(
         <div className="fade-in" style={{marginBottom:32}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
-            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.green}}>&#9889; TOP EDGES TODAY</div>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.green}}>⚡ TOP EDGES TODAY</div>
             <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>GRADE B AND ABOVE</div>
             <div style={{
               padding:"3px 10px",borderRadius:10,background:C.green+"20",border:"1px solid "+C.green+"40",
@@ -1188,7 +1188,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
 
       {scanState==="done"&&topEdges.length===0&&topWhiffs.length===0&&(
         <div className="fade-in" style={{textAlign:"center",padding:40,color:C.muted}}>
-          <div style={{fontSize:32,marginBottom:12}}>&#128064;</div>
+          <div style={{fontSize:32,marginBottom:12}}>👀</div>
           <div style={{fontSize:14,letterSpacing:1}}>No matchups scored B or above today.</div>
           <div style={{fontSize:11,marginTop:6,color:C.subtext}}>Try selecting individual games to explore all edges, or check back closer to game time for updated probable pitchers.</div>
         </div>
@@ -1565,11 +1565,11 @@ function App(){
           <button className="sidebar-toggle" onClick={function(){setSidebarOpen(!sidebarOpen);}} title={sidebarOpen?"Hide games sidebar":"Show games sidebar"}>
             {sidebarOpen?"\u2630":"\u2630"}
           </button>
-          <div onClick={goHome} style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,color:C.gold,cursor:"pointer"}}>&#9918; DIAMOND EDGE</div>
+          <div onClick={goHome} style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,color:C.gold,cursor:"pointer"}}>⚾ DIAMOND EDGE</div>
           {page==="game"&&(
             <button onClick={goHome} style={{padding:"4px 12px",fontSize:10,background:"transparent",color:C.muted,
               border:"1px solid "+C.border,borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",letterSpacing:1}}>
-              &#8592; HOME
+              ← HOME
             </button>
           )}
           {page==="home"&&(
@@ -1610,7 +1610,7 @@ function App(){
               border:"1px solid "+(page==="home"?C.gold:"transparent"),
               borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,
               fontFamily:"'DM Mono',monospace"}}>
-            <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.gold}}>&#9889; TODAY'S EDGES</div>
+            <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.gold}}>⚡ TODAY'S EDGES</div>
             <div style={{fontSize:10,color:C.muted,marginTop:2}}>League-wide scanner</div>
           </button>
 
@@ -1630,7 +1630,7 @@ function App(){
                 style={{width:"calc(100% - 8px)",margin:"0 4px",textAlign:"left",background:isSelected?"#1a2234":"transparent",border:"1px solid "+(isSelected?C.gold:"transparent"),borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,marginBottom:2,transition:"all 0.15s",fontFamily:"'DM Mono',monospace"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <span style={{fontSize:13,fontWeight:500,letterSpacing:1}}>{away} <span style={{color:C.muted}}>@</span> {home}</span>
-                  {gameTopCount>0&&<span style={{fontSize:9,color:C.green,fontWeight:600}}>{gameTopCount}&#9889;</span>}
+                  {gameTopCount>0&&<span style={{fontSize:9,color:C.green,fontWeight:600}}>{gameTopCount}⚡</span>}
                 </div>
                 <div style={{fontSize:10,color:C.muted,marginTop:2}}>{time}</div>
                 <div style={{fontSize:10,color:C.subtext,marginTop:1}}>{awayP} / {homeP}</div>
@@ -1667,7 +1667,7 @@ function App(){
                       <span>Away SP: <span style={{color:C.blue}}>{selectedGame.teams.away.probablePitcher?selectedGame.teams.away.probablePitcher.fullName:"TBD"}</span></span>
                       <span>Home SP: <span style={{color:C.blue}}>{selectedGame.teams.home.probablePitcher?selectedGame.teams.home.probablePitcher.fullName:"TBD"}</span></span>
                       {selectedGame.venue&&selectedGame.venue.name&&(
-                        <span style={{color:C.orange}}>&#127965; {selectedGame.venue.name}</span>
+                        <span style={{color:C.orange}}>🏟 {selectedGame.venue.name}</span>
                       )}
                     </div>
                   </div>
@@ -1688,7 +1688,7 @@ function App(){
                       {["edge","avg","ops","hr","pa"].map(function(s){return(
                         <button key={s} className="sort-btn" onClick={function(){setSortBy(s);}}
                           style={{padding:"4px 9px",fontSize:10,background:sortBy===s?C.gold:C.card,color:sortBy===s?"#000":C.text,border:"1px solid "+(sortBy===s?C.gold:C.border),borderRadius:4,cursor:"pointer",textTransform:"uppercase",fontFamily:"'DM Mono',monospace"}}>
-                          {s==="edge"?"&#9889; EDGE":s}
+                          {s==="edge"?"⚡ EDGE":s}
                         </button>
                       );})}
                     </div>
@@ -1707,13 +1707,13 @@ function App(){
                     </button>
                     <button className="sort-btn" onClick={function(){setShowPark(!showPark);}}
                       style={{padding:"4px 9px",fontSize:10,background:showPark?C.orange:C.card,color:showPark?"#000":C.text,border:"1px solid "+(showPark?C.orange:C.border),borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",marginLeft:4}}>
-                      {showPark?"&#127965; PARK ✓":"&#127965; PARK"}
+                      {showPark?"🏟 PARK ✓":"🏟 PARK"}
                     </button>
                   </div>
 
                   {loading&&(
                     <div style={{textAlign:"center",padding:48,color:C.muted}}>
-                      <div style={{fontSize:32,marginBottom:12}} className="loading-pulse">&#9881;&#65039;</div>
+                      <div style={{fontSize:32,marginBottom:12}} className="loading-pulse">⚙️</div>
                       <div style={{fontSize:13,letterSpacing:2}}>LOADING MATCHUP DATA...</div>
                       <div style={{fontSize:11,marginTop:8,color:C.subtext}}>{progress||"Querying MLB Stats API..."}</div>
                       <div style={{width:200,height:3,background:C.border,borderRadius:2,margin:"12px auto 0",overflow:"hidden"}}>
@@ -1740,7 +1740,7 @@ function App(){
                       <TopEdgesBanner matchups={filtered}/>
                       {hotMatchups.length>0&&(
                         <div style={{marginBottom:20}} className="fade-in">
-                          <div style={{fontSize:10,letterSpacing:2,color:C.green,marginBottom:8}}>&#128293; HOT MATCHUPS <span style={{color:C.muted}}>(.300+ BvP AVG)</span></div>
+                          <div style={{fontSize:10,letterSpacing:2,color:C.green,marginBottom:8}}>🔥 HOT MATCHUPS <span style={{color:C.muted}}>(.300+ BvP AVG)</span></div>
                           <MatchupTable rows={hotMatchups} showEdge={true} showSeason={showSeason} showPark={showPark}/>
                         </div>
                       )}
@@ -1750,7 +1750,7 @@ function App(){
                       </div>
                       {coldMatchups.length>0&&(
                         <div style={{marginBottom:20}} className="fade-in">
-                          <div style={{fontSize:10,letterSpacing:2,color:C.red,marginBottom:8}}>&#129482; COLD MATCHUPS <span style={{color:C.muted}}>(sub-.200 BvP AVG)</span></div>
+                          <div style={{fontSize:10,letterSpacing:2,color:C.red,marginBottom:8}}>🧊 COLD MATCHUPS <span style={{color:C.muted}}>(sub-.200 BvP AVG)</span></div>
                           <MatchupTable rows={coldMatchups} showEdge={true} showSeason={showSeason} showPark={showPark}/>
                         </div>
                       )}
