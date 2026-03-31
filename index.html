@@ -88,8 +88,8 @@ function eraColor(era){
 }
 
 /* ─── Edge Score Engine ─── */
-function computeEdgeScore(bvpStat, seasonStat, pa){
-  if(!bvpStat) return 0;
+function computeEdgeScore(bvpStat, seasonStat, pa, venueStat){
+  if(!bvpStat) return {score:0, parkDelta:0};
   let score = 50;
   const bvpAvg = parseFloat(bvpStat.avg)||0;
   const bvpOps = parseFloat(bvpStat.ops)||0;
@@ -114,7 +114,22 @@ function computeEdgeScore(bvpStat, seasonStat, pa){
     if(sOps >= 0.850) score += 5;
     else if(sOps < 0.600) score -= 4;
   }
-  return Math.max(0, Math.min(99, Math.round(score)));
+  // Ballpark factor — weighted by sample size (need 5+ games to apply)
+  var parkDelta = 0;
+  if(venueStat && venueStat.gamesPlayed >= 5){
+    const vOps = parseFloat(venueStat.stat.ops)||0;
+    const vFactor = Math.min(venueStat.gamesPlayed / 20, 1.0);
+    var raw = 0;
+    if(vOps >= 0.900) raw = 10;
+    else if(vOps >= 0.800) raw = 6;
+    else if(vOps >= 0.720) raw = 3;
+    else if(vOps < 0.500) raw = -10;
+    else if(vOps < 0.600) raw = -6;
+    else if(vOps < 0.660) raw = -3;
+    parkDelta = Math.round(raw * vFactor);
+    score += parkDelta;
+  }
+  return {score:Math.max(0, Math.min(99, Math.round(score))), parkDelta:parkDelta};
 }
 function edgeGrade(score){
   if(score >= 80) return {grade:"A+",color:"#22c55e"};
@@ -178,7 +193,24 @@ function pitcherEdgeScore(matchups, extras){
       else if(l3era >= 4.50) score -= 1;
     }
   }
-  return Math.max(0, Math.min(99, Math.round(score)));
+  // Ballpark factor — how does this pitcher perform at this venue?
+  var parkDelta = 0;
+  if(extras && extras.venueStat && (extras.venueStat.gamesPlayed||0) >= 3){
+    var vEra = parseFloat(extras.venueStat.stat.era);
+    if(!isNaN(vEra)){
+      var vFactor = Math.min((extras.venueStat.gamesPlayed||0) / 10, 1.0);
+      var raw = 0;
+      if(vEra <= 2.50) raw = 10;
+      else if(vEra <= 3.25) raw = 6;
+      else if(vEra <= 3.80) raw = 3;
+      else if(vEra >= 7.00) raw = -10;
+      else if(vEra >= 5.50) raw = -6;
+      else if(vEra >= 4.80) raw = -3;
+      parkDelta = Math.round(raw * vFactor);
+      score += parkDelta;
+    }
+  }
+  return {score:Math.max(0, Math.min(99, Math.round(score))), parkDelta:parkDelta};
 }
 
 /* ─── API Fetchers ─── */
@@ -189,10 +221,98 @@ async function fetchJSON(url){
 }
 async function getTodayGames(){
   const today=new Date().toISOString().slice(0,10);
-  const data=await fetchJSON(BASE+"/schedule?sportId=1&date="+today+"&hydrate=probablePitcher,team,linescore");
+  const data=await fetchJSON(BASE+"/schedule?sportId=1&date="+today+"&hydrate=probablePitcher,team,linescore,venue");
   const games=[];
   for(const date of data.dates||[]) for(const g of date.games||[]) games.push(g);
   return games;
+}
+/* Parse MLB innings pitched notation: "6.2" = 6 and 2/3 innings */
+function parseIP(ip){
+  var s=String(ip);
+  var parts=s.split(".");
+  var full=parseInt(parts[0])||0;
+  var thirds=parts.length>1?(parseInt(parts[1])||0):0;
+  return full+(thirds/3);
+}
+async function getVenueStat(playerId, homeTeamId, isPlayerHome, group){
+  group=group||"hitting";
+  if(!homeTeamId) return null;
+  try{
+    // Fetch career data: last 15 seasons in parallel to cover full career
+    var currentYear=new Date().getFullYear();
+    var years=[];
+    for(var y=currentYear;y>=currentYear-14;y--) years.push(y);
+    var fetches=years.map(function(yr){
+      return fetch(BASE+"/people/"+playerId+"/stats?stats=gameLog&group="+group+"&season="+yr)
+        .then(function(r){return r.ok?r.json():{stats:[]};})
+        .catch(function(){return {stats:[]};});
+    });
+    var allData=await Promise.all(fetches);
+    var venueGames=[];
+    for(var d=0;d<allData.length;d++){
+      var data=allData[d];
+      for(var sg of (data.stats||[])){
+        if(sg.group&&sg.group.displayName===group){
+          for(var sp of (sg.splits||[])){
+            var atVenue=false;
+            if(isPlayerHome&&sp.isHome) atVenue=true;
+            else if(!isPlayerHome&&!sp.isHome){
+              var oppId=sp.opponent&&(sp.opponent.id||sp.opponent);
+              if(oppId&&String(oppId)===String(homeTeamId)) atVenue=true;
+            }
+            if(atVenue&&sp.stat) venueGames.push(sp.stat);
+          }
+        }
+      }
+    }
+    if(venueGames.length===0) return null;
+    if(group==="hitting"){
+      var tAB=0,tH=0,tHR=0,tBB=0,tK=0,tRBI=0,tPA=0,t2B=0,t3B=0,tHBP=0,tSF=0;
+      for(var g of venueGames){
+        tAB+=parseInt(g.atBats)||0;
+        tH+=parseInt(g.hits)||0;
+        tHR+=parseInt(g.homeRuns)||0;
+        tBB+=parseInt(g.baseOnBalls)||0;
+        tK+=parseInt(g.strikeOuts)||0;
+        tRBI+=parseInt(g.rbi)||0;
+        tPA+=(parseInt(g.plateAppearances)||parseInt(g.atBats))||0;
+        t2B+=parseInt(g.doubles)||0;
+        t3B+=parseInt(g.triples)||0;
+        tHBP+=parseInt(g.hitByPitch)||0;
+        tSF+=parseInt(g.sacFlies)||0;
+      }
+      var avg=tAB>0?(tH/tAB):0;
+      var denom=tAB+tBB+tHBP+tSF;
+      var obp=denom>0?((tH+tBB+tHBP)/denom):0;
+      var tb=tH+t2B+(t3B*2)+(tHR*3);
+      var slg=tAB>0?(tb/tAB):0;
+      var ops=obp+slg;
+      return {stat:{gamesPlayed:venueGames.length,atBats:tAB,hits:tH,homeRuns:tHR,
+        baseOnBalls:tBB,strikeOuts:tK,rbi:tRBI,plateAppearances:tPA,
+        avg:avg.toFixed(3),obp:obp.toFixed(3),slg:slg.toFixed(3),ops:ops.toFixed(3)},
+        gamesPlayed:venueGames.length};
+    }else{
+      var tIP=0,tHp=0,tER=0,tBBp=0,tKp=0,tHRp=0;
+      for(var g of venueGames){
+        tIP+=parseIP(g.inningsPitched);
+        tHp+=parseInt(g.hits)||0;
+        tER+=parseInt(g.earnedRuns)||0;
+        tBBp+=parseInt(g.baseOnBalls)||0;
+        tKp+=parseInt(g.strikeOuts)||0;
+        tHRp+=parseInt(g.homeRuns)||0;
+      }
+      var era=tIP>0?((tER/tIP)*9):0;
+      var whip=tIP>0?((tHp+tBBp)/tIP):0;
+      return {stat:{gamesPlayed:venueGames.length,era:era.toFixed(2),whip:whip.toFixed(2),
+        inningsPitched:tIP.toFixed(1),hits:tHp,earnedRuns:tER,
+        baseOnBalls:tBBp,strikeOuts:tKp,homeRuns:tHRp},
+        gamesPlayed:venueGames.length};
+    }
+  }catch(e){return null;}
+}
+/* Safe wrapper — venue stat never breaks the main Promise.all */
+function safeVenueStat(playerId, homeTeamId, isPlayerHome, group){
+  return getVenueStat(playerId, homeTeamId, isPlayerHome, group).catch(function(){return null;});
 }
 async function getRoster(teamId){
   const data=await fetchJSON(BASE+"/teams/"+teamId+"/roster?rosterType=active");
@@ -297,15 +417,17 @@ async function getPitcherLastThreeStarts(pitcherId){
   }catch(e){return {games:[], agg:null};}
 }
 
-async function fetchAllPitcherExtras(pitcherId, isHome, isDayGame){
+async function fetchAllPitcherExtras(pitcherId, isHome, isDayGame, homeTeamId){
   var results=await Promise.all([
     getPitcherHomeRoadSplits(pitcherId),
     getPitcherDayNightSplits(pitcherId),
-    getPitcherLastThreeStarts(pitcherId)
+    getPitcherLastThreeStarts(pitcherId),
+    homeTeamId ? safeVenueStat(pitcherId, homeTeamId, isHome, "pitching") : Promise.resolve(null)
   ]);
   var hrSplits=results[0];
   var dnSplits=results[1];
   var l3Data=results[2];
+  var venueStat=results[3];
   var splitStat=isHome?hrSplits.home:hrSplits.away;
   var dayNightStat=isDayGame?dnSplits.day:dnSplits.night;
   return {
@@ -316,7 +438,8 @@ async function fetchAllPitcherExtras(pitcherId, isHome, isDayGame){
     homeSplit:hrSplits.home,
     awaySplit:hrSplits.away,
     daySplit:dnSplits.day,
-    nightSplit:dnSplits.night
+    nightSplit:dnSplits.night,
+    venueStat:venueStat
   };
 }
 
@@ -406,7 +529,9 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
   const totalHR = matchups.reduce(function(s,m){return s+(parseInt(m.stat.homeRuns)||0);},0);
   const avgAgainst = totalAB>0?(totalH/totalAB):0;
   const kRate = totalAB>0?(totalK/totalAB):0;
-  const pEdge = pitcherEdgeScore(matchups, extras);
+  const pEdgeResult = pitcherEdgeScore(matchups, extras);
+  const pEdge = pEdgeResult.score;
+  const pParkDelta = pEdgeResult.parkDelta;
   const eg=edgeGrade(pEdge);
   const label = side==="home" ? "HOME SP" : "AWAY SP";
 
@@ -414,6 +539,7 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
   var relevantSplit = extras ? (side==="home" ? extras.homeSplit : extras.awaySplit) : null;
   var relevantDN = extras ? extras.dayNightStat : null;
   var l3 = extras ? extras.lastThree : null;
+  var venueStatP = extras ? extras.venueStat : null;
 
   return(
     <div className="fade-in" style={{background:C.card,border:"1px solid "+C.border,borderRadius:10,padding:16,marginBottom:16}}>
@@ -464,6 +590,23 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
           {l3&&(
             <StatPill label={"Last "+l3.starts+" K/9"} value={l3.kPer9} color={parseFloat(l3.kPer9)>=9?C.green:C.text} />
           )}
+          {venueStatP&&venueStatP.gamesPlayed>=3&&(
+            <StatPill label="Park ERA" value={fmtEra(venueStatP.stat.era)} color={eraColor(venueStatP.stat.era)} />
+          )}
+          {venueStatP&&venueStatP.gamesPlayed>=3&&(
+            <StatPill label="Park WHIP" value={venueStatP.stat.whip?parseFloat(venueStatP.stat.whip).toFixed(2):"---"} color={parseFloat(venueStatP.stat.whip)<=1.10?C.green:parseFloat(venueStatP.stat.whip)<=1.35?C.text:C.red} />
+          )}
+        </div>
+      )}
+      {/* Park score delta badge */}
+      {pParkDelta!==0&&(
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,marginBottom:6,padding:"3px 10px",borderRadius:4,
+          background:(pParkDelta>0?C.green:C.red)+"18",border:"1px solid "+(pParkDelta>0?C.green:C.red)+"40"}}>
+          <span style={{fontSize:9,letterSpacing:1,color:C.muted}}>&#127965; PARK FACTOR</span>
+          <span style={{fontSize:11,fontWeight:600,color:pParkDelta>0?C.green:C.red}}>
+            {pParkDelta>0?"+":""}{pParkDelta} pts
+          </span>
+          {venueStatP&&<span style={{fontSize:9,color:C.muted}}>({venueStatP.gamesPlayed} GS at venue)</span>}
         </div>
       )}
 
@@ -492,12 +635,33 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
             <SplitDetailRow label="Night" stat={extras.nightSplit}/>
           </div>
           {/* Last 3 Starts */}
-          <div>
+          <div style={{marginBottom:12}}>
             <div style={{fontSize:9,letterSpacing:2,color:C.gold,marginBottom:6}}>LAST {l3?l3.starts:3} STARTS {l3?("— "+l3.ip+" IP, "+fmtEra(l3.era)+" ERA"):""}</div>
             {extras.lastThreeGames&&extras.lastThreeGames.length>0?(
               extras.lastThreeGames.map(function(g,gi){return <LastThreeGameRow key={gi} game={g}/>;})
             ):(
               <div style={{fontSize:10,color:C.muted}}>No recent game log data</div>
+            )}
+          </div>
+          {/* Ballpark Factor */}
+          <div>
+            <div style={{fontSize:9,letterSpacing:2,color:C.orange,marginBottom:6}}>&#127965; BALLPARK FACTOR</div>
+            {venueStatP&&venueStatP.gamesPlayed>=1?(
+              <div>
+                <SplitDetailRow label={"At Park ("+venueStatP.gamesPlayed+" GS)"} stat={venueStatP.stat}/>
+                {pParkDelta!==0&&(
+                  <div style={{fontSize:10,color:pParkDelta>0?C.green:C.red,marginTop:4}}>
+                    Score impact: <strong>{pParkDelta>0?"+":""}{pParkDelta} pts</strong>
+                    {pParkDelta>0?" — pitches well here":" — struggles at this park"}
+                    {venueStatP.gamesPlayed<10&&" (small sample — "+venueStatP.gamesPlayed+" GS)"}
+                  </div>
+                )}
+                {pParkDelta===0&&(
+                  <div style={{fontSize:10,color:C.muted,marginTop:4}}>Neutral park factor — not enough differential to adjust score</div>
+                )}
+              </div>
+            ):(
+              <div style={{fontSize:10,color:C.muted}}>No venue-specific data for this pitcher</div>
             )}
           </div>
         </div>
@@ -507,12 +671,13 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
 }
 
 /* ─── Matchup Table (Enhanced) ─── */
-function MatchupTable({rows, showEdge, showSeason, showGame}){
+function MatchupTable({rows, showEdge, showSeason, showGame, showPark}){
   var baseHeaders = ["BATTER","TEAM","vs PITCHER","PA","AB","H","HR","RBI","BB","K","AVG","OBP","SLG","OPS"];
   if(showGame) baseHeaders = ["BATTER","TEAM","vs PITCHER","GAME","PA","AB","H","HR","RBI","BB","K","AVG","OBP","SLG","OPS"];
   var headers = showEdge ? ["EDGE"].concat(baseHeaders) : baseHeaders;
   var seasonHeaders = showSeason ? ["szAVG","szOPS"] : [];
-  var allHeaders = headers.concat(seasonHeaders);
+  var parkHeaders = showPark ? ["pkG","pkAVG","pkOPS","pkΔ"] : [];
+  var allHeaders = headers.concat(seasonHeaders).concat(parkHeaders);
 
   return(
     <div style={{borderRadius:8,overflow:"hidden",border:"1px solid "+C.border}}>
@@ -520,7 +685,7 @@ function MatchupTable({rows, showEdge, showSeason, showGame}){
         <thead>
           <tr style={{background:"#0d1220",borderBottom:"1px solid "+C.border}}>
             {allHeaders.map(function(h){return(
-              <th key={h} style={{padding:"8px 10px",textAlign:h==="BATTER"||h==="vs PITCHER"||h==="GAME"?"left":"center",fontSize:10,letterSpacing:1,color:h==="EDGE"?C.gold:h.startsWith("sz")?C.purple:C.muted,fontWeight:400,whiteSpace:"nowrap"}}>{h}</th>
+              <th key={h} style={{padding:"8px 10px",textAlign:h==="BATTER"||h==="vs PITCHER"||h==="GAME"?"left":"center",fontSize:10,letterSpacing:1,color:h==="EDGE"?C.gold:h.startsWith("sz")?C.purple:h.startsWith("pk")?C.orange:C.muted,fontWeight:400,whiteSpace:"nowrap"}}>{h}</th>
             );})}
           </tr>
         </thead>
@@ -558,6 +723,26 @@ function MatchupTable({rows, showEdge, showSeason, showGame}){
                   <td style={{padding:"9px 10px",textAlign:"center",color:C.purple,fontSize:11}}>
                     {m.seasonStat?fmtOps(m.seasonStat.ops):<span style={{color:C.muted}}>---</span>}
                     <TrendArrow bvpVal={m.stat.ops} seasonVal={m.seasonStat?m.seasonStat.ops:null}/>
+                  </td>
+                </>
+              )}
+              {showPark&&(
+                <>
+                  <td style={{padding:"9px 10px",textAlign:"center",color:C.orange,fontSize:11}}>
+                    {m.venueStat&&m.venueStat.gamesPlayed>=1?m.venueStat.gamesPlayed:<span style={{color:C.muted}}>---</span>}
+                  </td>
+                  <td style={{padding:"9px 10px",textAlign:"center",color:C.orange,fontSize:11}}>
+                    {m.venueStat&&m.venueStat.gamesPlayed>=1?fmtAvg(m.venueStat.stat.avg):<span style={{color:C.muted}}>---</span>}
+                  </td>
+                  <td style={{padding:"9px 10px",textAlign:"center",color:m.venueStat&&m.venueStat.gamesPlayed>=5?statColor(parseFloat(m.venueStat.stat.ops||0)/2):C.muted,fontSize:11,fontWeight:m.venueStat&&m.venueStat.gamesPlayed>=5?600:400}}>
+                    {m.venueStat&&m.venueStat.gamesPlayed>=1?fmtOps(m.venueStat.stat.ops):<span style={{color:C.muted}}>---</span>}
+                  </td>
+                  <td style={{padding:"9px 10px",textAlign:"center",fontSize:11}}>
+                    {m.parkDelta&&m.parkDelta!==0?(
+                      <span style={{color:m.parkDelta>0?C.green:C.red,fontWeight:600}}>
+                        {m.parkDelta>0?"+":""}{m.parkDelta}
+                      </span>
+                    ):<span style={{color:C.muted}}>—</span>}
                   </td>
                 </>
               )}
@@ -788,6 +973,7 @@ function App(){
   const [progress,setProgress]=_s("");
   const [viewMode,setViewMode]=_s("batter");
   const [showSeason,setShowSeason]=_s(true);
+  const [showPark,setShowPark]=_s(true);
   const [page,setPage]=_s("home"); // "home" | "game"
   const [sidebarOpen,setSidebarOpen]=_s(true);
 
@@ -838,11 +1024,11 @@ function App(){
             var stat=results[0];
             var seasonStat=results[1];
             if(stat&&(parseInt(stat.plateAppearances)||0)>=5){
-              var edgeScore=computeEdgeScore(stat,seasonStat,stat.plateAppearances);
+              var esr=computeEdgeScore(stat,seasonStat,stat.plateAppearances,null);
               accumulated.push({batter:batter.person,pitcher:homePitcher,
                 pitcherTeam:game.teams.home.team.name,
                 batterTeam:awayAbbr,side:"away",stat:stat,seasonStat:seasonStat,
-                edgeScore:edgeScore,gamePk:game.gamePk,gameLabel:gameLabel});
+                edgeScore:esr.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
             }
           }
         }
@@ -857,11 +1043,11 @@ function App(){
             var stat2=results2[0];
             var seasonStat2=results2[1];
             if(stat2&&(parseInt(stat2.plateAppearances)||0)>=5){
-              var edgeScore2=computeEdgeScore(stat2,seasonStat2,stat2.plateAppearances);
+              var esr2=computeEdgeScore(stat2,seasonStat2,stat2.plateAppearances,null);
               accumulated.push({batter:batter2.person,pitcher:awayPitcher,
                 pitcherTeam:game.teams.away.team.name,
                 batterTeam:homeAbbr,side:"home",stat:stat2,seasonStat:seasonStat2,
-                edgeScore:edgeScore2,gamePk:game.gamePk,gameLabel:gameLabel});
+                edgeScore:esr2.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
             }
           }
         }
@@ -904,7 +1090,7 @@ function App(){
       var homePitcher=game.teams.home.probablePitcher;
       var awayPitcher=game.teams.away.probablePitcher;
 
-      // Determine if day game (before 5pm local = rough heuristic using UTC hour)
+      // Determine if day game
       var gameHour=new Date(game.gameDate).getHours();
       var isDayGame=gameHour<17;
 
@@ -912,17 +1098,17 @@ function App(){
       var homeRoster=both[0];
       var awayRoster=both[1];
 
-      // Fetch pitcher season stats + extras in parallel
+      // Fetch pitcher season stats + extras (including venue) in parallel
       var pitcherStats={};
       var pExtras={};
       var pf=[];
       if(homePitcher){
         pf.push(getSeasonStats(homePitcher.id,"pitching").then(function(s){pitcherStats[homePitcher.id]=s;}));
-        pf.push(fetchAllPitcherExtras(homePitcher.id,true,isDayGame).then(function(e){pExtras[homePitcher.id]=e;}));
+        pf.push(fetchAllPitcherExtras(homePitcher.id,true,isDayGame,homeId).then(function(e){pExtras[homePitcher.id]=e;}));
       }
       if(awayPitcher){
         pf.push(getSeasonStats(awayPitcher.id,"pitching").then(function(s){pitcherStats[awayPitcher.id]=s;}));
-        pf.push(fetchAllPitcherExtras(awayPitcher.id,false,isDayGame).then(function(e){pExtras[awayPitcher.id]=e;}));
+        pf.push(fetchAllPitcherExtras(awayPitcher.id,false,isDayGame,homeId).then(function(e){pExtras[awayPitcher.id]=e;}));
       }
       await Promise.all(pf);
       setPitcherSeasonStats(pitcherStats);
@@ -935,28 +1121,38 @@ function App(){
       if(homePitcher){
         for(var i=0;i<awayRoster.length;i++){
           var batter=awayRoster[i];
-          var r=await Promise.all([getBvPSplits(batter.person.id,homePitcher.id),getSeasonStats(batter.person.id,"hitting")]);
+          var r=await Promise.all([
+            getBvPSplits(batter.person.id,homePitcher.id),
+            getSeasonStats(batter.person.id,"hitting"),
+            safeVenueStat(batter.person.id,homeId,false,"hitting")
+          ]);
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
           if(r[0]&&(r[0].plateAppearances||0)>=1){
-            var es=computeEdgeScore(r[0],r[1],r[0].plateAppearances);
+            var esResult=computeEdgeScore(r[0],r[1],r[0].plateAppearances,r[2]);
             results.push({batter:batter.person,pitcher:homePitcher,pitcherTeam:game.teams.home.team.name,
               batterTeam:game.teams.away.team.abbreviation||game.teams.away.team.name,
-              side:"away",stat:r[0],seasonStat:r[1],edgeScore:es});
+              side:"away",stat:r[0],seasonStat:r[1],venueStat:r[2],
+              edgeScore:esResult.score,parkDelta:esResult.parkDelta});
           }
         }
       }
       if(awayPitcher){
         for(var j=0;j<homeRoster.length;j++){
           var batter2=homeRoster[j];
-          var r2=await Promise.all([getBvPSplits(batter2.person.id,awayPitcher.id),getSeasonStats(batter2.person.id,"hitting")]);
+          var r2=await Promise.all([
+            getBvPSplits(batter2.person.id,awayPitcher.id),
+            getSeasonStats(batter2.person.id,"hitting"),
+            safeVenueStat(batter2.person.id,homeId,true,"hitting")
+          ]);
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
           if(r2[0]&&(r2[0].plateAppearances||0)>=1){
-            var es2=computeEdgeScore(r2[0],r2[1],r2[0].plateAppearances);
+            var esResult2=computeEdgeScore(r2[0],r2[1],r2[0].plateAppearances,r2[2]);
             results.push({batter:batter2.person,pitcher:awayPitcher,pitcherTeam:game.teams.away.team.name,
               batterTeam:game.teams.home.team.abbreviation||game.teams.home.team.name,
-              side:"home",stat:r2[0],seasonStat:r2[1],edgeScore:es2});
+              side:"home",stat:r2[0],seasonStat:r2[1],venueStat:r2[2],
+              edgeScore:esResult2.score,parkDelta:esResult2.parkDelta});
           }
         }
       }
@@ -1104,9 +1300,12 @@ function App(){
                     <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3}}>
                       {selectedGame.teams.away.team.name} <span style={{color:C.muted,fontSize:18}}>@</span> {selectedGame.teams.home.team.name}
                     </div>
-                    <div style={{display:"flex",gap:20,marginTop:6,fontSize:11,color:C.subtext}}>
+                    <div style={{display:"flex",gap:20,marginTop:6,fontSize:11,color:C.subtext,flexWrap:"wrap",alignItems:"center"}}>
                       <span>Away SP: <span style={{color:C.blue}}>{selectedGame.teams.away.probablePitcher?selectedGame.teams.away.probablePitcher.fullName:"TBD"}</span></span>
                       <span>Home SP: <span style={{color:C.blue}}>{selectedGame.teams.home.probablePitcher?selectedGame.teams.home.probablePitcher.fullName:"TBD"}</span></span>
+                      {selectedGame.venue&&selectedGame.venue.name&&(
+                        <span style={{color:C.orange}}>&#127965; {selectedGame.venue.name}</span>
+                      )}
                     </div>
                   </div>
 
@@ -1143,6 +1342,10 @@ function App(){
                       style={{padding:"4px 9px",fontSize:10,background:showSeason?C.purple:C.card,color:showSeason?"#000":C.text,border:"1px solid "+(showSeason?C.purple:C.border),borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",marginLeft:4}}>
                       {showSeason?"SEASON ✓":"SEASON"}
                     </button>
+                    <button className="sort-btn" onClick={function(){setShowPark(!showPark);}}
+                      style={{padding:"4px 9px",fontSize:10,background:showPark?C.orange:C.card,color:showPark?"#000":C.text,border:"1px solid "+(showPark?C.orange:C.border),borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",marginLeft:4}}>
+                      {showPark?"&#127965; PARK ✓":"&#127965; PARK"}
+                    </button>
                   </div>
 
                   {loading&&(
@@ -1175,17 +1378,17 @@ function App(){
                       {hotMatchups.length>0&&(
                         <div style={{marginBottom:20}} className="fade-in">
                           <div style={{fontSize:10,letterSpacing:2,color:C.green,marginBottom:8}}>&#128293; HOT MATCHUPS <span style={{color:C.muted}}>(.300+ BvP AVG)</span></div>
-                          <MatchupTable rows={hotMatchups} showEdge={true} showSeason={showSeason}/>
+                          <MatchupTable rows={hotMatchups} showEdge={true} showSeason={showSeason} showPark={showPark}/>
                         </div>
                       )}
                       <div style={{marginBottom:20}} className="fade-in">
                         <div style={{fontSize:10,letterSpacing:2,color:C.subtext,marginBottom:8}}>ALL QUALIFIED MATCHUPS ({filtered.length})</div>
-                        <MatchupTable rows={filtered} showEdge={true} showSeason={showSeason}/>
+                        <MatchupTable rows={filtered} showEdge={true} showSeason={showSeason} showPark={showPark}/>
                       </div>
                       {coldMatchups.length>0&&(
                         <div style={{marginBottom:20}} className="fade-in">
                           <div style={{fontSize:10,letterSpacing:2,color:C.red,marginBottom:8}}>&#129482; COLD MATCHUPS <span style={{color:C.muted}}>(sub-.200 BvP AVG)</span></div>
-                          <MatchupTable rows={coldMatchups} showEdge={true} showSeason={showSeason}/>
+                          <MatchupTable rows={coldMatchups} showEdge={true} showSeason={showSeason} showPark={showPark}/>
                         </div>
                       )}
                     </>
@@ -1210,7 +1413,7 @@ function App(){
                                 <div style={{fontSize:10,letterSpacing:2,color:C.subtext,marginBottom:8}}>
                                   vs {pg.vsTeam} LINEUP ({pgSorted.length} matchups with {minPA}+ PA)
                                 </div>
-                                <MatchupTable rows={pgSorted} showEdge={true} showSeason={showSeason}/>
+                                <MatchupTable rows={pgSorted} showEdge={true} showSeason={showSeason} showPark={showPark}/>
                               </>
                             ):(
                               <div style={{color:C.muted,fontSize:12,padding:16,textAlign:"center"}}>
