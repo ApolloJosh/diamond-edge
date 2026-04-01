@@ -52,36 +52,36 @@ const C = {
 /* ─── Stadium Coordinates & HP→CF Bearing (MLB Stats API venue IDs as keys) ─── */
 /* dome: true = fully enclosed (wind N/A), retractable = roof may be open */
 const VENUE_DATA = {
-  15:  {lat:33.445,lon:-112.067,bearing:175,name:"Chase Field",retractable:true}, // ARI
-  4705:{lat:33.891,lon:-84.468,bearing:195,name:"Truist Park"},           // ATL
-  2:   {lat:39.284,lon:-76.622,bearing:210,name:"Camden Yards"},          // BAL
-  3:   {lat:42.346,lon:-71.098,bearing:200,name:"Fenway Park"},           // BOS
-  17:  {lat:41.948,lon:-87.656,bearing:210,name:"Wrigley Field"},         // CHC
-  4:   {lat:41.830,lon:-87.634,bearing:200,name:"Guaranteed Rate"},       // CWS
-  2602:{lat:39.098,lon:-84.507,bearing:195,name:"Great American BP"},     // CIN
-  5:   {lat:41.496,lon:-81.685,bearing:195,name:"Progressive Field"},     // CLE
-  19:  {lat:39.756,lon:-104.994,bearing:205,name:"Coors Field"},          // COL
-  2394:{lat:42.339,lon:-83.049,bearing:210,name:"Comerica Park"},         // DET
-  2392:{lat:29.757,lon:-95.355,bearing:195,name:"Minute Maid Park",retractable:true}, // HOU
-  7:   {lat:39.051,lon:-94.481,bearing:210,name:"Kauffman Stadium"},      // KC
-  1:   {lat:33.800,lon:-117.883,bearing:200,name:"Angel Stadium"},        // LAA
-  22:  {lat:34.074,lon:-118.240,bearing:205,name:"Dodger Stadium"},       // LAD
-  4169:{lat:25.778,lon:-80.220,bearing:175,name:"loanDepot Park",retractable:true}, // MIA
-  32:  {lat:43.028,lon:-87.971,bearing:200,name:"American Family"},       // MIL
-  3312:{lat:44.982,lon:-93.278,bearing:210,name:"Target Field"},          // MIN
-  3289:{lat:40.757,lon:-73.846,bearing:200,name:"Citi Field"},            // NYM
-  3313:{lat:40.829,lon:-73.926,bearing:195,name:"Yankee Stadium"},        // NYY
-  10:  {lat:37.752,lon:-122.201,bearing:200,name:"Oakland Coliseum"},     // OAK
-  2681:{lat:39.906,lon:-75.166,bearing:200,name:"Citizens Bank Park"},    // PHI
-  31:  {lat:40.447,lon:-80.006,bearing:205,name:"PNC Park"},              // PIT
-  2680:{lat:32.751,lon:-117.157,bearing:195,name:"Petco Park"},           // SD
-  2395:{lat:37.778,lon:-122.389,bearing:205,name:"Oracle Park"},          // SF
-  680: {lat:47.591,lon:-122.333,bearing:185,name:"T-Mobile Park"},        // SEA
-  2889:{lat:38.623,lon:-90.193,bearing:195,name:"Busch Stadium"},         // STL
-  12:  {lat:27.768,lon:-82.653,bearing:175,name:"Tropicana Field",dome:true}, // TB
-  5325:{lat:32.751,lon:-97.083,bearing:195,name:"Globe Life Field",retractable:true}, // TEX
-  14:  {lat:43.641,lon:-79.389,bearing:195,name:"Rogers Centre",retractable:true}, // TOR
-  3309:{lat:38.873,lon:-77.007,bearing:195,name:"Nationals Park"},        // WSH
+  15:  {lat:33.445,lon:-112.067,bearing:5,  name:"Chase Field",retractable:true},   // ARI — nearly due N
+  4705:{lat:33.891,lon:-84.468,bearing:50, name:"Truist Park"},                     // ATL — NE
+  2:   {lat:39.284,lon:-76.622,bearing:48, name:"Camden Yards"},                    // BAL — NE
+  3:   {lat:42.346,lon:-71.098,bearing:67, name:"Fenway Park"},                     // BOS — ENE
+  17:  {lat:41.948,lon:-87.656,bearing:75, name:"Wrigley Field"},                   // CHC — ENE
+  4:   {lat:41.830,lon:-87.634,bearing:8,  name:"Guaranteed Rate"},                 // CWS — N
+  2602:{lat:39.098,lon:-84.507,bearing:80, name:"Great American BP"},               // CIN — E
+  5:   {lat:41.496,lon:-81.685,bearing:15, name:"Progressive Field"},               // CLE — NNE
+  19:  {lat:39.756,lon:-104.994,bearing:37,name:"Coors Field"},                     // COL — NE
+  2394:{lat:42.339,lon:-83.049,bearing:20, name:"Comerica Park"},                   // DET — NNE
+  2392:{lat:29.757,lon:-95.355,bearing:352,name:"Minute Maid Park",retractable:true}, // HOU — N (slightly W)
+  7:   {lat:39.051,lon:-94.481,bearing:15, name:"Kauffman Stadium"},                // KC — NNE
+  1:   {lat:33.800,lon:-117.883,bearing:22,name:"Angel Stadium"},                   // LAA — NNE
+  22:  {lat:34.074,lon:-118.240,bearing:35,name:"Dodger Stadium"},                  // LAD — NE
+  4169:{lat:25.778,lon:-80.220,bearing:55, name:"loanDepot Park",retractable:true}, // MIA — NE
+  32:  {lat:43.028,lon:-87.971,bearing:3,  name:"American Family",retractable:true},// MIL — N
+  3312:{lat:44.982,lon:-93.278,bearing:28, name:"Target Field"},                    // MIN — NNE
+  3289:{lat:40.757,lon:-73.846,bearing:58, name:"Citi Field"},                      // NYM — ENE
+  3313:{lat:40.829,lon:-73.926,bearing:52, name:"Yankee Stadium"},                  // NYY — NE
+  10:  {lat:37.752,lon:-122.201,bearing:330,name:"Oakland Coliseum"},               // OAK — NNW
+  2681:{lat:39.906,lon:-75.166,bearing:60, name:"Citizens Bank Park"},              // PHI — ENE
+  31:  {lat:40.447,lon:-80.006,bearing:35, name:"PNC Park"},                        // PIT — NE
+  2680:{lat:32.751,lon:-117.157,bearing:22,name:"Petco Park"},                      // SD — NNE
+  2395:{lat:37.778,lon:-122.389,bearing:340,name:"Oracle Park"},                    // SF — NNW (toward bay)
+  680: {lat:47.591,lon:-122.333,bearing:5,  name:"T-Mobile Park",retractable:true}, // SEA — N
+  2889:{lat:38.623,lon:-90.193,bearing:40, name:"Busch Stadium"},                   // STL — NE
+  12:  {lat:27.768,lon:-82.653,bearing:47, name:"Tropicana Field",dome:true},       // TB — NE (dome)
+  5325:{lat:32.751,lon:-97.083,bearing:7,  name:"Globe Life Field",retractable:true}, // TEX — N
+  14:  {lat:43.641,lon:-79.389,bearing:10, name:"Rogers Centre",retractable:true},  // TOR — N
+  3309:{lat:38.873,lon:-77.007,bearing:25, name:"Nationals Park"},                  // WSH — NNE
 };
 
 /* ─── Weather Functions ─── */
