@@ -307,7 +307,7 @@ function pitcherEdgeScore(matchups, extras){
       else if(dnEra >= 4.80) score -= 2;
     }
   }
-  // Last 3 starts trend bonus
+  // Recent starts trend bonus
   if(extras && extras.lastThree){
     var l3era = parseFloat(extras.lastThree.era);
     if(!isNaN(l3era)){
@@ -398,7 +398,7 @@ function computeWhiffScore(pitcher, seasonStat, extras, oppTeamKRate, matchups){
   }
   score += factors.splitK;
 
-  // 6. Last 3 starts K/9
+  // 6. Recent starts K/9
   factors.recentK = 0;
   if(extras && extras.lastThree){
     var l3K9 = parseFloat(extras.lastThree.kPer9)||0;
@@ -426,7 +426,7 @@ function whiffGrade(score){
 function computeKPropConfidence(line, whiffData, seasonStat, extras){
   if(!whiffData || !seasonStat) return null;
   var k9 = parseFloat(seasonStat.strikeoutsPer9Inn)||0;
-  // Estimate expected innings: use last 3 avg or season inningsPerStart, fallback ~5.5
+  // Estimate expected innings: use recent starts avg or season inningsPerStart, fallback ~5.5
   var expectedIP = 5.5;
   if(extras && extras.lastThree && extras.lastThree.avgIP){
     expectedIP = parseFloat(extras.lastThree.avgIP)||5.5;
@@ -699,22 +699,33 @@ async function getPitcherDayNightSplits(pitcherId){
   return {day:day, night:night};
 }
 
-async function getPitcherLastThreeStarts(pitcherId){
+async function getPitcherRecentStarts(pitcherId){
   try{
     var year=new Date().getFullYear();
-    var data=await fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=gameLog&group=pitching&season="+year);
+    // Fetch current year + previous year in parallel to get enough starts early in season
+    var both=await Promise.all([
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=gameLog&group=pitching&season="+year),
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=gameLog&group=pitching&season="+(year-1))
+    ]);
     var games=[];
-    for(var sg of (data.stats||[])){
+    // Previous year first (chronologically earlier)
+    for(var sg of (both[1].stats||[])){
       if(sg.group&&sg.group.displayName==="pitching"){
         for(var sp of (sg.splits||[])) games.push(sp);
       }
     }
-    // gameLog comes in chronological order; take last 3
-    var last3=games.slice(-3);
-    if(last3.length===0) return {games:[], agg:null};
-    // Aggregate last 3 starts
+    // Then current year
+    for(var sg2 of (both[0].stats||[])){
+      if(sg2.group&&sg2.group.displayName==="pitching"){
+        for(var sp2 of (sg2.splits||[])) games.push(sp2);
+      }
+    }
+    // Take last 10 starts
+    var recent=games.slice(-10);
+    if(recent.length===0) return {games:[], agg:null};
+    // Aggregate
     var totalIP=0, totalER=0, totalH=0, totalBB=0, totalK=0, totalHR=0;
-    for(var g of last3){
+    for(var g of recent){
       var s=g.stat||{};
       var ip=parseFloat(s.inningsPitched)||0;
       totalIP+=ip;
@@ -727,12 +738,12 @@ async function getPitcherLastThreeStarts(pitcherId){
     var era=totalIP>0?((totalER/totalIP)*9):0;
     var whip=totalIP>0?((totalH+totalBB)/totalIP):0;
     var kPer9=totalIP>0?((totalK/totalIP)*9):0;
-    var avgIP=last3.length>0?(totalIP/last3.length):0;
+    var avgIP=recent.length>0?(totalIP/recent.length):0;
     return {
-      games:last3,
+      games:recent,
       agg:{era:era.toFixed(2), whip:whip.toFixed(2), kPer9:kPer9.toFixed(1),
            ip:totalIP.toFixed(1), er:totalER, h:totalH, bb:totalBB, k:totalK, hr:totalHR,
-           starts:last3.length, avgIP:avgIP.toFixed(1)}
+           starts:recent.length, avgIP:avgIP.toFixed(1)}
     };
   }catch(e){return {games:[], agg:null};}
 }
@@ -741,7 +752,7 @@ async function fetchAllPitcherExtras(pitcherId, isHome, isDayGame, homeTeamId){
   var results=await Promise.all([
     getPitcherHomeRoadSplits(pitcherId),
     getPitcherDayNightSplits(pitcherId),
-    getPitcherLastThreeStarts(pitcherId),
+    getPitcherRecentStarts(pitcherId),
     homeTeamId ? safeVenueStat(pitcherId, homeTeamId, isHome, "pitching") : Promise.resolve(null)
   ]);
   var hrSplits=results[0];
@@ -850,7 +861,7 @@ function WhiffCard({pitcher, matchups, seasonStat, side, extras, whiffData}){
         <StatPill label="Season K/9" value={seasonStat && seasonStat.strikeoutsPer9Inn ? parseFloat(seasonStat.strikeoutsPer9Inn).toFixed(1) : "---"} color={seasonStat && parseFloat(seasonStat.strikeoutsPer9Inn)>=9 ? C.green : C.text}/>
         <StatPill label="Opp Team K%" value={(whiffData.oppTeamKRate * 100).toFixed(1)+"%"} color={whiffData.oppTeamKRate >= 0.240 ? C.green : C.text}/>
         <StatPill label="BvP K Rate" value={(whiffData.bvpKRate * 100).toFixed(1)+"%"} color={whiffData.bvpKRate >= 0.22 ? C.green : C.text}/>
-        {l3 && <StatPill label={"Last 3 K/9"} value={l3.kPer9} color={parseFloat(l3.kPer9)>=9?C.green:C.text}/>}
+        {l3 && <StatPill label={"L"+l3.starts+" K/9"} value={l3.kPer9} color={parseFloat(l3.kPer9)>=9?C.green:C.text}/>}
       </div>
 
       {/* K Prop Analyzer */}
@@ -1120,9 +1131,9 @@ function PitcherSummaryCard({pitcher, matchups, seasonStat, side, extras}){
             <SplitDetailRow label="Day" stat={extras.daySplit}/>
             <SplitDetailRow label="Night" stat={extras.nightSplit}/>
           </div>
-          {/* Last 3 Starts */}
+          {/* Recent Starts */}
           <div style={{marginBottom:12}}>
-            <div style={{fontSize:9,letterSpacing:2,color:C.gold,marginBottom:6}}>LAST {l3?l3.starts:3} STARTS {l3?("— "+l3.ip+" IP, "+fmtEra(l3.era)+" ERA"):""}</div>
+            <div style={{fontSize:9,letterSpacing:2,color:C.gold,marginBottom:6}}>LAST {l3?l3.starts:10} STARTS {l3?("— "+l3.ip+" IP, "+fmtEra(l3.era)+" ERA"):""}</div>
             {extras.lastThreeGames&&extras.lastThreeGames.length>0?(
               extras.lastThreeGames.map(function(g,gi){return <LastThreeGameRow key={gi} game={g}/>;})
             ):(
