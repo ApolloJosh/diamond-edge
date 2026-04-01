@@ -424,17 +424,24 @@ function whiffGrade(score){
 
 /* ─── K Prop Confidence Engine ─── */
 function computeKPropConfidence(line, whiffData, seasonStat, extras){
-  if(!whiffData || !seasonStat) return null;
-  var k9 = parseFloat(seasonStat.strikeoutsPer9Inn)||0;
-  // Estimate expected innings: use recent starts avg or season inningsPerStart, fallback ~5.5
+  if(!whiffData) return null;
+  // Use last 10 starts K/9 and avg IP as primary source (more reliable early in season)
+  var recentStarts = extras ? extras.lastThree : null;
+  var k9 = 0;
   var expectedIP = 5.5;
-  if(extras && extras.lastThree && extras.lastThree.avgIP){
-    expectedIP = parseFloat(extras.lastThree.avgIP)||5.5;
-  } else if(seasonStat.inningsPitched && seasonStat.gamesStarted){
+  if(recentStarts && recentStarts.kPer9){
+    k9 = parseFloat(recentStarts.kPer9)||0;
+  } else if(seasonStat && seasonStat.strikeoutsPer9Inn){
+    k9 = parseFloat(seasonStat.strikeoutsPer9Inn)||0;
+  }
+  if(recentStarts && recentStarts.avgIP){
+    expectedIP = parseFloat(recentStarts.avgIP)||5.5;
+  } else if(seasonStat && seasonStat.inningsPitched && seasonStat.gamesStarted){
     var totalIP = parseFloat(seasonStat.inningsPitched)||0;
     var gs = parseInt(seasonStat.gamesStarted)||1;
     expectedIP = totalIP / gs;
   }
+  if(k9 === 0) return null;
   // Project Ks: k9 * (expectedIP / 9)
   var projectedK = k9 * (expectedIP / 9);
 
