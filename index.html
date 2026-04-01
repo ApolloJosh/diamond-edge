@@ -422,6 +422,37 @@ function whiffGrade(score){
   return {grade:"F",color:"#ef4444"};
 }
 
+/* ─── PrizePicks Fantasy Score Calculator ─── */
+function computeFantasyScore(boxStats){
+  if(!boxStats) return 0;
+  var score = 0;
+  var hits = parseInt(boxStats.hits)||0;
+  var doubles = parseInt(boxStats.doubles)||0;
+  var triples = parseInt(boxStats.triples)||0;
+  var homeRuns = parseInt(boxStats.homeRuns)||0;
+  var runs = parseInt(boxStats.runs)||0;
+  var rbi = parseInt(boxStats.rbi)||0;
+  var walks = parseInt(boxStats.baseOnBalls)||0;
+  var hbp = parseInt(boxStats.hitByPitch)||0;
+  var sb = parseInt(boxStats.stolenBases)||0;
+
+  // Singles = Hits - Doubles - Triples - HomeRuns
+  var singles = hits - doubles - triples - homeRuns;
+  if(singles < 0) singles = 0;
+
+  score += singles * 3;
+  score += doubles * 5;
+  score += triples * 8;
+  score += homeRuns * 10;
+  score += runs * 2;
+  score += rbi * 2;
+  score += walks * 2;
+  score += hbp * 2;
+  score += sb * 5;
+
+  return score;
+}
+
 /* ─── K Prop Confidence Engine ─── */
 function computeKPropConfidence(line, whiffData, seasonStat, extras){
   if(!whiffData) return null;
@@ -626,6 +657,21 @@ async function getSeasonStats(playerId, group){
     }
     return null;
   }catch(e){return null;}
+}
+
+async function getGameBoxScore(gamePk){
+  var data = await fetchJSON(BASE + "/game/" + gamePk + "/boxscore");
+  return data;
+}
+
+async function getGamesForDate(dateStr){
+  // dateStr format: "YYYY-MM-DD"
+  var data = await fetchJSON(BASE + "/schedule?sportId=1&date=" + dateStr + "&hydrate=probablePitcher(note),venue");
+  var games = [];
+  for(var d of (data.dates || [])){
+    for(var g of (d.games || [])) games.push(g);
+  }
+  return games;
 }
 
 async function getTeamSeasonStats(teamId){
@@ -1518,8 +1564,16 @@ function App(){
   const [viewMode,setViewMode]=_s("batter");
   const [showSeason,setShowSeason]=_s(true);
   const [showPark,setShowPark]=_s(true);
-  const [page,setPage]=_s("home"); // "home" | "game"
+  const [page,setPage]=_s("home"); // "home" | "game" | "results"
   const [sidebarOpen,setSidebarOpen]=_s(true);
+
+  // Results page state
+  var _yesterday = new Date(); _yesterday.setDate(_yesterday.getDate()-1);
+  var _yStr = _yesterday.toISOString().slice(0,10);
+  const [resultsDate, setResultsDate] = _s(_yStr);
+  const [resultsData, setResultsData] = _s(null);
+  const [resultsLoading, setResultsLoading] = _s(false);
+  const [resultsProgress, setResultsProgress] = _s("");
 
   // League-wide scan state
   const [allEdges,setAllEdges]=_s([]);
@@ -1534,6 +1588,13 @@ function App(){
     setGamesLoading(true);
     getTodayGames().then(function(g){setGames(g);setGamesLoading(false);})
       .catch(function(e){setError("Failed to load games: "+e.message);setGamesLoading(false);});
+  },[]);
+
+  useEffect(function(){
+    // Set default date to yesterday
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    setResultsDate(yesterday.toISOString().slice(0, 10));
   },[]);
 
   /* ─── Full Slate Scanner ─── */
@@ -1653,6 +1714,129 @@ function App(){
     setSelectedGame(null);
     setMatchups([]);
     setError(null);
+  }
+
+  async function loadResults(dateStr){
+    setResultsLoading(true);
+    setResultsProgress("Loading games...");
+    setResultsData(null);
+    try{
+      var dateGames = await getGamesForDate(dateStr);
+      if(dateGames.length === 0){ setResultsData({picks:[], date:dateStr}); setResultsLoading(false); return; }
+
+      var allPicks = [];
+      for(var gi=0; gi<dateGames.length; gi++){
+        var game = dateGames[gi];
+        var homeId = game.teams.home.team.id;
+        var awayId = game.teams.away.team.id;
+        var homePitcher = game.teams.home.probablePitcher;
+        var awayPitcher = game.teams.away.probablePitcher;
+        if(!homePitcher && !awayPitcher) continue;
+
+        setResultsProgress("Scanning game " + (gi+1) + "/" + dateGames.length + "...");
+
+        var rosters = await Promise.all([getRoster(homeId), getRoster(awayId)]);
+        var homeRoster = rosters[0];
+        var awayRoster = rosters[1];
+
+        // Away batters vs home pitcher
+        if(homePitcher){
+          for(var i=0; i<awayRoster.length; i++){
+            var batter = awayRoster[i];
+            var r = await Promise.all([
+              getBvPSplits(batter.person.id, homePitcher.id),
+              getSeasonStats(batter.person.id, "hitting")
+            ]);
+            if(r[0] && (parseInt(r[0].plateAppearances)||0) >= 5){
+              var es = computeEdgeScore(r[0], r[1], r[0].plateAppearances, null, null);
+              allPicks.push({
+                batter: batter.person, pitcher: homePitcher,
+                batterTeam: game.teams.away.team.abbreviation,
+                pitcherTeam: game.teams.home.team.abbreviation,
+                edgeScore: es.score, bvpStat: r[0],
+                gamePk: game.gamePk,
+                gameLabel: game.teams.away.team.abbreviation + " @ " + game.teams.home.team.abbreviation
+              });
+            }
+          }
+        }
+        // Home batters vs away pitcher
+        if(awayPitcher){
+          for(var j=0; j<homeRoster.length; j++){
+            var batter2 = homeRoster[j];
+            var r2 = await Promise.all([
+              getBvPSplits(batter2.person.id, awayPitcher.id),
+              getSeasonStats(batter2.person.id, "hitting")
+            ]);
+            if(r2[0] && (parseInt(r2[0].plateAppearances)||0) >= 5){
+              var es2 = computeEdgeScore(r2[0], r2[1], r2[0].plateAppearances, null, null);
+              allPicks.push({
+                batter: batter2.person, pitcher: awayPitcher,
+                batterTeam: game.teams.home.team.abbreviation,
+                pitcherTeam: game.teams.away.team.abbreviation,
+                edgeScore: es2.score, bvpStat: r2[0],
+                gamePk: game.gamePk,
+                gameLabel: game.teams.away.team.abbreviation + " @ " + game.teams.home.team.abbreviation
+              });
+            }
+          }
+        }
+      }
+
+      // Sort by edge score, take top 15
+      allPicks.sort(function(a,b){ return b.edgeScore - a.edgeScore; });
+      var top15 = allPicks.slice(0, 15);
+
+      // Fetch box scores for the unique games in top 15
+      setResultsProgress("Fetching box scores...");
+      var uniqueGames = {};
+      for(var p of top15) uniqueGames[p.gamePk] = true;
+      var boxScores = {};
+      var bsFetches = Object.keys(uniqueGames).map(function(gpk){
+        return getGameBoxScore(gpk).then(function(bs){ boxScores[gpk] = bs; });
+      });
+      await Promise.all(bsFetches);
+
+      // Match each pick to their actual box score line
+      for(var k=0; k<top15.length; k++){
+        var pick = top15[k];
+        var bs = boxScores[pick.gamePk];
+        pick.actualStats = null;
+        pick.fantasyScore = 0;
+        if(bs){
+          // Check both teams' batters
+          var allPlayers = Object.assign({},
+            bs.teams && bs.teams.home && bs.teams.home.players ? bs.teams.home.players : {},
+            bs.teams && bs.teams.away && bs.teams.away.players ? bs.teams.away.players : {}
+          );
+          var playerKey = "ID" + pick.batter.id;
+          if(allPlayers[playerKey] && allPlayers[playerKey].stats && allPlayers[playerKey].stats.batting){
+            pick.actualStats = allPlayers[playerKey].stats.batting;
+            pick.fantasyScore = computeFantasyScore(pick.actualStats);
+          }
+        }
+      }
+
+      // Compute summary stats
+      var totalFantasy = 0;
+      var hitCount = 0;
+      for(var m=0; m<top15.length; m++){
+        totalFantasy += top15[m].fantasyScore;
+        if(top15[m].actualStats && (parseInt(top15[m].actualStats.hits)||0) > 0) hitCount++;
+      }
+
+      setResultsData({
+        picks: top15,
+        date: dateStr,
+        avgFantasy: top15.length > 0 ? (totalFantasy / top15.length).toFixed(1) : "0",
+        totalFantasy: totalFantasy,
+        hitRate: top15.length > 0 ? ((hitCount / top15.length) * 100).toFixed(0) : "0"
+      });
+      setResultsProgress("");
+    }catch(e){
+      setResultsProgress("Error: " + e.message);
+    }
+    setResultsLoading(false);
   }
 
   async function loadMatchups(game){
@@ -1823,13 +2007,13 @@ function App(){
             {sidebarOpen?"\u2630":"\u2630"}
           </button>
           <div onClick={goHome} style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,color:C.gold,cursor:"pointer"}}>⚾ DIAMOND EDGE</div>
-          {page==="game"&&(
+          {(page==="game"||page==="results")&&(
             <button onClick={goHome} style={{padding:"4px 12px",fontSize:10,background:"transparent",color:C.muted,
               border:"1px solid "+C.border,borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",letterSpacing:1}}>
               ← HOME
             </button>
           )}
-          {page==="home"&&(
+          {(page==="home"||page==="results")&&(
             <div style={{color:C.muted,fontSize:10,letterSpacing:2,paddingTop:4}}>MLB MATCHUP INTELLIGENCE</div>
           )}
         </div>
@@ -1869,6 +2053,17 @@ function App(){
               fontFamily:"'DM Mono',monospace"}}>
             <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.gold}}>⚡ TODAY'S EDGES</div>
             <div style={{fontSize:10,color:C.muted,marginTop:2}}>League-wide scanner</div>
+          </button>
+
+          {/* Results Link */}
+          <button className="game-btn" onClick={function(){setPage("results");}}
+            style={{width:"calc(100% - 8px)",margin:"0 4px 8px",textAlign:"left",
+              background:page==="results"?"#1a2234":"transparent",
+              border:"1px solid "+(page==="results"?C.gold:"transparent"),
+              borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,
+              fontFamily:"'DM Mono',monospace"}}>
+            <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.green}}>📊 RESULTS TRACKER</div>
+            <div style={{fontSize:10,color:C.muted,marginTop:2}}>Review past performance</div>
           </button>
 
           <div style={{padding:"0 14px 10px",fontSize:10,letterSpacing:2,color:C.muted}}>GAMES</div>
@@ -2074,6 +2269,116 @@ function App(){
                     </div>
                   )}
                 </>
+              )}
+            </div>
+          )}
+
+          {/* RESULTS PAGE */}
+          {page==="results"&&(
+            <div style={{padding:20}}>
+              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3,marginBottom:20}}>
+                📊 RESULTS TRACKER
+              </div>
+
+              {/* Date Picker and Load Button */}
+              <div style={{display:"flex",gap:12,marginBottom:24,alignItems:"flex-end",flexWrap:"wrap"}}>
+                <div style={{display:"flex",flexDirection:"column"}}>
+                  <label style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:6}}>SELECT DATE</label>
+                  <input type="date" value={resultsDate} onChange={function(e){setResultsDate(e.target.value);}}
+                    style={{padding:"8px 12px",fontSize:11,background:C.card,color:C.text,border:"1px solid "+C.border,
+                      borderRadius:4,fontFamily:"'DM Mono',monospace",cursor:"pointer"}}/>
+                </div>
+                <button onClick={function(){if(resultsDate) loadResults(resultsDate);}}
+                  style={{padding:"8px 20px",fontSize:11,fontWeight:500,background:C.gold,color:"#000",border:"none",
+                    borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",letterSpacing:1,
+                    opacity:resultsLoading?0.7:1,pointerEvents:resultsLoading?"none":"auto"}}>
+                  {resultsLoading?"SCANNING...":"LOAD RESULTS"}
+                </button>
+              </div>
+
+              {/* Progress Indicator */}
+              {resultsLoading&&(
+                <div style={{textAlign:"center",padding:32,color:C.muted}}>
+                  <div style={{fontSize:28,marginBottom:12}} className="loading-pulse">⚙️</div>
+                  <div style={{fontSize:13,letterSpacing:2}}>SCANNING GAMES...</div>
+                  <div style={{fontSize:11,marginTop:8,color:C.subtext}}>{resultsProgress||"Querying box scores..."}</div>
+                  <div style={{width:200,height:3,background:C.border,borderRadius:2,margin:"12px auto 0",overflow:"hidden"}}>
+                    <div style={{height:"100%",background:C.gold,borderRadius:2,transition:"width 0.3s",width:"45%"}}/>
+                  </div>
+                </div>
+              )}
+
+              {/* Summary Stats */}
+              {!resultsLoading&&resultsData&&(
+                <>
+                  <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
+                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG FANTASY SCORE</div>
+                      <div style={{fontSize:24,fontWeight:600,color:C.gold}}>{resultsData.avgFantasy}</div>
+                    </div>
+                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>TOTAL FANTASY POINTS</div>
+                      <div style={{fontSize:24,fontWeight:600,color:C.gold}}>{resultsData.totalFantasy}</div>
+                    </div>
+                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>HIT RATE</div>
+                      <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.hitRate}%</div>
+                    </div>
+                  </div>
+
+                  {/* Results Table */}
+                  {resultsData.picks.length>0?(
+                    <div style={{overflowX:"auto",marginBottom:20}}>
+                      <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                        <thead>
+                          <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RANK</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>EDGE</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTER</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs PITCHER</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP AVG</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP OPS</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ACTUAL LINE</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>FANTASY PTS</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {resultsData.picks.map(function(pick,idx){
+                            var fantasyColor = pick.fantasyScore >= 15 ? C.green : pick.fantasyScore >= 8 ? C.gold : pick.fantasyScore < 3 ? C.red : C.text;
+                            var actualLine = pick.actualStats ? (parseInt(pick.actualStats.hits)||0)+"-"+(parseInt(pick.actualStats.atBats)||0) : "DNP";
+                            return(
+                              <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
+                                <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
+                                <td style={{padding:"10px 8px",fontWeight:600,color:edgeGrade(pick.edgeScore).color}}>{pick.edgeScore}</td>
+                                <td style={{padding:"10px 8px",color:C.text}}>{pick.batter.firstName} {pick.batter.lastName}</td>
+                                <td style={{padding:"10px 8px",color:C.muted}}>{pick.batterTeam}</td>
+                                <td style={{padding:"10px 8px",color:C.subtext}}>{pick.pitcher.lastName}</td>
+                                <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pick.gameLabel}</td>
+                                <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.avg)||0).toFixed(3)}</td>
+                                <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.ops)||0).toFixed(3)}</td>
+                                <td style={{padding:"10px 8px",textAlign:"center",color:C.text,fontWeight:500}}>{actualLine}</td>
+                                <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:fantasyColor}}>{pick.fantasyScore}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  ):(
+                    <div style={{textAlign:"center",padding:32,color:C.muted}}>
+                      <div style={{fontSize:13}}>No games found for this date</div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {!resultsLoading&&!resultsDate&&(
+                <div style={{textAlign:"center",padding:48,color:C.muted}}>
+                  <div style={{fontSize:13}}>Select a date to view results</div>
+                  <div style={{fontSize:10,marginTop:8,color:C.subtext}}>Default: yesterday's date</div>
+                </div>
               )}
             </div>
           )}
