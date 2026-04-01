@@ -666,7 +666,7 @@ async function getGameBoxScore(gamePk){
 
 async function getGamesForDate(dateStr){
   // dateStr format: "YYYY-MM-DD"
-  var data = await fetchJSON(BASE + "/schedule?sportId=1&date=" + dateStr + "&hydrate=probablePitcher(note),venue");
+  var data = await fetchJSON(BASE + "/schedule?sportId=1&date=" + dateStr + "&hydrate=probablePitcher(note),venue,team");
   var games = [];
   for(var d of (data.dates || [])){
     for(var g of (d.games || [])) games.push(g);
@@ -1733,7 +1733,10 @@ function App(){
         var awayPitcher = game.teams.away.probablePitcher;
         if(!homePitcher && !awayPitcher) continue;
 
-        setResultsProgress("Scanning game " + (gi+1) + "/" + dateGames.length + "...");
+        var awayAbbr = game.teams.away.team.abbreviation || game.teams.away.team.name || "AWAY";
+        var homeAbbr = game.teams.home.team.abbreviation || game.teams.home.team.name || "HOME";
+        var gameLabel = awayAbbr + " @ " + homeAbbr;
+        setResultsProgress("Scanning " + gameLabel + " (" + (gi+1) + "/" + dateGames.length + ")...");
 
         var rosters = await Promise.all([getRoster(homeId), getRoster(awayId)]);
         var homeRoster = rosters[0];
@@ -1751,11 +1754,11 @@ function App(){
               var es = computeEdgeScore(r[0], r[1], r[0].plateAppearances, null, null);
               allPicks.push({
                 batter: batter.person, pitcher: homePitcher,
-                batterTeam: game.teams.away.team.abbreviation,
-                pitcherTeam: game.teams.home.team.abbreviation,
+                batterTeam: awayAbbr,
+                pitcherTeam: homeAbbr,
                 edgeScore: es.score, bvpStat: r[0],
                 gamePk: game.gamePk,
-                gameLabel: game.teams.away.team.abbreviation + " @ " + game.teams.home.team.abbreviation
+                gameLabel: gameLabel
               });
             }
           }
@@ -1772,11 +1775,11 @@ function App(){
               var es2 = computeEdgeScore(r2[0], r2[1], r2[0].plateAppearances, null, null);
               allPicks.push({
                 batter: batter2.person, pitcher: awayPitcher,
-                batterTeam: game.teams.home.team.abbreviation,
-                pitcherTeam: game.teams.away.team.abbreviation,
+                batterTeam: homeAbbr,
+                pitcherTeam: awayAbbr,
                 edgeScore: es2.score, bvpStat: r2[0],
                 gamePk: game.gamePk,
-                gameLabel: game.teams.away.team.abbreviation + " @ " + game.teams.home.team.abbreviation
+                gameLabel: gameLabel
               });
             }
           }
@@ -1810,8 +1813,13 @@ function App(){
             bs.teams && bs.teams.away && bs.teams.away.players ? bs.teams.away.players : {}
           );
           var playerKey = "ID" + pick.batter.id;
-          if(allPlayers[playerKey] && allPlayers[playerKey].stats && allPlayers[playerKey].stats.batting){
-            pick.actualStats = allPlayers[playerKey].stats.batting;
+          var pData = allPlayers[playerKey];
+          if(pData && pData.stats && pData.stats.batting){
+            pick.actualStats = pData.stats.batting;
+            pick.fantasyScore = computeFantasyScore(pick.actualStats);
+          } else if(pData && pData.seasonStats && pData.seasonStats.batting){
+            // Fallback: some box score formats nest differently
+            pick.actualStats = pData.seasonStats.batting;
             pick.fantasyScore = computeFantasyScore(pick.actualStats);
           }
         }
@@ -2352,10 +2360,10 @@ function App(){
                               <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
                                 <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
                                 <td style={{padding:"10px 8px",fontWeight:600,color:edgeGrade(pick.edgeScore).color}}>{pick.edgeScore}</td>
-                                <td style={{padding:"10px 8px",color:C.text}}>{pick.batter.firstName} {pick.batter.lastName}</td>
-                                <td style={{padding:"10px 8px",color:C.muted}}>{pick.batterTeam}</td>
-                                <td style={{padding:"10px 8px",color:C.subtext}}>{pick.pitcher.lastName}</td>
-                                <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pick.gameLabel}</td>
+                                <td style={{padding:"10px 8px",color:C.text}}>{pick.batter.fullName||"Unknown"}</td>
+                                <td style={{padding:"10px 8px",color:C.muted}}>{pick.batterTeam||"—"}</td>
+                                <td style={{padding:"10px 8px",color:C.subtext}}>{pick.pitcher.fullName||pick.pitcher.lastName||"Unknown"}</td>
+                                <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pick.gameLabel||"—"}</td>
                                 <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.avg)||0).toFixed(3)}</td>
                                 <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.ops)||0).toFixed(3)}</td>
                                 <td style={{padding:"10px 8px",textAlign:"center",color:C.text,fontWeight:500}}>{actualLine}</td>
