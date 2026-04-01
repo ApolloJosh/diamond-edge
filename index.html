@@ -422,6 +422,73 @@ function whiffGrade(score){
   return {grade:"F",color:"#ef4444"};
 }
 
+/* ─── K Prop Confidence Engine ─── */
+function computeKPropConfidence(line, whiffData, seasonStat, extras){
+  if(!whiffData || !seasonStat) return null;
+  var k9 = parseFloat(seasonStat.strikeoutsPer9Inn)||0;
+  // Estimate expected innings: use last 3 avg or season inningsPerStart, fallback ~5.5
+  var expectedIP = 5.5;
+  if(extras && extras.lastThree && extras.lastThree.avgIP){
+    expectedIP = parseFloat(extras.lastThree.avgIP)||5.5;
+  } else if(seasonStat.inningsPitched && seasonStat.gamesStarted){
+    var totalIP = parseFloat(seasonStat.inningsPitched)||0;
+    var gs = parseInt(seasonStat.gamesStarted)||1;
+    expectedIP = totalIP / gs;
+  }
+  // Project Ks: k9 * (expectedIP / 9)
+  var projectedK = k9 * (expectedIP / 9);
+
+  // Whiff score modifier: score > 60 = boost, < 40 = drag
+  var whiffMod = (whiffData.score - 50) / 50; // -1 to ~+1
+  var adjustedK = projectedK * (1 + whiffMod * 0.25); // ±25% swing from whiff factors
+
+  // How far above/below the line
+  var margin = adjustedK - line;
+
+  // Convert margin to confidence (stars 1-5)
+  // margin >= 2.5 → 5 stars, margin ~1.5 → 4, margin ~0.5 → 3, margin ~-0.5 → 2, below → 1
+  var stars;
+  if(margin >= 2.0) stars = 5;
+  else if(margin >= 1.2) stars = 4.5;
+  else if(margin >= 0.7) stars = 4;
+  else if(margin >= 0.3) stars = 3.5;
+  else if(margin >= -0.2) stars = 3;
+  else if(margin >= -0.7) stars = 2.5;
+  else if(margin >= -1.2) stars = 2;
+  else if(margin >= -2.0) stars = 1.5;
+  else stars = 1;
+
+  return {
+    stars: stars,
+    projectedK: adjustedK.toFixed(1),
+    rawProjectedK: projectedK.toFixed(1),
+    expectedIP: expectedIP.toFixed(1),
+    margin: margin.toFixed(1),
+    line: line
+  };
+}
+
+function starDisplay(stars){
+  var full = Math.floor(stars);
+  var half = stars % 1 >= 0.5;
+  var empty = 5 - full - (half ? 1 : 0);
+  var result = "";
+  for(var i=0;i<full;i++) result += "★";
+  if(half) result += "½";
+  for(var i=0;i<empty;i++) result += "☆";
+  return result;
+}
+
+function starColor(stars){
+  if(stars >= 4.5) return "#22c55e";
+  if(stars >= 4) return "#4ade80";
+  if(stars >= 3.5) return "#86efac";
+  if(stars >= 3) return C.gold;
+  if(stars >= 2.5) return C.orange;
+  if(stars >= 2) return "#fca5a5";
+  return "#ef4444";
+}
+
 /* ─── API Fetchers ─── */
 async function fetchJSON(url){
   const r=await fetch(url);
@@ -660,11 +727,12 @@ async function getPitcherLastThreeStarts(pitcherId){
     var era=totalIP>0?((totalER/totalIP)*9):0;
     var whip=totalIP>0?((totalH+totalBB)/totalIP):0;
     var kPer9=totalIP>0?((totalK/totalIP)*9):0;
+    var avgIP=last3.length>0?(totalIP/last3.length):0;
     return {
       games:last3,
       agg:{era:era.toFixed(2), whip:whip.toFixed(2), kPer9:kPer9.toFixed(1),
            ip:totalIP.toFixed(1), er:totalER, h:totalH, bb:totalBB, k:totalK, hr:totalHR,
-           starts:last3.length}
+           starts:last3.length, avgIP:avgIP.toFixed(1)}
     };
   }catch(e){return {games:[], agg:null};}
 }
@@ -753,6 +821,7 @@ function SplitDetailRow({label, stat}){
 function WhiffCard({pitcher, matchups, seasonStat, side, extras, whiffData}){
   if(!pitcher||!whiffData) return null;
   const [expanded, setExpanded] = useState(false);
+  const [kLine, setKLine] = useState(0);
   const wg = whiffGrade(whiffData.score);
   const label = side==="home" ? "HOME SP" : "AWAY SP";
   var l3 = extras ? extras.lastThree : null;
@@ -782,6 +851,41 @@ function WhiffCard({pitcher, matchups, seasonStat, side, extras, whiffData}){
         <StatPill label="Opp Team K%" value={(whiffData.oppTeamKRate * 100).toFixed(1)+"%"} color={whiffData.oppTeamKRate >= 0.240 ? C.green : C.text}/>
         <StatPill label="BvP K Rate" value={(whiffData.bvpKRate * 100).toFixed(1)+"%"} color={whiffData.bvpKRate >= 0.22 ? C.green : C.text}/>
         {l3 && <StatPill label={"Last 3 K/9"} value={l3.kPer9} color={parseFloat(l3.kPer9)>=9?C.green:C.text}/>}
+      </div>
+
+      {/* K Prop Analyzer */}
+      <div style={{background:"#0d1220",borderRadius:8,padding:12,marginBottom:12}}>
+        <div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
+          <div style={{fontSize:9,letterSpacing:2,color:C.gold}}>🎯 K PROP ANALYZER</div>
+          <select value={kLine} onChange={function(e){setKLine(parseFloat(e.target.value));}}
+            style={{background:C.card,color:C.text,border:"1px solid "+C.border,borderRadius:4,
+              padding:"4px 8px",fontSize:11,fontFamily:"'DM Mono',monospace",cursor:"pointer"}}>
+            <option value={0}>Select Line</option>
+            {[2.5,3.5,4.5,5.5,6.5,7.5,8.5].map(function(v){return(
+              <option key={v} value={v}>{v} Ks</option>
+            );})}
+          </select>
+          {kLine > 0 && (function(){
+            var conf = computeKPropConfidence(kLine, whiffData, seasonStat, extras);
+            if(!conf) return <span style={{color:C.muted,fontSize:10}}>Insufficient data</span>;
+            return(
+              <div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
+                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:20,letterSpacing:2,color:starColor(conf.stars)}}>
+                  {starDisplay(conf.stars)}
+                </div>
+                <div style={{fontSize:10,color:C.subtext}}>
+                  Proj: <span style={{color:C.text,fontWeight:600}}>{conf.projectedK} Ks</span>
+                  <span style={{color:C.muted}}> · </span>
+                  Exp IP: <span style={{color:C.text}}>{conf.expectedIP}</span>
+                  <span style={{color:C.muted}}> · </span>
+                  Margin: <span style={{color:parseFloat(conf.margin)>0?C.green:C.red,fontWeight:600}}>
+                    {parseFloat(conf.margin)>0?"+":""}{conf.margin}
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
       </div>
 
       {/* Score Factor Breakdown */}
