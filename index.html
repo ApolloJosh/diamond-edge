@@ -1574,6 +1574,7 @@ function App(){
   const [resultsData, setResultsData] = _s(null);
   const [resultsLoading, setResultsLoading] = _s(false);
   const [resultsProgress, setResultsProgress] = _s("");
+  const [resultsTab, setResultsTab] = _s("batters"); // "batters" | "pitchers"
 
   // League-wide scan state
   const [allEdges,setAllEdges]=_s([]);
@@ -1786,14 +1787,68 @@ function App(){
         }
       }
 
+      // === PITCHER SCANNING ===
+      var allPitcherPicks = [];
+      for(var pi=0; pi<dateGames.length; pi++){
+        var pGame = dateGames[pi];
+        var pHomeId = pGame.teams.home.team.id;
+        var pAwayId = pGame.teams.away.team.id;
+        var pHomePitcher = pGame.teams.home.probablePitcher;
+        var pAwayPitcher = pGame.teams.away.probablePitcher;
+        var pAwayAbbr = pGame.teams.away.team.abbreviation || pGame.teams.away.team.name || "AWAY";
+        var pHomeAbbr = pGame.teams.home.team.abbreviation || pGame.teams.home.team.name || "HOME";
+        var pGameLabel = pAwayAbbr + " @ " + pHomeAbbr;
+
+        setResultsProgress("Scanning pitchers " + (pi+1) + "/" + dateGames.length + "...");
+
+        // Fetch team K rates
+        var pTkRates = {};
+        await Promise.all([
+          getTeamSeasonStats(pHomeId).then(function(s){if(s) pTkRates[pHomeId]=s;}),
+          getTeamSeasonStats(pAwayId).then(function(s){if(s) pTkRates[pAwayId]=s;})
+        ]);
+
+        if(pHomePitcher){
+          var hpSeason = await getSeasonStats(pHomePitcher.id, "pitching");
+          var oppKRate = pTkRates[pAwayId] ? pTkRates[pAwayId].kRate : 0.200;
+          var hpWhiff = computeWhiffScore(pHomePitcher, hpSeason, null, oppKRate, []);
+          var hpK9 = hpSeason ? parseFloat(hpSeason.strikeoutsPer9Inn)||0 : 0;
+          // Projected Ks: use K/9 * 5.5 IP estimate (simple early version)
+          var hpProjK = (hpK9 * 5.5 / 9);
+          allPitcherPicks.push({
+            pitcher: pHomePitcher, team: pHomeAbbr, oppTeam: pAwayAbbr,
+            side: "home", whiffScore: hpWhiff.score, seasonStat: hpSeason,
+            projectedK: hpProjK, oppKRate: oppKRate,
+            gamePk: pGame.gamePk, gameLabel: pGameLabel
+          });
+        }
+        if(pAwayPitcher){
+          var apSeason = await getSeasonStats(pAwayPitcher.id, "pitching");
+          var oppKRate2 = pTkRates[pHomeId] ? pTkRates[pHomeId].kRate : 0.200;
+          var apWhiff = computeWhiffScore(pAwayPitcher, apSeason, null, oppKRate2, []);
+          var apK9 = apSeason ? parseFloat(apSeason.strikeoutsPer9Inn)||0 : 0;
+          var apProjK = (apK9 * 5.5 / 9);
+          allPitcherPicks.push({
+            pitcher: pAwayPitcher, team: pAwayAbbr, oppTeam: pHomeAbbr,
+            side: "away", whiffScore: apWhiff.score, seasonStat: apSeason,
+            projectedK: apProjK, oppKRate: oppKRate2,
+            gamePk: pGame.gamePk, gameLabel: pGameLabel
+          });
+        }
+      }
+
+      // Sort pitchers by whiff score
+      allPitcherPicks.sort(function(a,b){ return b.whiffScore - a.whiffScore; });
+
       // Sort by edge score, take top 15
       allPicks.sort(function(a,b){ return b.edgeScore - a.edgeScore; });
       var top15 = allPicks.slice(0, 15);
 
-      // Fetch box scores for the unique games in top 15
+      // Fetch box scores for the unique games in top 15 and pitcher picks
       setResultsProgress("Fetching box scores...");
       var uniqueGames = {};
       for(var p of top15) uniqueGames[p.gamePk] = true;
+      for(var pp of allPitcherPicks) uniqueGames[pp.gamePk] = true;
       var boxScores = {};
       var bsFetches = Object.keys(uniqueGames).map(function(gpk){
         return getGameBoxScore(gpk).then(function(bs){ boxScores[gpk] = bs; });
@@ -1825,6 +1880,47 @@ function App(){
         }
       }
 
+      // Match pitcher picks to actual box score
+      for(var pk=0; pk<allPitcherPicks.length; pk++){
+        var pPick = allPitcherPicks[pk];
+        var pBs = boxScores[pPick.gamePk];
+        pPick.actualStats = null;
+        pPick.actualK = 0;
+        pPick.actualIP = "0";
+        pPick.actualLine = "";
+        if(pBs){
+          var pAllPlayers = Object.assign({},
+            pBs.teams && pBs.teams.home && pBs.teams.home.players ? pBs.teams.home.players : {},
+            pBs.teams && pBs.teams.away && pBs.teams.away.players ? pBs.teams.away.players : {}
+          );
+          var pPlayerKey = "ID" + pPick.pitcher.id;
+          var ppData = pAllPlayers[pPlayerKey];
+          if(ppData && ppData.stats && ppData.stats.pitching){
+            var ps = ppData.stats.pitching;
+            pPick.actualStats = ps;
+            pPick.actualK = parseInt(ps.strikeOuts)||0;
+            pPick.actualIP = ps.inningsPitched||"0";
+            pPick.actualER = parseInt(ps.earnedRuns)||0;
+            pPick.actualH = parseInt(ps.hits)||0;
+            pPick.actualBB = parseInt(ps.baseOnBalls)||0;
+            pPick.actualLine = pPick.actualIP + " IP, " + pPick.actualK + " K, " + (parseInt(ps.earnedRuns)||0) + " ER, " + (parseInt(ps.hits)||0) + " H";
+          }
+        }
+        pPick.hitOver = pPick.actualStats ? (pPick.actualK > pPick.projectedK) : false;
+      }
+
+      // Pitcher summary stats
+      var pitcherOverCount = 0;
+      var totalPitcherK = 0;
+      var pitchersWithStats = 0;
+      for(var pm=0; pm<allPitcherPicks.length; pm++){
+        if(allPitcherPicks[pm].actualStats){
+          pitchersWithStats++;
+          totalPitcherK += allPitcherPicks[pm].actualK;
+          if(allPitcherPicks[pm].hitOver) pitcherOverCount++;
+        }
+      }
+
       // Compute summary stats
       var totalFantasy = 0;
       var hitCount = 0;
@@ -1835,10 +1931,16 @@ function App(){
 
       setResultsData({
         picks: top15,
+        pitcherPicks: allPitcherPicks,
         date: dateStr,
         avgFantasy: top15.length > 0 ? (totalFantasy / top15.length).toFixed(1) : "0",
         totalFantasy: totalFantasy,
-        hitRate: top15.length > 0 ? ((hitCount / top15.length) * 100).toFixed(0) : "0"
+        hitRate: top15.length > 0 ? ((hitCount / top15.length) * 100).toFixed(0) : "0",
+        pitcherOverRate: pitchersWithStats > 0 ? ((pitcherOverCount / pitchersWithStats) * 100).toFixed(0) : "0",
+        avgPitcherK: pitchersWithStats > 0 ? (totalPitcherK / pitchersWithStats).toFixed(1) : "0",
+        totalPitcherK: totalPitcherK,
+        pitchersWithStats: pitchersWithStats,
+        pitcherOverCount: pitcherOverCount
       });
       setResultsProgress("");
     }catch(e){
@@ -2284,8 +2386,26 @@ function App(){
           {/* RESULTS PAGE */}
           {page==="results"&&(
             <div style={{padding:20}}>
-              <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3,marginBottom:20}}>
-                📊 YESTERDAY'S RESULTS
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
+                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3}}>
+                  📊 YESTERDAY'S RESULTS
+                </div>
+                <div style={{display:"flex",background:C.card,borderRadius:8,border:"1px solid "+C.border,overflow:"hidden"}}>
+                  <button onClick={function(){setResultsTab("batters");}}
+                    style={{padding:"10px 28px",fontSize:13,fontWeight:600,letterSpacing:2,cursor:"pointer",
+                      fontFamily:"'Bebas Neue',sans-serif",border:"none",
+                      background:resultsTab==="batters"?C.gold:"transparent",
+                      color:resultsTab==="batters"?"#000":C.muted}}>
+                    BATTERS
+                  </button>
+                  <button onClick={function(){setResultsTab("pitchers");}}
+                    style={{padding:"10px 28px",fontSize:13,fontWeight:600,letterSpacing:2,cursor:"pointer",
+                      fontFamily:"'Bebas Neue',sans-serif",border:"none",
+                      background:resultsTab==="pitchers"?C.purple:"transparent",
+                      color:resultsTab==="pitchers"?"#000":C.muted}}>
+                    PITCHERS
+                  </button>
+                </div>
               </div>
 
               {/* Date Picker and Load Button */}
@@ -2319,65 +2439,152 @@ function App(){
               {/* Summary Stats */}
               {!resultsLoading&&resultsData&&(
                 <>
-                  <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
-                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG FANTASY SCORE</div>
-                      <div style={{fontSize:24,fontWeight:600,color:C.gold}}>{resultsData.avgFantasy}</div>
+                  {resultsTab==="batters"&&(
+                    <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG FANTASY SCORE</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.gold}}>{resultsData.avgFantasy}</div>
+                      </div>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>TOTAL FANTASY POINTS</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.gold}}>{resultsData.totalFantasy}</div>
+                      </div>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>HIT RATE</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.hitRate}%</div>
+                      </div>
                     </div>
-                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>TOTAL FANTASY POINTS</div>
-                      <div style={{fontSize:24,fontWeight:600,color:C.gold}}>{resultsData.totalFantasy}</div>
+                  )}
+                  {resultsTab==="pitchers"&&(
+                    <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>PITCHERS TRACKED</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.purple}}>{resultsData.pitcherPicks?resultsData.pitcherPicks.length:0}</div>
+                      </div>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG Ks</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.purple}}>{resultsData.avgPitcherK||"0"}</div>
+                      </div>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>HIT OVER PROJ K</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.pitcherOverRate||"0"}%</div>
+                      </div>
                     </div>
-                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>HIT RATE</div>
-                      <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.hitRate}%</div>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Results Table */}
-                  {resultsData.picks.length>0?(
-                    <div style={{overflowX:"auto",marginBottom:20}}>
-                      <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
-                        <thead>
-                          <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
-                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RANK</th>
-                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>EDGE</th>
-                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTER</th>
-                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
-                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs PITCHER</th>
-                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
-                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP AVG</th>
-                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP OPS</th>
-                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ACTUAL LINE</th>
-                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>FANTASY PTS</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {resultsData.picks.map(function(pick,idx){
-                            var fantasyColor = pick.fantasyScore >= 15 ? C.green : pick.fantasyScore >= 8 ? C.gold : pick.fantasyScore < 3 ? C.red : C.text;
-                            var actualLine = pick.actualStats ? (parseInt(pick.actualStats.hits)||0)+"-"+(parseInt(pick.actualStats.atBats)||0) : "DNP";
-                            return(
-                              <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
-                                <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
-                                <td style={{padding:"10px 8px",fontWeight:600,color:edgeGrade(pick.edgeScore).color}}>{pick.edgeScore}</td>
-                                <td style={{padding:"10px 8px",color:C.text}}>{pick.batter.fullName||"Unknown"}</td>
-                                <td style={{padding:"10px 8px",color:C.muted}}>{pick.batterTeam||"—"}</td>
-                                <td style={{padding:"10px 8px",color:C.subtext}}>{pick.pitcher.fullName||pick.pitcher.lastName||"Unknown"}</td>
-                                <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pick.gameLabel||"—"}</td>
-                                <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.avg)||0).toFixed(3)}</td>
-                                <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.ops)||0).toFixed(3)}</td>
-                                <td style={{padding:"10px 8px",textAlign:"center",color:C.text,fontWeight:500}}>{actualLine}</td>
-                                <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:fantasyColor}}>{pick.fantasyScore}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  ):(
-                    <div style={{textAlign:"center",padding:32,color:C.muted}}>
-                      <div style={{fontSize:13}}>No games found for this date</div>
-                    </div>
+                  {resultsTab==="batters"&&(
+                    resultsData.picks.length>0?(
+                      <div style={{overflowX:"auto",marginBottom:20}}>
+                        <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                          <thead>
+                            <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RANK</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>EDGE</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTER</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs PITCHER</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP AVG</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP OPS</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ACTUAL LINE</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>FANTASY PTS</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {resultsData.picks.map(function(pick,idx){
+                              var fantasyColor = pick.fantasyScore >= 15 ? C.green : pick.fantasyScore >= 8 ? C.gold : pick.fantasyScore < 3 ? C.red : C.text;
+                              var actualLine = pick.actualStats ? (parseInt(pick.actualStats.hits)||0)+"-"+(parseInt(pick.actualStats.atBats)||0) : "DNP";
+                              return(
+                                <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
+                                  <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
+                                  <td style={{padding:"10px 8px",fontWeight:600,color:edgeGrade(pick.edgeScore).color}}>{pick.edgeScore}</td>
+                                  <td style={{padding:"10px 8px",color:C.text}}>{pick.batter.fullName||"Unknown"}</td>
+                                  <td style={{padding:"10px 8px",color:C.muted}}>{pick.batterTeam||"—"}</td>
+                                  <td style={{padding:"10px 8px",color:C.subtext}}>{pick.pitcher.fullName||pick.pitcher.lastName||"Unknown"}</td>
+                                  <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pick.gameLabel||"—"}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.avg)||0).toFixed(3)}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{(parseFloat(pick.bvpStat.ops)||0).toFixed(3)}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.text,fontWeight:500}}>{actualLine}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:fantasyColor}}>{pick.fantasyScore}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    ):(
+                      <div style={{textAlign:"center",padding:32,color:C.muted}}>
+                        <div style={{fontSize:13}}>No games found for this date</div>
+                      </div>
+                    )
+                  )}
+
+                  {resultsTab==="pitchers"&&resultsData.pitcherPicks&&(
+                    resultsData.pitcherPicks.length>0?(
+                      <div style={{overflowX:"auto",marginBottom:20}}>
+                        <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                          <thead>
+                            <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RANK</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>WHIFF</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>K/9</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PROJ K</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ACTUAL Ks</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>IP</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ER</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>H</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BB</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>OVER?</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {resultsData.pitcherPicks.map(function(pp,idx){
+                              var wg = whiffGrade(pp.whiffScore);
+                              var k9 = pp.seasonStat ? parseFloat(pp.seasonStat.strikeoutsPer9Inn)||0 : 0;
+                              var overColor = pp.hitOver ? C.green : (pp.actualStats ? C.red : C.muted);
+                              var overText = pp.actualStats ? (pp.hitOver ? "YES" : "NO") : "N/A";
+                              return(
+                                <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
+                                  <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
+                                  <td style={{padding:"10px 8px"}}>
+                                    <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
+                                      background:wg.color+"18",border:"1px solid "+wg.color+"40",color:wg.color}}>
+                                      {wg.grade} <span style={{fontSize:9,color:C.muted}}>{pp.whiffScore}</span>
+                                    </span>
+                                  </td>
+                                  <td style={{padding:"10px 8px",color:C.text}}>{pp.pitcher.fullName||"Unknown"}</td>
+                                  <td style={{padding:"10px 8px",color:C.muted}}>{pp.team||"—"}</td>
+                                  <td style={{padding:"10px 8px",color:C.subtext}}>{pp.oppTeam||"—"}</td>
+                                  <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pp.gameLabel||"—"}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:k9>=9?C.green:C.text}}>{k9.toFixed(1)}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.gold,fontWeight:600}}>{pp.projectedK.toFixed(1)}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,
+                                    color:pp.actualStats?(pp.actualK>=8?C.green:pp.actualK>=5?C.gold:C.text):C.muted}}>
+                                    {pp.actualStats?pp.actualK:"DNP"}
+                                  </td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{pp.actualStats?pp.actualIP:"—"}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:pp.actualStats&&pp.actualER<=2?C.green:pp.actualStats&&pp.actualER>=5?C.red:C.text}}>
+                                    {pp.actualStats?pp.actualER:"—"}
+                                  </td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{pp.actualStats?pp.actualH:"—"}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{pp.actualStats?(parseInt(pp.actualStats.baseOnBalls)||0):"—"}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:overColor}}>{overText}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    ):(
+                      <div style={{textAlign:"center",padding:32,color:C.muted}}>
+                        <div style={{fontSize:13}}>No pitcher data for this date</div>
+                      </div>
+                    )
                   )}
                 </>
               )}
