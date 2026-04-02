@@ -1564,7 +1564,8 @@ function App(){
   const [viewMode,setViewMode]=_s("batter");
   const [showSeason,setShowSeason]=_s(true);
   const [showPark,setShowPark]=_s(true);
-  const [page,setPage]=_s("home"); // "home" | "game" | "results"
+  const [page,setPage]=_s("home"); // "home" | "game" | "results" | "season"
+  const [seasonHistory, setSeasonHistory] = _s([]); // [{date, batterHitRate, pitcherOverRate}]
   const [sidebarOpen,setSidebarOpen]=_s(true);
 
   // Results page state
@@ -1942,6 +1943,24 @@ function App(){
         pitchersWithStats: pitchersWithStats,
         pitcherOverCount: pitcherOverCount
       });
+
+      // Auto-save to season history
+      var newEntry = {
+        date: dateStr,
+        batterHitRate: top15.length > 0 ? parseFloat(((hitCount / top15.length) * 100).toFixed(1)) : 0,
+        pitcherOverRate: pitchersWithStats > 0 ? parseFloat(((pitcherOverCount / pitchersWithStats) * 100).toFixed(1)) : 0,
+        batterCount: top15.length,
+        pitcherCount: pitchersWithStats
+      };
+      setSeasonHistory(function(prev){
+        // Replace if date exists, otherwise append
+        var filtered = prev.filter(function(e){ return e.date !== dateStr; });
+        filtered.push(newEntry);
+        // Sort by date
+        filtered.sort(function(a,b){ return a.date.localeCompare(b.date); });
+        return filtered;
+      });
+
       setResultsProgress("");
     }catch(e){
       setResultsProgress("Error: " + e.message);
@@ -2117,13 +2136,13 @@ function App(){
             {sidebarOpen?"\u2630":"\u2630"}
           </button>
           <div onClick={goHome} style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,color:C.gold,cursor:"pointer"}}>⚾ DIAMOND EDGE</div>
-          {(page==="game"||page==="results")&&(
+          {(page==="game"||page==="results"||page==="season")&&(
             <button onClick={goHome} style={{padding:"4px 12px",fontSize:10,background:"transparent",color:C.muted,
               border:"1px solid "+C.border,borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",letterSpacing:1}}>
               ← HOME
             </button>
           )}
-          {(page==="home"||page==="results")&&(
+          {(page==="home"||page==="results"||page==="season")&&(
             <div style={{color:C.muted,fontSize:10,letterSpacing:2,paddingTop:4}}>MLB MATCHUP INTELLIGENCE</div>
           )}
         </div>
@@ -2174,6 +2193,16 @@ function App(){
               fontFamily:"'DM Mono',monospace"}}>
             <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.green}}>📊 YESTERDAY'S RESULTS</div>
             <div style={{fontSize:10,color:C.muted,marginTop:2}}>Track model performance</div>
+          </button>
+
+          <button className="game-btn" onClick={function(){setPage("season");}}
+            style={{display:"block",width:"calc(100% - 8px)",margin:"0 4px 8px",textAlign:"left",
+              background:page==="season"?"#1a2234":"transparent",
+              border:"1px solid "+(page==="season"?C.gold:"transparent"),
+              borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,
+              fontFamily:"'DM Mono',monospace"}}>
+            <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.purple}}>📈 SEASON RESULTS</div>
+            <div style={{fontSize:10,color:C.muted,marginTop:2}}>Hit rate trends</div>
           </button>
 
           <div style={{padding:"0 14px 10px",fontSize:10,letterSpacing:2,color:C.muted}}>GAMES</div>
@@ -2593,6 +2622,158 @@ function App(){
                 <div style={{textAlign:"center",padding:48,color:C.muted}}>
                   <div style={{fontSize:13}}>Select a date to view results</div>
                   <div style={{fontSize:10,marginTop:8,color:C.subtext}}>Default: yesterday's date</div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {page==="season"&&(
+            <div style={{padding:"32px 24px",maxWidth:900,margin:"0 auto"}}>
+              <div style={{marginBottom:24,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3}}>
+                  📈 SEASON RESULTS
+                </div>
+                <div style={{fontSize:10,color:C.muted}}>
+                  {seasonHistory.length} day{seasonHistory.length!==1?"s":""} tracked
+                </div>
+              </div>
+
+              {seasonHistory.length<2?(
+                <div style={{textAlign:"center",padding:48,color:C.muted}}>
+                  <div style={{fontSize:40,marginBottom:16}}>📈</div>
+                  <div style={{fontSize:14,marginBottom:8}}>Not enough data yet</div>
+                  <div style={{fontSize:11,color:C.subtext,maxWidth:400,margin:"0 auto",lineHeight:1.6}}>
+                    Load results from the "Yesterday's Results" tab for at least 2 different dates to start seeing trends. Each time you load a date, it's automatically saved here.
+                  </div>
+                </div>
+              ):(
+                <div>
+                  {/* Legend */}
+                  <div style={{display:"flex",gap:24,marginBottom:20,justifyContent:"center"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{width:24,height:3,background:C.gold,borderRadius:2}}></div>
+                      <span style={{fontSize:11,color:C.muted}}>Batter Hit Rate %</span>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{width:24,height:3,background:C.purple,borderRadius:2}}></div>
+                      <span style={{fontSize:11,color:C.muted}}>Pitcher K Over Proj %</span>
+                    </div>
+                  </div>
+
+                  {/* SVG Chart */}
+                  {(function(){
+                    var W=820, H=340, padL=50, padR=20, padT=20, padB=50;
+                    var chartW=W-padL-padR, chartH=H-padT-padB;
+                    var data=seasonHistory;
+                    var maxVal=0;
+                    for(var i=0;i<data.length;i++){
+                      if(data[i].batterHitRate>maxVal) maxVal=data[i].batterHitRate;
+                      if(data[i].pitcherOverRate>maxVal) maxVal=data[i].pitcherOverRate;
+                    }
+                    maxVal=Math.max(maxVal,50); // minimum 50% scale
+                    maxVal=Math.ceil(maxVal/10)*10; // round up to nearest 10
+                    var xStep=data.length>1?chartW/(data.length-1):chartW;
+                    var yScale=function(v){return padT+chartH-(v/maxVal)*chartH;};
+
+                    // Build line paths
+                    var batterPath="";
+                    var pitcherPath="";
+                    for(var j=0;j<data.length;j++){
+                      var x=padL+(data.length>1?j*xStep:chartW/2);
+                      var yB=yScale(data[j].batterHitRate);
+                      var yP=yScale(data[j].pitcherOverRate);
+                      batterPath+=(j===0?"M":"L")+x.toFixed(1)+","+yB.toFixed(1);
+                      pitcherPath+=(j===0?"M":"L")+x.toFixed(1)+","+yP.toFixed(1);
+                    }
+
+                    // Grid lines
+                    var gridLines=[];
+                    var gridCount=5;
+                    for(var g=0;g<=gridCount;g++){
+                      var gy=padT+chartH*(g/gridCount);
+                      var gVal=Math.round(maxVal*(1-g/gridCount));
+                      gridLines.push({y:gy,val:gVal});
+                    }
+
+                    return(
+                      <svg viewBox={"0 0 "+W+" "+H} style={{width:"100%",maxWidth:W,background:C.card,borderRadius:8,border:"1px solid "+C.border}}>
+                        {/* Grid */}
+                        {gridLines.map(function(gl,idx){
+                          return React.createElement("g",{key:"grid-"+idx},
+                            React.createElement("line",{x1:padL,y1:gl.y,x2:W-padR,y2:gl.y,stroke:C.border,strokeWidth:1}),
+                            React.createElement("text",{x:padL-8,y:gl.y+4,fill:C.muted,fontSize:10,textAnchor:"end",fontFamily:"'DM Mono',monospace"},gl.val+"%")
+                          );
+                        })}
+                        {/* Batter line */}
+                        <path d={batterPath} fill="none" stroke={C.gold} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"/>
+                        {/* Pitcher line */}
+                        <path d={pitcherPath} fill="none" stroke={C.purple} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"/>
+                        {/* Data points + labels */}
+                        {data.map(function(d,idx){
+                          var x=padL+(data.length>1?idx*xStep:chartW/2);
+                          var yB=yScale(d.batterHitRate);
+                          var yP=yScale(d.pitcherOverRate);
+                          var labelDate=d.date.slice(5); // MM-DD
+                          return React.createElement("g",{key:"pt-"+idx},
+                            React.createElement("circle",{cx:x,cy:yB,r:4,fill:C.gold,stroke:"#0d1220",strokeWidth:2}),
+                            React.createElement("circle",{cx:x,cy:yP,r:4,fill:C.purple,stroke:"#0d1220",strokeWidth:2}),
+                            React.createElement("text",{x:x,y:H-padB+16,fill:C.muted,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace",
+                              transform:data.length>10?"rotate(-45,"+x+","+(H-padB+16)+")":""},labelDate),
+                            React.createElement("text",{x:x,y:yB-10,fill:C.gold,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},d.batterHitRate.toFixed(0)+"%"),
+                            React.createElement("text",{x:x,y:yP-10,fill:C.purple,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},d.pitcherOverRate.toFixed(0)+"%")
+                          );
+                        })}
+                      </svg>
+                    );
+                  })()}
+
+                  {/* Summary Stats */}
+                  <div style={{display:"flex",gap:16,marginTop:20,flexWrap:"wrap"}}>
+                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG BATTER HIT RATE</div>
+                      <div style={{fontSize:24,fontWeight:600,color:C.gold}}>
+                        {(seasonHistory.reduce(function(s,d){return s+d.batterHitRate;},0)/seasonHistory.length).toFixed(1)}%
+                      </div>
+                    </div>
+                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG PITCHER K OVER %</div>
+                      <div style={{fontSize:24,fontWeight:600,color:C.purple}}>
+                        {(seasonHistory.reduce(function(s,d){return s+d.pitcherOverRate;},0)/seasonHistory.length).toFixed(1)}%
+                      </div>
+                    </div>
+                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>DAYS TRACKED</div>
+                      <div style={{fontSize:24,fontWeight:600,color:C.text}}>{seasonHistory.length}</div>
+                    </div>
+                  </div>
+
+                  {/* Daily breakdown table */}
+                  <div style={{marginTop:20,overflowX:"auto"}}>
+                    <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                      <thead>
+                        <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                          <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>DATE</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:500,letterSpacing:1}}>BATTER HIT %</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>PITCHER K OVER %</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTERS</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHERS</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {seasonHistory.slice().reverse().map(function(d,idx){
+                          return(
+                            <tr key={d.date} style={{borderBottom:"1px solid "+C.border}}>
+                              <td style={{padding:"8px",color:C.text}}>{d.date}</td>
+                              <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:d.batterHitRate>=60?C.green:d.batterHitRate>=40?C.gold:C.red}}>{d.batterHitRate.toFixed(1)}%</td>
+                              <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:d.pitcherOverRate>=60?C.green:d.pitcherOverRate>=40?C.purple:C.red}}>{d.pitcherOverRate.toFixed(1)}%</td>
+                              <td style={{padding:"8px",textAlign:"center",color:C.muted}}>{d.batterCount}</td>
+                              <td style={{padding:"8px",textAlign:"center",color:C.muted}}>{d.pitcherCount}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>
