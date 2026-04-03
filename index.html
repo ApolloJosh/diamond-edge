@@ -453,6 +453,9 @@ function computeFantasyScore(boxStats){
   return score;
 }
 
+// Floor to nearest 0.5 (e.g. 6.7 → 6.5, 5.3 → 5.0)
+function floorHalf(n){ return Math.floor(n * 2) / 2; }
+
 /* ─── K Prop Confidence Engine ─── */
 function computeKPropConfidence(line, whiffData, seasonStat, extras){
   if(!whiffData) return null;
@@ -502,8 +505,8 @@ function computeKPropConfidence(line, whiffData, seasonStat, extras){
 
   return {
     stars: stars,
-    projectedK: adjustedK.toFixed(1),
-    rawProjectedK: projectedK.toFixed(1),
+    projectedK: floorHalf(adjustedK),
+    rawProjectedK: floorHalf(projectedK),
     expectedIP: expectedIP.toFixed(1),
     margin: margin.toFixed(1),
     line: line
@@ -1819,7 +1822,7 @@ function App(){
           var hpWhiff = computeWhiffScore(pHomePitcher, hpSeason, null, oppKRate, []);
           var hpK9 = hpSeason ? parseFloat(hpSeason.strikeoutsPer9Inn)||0 : 0;
           // Projected Ks: K/9 * estimated IP / 9, with 0.88 regression deflator
-          var hpProjK = (hpK9 * 5.5 / 9) * 0.88;
+          var hpProjK = floorHalf((hpK9 * 5.5 / 9) * 0.88);
           allPitcherPicks.push({
             pitcher: pHomePitcher, team: pHomeAbbr, oppTeam: pAwayAbbr,
             side: "home", whiffScore: hpWhiff.score, seasonStat: hpSeason,
@@ -1832,7 +1835,7 @@ function App(){
           var oppKRate2 = pTkRates[pHomeId] ? pTkRates[pHomeId].kRate : 0.200;
           var apWhiff = computeWhiffScore(pAwayPitcher, apSeason, null, oppKRate2, []);
           var apK9 = apSeason ? parseFloat(apSeason.strikeoutsPer9Inn)||0 : 0;
-          var apProjK = (apK9 * 5.5 / 9) * 0.88;
+          var apProjK = floorHalf((apK9 * 5.5 / 9) * 0.88);
           allPitcherPicks.push({
             pitcher: pAwayPitcher, team: pAwayAbbr, oppTeam: pHomeAbbr,
             side: "away", whiffScore: apWhiff.score, seasonStat: apSeason,
@@ -2595,7 +2598,7 @@ function App(){
                                   <td style={{padding:"10px 8px",color:C.subtext}}>{pp.oppTeam||"—"}</td>
                                   <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pp.gameLabel||"—"}</td>
                                   <td style={{padding:"10px 8px",textAlign:"center",color:k9>=9?C.green:C.text}}>{k9.toFixed(1)}</td>
-                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.gold,fontWeight:600}}>{pp.projectedK.toFixed(1)}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:C.gold,fontWeight:600}}>{pp.projectedK % 1 === 0 ? pp.projectedK.toFixed(1) : pp.projectedK}</td>
                                   <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,
                                     color:pp.actualStats?(pp.actualK>=8?C.green:pp.actualK>=5?C.gold:C.text):C.muted}}>
                                     {pp.actualStats?pp.actualK:"DNP"}
