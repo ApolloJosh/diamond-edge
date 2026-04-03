@@ -473,12 +473,16 @@ function computeKPropConfidence(line, whiffData, seasonStat, extras){
     expectedIP = totalIP / gs;
   }
   if(k9 === 0) return null;
-  // Project Ks: k9 * (expectedIP / 9)
-  var projectedK = k9 * (expectedIP / 9);
+  // Project Ks: k9 * (expectedIP / 9) with regression adjustment
+  // K/9 overstates actual Ks because pitcher efficiency drops later in outings
+  // and early hooks / pitch counts limit deep-game Ks. Apply 0.88 deflator.
+  var rawProjectedK = k9 * (expectedIP / 9);
+  var projectedK = rawProjectedK * 0.88;
 
   // Whiff score modifier: score > 60 = boost, < 40 = drag
+  // Reduced swing to ±15% to prevent over-inflation on high-whiff arms
   var whiffMod = (whiffData.score - 50) / 50; // -1 to ~+1
-  var adjustedK = projectedK * (1 + whiffMod * 0.25); // ±25% swing from whiff factors
+  var adjustedK = projectedK * (1 + whiffMod * 0.15);
 
   // How far above/below the line
   var margin = adjustedK - line;
@@ -1814,8 +1818,8 @@ function App(){
           var oppKRate = pTkRates[pAwayId] ? pTkRates[pAwayId].kRate : 0.200;
           var hpWhiff = computeWhiffScore(pHomePitcher, hpSeason, null, oppKRate, []);
           var hpK9 = hpSeason ? parseFloat(hpSeason.strikeoutsPer9Inn)||0 : 0;
-          // Projected Ks: use K/9 * 5.5 IP estimate (simple early version)
-          var hpProjK = (hpK9 * 5.5 / 9);
+          // Projected Ks: K/9 * estimated IP / 9, with 0.88 regression deflator
+          var hpProjK = (hpK9 * 5.5 / 9) * 0.88;
           allPitcherPicks.push({
             pitcher: pHomePitcher, team: pHomeAbbr, oppTeam: pAwayAbbr,
             side: "home", whiffScore: hpWhiff.score, seasonStat: hpSeason,
@@ -1828,7 +1832,7 @@ function App(){
           var oppKRate2 = pTkRates[pHomeId] ? pTkRates[pHomeId].kRate : 0.200;
           var apWhiff = computeWhiffScore(pAwayPitcher, apSeason, null, oppKRate2, []);
           var apK9 = apSeason ? parseFloat(apSeason.strikeoutsPer9Inn)||0 : 0;
-          var apProjK = (apK9 * 5.5 / 9);
+          var apProjK = (apK9 * 5.5 / 9) * 0.88;
           allPitcherPicks.push({
             pitcher: pAwayPitcher, team: pAwayAbbr, oppTeam: pHomeAbbr,
             side: "away", whiffScore: apWhiff.score, seasonStat: apSeason,
