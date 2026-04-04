@@ -1572,7 +1572,13 @@ function App(){
   const [showSeason,setShowSeason]=_s(true);
   const [showPark,setShowPark]=_s(true);
   const [page,setPage]=_s("home"); // "home" | "game" | "results" | "season"
-  const [seasonHistory, setSeasonHistory] = _s([]); // [{date, batterHitRate, pitcherOverRate}]
+  // Load season history from localStorage on startup
+  var _initSeasonHistory = [];
+  try{
+    var _shJson = localStorage.getItem("de_season_history");
+    if(_shJson) _initSeasonHistory = JSON.parse(_shJson);
+  }catch(e){}
+  const [seasonHistory, setSeasonHistory] = _s(_initSeasonHistory);
   const [sidebarOpen,setSidebarOpen]=_s(true);
 
   // Results page state
@@ -1708,6 +1714,38 @@ function App(){
     setAllEdges(accumulated.slice());
     setAllWhiffScores(whiffAccum.slice());
     setScanState("done");
+
+    // ── Snapshot: freeze today's pre-game scores for results comparison ──
+    try{
+      var today = new Date().toISOString().slice(0,10);
+      // Top 15 batter edges
+      var sortedEdges = accumulated.slice().sort(function(a,b){return b.edgeScore-a.edgeScore;});
+      var top15Snap = sortedEdges.slice(0,15).map(function(e){
+        return {
+          batterId: e.batter.id, batterName: e.batter.fullName,
+          pitcherId: e.pitcher.id, pitcherName: e.pitcher.fullName,
+          batterTeam: e.batterTeam, pitcherTeam: e.pitcherTeam||"",
+          edgeScore: e.edgeScore, gamePk: e.gamePk, gameLabel: e.gameLabel,
+          bvpAvg: e.stat ? e.stat.avg : null, bvpOps: e.stat ? e.stat.ops : null
+        };
+      });
+      // All pitcher whiff scores
+      var pitcherSnap = whiffAccum.map(function(w){
+        return {
+          pitcherId: w.pitcher.id, pitcherName: w.pitcher.fullName,
+          whiffScore: w.score, gamePk: w.gamePk, gameLabel: w.gameLabel
+        };
+      });
+      var snapshot = {date:today, batters:top15Snap, pitchers:pitcherSnap, savedAt:new Date().toISOString()};
+      localStorage.setItem("de_snapshot_"+today, JSON.stringify(snapshot));
+      // Clean up old snapshots (keep last 30 days)
+      for(var si=0;si<localStorage.length;si++){
+        var lsKey=localStorage.key(si);
+        if(lsKey&&lsKey.startsWith("de_snapshot_")&&lsKey<"de_snapshot_"+new Date(Date.now()-30*86400000).toISOString().slice(0,10)){
+          localStorage.removeItem(lsKey);
+        }
+      }
+    }catch(snapErr){ /* localStorage may be unavailable, silently skip */ }
   }
 
   function handleSelectGameFromHome(gamePk){
@@ -1733,115 +1771,167 @@ function App(){
       var dateGames = await getGamesForDate(dateStr);
       if(dateGames.length === 0){ setResultsData({picks:[], date:dateStr}); setResultsLoading(false); return; }
 
+      // ── Check for pre-game snapshot ──
+      var snapshot = null;
+      var usedSnapshot = false;
+      try{
+        var snapJson = localStorage.getItem("de_snapshot_"+dateStr);
+        if(snapJson) snapshot = JSON.parse(snapJson);
+      }catch(e){}
+
       var allPicks = [];
-      for(var gi=0; gi<dateGames.length; gi++){
-        var game = dateGames[gi];
-        var homeId = game.teams.home.team.id;
-        var awayId = game.teams.away.team.id;
-        var homePitcher = game.teams.home.probablePitcher;
-        var awayPitcher = game.teams.away.probablePitcher;
-        if(!homePitcher && !awayPitcher) continue;
-
-        var awayAbbr = game.teams.away.team.abbreviation || game.teams.away.team.name || "AWAY";
-        var homeAbbr = game.teams.home.team.abbreviation || game.teams.home.team.name || "HOME";
-        var gameLabel = awayAbbr + " @ " + homeAbbr;
-        setResultsProgress("Scanning " + gameLabel + " (" + (gi+1) + "/" + dateGames.length + ")...");
-
-        var rosters = await Promise.all([getRoster(homeId), getRoster(awayId)]);
-        var homeRoster = rosters[0];
-        var awayRoster = rosters[1];
-
-        // Away batters vs home pitcher
-        if(homePitcher){
-          for(var i=0; i<awayRoster.length; i++){
-            var batter = awayRoster[i];
-            var r = await Promise.all([
-              getBvPSplits(batter.person.id, homePitcher.id),
-              getSeasonStats(batter.person.id, "hitting")
-            ]);
-            if(r[0] && (parseInt(r[0].plateAppearances)||0) >= 5){
-              var es = computeEdgeScore(r[0], r[1], r[0].plateAppearances, null, null);
-              allPicks.push({
-                batter: batter.person, pitcher: homePitcher,
-                batterTeam: awayAbbr,
-                pitcherTeam: homeAbbr,
-                edgeScore: es.score, bvpStat: r[0],
-                gamePk: game.gamePk,
-                gameLabel: gameLabel
-              });
-            }
-          }
-        }
-        // Home batters vs away pitcher
-        if(awayPitcher){
-          for(var j=0; j<homeRoster.length; j++){
-            var batter2 = homeRoster[j];
-            var r2 = await Promise.all([
-              getBvPSplits(batter2.person.id, awayPitcher.id),
-              getSeasonStats(batter2.person.id, "hitting")
-            ]);
-            if(r2[0] && (parseInt(r2[0].plateAppearances)||0) >= 5){
-              var es2 = computeEdgeScore(r2[0], r2[1], r2[0].plateAppearances, null, null);
-              allPicks.push({
-                batter: batter2.person, pitcher: awayPitcher,
-                batterTeam: homeAbbr,
-                pitcherTeam: awayAbbr,
-                edgeScore: es2.score, bvpStat: r2[0],
-                gamePk: game.gamePk,
-                gameLabel: gameLabel
-              });
-            }
-          }
-        }
-      }
-
-      // === PITCHER SCANNING ===
       var allPitcherPicks = [];
-      for(var pi=0; pi<dateGames.length; pi++){
-        var pGame = dateGames[pi];
-        var pHomeId = pGame.teams.home.team.id;
-        var pAwayId = pGame.teams.away.team.id;
-        var pHomePitcher = pGame.teams.home.probablePitcher;
-        var pAwayPitcher = pGame.teams.away.probablePitcher;
-        var pAwayAbbr = pGame.teams.away.team.abbreviation || pGame.teams.away.team.name || "AWAY";
-        var pHomeAbbr = pGame.teams.home.team.abbreviation || pGame.teams.home.team.name || "HOME";
-        var pGameLabel = pAwayAbbr + " @ " + pHomeAbbr;
 
-        setResultsProgress("Scanning pitchers " + (pi+1) + "/" + dateGames.length + "...");
+      if(snapshot && snapshot.batters && snapshot.batters.length > 0){
+        // ═══ USE FROZEN PRE-GAME SCORES ═══
+        usedSnapshot = true;
+        setResultsProgress("Using saved pre-game snapshot...");
 
-        // Fetch team K rates
-        var pTkRates = {};
-        await Promise.all([
-          getTeamSeasonStats(pHomeId).then(function(s){if(s) pTkRates[pHomeId]=s;}),
-          getTeamSeasonStats(pAwayId).then(function(s){if(s) pTkRates[pAwayId]=s;})
-        ]);
-
-        if(pHomePitcher){
-          var hpSeason = await getSeasonStats(pHomePitcher.id, "pitching");
-          var oppKRate = pTkRates[pAwayId] ? pTkRates[pAwayId].kRate : 0.200;
-          var hpWhiff = computeWhiffScore(pHomePitcher, hpSeason, null, oppKRate, []);
-          var hpK9 = hpSeason ? parseFloat(hpSeason.strikeoutsPer9Inn)||0 : 0;
-          // Projected Ks: K/9 * estimated IP / 9, with 0.88 regression deflator
-          var hpProjK = floorHalf((hpK9 * 5.5 / 9) * 0.88);
-          allPitcherPicks.push({
-            pitcher: pHomePitcher, team: pHomeAbbr, oppTeam: pAwayAbbr,
-            side: "home", whiffScore: hpWhiff.score, seasonStat: hpSeason,
-            projectedK: hpProjK, oppKRate: oppKRate,
-            gamePk: pGame.gamePk, gameLabel: pGameLabel
+        // Restore batter picks from snapshot
+        for(var si=0; si<snapshot.batters.length; si++){
+          var sb = snapshot.batters[si];
+          allPicks.push({
+            batter: {id:sb.batterId, fullName:sb.batterName},
+            pitcher: {id:sb.pitcherId, fullName:sb.pitcherName},
+            batterTeam: sb.batterTeam,
+            pitcherTeam: sb.pitcherTeam,
+            edgeScore: sb.edgeScore,
+            bvpStat: sb.bvpAvg ? {avg:sb.bvpAvg, ops:sb.bvpOps} : null,
+            gamePk: sb.gamePk,
+            gameLabel: sb.gameLabel
           });
         }
-        if(pAwayPitcher){
-          var apSeason = await getSeasonStats(pAwayPitcher.id, "pitching");
-          var oppKRate2 = pTkRates[pHomeId] ? pTkRates[pHomeId].kRate : 0.200;
-          var apWhiff = computeWhiffScore(pAwayPitcher, apSeason, null, oppKRate2, []);
-          var apK9 = apSeason ? parseFloat(apSeason.strikeoutsPer9Inn)||0 : 0;
-          var apProjK = floorHalf((apK9 * 5.5 / 9) * 0.88);
-          allPitcherPicks.push({
-            pitcher: pAwayPitcher, team: pAwayAbbr, oppTeam: pHomeAbbr,
-            side: "away", whiffScore: apWhiff.score, seasonStat: apSeason,
-            projectedK: apProjK, oppKRate: oppKRate2,
-            gamePk: pGame.gamePk, gameLabel: pGameLabel
-          });
+
+        // Restore pitcher picks from snapshot (whiff scores frozen)
+        // Still need to fetch season stats for K/9 and projected Ks
+        if(snapshot.pitchers && snapshot.pitchers.length > 0){
+          for(var spi=0; spi<snapshot.pitchers.length; spi++){
+            var sp = snapshot.pitchers[spi];
+            var spSeason = await getSeasonStats(sp.pitcherId, "pitching");
+            var spK9 = spSeason ? parseFloat(spSeason.strikeoutsPer9Inn)||0 : 0;
+            var spProjK = floorHalf((spK9 * 5.5 / 9) * 0.88);
+            // Find the pitcher's team/opp from the game schedule
+            var spGame = dateGames.find(function(g){return g.gamePk===sp.gamePk;});
+            var spTeam = "", spOpp = "";
+            if(spGame){
+              var spHomeP = spGame.teams.home.probablePitcher;
+              var spAwayP = spGame.teams.away.probablePitcher;
+              var spHomeAbbr = spGame.teams.home.team.abbreviation || spGame.teams.home.team.name || "HOME";
+              var spAwayAbbr = spGame.teams.away.team.abbreviation || spGame.teams.away.team.name || "AWAY";
+              if(spHomeP && spHomeP.id === sp.pitcherId){ spTeam=spHomeAbbr; spOpp=spAwayAbbr; }
+              else{ spTeam=spAwayAbbr; spOpp=spHomeAbbr; }
+            }
+            allPitcherPicks.push({
+              pitcher: {id:sp.pitcherId, fullName:sp.pitcherName},
+              team: spTeam, oppTeam: spOpp,
+              whiffScore: sp.whiffScore, seasonStat: spSeason,
+              projectedK: spProjK,
+              gamePk: sp.gamePk, gameLabel: sp.gameLabel
+            });
+          }
+        }
+      } else {
+        // ═══ NO SNAPSHOT — RECALCULATE (fallback for older dates) ═══
+        for(var gi=0; gi<dateGames.length; gi++){
+          var game = dateGames[gi];
+          var homeId = game.teams.home.team.id;
+          var awayId = game.teams.away.team.id;
+          var homePitcher = game.teams.home.probablePitcher;
+          var awayPitcher = game.teams.away.probablePitcher;
+          if(!homePitcher && !awayPitcher) continue;
+
+          var awayAbbr = game.teams.away.team.abbreviation || game.teams.away.team.name || "AWAY";
+          var homeAbbr = game.teams.home.team.abbreviation || game.teams.home.team.name || "HOME";
+          var gameLabel = awayAbbr + " @ " + homeAbbr;
+          setResultsProgress("Scanning " + gameLabel + " (" + (gi+1) + "/" + dateGames.length + ")...");
+
+          var rosters = await Promise.all([getRoster(homeId), getRoster(awayId)]);
+          var homeRoster = rosters[0];
+          var awayRoster = rosters[1];
+
+          if(homePitcher){
+            for(var i=0; i<awayRoster.length; i++){
+              var batter = awayRoster[i];
+              var r = await Promise.all([
+                getBvPSplits(batter.person.id, homePitcher.id),
+                getSeasonStats(batter.person.id, "hitting")
+              ]);
+              if(r[0] && (parseInt(r[0].plateAppearances)||0) >= 5){
+                var es = computeEdgeScore(r[0], r[1], r[0].plateAppearances, null, null);
+                allPicks.push({
+                  batter: batter.person, pitcher: homePitcher,
+                  batterTeam: awayAbbr, pitcherTeam: homeAbbr,
+                  edgeScore: es.score, bvpStat: r[0],
+                  gamePk: game.gamePk, gameLabel: gameLabel
+                });
+              }
+            }
+          }
+          if(awayPitcher){
+            for(var j=0; j<homeRoster.length; j++){
+              var batter2 = homeRoster[j];
+              var r2 = await Promise.all([
+                getBvPSplits(batter2.person.id, awayPitcher.id),
+                getSeasonStats(batter2.person.id, "hitting")
+              ]);
+              if(r2[0] && (parseInt(r2[0].plateAppearances)||0) >= 5){
+                var es2 = computeEdgeScore(r2[0], r2[1], r2[0].plateAppearances, null, null);
+                allPicks.push({
+                  batter: batter2.person, pitcher: awayPitcher,
+                  batterTeam: homeAbbr, pitcherTeam: awayAbbr,
+                  edgeScore: es2.score, bvpStat: r2[0],
+                  gamePk: game.gamePk, gameLabel: gameLabel
+                });
+              }
+            }
+          }
+        }
+
+        // Pitcher scanning (no snapshot)
+        for(var pi=0; pi<dateGames.length; pi++){
+          var pGame = dateGames[pi];
+          var pHomeId = pGame.teams.home.team.id;
+          var pAwayId = pGame.teams.away.team.id;
+          var pHomePitcher = pGame.teams.home.probablePitcher;
+          var pAwayPitcher = pGame.teams.away.probablePitcher;
+          var pAwayAbbr = pGame.teams.away.team.abbreviation || pGame.teams.away.team.name || "AWAY";
+          var pHomeAbbr = pGame.teams.home.team.abbreviation || pGame.teams.home.team.name || "HOME";
+          var pGameLabel = pAwayAbbr + " @ " + pHomeAbbr;
+
+          setResultsProgress("Scanning pitchers " + (pi+1) + "/" + dateGames.length + "...");
+
+          var pTkRates = {};
+          await Promise.all([
+            getTeamSeasonStats(pHomeId).then(function(s){if(s) pTkRates[pHomeId]=s;}),
+            getTeamSeasonStats(pAwayId).then(function(s){if(s) pTkRates[pAwayId]=s;})
+          ]);
+
+          if(pHomePitcher){
+            var hpSeason = await getSeasonStats(pHomePitcher.id, "pitching");
+            var oppKRate = pTkRates[pAwayId] ? pTkRates[pAwayId].kRate : 0.200;
+            var hpWhiff = computeWhiffScore(pHomePitcher, hpSeason, null, oppKRate, []);
+            var hpK9 = hpSeason ? parseFloat(hpSeason.strikeoutsPer9Inn)||0 : 0;
+            var hpProjK = floorHalf((hpK9 * 5.5 / 9) * 0.88);
+            allPitcherPicks.push({
+              pitcher: pHomePitcher, team: pHomeAbbr, oppTeam: pAwayAbbr,
+              side: "home", whiffScore: hpWhiff.score, seasonStat: hpSeason,
+              projectedK: hpProjK, oppKRate: oppKRate,
+              gamePk: pGame.gamePk, gameLabel: pGameLabel
+            });
+          }
+          if(pAwayPitcher){
+            var apSeason = await getSeasonStats(pAwayPitcher.id, "pitching");
+            var oppKRate2 = pTkRates[pHomeId] ? pTkRates[pHomeId].kRate : 0.200;
+            var apWhiff = computeWhiffScore(pAwayPitcher, apSeason, null, oppKRate2, []);
+            var apK9 = apSeason ? parseFloat(apSeason.strikeoutsPer9Inn)||0 : 0;
+            var apProjK = floorHalf((apK9 * 5.5 / 9) * 0.88);
+            allPitcherPicks.push({
+              pitcher: pAwayPitcher, team: pAwayAbbr, oppTeam: pHomeAbbr,
+              side: "away", whiffScore: apWhiff.score, seasonStat: apSeason,
+              projectedK: apProjK, oppKRate: oppKRate2,
+              gamePk: pGame.gamePk, gameLabel: pGameLabel
+            });
+          }
         }
       }
 
@@ -1941,6 +2031,7 @@ function App(){
         picks: top15,
         pitcherPicks: allPitcherPicks,
         date: dateStr,
+        usedSnapshot: usedSnapshot,
         avgFantasy: top15.length > 0 ? (totalFantasy / top15.length).toFixed(1) : "0",
         totalFantasy: totalFantasy,
         hitRate: top15.length > 0 ? ((hitCount / top15.length) * 100).toFixed(0) : "0",
@@ -1951,7 +2042,7 @@ function App(){
         pitcherOverCount: pitcherOverCount
       });
 
-      // Auto-save to season history
+      // Auto-save to season history (state + localStorage)
       var newEntry = {
         date: dateStr,
         batterHitRate: top15.length > 0 ? parseFloat(((hitCount / top15.length) * 100).toFixed(1)) : 0,
@@ -1960,11 +2051,11 @@ function App(){
         pitcherCount: pitchersWithStats
       };
       setSeasonHistory(function(prev){
-        // Replace if date exists, otherwise append
         var filtered = prev.filter(function(e){ return e.date !== dateStr; });
         filtered.push(newEntry);
-        // Sort by date
         filtered.sort(function(a,b){ return a.date.localeCompare(b.date); });
+        // Persist to localStorage
+        try{ localStorage.setItem("de_season_history", JSON.stringify(filtered)); }catch(e){}
         return filtered;
       });
 
@@ -2423,8 +2514,20 @@ function App(){
           {page==="results"&&(
             <div style={{padding:20}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
-                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3}}>
-                  📊 YESTERDAY'S RESULTS
+                <div>
+                  <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3}}>
+                    📊 YESTERDAY'S RESULTS
+                  </div>
+                  {resultsData&&resultsData.usedSnapshot&&(
+                    <div style={{fontSize:10,color:C.green,marginTop:4,letterSpacing:1}}>
+                      ✓ USING PRE-GAME SNAPSHOT — scores frozen before first pitch
+                    </div>
+                  )}
+                  {resultsData&&!resultsData.usedSnapshot&&resultsData.picks&&resultsData.picks.length>0&&(
+                    <div style={{fontSize:10,color:C.muted,marginTop:4,letterSpacing:1}}>
+                      ⚠ NO SNAPSHOT — scores recalculated with post-game stats
+                    </div>
+                  )}
                 </div>
                 <div style={{display:"flex",background:C.card,borderRadius:8,border:"1px solid "+C.border,overflow:"hidden"}}>
                   <button onClick={function(){setResultsTab("batters");}}
