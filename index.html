@@ -2078,24 +2078,28 @@ function App(){
         pPick.hitOver = pPick.actualStats ? (pPick.actualK > pPick.projectedK) : false;
       }
 
-      // Pitcher summary stats
+      // Pitcher summary stats (B grade = 55+ whiff score only)
       var pitcherOverCount = 0;
       var totalPitcherK = 0;
       var pitchersWithStats = 0;
       for(var pm=0; pm<allPitcherPicks.length; pm++){
-        if(allPitcherPicks[pm].actualStats){
+        if(allPitcherPicks[pm].whiffScore >= 55 && allPitcherPicks[pm].actualStats){
           pitchersWithStats++;
           totalPitcherK += allPitcherPicks[pm].actualK;
           if(allPitcherPicks[pm].hitOver) pitcherOverCount++;
         }
       }
 
-      // Compute summary stats
+      // Compute summary stats (B grade = 55+ edge score only for hit rate)
       var totalFantasy = 0;
       var hitCount = 0;
+      var bGradeBatters = 0;
       for(var m=0; m<top15.length; m++){
         totalFantasy += top15[m].fantasyScore;
-        if(top15[m].actualStats && (parseInt(top15[m].actualStats.hits)||0) > 0) hitCount++;
+        if(top15[m].edgeScore >= 55){
+          bGradeBatters++;
+          if(top15[m].actualStats && (parseInt(top15[m].actualStats.hits)||0) > 0) hitCount++;
+        }
       }
 
       setResultsData({
@@ -2105,7 +2109,7 @@ function App(){
         usedSnapshot: usedSnapshot,
         avgFantasy: top15.length > 0 ? (totalFantasy / top15.length).toFixed(1) : "0",
         totalFantasy: totalFantasy,
-        hitRate: top15.length > 0 ? ((hitCount / top15.length) * 100).toFixed(0) : "0",
+        hitRate: bGradeBatters > 0 ? ((hitCount / bGradeBatters) * 100).toFixed(0) : "0",
         pitcherOverRate: pitchersWithStats > 0 ? ((pitcherOverCount / pitchersWithStats) * 100).toFixed(0) : "0",
         avgPitcherK: pitchersWithStats > 0 ? (totalPitcherK / pitchersWithStats).toFixed(1) : "0",
         totalPitcherK: totalPitcherK,
@@ -2116,9 +2120,9 @@ function App(){
       // Auto-save to season history (state + localStorage)
       var newEntry = {
         date: dateStr,
-        batterHitRate: top15.length > 0 ? parseFloat(((hitCount / top15.length) * 100).toFixed(1)) : 0,
+        batterHitRate: bGradeBatters > 0 ? parseFloat(((hitCount / bGradeBatters) * 100).toFixed(1)) : 0,
         pitcherOverRate: pitchersWithStats > 0 ? parseFloat(((pitcherOverCount / pitchersWithStats) * 100).toFixed(1)) : 0,
-        batterCount: top15.length,
+        batterCount: bGradeBatters,
         pitcherCount: pitchersWithStats
       };
       setSeasonHistory(function(prev){
