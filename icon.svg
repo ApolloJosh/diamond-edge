@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0a0e1a"/>
+  <!-- Diamond shape -->
+  <polygon points="256,80 400,256 256,432 112,256" fill="none" stroke="#f0b429" stroke-width="16" stroke-linejoin="round"/>
+  <!-- Inner diamond -->
+  <polygon points="256,140 360,256 256,372 152,256" fill="#f0b42918" stroke="#f0b429" stroke-width="6" stroke-linejoin="round"/>
+  <!-- Baseball stitching accent -->
+  <path d="M200,220 Q228,256 200,292" fill="none" stroke="#9333ea" stroke-width="5" stroke-linecap="round"/>
+  <path d="M312,220 Q284,256 312,292" fill="none" stroke="#9333ea" stroke-width="5" stroke-linecap="round"/>
+  <!-- Lightning bolt -->
+  <polygon points="268,170 238,248 262,248 232,340 290,235 264,235 290,170" fill="#f0b429"/>
+</svg>
