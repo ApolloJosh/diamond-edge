@@ -1487,6 +1487,60 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         </div>
       )}
 
+      {/* Pitcher K Projections Table */}
+      {allWhiffScores.length>0&&(
+        <div className="fade-in" style={{marginBottom:32}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.purple}}>🔮 PITCHER K PROJECTIONS</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>ALL STARTERS TODAY</div>
+          </div>
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+              <thead>
+                <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.purple,fontWeight:600,letterSpacing:1}}>WHIFF</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>K/9</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PROJ IP</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ Ks</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allWhiffScores.slice().sort(function(a,b){return b.score-a.score;}).map(function(w,idx){
+                  var wg=whiffGrade(w.score);
+                  var k9=w.k9||0;
+                  var pIP=w.projectedIP||5.5;
+                  var pK=w.projectedK||0;
+                  return(
+                    <tr key={idx} style={{borderBottom:"1px solid "+C.border,cursor:"pointer",transition:"background 0.1s"}}
+                      onMouseOver={function(e){e.currentTarget.style.background="#1a2234";}}
+                      onMouseOut={function(e){e.currentTarget.style.background="transparent";}}
+                      onClick={function(){onSelectGame(w.gamePk);}}>
+                      <td style={{padding:"10px 8px"}}>
+                        <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
+                          background:wg.color+"18",border:"1px solid "+wg.color+"40",color:wg.color}}>
+                          {wg.grade} <span style={{fontSize:9,color:C.muted}}>{w.score}</span>
+                        </span>
+                      </td>
+                      <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{w.pitcher.fullName}</td>
+                      <td style={{padding:"10px 8px",color:C.muted}}>{w.team||"—"}</td>
+                      <td style={{padding:"10px 8px",color:C.subtext}}>{w.oppTeam||"—"}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",color:k9>=9?C.green:k9>=7?C.text:C.muted}}>{k9.toFixed(1)}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{pIP.toFixed(1)}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,color:C.gold}}>{pK%1===0?pK.toFixed(1):pK}</td>
+                      <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{w.gameLabel||"—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {scanState==="done"&&topEdges.length===0&&topWhiffs.length===0&&(
         <div className="fade-in" style={{textAlign:"center",padding:40,color:C.muted}}>
           <div style={{fontSize:32,marginBottom:12}}>👀</div>
@@ -1696,13 +1750,21 @@ function App(){
           var homeSeasonStat=await getSeasonStats(homePitcher.id,"pitching");
           var oppKRate=teamKRatesLocal[awayId] ? teamKRatesLocal[awayId].kRate : 0.200;
           var homeWhiffResult=computeWhiffScore(homePitcher, homeSeasonStat, null, oppKRate, homeMatchupsForWhiff);
-          whiffAccum.push({pitcher:homePitcher, score:homeWhiffResult.score, gamePk:game.gamePk, gameLabel:gameLabel});
+          var hK9=homeSeasonStat?parseFloat(homeSeasonStat.strikeoutsPer9Inn)||0:0;
+          var hExpIP=homeSeasonStat&&homeSeasonStat.inningsPitched&&homeSeasonStat.gamesStarted?(parseFloat(homeSeasonStat.inningsPitched)/Math.max(parseInt(homeSeasonStat.gamesStarted),1)):5.5;
+          var hProjK=floorHalf((hK9*hExpIP/9)*0.88);
+          whiffAccum.push({pitcher:homePitcher, score:homeWhiffResult.score, gamePk:game.gamePk, gameLabel:gameLabel,
+            team:homeAbbr, oppTeam:awayAbbr, k9:hK9, projectedIP:hExpIP, projectedK:hProjK, seasonStat:homeSeasonStat});
         }
         if(awayPitcher && awayMatchupsForWhiff.length > 0){
           var awaySeasonStat=await getSeasonStats(awayPitcher.id,"pitching");
           var oppKRate2=teamKRatesLocal[homeId] ? teamKRatesLocal[homeId].kRate : 0.200;
           var awayWhiffResult=computeWhiffScore(awayPitcher, awaySeasonStat, null, oppKRate2, awayMatchupsForWhiff);
-          whiffAccum.push({pitcher:awayPitcher, score:awayWhiffResult.score, gamePk:game.gamePk, gameLabel:gameLabel});
+          var aK9=awaySeasonStat?parseFloat(awaySeasonStat.strikeoutsPer9Inn)||0:0;
+          var aExpIP=awaySeasonStat&&awaySeasonStat.inningsPitched&&awaySeasonStat.gamesStarted?(parseFloat(awaySeasonStat.inningsPitched)/Math.max(parseInt(awaySeasonStat.gamesStarted),1)):5.5;
+          var aProjK=floorHalf((aK9*aExpIP/9)*0.88);
+          whiffAccum.push({pitcher:awayPitcher, score:awayWhiffResult.score, gamePk:game.gamePk, gameLabel:gameLabel,
+            team:awayAbbr, oppTeam:homeAbbr, k9:aK9, projectedIP:aExpIP, projectedK:aProjK, seasonStat:awaySeasonStat});
         }
       }catch(e){
         // skip game on error, continue scanning
@@ -1733,7 +1795,9 @@ function App(){
       var pitcherSnap = whiffAccum.map(function(w){
         return {
           pitcherId: w.pitcher.id, pitcherName: w.pitcher.fullName,
-          whiffScore: w.score, gamePk: w.gamePk, gameLabel: w.gameLabel
+          whiffScore: w.score, gamePk: w.gamePk, gameLabel: w.gameLabel,
+          team: w.team||"", oppTeam: w.oppTeam||"",
+          k9: w.k9||0, projectedIP: w.projectedIP||5.5, projectedK: w.projectedK||0
         };
       });
       var snapshot = {date:today, batters:top15Snap, pitchers:pitcherSnap, savedAt:new Date().toISOString()};
