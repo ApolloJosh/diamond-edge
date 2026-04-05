@@ -1673,6 +1673,52 @@ function App(){
     setResultsDate(yesterday.toISOString().slice(0, 10));
   },[]);
 
+  // Sync cloud results into season history on startup
+  useEffect(function(){
+    (async function(){
+      try{
+        // Try to fetch results index
+        var idxResp = await fetch("./results/index.json");
+        if(!idxResp.ok) return;
+        var resultDates = await idxResp.json(); // ["2026-04-04","2026-04-05",...]
+        if(!Array.isArray(resultDates)||resultDates.length===0) return;
+
+        // Check which dates we're missing in season history
+        var existing = {};
+        try{
+          var sh = JSON.parse(localStorage.getItem("de_season_history")||"[]");
+          for(var i=0;i<sh.length;i++) existing[sh[i].date]=true;
+        }catch(e){}
+
+        var missing = resultDates.filter(function(d){return !existing[d];});
+        if(missing.length===0) return;
+
+        // Fetch missing results and add to history
+        for(var mi=0;mi<missing.length;mi++){
+          try{
+            var r = await fetch("./results/"+missing[mi]+".json");
+            if(!r.ok) continue;
+            var rd = await r.json();
+            if(!rd.summary) continue;
+            setSeasonHistory(function(prev){
+              if(prev.some(function(e){return e.date===rd.date;})) return prev;
+              var updated = prev.concat([{
+                date:rd.date,
+                batterHitRate:rd.summary.hitRate||0,
+                pitcherOverRate:rd.summary.pitcherHitProjRate||0,
+                batterCount:rd.summary.bGradeBatters||0,
+                pitcherCount:rd.summary.bGradePitchers||0
+              }]);
+              updated.sort(function(a,b){return a.date.localeCompare(b.date);});
+              try{localStorage.setItem("de_season_history",JSON.stringify(updated));}catch(e){}
+              return updated;
+            });
+          }catch(e){}
+        }
+      }catch(e){}
+    })();
+  },[]);
+
   /* ─── Full Slate Scanner ─── */
   async function scanAllGames(){
     scanAbort.current=false;
@@ -1842,13 +1888,114 @@ function App(){
       var dateGames = await getGamesForDate(dateStr);
       if(dateGames.length === 0){ setResultsData({picks:[], date:dateStr}); setResultsLoading(false); return; }
 
-      // ── Check for pre-game snapshot ──
+      // ── Check for pre-game snapshot (cloud first, then localStorage) ──
       var snapshot = null;
       var usedSnapshot = false;
+      var snapshotSource = "";
+
+      // 1. Try cloud snapshot (GitHub Pages JSON)
       try{
-        var snapJson = localStorage.getItem("de_snapshot_"+dateStr);
-        if(snapJson) snapshot = JSON.parse(snapJson);
+        setResultsProgress("Checking cloud snapshot...");
+        var cloudSnap = await fetch("./snapshots/"+dateStr+".json");
+        if(cloudSnap.ok){
+          snapshot = await cloudSnap.json();
+          snapshotSource = "cloud";
+        }
       }catch(e){}
+
+      // 2. Try cloud results (already processed by nightly job)
+      var cloudResults = null;
+      try{
+        var cloudRes = await fetch("./results/"+dateStr+".json");
+        if(cloudRes.ok) cloudResults = await cloudRes.json();
+      }catch(e){}
+
+      // If cloud results exist, use them directly (fastest path — no box score fetching needed)
+      if(cloudResults && cloudResults.batters && cloudResults.batters.length > 0){
+        usedSnapshot = true;
+        snapshotSource = "cloud-results";
+        setResultsProgress("Loading cloud results...");
+
+        var crPicks = cloudResults.batters.map(function(b){
+          return {
+            batter:{id:b.batterId, fullName:b.batterName},
+            pitcher:{id:b.pitcherId||0, fullName:b.pitcherName||""},
+            batterTeam:b.batterTeam, pitcherTeam:b.pitcherTeam||"",
+            edgeScore:b.edgeScore, bvpStat:b.bvpAvg?{avg:b.bvpAvg,ops:b.bvpOps}:null,
+            gamePk:b.gamePk, gameLabel:b.gameLabel,
+            actualStats:b.actualStats||null,
+            fantasyScore:b.fantasyScore||0
+          };
+        });
+        var crPitchers = (cloudResults.pitchers||[]).map(function(p){
+          return {
+            pitcher:{id:p.pitcherId, fullName:p.pitcherName},
+            team:p.team, oppTeam:p.oppTeam,
+            whiffScore:p.whiffScore, seasonStat:null,
+            projectedK:p.projectedK, k9:p.k9||0,
+            gamePk:p.gamePk, gameLabel:p.gameLabel,
+            actualStats:p.actualK!==undefined?{}:null,
+            actualK:p.actualK||0, actualIP:p.actualIP||"0",
+            actualER:p.actualER||0, actualH:p.actualH||0,
+            actualBB:p.actualBB||0,
+            hitOver:p.hitProj||false
+          };
+        });
+
+        // Compute summaries from cloud results
+        var crTotalFantasy=0, crHitCount=0, crBGradeBatters=0;
+        for(var ci=0;ci<crPicks.length;ci++){
+          crTotalFantasy+=crPicks[ci].fantasyScore;
+          if(crPicks[ci].edgeScore>=55){
+            crBGradeBatters++;
+            if(crPicks[ci].actualStats&&(parseInt(crPicks[ci].actualStats.hits)||0)>0) crHitCount++;
+          }
+        }
+        var crPitcherOver=0, crPitchersWithStats=0, crTotalK=0;
+        for(var cpi=0;cpi<crPitchers.length;cpi++){
+          if(crPitchers[cpi].whiffScore>=55&&crPitchers[cpi].actualStats){
+            crPitchersWithStats++;
+            crTotalK+=crPitchers[cpi].actualK;
+            if(crPitchers[cpi].hitOver) crPitcherOver++;
+          }
+        }
+
+        setResultsData({
+          picks:crPicks, pitcherPicks:crPitchers, date:dateStr, usedSnapshot:true, snapshotSource:"cloud-results",
+          avgFantasy:crPicks.length>0?(crTotalFantasy/crPicks.length).toFixed(1):"0",
+          totalFantasy:crTotalFantasy,
+          hitRate:crBGradeBatters>0?((crHitCount/crBGradeBatters)*100).toFixed(0):"0",
+          pitcherOverRate:crPitchersWithStats>0?((crPitcherOver/crPitchersWithStats)*100).toFixed(0):"0",
+          avgPitcherK:crPitchersWithStats>0?(crTotalK/crPitchersWithStats).toFixed(1):"0",
+          totalPitcherK:crTotalK, pitchersWithStats:crPitchersWithStats, pitcherOverCount:crPitcherOver
+        });
+
+        // Save to season history
+        var crEntry={
+          date:dateStr,
+          batterHitRate:crBGradeBatters>0?parseFloat(((crHitCount/crBGradeBatters)*100).toFixed(1)):0,
+          pitcherOverRate:crPitchersWithStats>0?parseFloat(((crPitcherOver/crPitchersWithStats)*100).toFixed(1)):0,
+          batterCount:crBGradeBatters, pitcherCount:crPitchersWithStats
+        };
+        setSeasonHistory(function(prev){
+          var filtered=prev.filter(function(e){return e.date!==dateStr;});
+          filtered.push(crEntry);
+          filtered.sort(function(a,b){return a.date.localeCompare(b.date);});
+          try{localStorage.setItem("de_season_history",JSON.stringify(filtered));}catch(e){}
+          return filtered;
+        });
+        setResultsProgress("");
+        setResultsLoading(false);
+        return;
+      }
+
+      // 3. Fall back to localStorage snapshot
+      if(!snapshot){
+        try{
+          var snapJson = localStorage.getItem("de_snapshot_"+dateStr);
+          if(snapJson){ snapshot = JSON.parse(snapJson); snapshotSource = "local"; }
+        }catch(e){}
+      }
 
       var allPicks = [];
       var allPitcherPicks = [];
@@ -2075,37 +2222,41 @@ function App(){
             pPick.actualLine = pPick.actualIP + " IP, " + pPick.actualK + " K, " + (parseInt(ps.earnedRuns)||0) + " ER, " + (parseInt(ps.hits)||0) + " H";
           }
         }
-        pPick.hitOver = pPick.actualStats ? (pPick.actualK > pPick.projectedK) : false;
+        pPick.hitOver = pPick.actualStats ? (pPick.actualK >= pPick.projectedK) : false;
       }
 
-      // Pitcher summary stats
+      // Pitcher summary stats (B grade = 55+ whiff score only)
       var pitcherOverCount = 0;
       var totalPitcherK = 0;
       var pitchersWithStats = 0;
       for(var pm=0; pm<allPitcherPicks.length; pm++){
-        if(allPitcherPicks[pm].actualStats){
+        if(allPitcherPicks[pm].whiffScore >= 55 && allPitcherPicks[pm].actualStats){
           pitchersWithStats++;
           totalPitcherK += allPitcherPicks[pm].actualK;
           if(allPitcherPicks[pm].hitOver) pitcherOverCount++;
         }
       }
 
-      // Compute summary stats
+      // Compute summary stats (B grade = 55+ edge score only for hit rate)
       var totalFantasy = 0;
       var hitCount = 0;
+      var bGradeBatters = 0;
       for(var m=0; m<top15.length; m++){
         totalFantasy += top15[m].fantasyScore;
-        if(top15[m].actualStats && (parseInt(top15[m].actualStats.hits)||0) > 0) hitCount++;
+        if(top15[m].edgeScore >= 55){
+          bGradeBatters++;
+          if(top15[m].actualStats && (parseInt(top15[m].actualStats.hits)||0) > 0) hitCount++;
+        }
       }
 
       setResultsData({
         picks: top15,
         pitcherPicks: allPitcherPicks,
         date: dateStr,
-        usedSnapshot: usedSnapshot,
+        usedSnapshot: usedSnapshot, snapshotSource: snapshotSource,
         avgFantasy: top15.length > 0 ? (totalFantasy / top15.length).toFixed(1) : "0",
         totalFantasy: totalFantasy,
-        hitRate: top15.length > 0 ? ((hitCount / top15.length) * 100).toFixed(0) : "0",
+        hitRate: bGradeBatters > 0 ? ((hitCount / bGradeBatters) * 100).toFixed(0) : "0",
         pitcherOverRate: pitchersWithStats > 0 ? ((pitcherOverCount / pitchersWithStats) * 100).toFixed(0) : "0",
         avgPitcherK: pitchersWithStats > 0 ? (totalPitcherK / pitchersWithStats).toFixed(1) : "0",
         totalPitcherK: totalPitcherK,
@@ -2116,9 +2267,9 @@ function App(){
       // Auto-save to season history (state + localStorage)
       var newEntry = {
         date: dateStr,
-        batterHitRate: top15.length > 0 ? parseFloat(((hitCount / top15.length) * 100).toFixed(1)) : 0,
+        batterHitRate: bGradeBatters > 0 ? parseFloat(((hitCount / bGradeBatters) * 100).toFixed(1)) : 0,
         pitcherOverRate: pitchersWithStats > 0 ? parseFloat(((pitcherOverCount / pitchersWithStats) * 100).toFixed(1)) : 0,
-        batterCount: top15.length,
+        batterCount: bGradeBatters,
         pitcherCount: pitchersWithStats
       };
       setSeasonHistory(function(prev){
@@ -2591,7 +2742,9 @@ function App(){
                   </div>
                   {resultsData&&resultsData.usedSnapshot&&(
                     <div style={{fontSize:10,color:C.green,marginTop:4,letterSpacing:1}}>
-                      ✓ USING PRE-GAME SNAPSHOT — scores frozen before first pitch
+                      ✓ {resultsData.snapshotSource==="cloud-results"?"CLOUD RESULTS — auto-processed overnight"
+                        :resultsData.snapshotSource==="cloud"?"CLOUD SNAPSHOT — scores frozen before first pitch"
+                        :"LOCAL SNAPSHOT — scores frozen before first pitch"}
                     </div>
                   )}
                   {resultsData&&!resultsData.usedSnapshot&&resultsData.picks&&resultsData.picks.length>0&&(
@@ -2676,7 +2829,7 @@ function App(){
                         <div style={{fontSize:24,fontWeight:600,color:C.purple}}>{resultsData.avgPitcherK||"0"}</div>
                       </div>
                       <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>HIT OVER PROJ K</div>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>HIT PROJ K</div>
                         <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.pitcherOverRate||"0"}%</div>
                       </div>
                     </div>
@@ -2749,7 +2902,7 @@ function App(){
                               <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ER</th>
                               <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>H</th>
                               <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BB</th>
-                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>OVER?</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HIT?</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -2837,7 +2990,7 @@ function App(){
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <div style={{width:24,height:3,background:C.purple,borderRadius:2}}></div>
-                      <span style={{fontSize:11,color:C.muted}}>Pitcher K Over Proj %</span>
+                      <span style={{fontSize:11,color:C.muted}}>Pitcher Hit Proj K %</span>
                     </div>
                   </div>
 
@@ -2917,7 +3070,7 @@ function App(){
                       </div>
                     </div>
                     <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG PITCHER K OVER %</div>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG PITCHER HIT PROJ K %</div>
                       <div style={{fontSize:24,fontWeight:600,color:C.purple}}>
                         {(seasonHistory.reduce(function(s,d){return s+d.pitcherOverRate;},0)/seasonHistory.length).toFixed(1)}%
                       </div>
@@ -2935,7 +3088,7 @@ function App(){
                         <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
                           <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>DATE</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:500,letterSpacing:1}}>BATTER HIT %</th>
-                          <th style={{textAlign:"center",padding:"10px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>PITCHER K OVER %</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>PITCHER HIT PROJ K %</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTERS</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHERS</th>
                         </tr>
