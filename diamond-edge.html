@@ -641,16 +641,6 @@ function computeWalkScore(bvpStat, batterSeasonStat, batterRecentBB, batterCaree
   return {score:Math.max(0, Math.min(99, Math.round(score))), factors:factors, bvpBBRate:bvpBBRate};
 }
 
-function walkGrade(score){
-  if(score >= 80) return {grade:"A+",color:"#22c55e"};
-  if(score >= 70) return {grade:"A",color:"#4ade80"};
-  if(score >= 62) return {grade:"B+",color:"#86efac"};
-  if(score >= 55) return {grade:"B",color:C.blue};
-  if(score >= 45) return {grade:"C",color:C.subtext};
-  if(score >= 35) return {grade:"D",color:"#fca5a5"};
-  return {grade:"F",color:"#ef4444"};
-}
-
 /* ─── PrizePicks Fantasy Score Calculator ─── */
 function computeFantasyScore(boxStats){
   if(!boxStats) return 0;
