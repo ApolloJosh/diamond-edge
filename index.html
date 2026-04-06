@@ -429,6 +429,218 @@ function whiffGrade(score){
   return {grade:"F",color:"#ef4444"};
 }
 
+/* ─── Walk Score Engine ─── */
+async function getBatterRecentBBRate(playerId){
+  try{
+    var year=new Date().getFullYear();
+    var both=await Promise.all([
+      fetchJSON(BASE+"/people/"+playerId+"/stats?stats=gameLog&group=hitting&season="+year),
+      fetchJSON(BASE+"/people/"+playerId+"/stats?stats=gameLog&group=hitting&season="+(year-1))
+    ]);
+    var games=[];
+    for(var sg of (both[1].stats||[])){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        for(var sp of (sg.splits||[])) games.push(sp);
+      }
+    }
+    for(var sg2 of (both[0].stats||[])){
+      if(sg2.group&&sg2.group.displayName==="hitting"){
+        for(var sp2 of (sg2.splits||[])) games.push(sp2);
+      }
+    }
+    var recent=games.slice(-10);
+    if(recent.length===0) return null;
+    var totalPA=0, totalBB=0;
+    for(var g of recent){
+      var s=g.stat||{};
+      totalPA+=parseInt(s.plateAppearances)||0;
+      totalBB+=parseInt(s.baseOnBalls)||0;
+    }
+    return {bbRate:totalPA>0?(totalBB/totalPA):0, bb:totalBB, pa:totalPA, games:recent.length};
+  }catch(e){return null;}
+}
+
+async function getBatterCareerBBRate(playerId){
+  try{
+    var data=await fetchJSON(BASE+"/people/"+playerId+"/stats?stats=career&group=hitting");
+    for(var sg of (data.stats||[])){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        var sp=sg.splits&&sg.splits[0];
+        if(sp&&sp.stat){
+          var pa=parseInt(sp.stat.plateAppearances)||0;
+          var bb=parseInt(sp.stat.baseOnBalls)||0;
+          return {bbRate:pa>0?(bb/pa):0, bb:bb, pa:pa};
+        }
+      }
+    }
+    return null;
+  }catch(e){return null;}
+}
+
+async function getPitcherRecentBBRate(pitcherId){
+  // Reuses game log — last 5 starts
+  try{
+    var year=new Date().getFullYear();
+    var both=await Promise.all([
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=gameLog&group=pitching&season="+year),
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=gameLog&group=pitching&season="+(year-1))
+    ]);
+    var games=[];
+    for(var sg of (both[1].stats||[])){
+      if(sg.group&&sg.group.displayName==="pitching"){
+        for(var sp of (sg.splits||[])) games.push(sp);
+      }
+    }
+    for(var sg2 of (both[0].stats||[])){
+      if(sg2.group&&sg2.group.displayName==="pitching"){
+        for(var sp2 of (sg2.splits||[])) games.push(sp2);
+      }
+    }
+    var recent=games.slice(-5);
+    if(recent.length===0) return null;
+    var totalBF=0, totalBB=0;
+    for(var g of recent){
+      var s=g.stat||{};
+      totalBF+=parseInt(s.battersFaced)||parseInt(s.battersfaced)||0;
+      totalBB+=parseInt(s.baseOnBalls)||0;
+      // fallback: estimate BF from IP if battersFaced not available
+      if(totalBF===0){
+        var ip=parseFloat(s.inningsPitched)||0;
+        totalBF+=Math.round(ip*4.3); // ~4.3 BF per IP average
+      }
+    }
+    return {bbRate:totalBF>0?(totalBB/totalBF):0, bb:totalBB, bf:totalBF, starts:recent.length};
+  }catch(e){return null;}
+}
+
+async function getPitcherCareerBBRate(pitcherId){
+  try{
+    var data=await fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=career&group=pitching");
+    for(var sg of (data.stats||[])){
+      if(sg.group&&sg.group.displayName==="pitching"){
+        var sp=sg.splits&&sg.splits[0];
+        if(sp&&sp.stat){
+          // Use BB/9 as proxy, convert to rate
+          var bb9=parseFloat(sp.stat.baseOnBallsPer9Inn)||0;
+          var bbRate=bb9/9/4.3; // approximate BB per batter faced
+          var totalBB=parseInt(sp.stat.baseOnBalls)||0;
+          return {bbRate:bbRate, bb9:bb9, totalBB:totalBB};
+        }
+      }
+    }
+    return null;
+  }catch(e){return null;}
+}
+
+function computeWalkScore(bvpStat, batterSeasonStat, batterRecentBB, batterCareerBB, pitcherSeasonStat, pitcherRecentBB, pitcherCareerBB){
+  var score = 50;
+  var factors = {};
+
+  // 1. BvP walk history (weight: high)
+  var bvpPA = parseInt(bvpStat.plateAppearances)||0;
+  var bvpBB = parseInt(bvpStat.baseOnBalls)||0;
+  var bvpBBRate = bvpPA > 0 ? (bvpBB / bvpPA) : 0;
+  if(bvpBBRate >= 0.18) factors.bvpBB = 12;
+  else if(bvpBBRate >= 0.14) factors.bvpBB = 8;
+  else if(bvpBBRate >= 0.10) factors.bvpBB = 4;
+  else if(bvpBBRate < 0.04) factors.bvpBB = -8;
+  else if(bvpBBRate < 0.06) factors.bvpBB = -4;
+  else factors.bvpBB = 0;
+  // Sample size dampener
+  var sampleFactor = Math.min(bvpPA / 20, 1.2);
+  factors.bvpBB = Math.round(factors.bvpBB * sampleFactor);
+  score += factors.bvpBB;
+
+  // 2. Batter recent BB% trend (last 10 games) (weight: high)
+  factors.batterRecent = 0;
+  if(batterRecentBB){
+    var brRate = batterRecentBB.bbRate;
+    if(brRate >= 0.14) factors.batterRecent = 10;
+    else if(brRate >= 0.11) factors.batterRecent = 6;
+    else if(brRate >= 0.09) factors.batterRecent = 3;
+    else if(brRate < 0.04) factors.batterRecent = -8;
+    else if(brRate < 0.06) factors.batterRecent = -4;
+    else factors.batterRecent = 0;
+  }
+  score += factors.batterRecent;
+
+  // 3. Batter season BB% (weight: medium)
+  factors.batterSeason = 0;
+  if(batterSeasonStat){
+    var sPa = parseInt(batterSeasonStat.plateAppearances)||0;
+    var sBb = parseInt(batterSeasonStat.baseOnBalls)||0;
+    var sBBRate = sPa > 0 ? (sBb / sPa) : 0;
+    if(sBBRate >= 0.13) factors.batterSeason = 6;
+    else if(sBBRate >= 0.10) factors.batterSeason = 3;
+    else if(sBBRate < 0.05) factors.batterSeason = -5;
+    else if(sBBRate < 0.07) factors.batterSeason = -2;
+    else factors.batterSeason = 0;
+  }
+  score += factors.batterSeason;
+
+  // 4. Batter career BB% (weight: low — stabilizing factor)
+  factors.batterCareer = 0;
+  if(batterCareerBB){
+    var cRate = batterCareerBB.bbRate;
+    if(cRate >= 0.12) factors.batterCareer = 4;
+    else if(cRate >= 0.10) factors.batterCareer = 2;
+    else if(cRate < 0.05) factors.batterCareer = -4;
+    else if(cRate < 0.07) factors.batterCareer = -2;
+    else factors.batterCareer = 0;
+  }
+  score += factors.batterCareer;
+
+  // 5. Pitcher recent BB% trend (last 5 starts) (weight: high)
+  factors.pitcherRecent = 0;
+  if(pitcherRecentBB){
+    var prRate = pitcherRecentBB.bbRate;
+    if(prRate >= 0.12) factors.pitcherRecent = 10;
+    else if(prRate >= 0.09) factors.pitcherRecent = 6;
+    else if(prRate >= 0.07) factors.pitcherRecent = 3;
+    else if(prRate < 0.03) factors.pitcherRecent = -8;
+    else if(prRate < 0.05) factors.pitcherRecent = -4;
+    else factors.pitcherRecent = 0;
+  }
+  score += factors.pitcherRecent;
+
+  // 6. Pitcher season BB% (weight: medium)
+  factors.pitcherSeason = 0;
+  if(pitcherSeasonStat){
+    var pBB9 = parseFloat(pitcherSeasonStat.baseOnBallsPer9Inn)||0;
+    if(pBB9 >= 4.5) factors.pitcherSeason = 8;
+    else if(pBB9 >= 3.5) factors.pitcherSeason = 4;
+    else if(pBB9 >= 2.8) factors.pitcherSeason = 1;
+    else if(pBB9 < 1.5) factors.pitcherSeason = -6;
+    else if(pBB9 < 2.0) factors.pitcherSeason = -3;
+    else factors.pitcherSeason = 0;
+  }
+  score += factors.pitcherSeason;
+
+  // 7. Pitcher career BB tendency (weight: low — stabilizer)
+  factors.pitcherCareer = 0;
+  if(pitcherCareerBB){
+    var pcBB9 = pitcherCareerBB.bb9||0;
+    if(pcBB9 >= 4.0) factors.pitcherCareer = 4;
+    else if(pcBB9 >= 3.2) factors.pitcherCareer = 2;
+    else if(pcBB9 < 1.8) factors.pitcherCareer = -4;
+    else if(pcBB9 < 2.2) factors.pitcherCareer = -2;
+    else factors.pitcherCareer = 0;
+  }
+  score += factors.pitcherCareer;
+
+  return {score:Math.max(0, Math.min(99, Math.round(score))), factors:factors, bvpBBRate:bvpBBRate};
+}
+
+function walkGrade(score){
+  if(score >= 80) return {grade:"A+",color:"#22c55e"};
+  if(score >= 70) return {grade:"A",color:"#4ade80"};
+  if(score >= 62) return {grade:"B+",color:"#86efac"};
+  if(score >= 55) return {grade:"B",color:C.blue};
+  if(score >= 45) return {grade:"C",color:C.subtext};
+  if(score >= 35) return {grade:"D",color:"#fca5a5"};
+  return {grade:"F",color:"#ef4444"};
+}
+
 /* ─── PrizePicks Fantasy Score Calculator ─── */
 function computeFantasyScore(boxStats){
   if(!boxStats) return 0;
@@ -1347,9 +1559,10 @@ function TopEdgesBanner({matchups}){
 /* ─────────────────────────────────────────────── */
 /* ─── HOME PAGE: League-Wide Edge Scanner ────── */
 /* ─────────────────────────────────────────────── */
-function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, scanState, onStartScan}){
+function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allWalkScores, scanState, onStartScan}){
   var topEdges = allEdges.filter(function(m){return m.edgeScore>=55;}).sort(function(a,b){return b.edgeScore-a.edgeScore;});
   var topWhiffs = allWhiffScores.filter(function(w){return w.score>=55;}).sort(function(a,b){return b.score-a.score;});
+  var topWalks = allWalkScores.filter(function(w){return w.walkScore>=55;}).sort(function(a,b){return b.walkScore-a.walkScore;});
 
   return(
     <div style={{padding:24,overflowY:"auto",height:"100%"}}>
@@ -1490,6 +1703,61 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
                 </div>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* Walk This Way */}
+      {topWalks.length>0&&(
+        <div className="fade-in" style={{marginBottom:32}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.blue}}>🚶 WALK THIS WAY</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>MOST LIKELY TO DRAW A WALK</div>
+            <div style={{
+              padding:"3px 10px",borderRadius:10,background:C.blue+"20",border:"1px solid "+C.blue+"40",
+              color:C.blue,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
+            }}>{topWalks.length}</div>
+          </div>
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+              <thead>
+                <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>WALK</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTER</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs PITCHER</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP BB</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP BB%</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP PA</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topWalks.map(function(w,idx){
+                  var wg=walkGrade(w.walkScore);
+                  return(
+                    <tr key={idx} style={{borderBottom:"1px solid "+C.border,cursor:"pointer",transition:"background 0.1s"}}
+                      onMouseOver={function(e){e.currentTarget.style.background="#1a2234";}}
+                      onMouseOut={function(e){e.currentTarget.style.background="transparent";}}
+                      onClick={function(){onSelectGame(w.gamePk);}}>
+                      <td style={{padding:"10px 8px"}}>
+                        <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
+                          background:wg.color+"18",border:"1px solid "+wg.color+"40",color:wg.color}}>
+                          {wg.grade} <span style={{fontSize:9,color:C.muted}}>{w.walkScore}</span>
+                        </span>
+                      </td>
+                      <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{w.batter.fullName}</td>
+                      <td style={{padding:"10px 8px",color:C.muted}}>{w.batterTeam||"—"}</td>
+                      <td style={{padding:"10px 8px",color:C.subtext}}>{w.pitcher.fullName}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:w.bvpBB>=3?C.green:w.bvpBB>=1?C.text:C.muted}}>{w.bvpBB}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:w.bvpBBRate>=0.14?C.green:w.bvpBBRate>=0.08?C.text:C.muted}}>{(w.bvpBBRate*100).toFixed(1)}%</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",color:C.muted}}>{w.bvpPA}</td>
+                      <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{w.gameLabel||"—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
@@ -1654,6 +1922,7 @@ function App(){
   // League-wide scan state
   const [allEdges,setAllEdges]=_s([]);
   const [allWhiffScores,setAllWhiffScores]=_s([]);
+  const [allWalkScores,setAllWalkScores]=_s([]);
   const [scanState,setScanState]=_s("idle"); // "idle" | "scanning" | "done"
   const scanAbort=ref_(false);
   const [whiffScores,setWhiffScores]=_s({});
@@ -1725,8 +1994,10 @@ function App(){
     setScanState("scanning");
     setAllEdges([]);
     setAllWhiffScores([]);
+    setAllWalkScores([]);
     var accumulated=[];
     var whiffAccum=[];
+    var walkAccum=[];
 
     for(var gi=0;gi<games.length;gi++){
       if(scanAbort.current) break;
@@ -1819,15 +2090,73 @@ function App(){
           whiffAccum.push({pitcher:awayPitcher, score:awayWhiffResult.score, gamePk:game.gamePk, gameLabel:gameLabel,
             team:awayAbbr, oppTeam:homeAbbr, k9:aK9, projectedIP:aExpIP, projectedK:aProjK, seasonStat:awaySeasonStat});
         }
+
+        // Walk scanning for this game
+        try{
+          // Cache pitcher BB data per game (avoid refetching)
+          var pitcherBBCache = {};
+
+          if(homePitcher){
+            var hpSeasonForWalk = homeSeasonStat || await getSeasonStats(homePitcher.id,"pitching");
+            var hpRecentBB = await getPitcherRecentBBRate(homePitcher.id);
+            var hpCareerBB = await getPitcherCareerBBRate(homePitcher.id);
+
+            for(var wi=0;wi<homeMatchupsForWhiff.length;wi++){
+              var wBatter = homeMatchupsForWhiff[wi];
+              if(!wBatter.stat) continue;
+              var wBatterSeason = await getSeasonStats(wBatter.batter.id,"hitting");
+              var wBatterRecent = await getBatterRecentBBRate(wBatter.batter.id);
+              var wBatterCareer = await getBatterCareerBBRate(wBatter.batter.id);
+              var ws = computeWalkScore(wBatter.stat, wBatterSeason, wBatterRecent, wBatterCareer, hpSeasonForWalk, hpRecentBB, hpCareerBB);
+              if(ws.score >= 50){
+                walkAccum.push({
+                  batter:wBatter.batter, pitcher:homePitcher,
+                  batterTeam:awayAbbr, pitcherTeam:homeAbbr,
+                  walkScore:ws.score, factors:ws.factors, bvpBBRate:ws.bvpBBRate,
+                  bvpBB:parseInt(wBatter.stat.baseOnBalls)||0,
+                  bvpPA:parseInt(wBatter.stat.plateAppearances)||0,
+                  gamePk:game.gamePk, gameLabel:gameLabel
+                });
+              }
+            }
+          }
+
+          if(awayPitcher){
+            var apSeasonForWalk = awaySeasonStat || await getSeasonStats(awayPitcher.id,"pitching");
+            var apRecentBB = await getPitcherRecentBBRate(awayPitcher.id);
+            var apCareerBB = await getPitcherCareerBBRate(awayPitcher.id);
+
+            for(var wi2=0;wi2<awayMatchupsForWhiff.length;wi2++){
+              var wBatter2 = awayMatchupsForWhiff[wi2];
+              if(!wBatter2.stat) continue;
+              var wBatterSeason2 = await getSeasonStats(wBatter2.batter.id,"hitting");
+              var wBatterRecent2 = await getBatterRecentBBRate(wBatter2.batter.id);
+              var wBatterCareer2 = await getBatterCareerBBRate(wBatter2.batter.id);
+              var ws2 = computeWalkScore(wBatter2.stat, wBatterSeason2, wBatterRecent2, wBatterCareer2, apSeasonForWalk, apRecentBB, apCareerBB);
+              if(ws2.score >= 50){
+                walkAccum.push({
+                  batter:wBatter2.batter, pitcher:awayPitcher,
+                  batterTeam:homeAbbr, pitcherTeam:awayAbbr,
+                  walkScore:ws2.score, factors:ws2.factors, bvpBBRate:ws2.bvpBBRate,
+                  bvpBB:parseInt(wBatter2.stat.baseOnBalls)||0,
+                  bvpPA:parseInt(wBatter2.stat.plateAppearances)||0,
+                  gamePk:game.gamePk, gameLabel:gameLabel
+                });
+              }
+            }
+          }
+        }catch(walkErr){}
       }catch(e){
         // skip game on error, continue scanning
       }
       // Update state after each game so user sees progress
       setAllEdges(accumulated.slice());
       setAllWhiffScores(whiffAccum.slice());
+      setAllWalkScores(walkAccum.slice());
     }
     setAllEdges(accumulated.slice());
     setAllWhiffScores(whiffAccum.slice());
+    setAllWalkScores(walkAccum.slice());
     setScanState("done");
 
     // ── Snapshot: freeze today's pre-game scores for results comparison ──
@@ -2560,6 +2889,7 @@ function App(){
               onSelectGame={handleSelectGameFromHome}
               allEdges={allEdges}
               allWhiffScores={allWhiffScores}
+              allWalkScores={allWalkScores}
               scanState={scanState}
               onStartScan={scanAllGames}
             />
