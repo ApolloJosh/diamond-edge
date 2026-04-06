@@ -429,6 +429,16 @@ function whiffGrade(score){
   return {grade:"F",color:"#ef4444"};
 }
 
+function walkGrade(score){
+  if(score >= 80) return {grade:"A+",color:"#06b6d4"};
+  if(score >= 70) return {grade:"A",color:"#22d3ee"};
+  if(score >= 62) return {grade:"B+",color:"#67e8f9"};
+  if(score >= 55) return {grade:"B",color:C.blue};
+  if(score >= 45) return {grade:"C",color:C.subtext};
+  if(score >= 35) return {grade:"D",color:"#fca5a5"};
+  return {grade:"F",color:"#ef4444"};
+}
+
 /* ─── Walk Score Engine ─── */
 async function getBatterRecentBBRate(playerId){
   try{
@@ -1917,7 +1927,7 @@ function App(){
   const [resultsData, setResultsData] = _s(null);
   const [resultsLoading, setResultsLoading] = _s(false);
   const [resultsProgress, setResultsProgress] = _s("");
-  const [resultsTab, setResultsTab] = _s("batters"); // "batters" | "pitchers"
+  const [resultsTab, setResultsTab] = _s("batters"); // "batters" | "pitchers" | "walks"
 
   // League-wide scan state
   const [allEdges,setAllEdges]=_s([]);
@@ -2182,7 +2192,17 @@ function App(){
           k9: w.k9||0, projectedIP: w.projectedIP||5.5, projectedK: w.projectedK||0
         };
       });
-      var snapshot = {date:today, batters:top15Snap, pitchers:pitcherSnap, savedAt:new Date().toISOString()};
+      // Top walk candidates
+      var walkSnap = walkAccum.filter(function(w){return w.walkScore>=55;}).sort(function(a,b){return b.walkScore-a.walkScore;}).map(function(w){
+        return {
+          batterId:w.batter.id, batterName:w.batter.fullName,
+          pitcherId:w.pitcher.id, pitcherName:w.pitcher.fullName,
+          batterTeam:w.batterTeam, pitcherTeam:w.pitcherTeam||"",
+          walkScore:w.walkScore, bvpBB:w.bvpBB, bvpPA:w.bvpPA, bvpBBRate:w.bvpBBRate,
+          gamePk:w.gamePk, gameLabel:w.gameLabel
+        };
+      });
+      var snapshot = {date:today, batters:top15Snap, pitchers:pitcherSnap, walks:walkSnap, savedAt:new Date().toISOString()};
       localStorage.setItem("de_snapshot_"+today, JSON.stringify(snapshot));
       // Clean up old snapshots (keep last 30 days)
       for(var si=0;si<localStorage.length;si++){
@@ -2270,6 +2290,17 @@ function App(){
             hitOver:p.hitProj||false
           };
         });
+        var crWalks = (cloudResults.walks||[]).map(function(w){
+          return {
+            batter:{id:w.batterId, fullName:w.batterName},
+            pitcher:{id:w.pitcherId||0, fullName:w.pitcherName||""},
+            batterTeam:w.batterTeam, pitcherTeam:w.pitcherTeam||"",
+            walkScore:w.walkScore, bvpBB:w.bvpBB||0, bvpPA:w.bvpPA||0, bvpBBRate:w.bvpBBRate||0,
+            gamePk:w.gamePk, gameLabel:w.gameLabel,
+            actualBB:w.actualBB||0, actualStats:w.actualBB!==undefined?{}:null,
+            gotWalk:(w.actualBB||0)>=1
+          };
+        });
 
         // Compute summaries from cloud results
         var crTotalFantasy=0, crHitCount=0, crBGradeBatters=0;
@@ -2296,7 +2327,11 @@ function App(){
           hitRate:crBGradeBatters>0?((crHitCount/crBGradeBatters)*100).toFixed(0):"0",
           pitcherOverRate:crPitchersWithStats>0?((crPitcherOver/crPitchersWithStats)*100).toFixed(0):"0",
           avgPitcherK:crPitchersWithStats>0?(crTotalK/crPitchersWithStats).toFixed(1):"0",
-          totalPitcherK:crTotalK, pitchersWithStats:crPitchersWithStats, pitcherOverCount:crPitcherOver
+          totalPitcherK:crTotalK, pitchersWithStats:crPitchersWithStats, pitcherOverCount:crPitcherOver,
+          walkPicks:crWalks,
+          walkHitRate:crWalks.length>0?((crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length/Math.max(crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length,1))*100).toFixed(0):"0",
+          walkHitCount:crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length,
+          bGradeWalks:crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length
         });
 
         // Save to season history
@@ -2304,7 +2339,9 @@ function App(){
           date:dateStr,
           batterHitRate:crBGradeBatters>0?parseFloat(((crHitCount/crBGradeBatters)*100).toFixed(1)):0,
           pitcherOverRate:crPitchersWithStats>0?parseFloat(((crPitcherOver/crPitchersWithStats)*100).toFixed(1)):0,
-          batterCount:crBGradeBatters, pitcherCount:crPitchersWithStats
+          batterCount:crBGradeBatters, pitcherCount:crPitchersWithStats,
+          walkHitRate:crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length>0?parseFloat(((crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length/crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length)*100).toFixed(1)):0,
+          walkCount:crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length
         };
         setSeasonHistory(function(prev){
           var filtered=prev.filter(function(e){return e.date!==dateStr;});
@@ -2377,8 +2414,24 @@ function App(){
             });
           }
         }
+
+        // Restore walk picks from snapshot
+        var allWalkPicks = [];
+        if(snapshot.walks && snapshot.walks.length > 0){
+          for(var swi=0;swi<snapshot.walks.length;swi++){
+            var sw = snapshot.walks[swi];
+            allWalkPicks.push({
+              batter:{id:sw.batterId, fullName:sw.batterName},
+              pitcher:{id:sw.pitcherId, fullName:sw.pitcherName},
+              batterTeam:sw.batterTeam, pitcherTeam:sw.pitcherTeam||"",
+              walkScore:sw.walkScore, bvpBB:sw.bvpBB||0, bvpPA:sw.bvpPA||0, bvpBBRate:sw.bvpBBRate||0,
+              gamePk:sw.gamePk, gameLabel:sw.gameLabel
+            });
+          }
+        }
       } else {
         // ═══ NO SNAPSHOT — RECALCULATE (fallback for older dates) ═══
+        var allWalkPicks = [];
         for(var gi=0; gi<dateGames.length; gi++){
           var game = dateGames[gi];
           var homeId = game.teams.home.team.id;
@@ -2494,6 +2547,7 @@ function App(){
       var uniqueGames = {};
       for(var p of top15) uniqueGames[p.gamePk] = true;
       for(var pp of allPitcherPicks) uniqueGames[pp.gamePk] = true;
+      for(var wp of allWalkPicks) uniqueGames[wp.gamePk] = true;
       var boxScores = {};
       var bsFetches = Object.keys(uniqueGames).map(function(gpk){
         return getGameBoxScore(gpk).then(function(bs){ boxScores[gpk] = bs; });
@@ -2554,6 +2608,28 @@ function App(){
         pPick.hitOver = pPick.actualStats ? (pPick.actualK >= pPick.projectedK) : false;
       }
 
+      // Match walk picks to actual box score
+      for(var wk=0; wk<allWalkPicks.length; wk++){
+        var wPick = allWalkPicks[wk];
+        var wBs = boxScores[wPick.gamePk];
+        wPick.actualBB = 0;
+        wPick.actualStats = null;
+        wPick.gotWalk = false;
+        if(wBs){
+          var wAllPlayers = Object.assign({},
+            wBs.teams && wBs.teams.home && wBs.teams.home.players ? wBs.teams.home.players : {},
+            wBs.teams && wBs.teams.away && wBs.teams.away.players ? wBs.teams.away.players : {}
+          );
+          var wPlayerKey = "ID" + wPick.batter.id;
+          var wData = wAllPlayers[wPlayerKey];
+          if(wData && wData.stats && wData.stats.batting){
+            wPick.actualStats = wData.stats.batting;
+            wPick.actualBB = parseInt(wData.stats.batting.baseOnBalls)||0;
+            wPick.gotWalk = wPick.actualBB >= 1;
+          }
+        }
+      }
+
       // Pitcher summary stats (B grade = 55+ whiff score only)
       var pitcherOverCount = 0;
       var totalPitcherK = 0;
@@ -2563,6 +2639,16 @@ function App(){
           pitchersWithStats++;
           totalPitcherK += allPitcherPicks[pm].actualK;
           if(allPitcherPicks[pm].hitOver) pitcherOverCount++;
+        }
+      }
+
+      // Walk summary stats (B grade = 55+ walk score only)
+      var walkHitCount = 0;
+      var bGradeWalks = 0;
+      for(var wm=0; wm<allWalkPicks.length; wm++){
+        if(allWalkPicks[wm].walkScore >= 55 && allWalkPicks[wm].actualStats){
+          bGradeWalks++;
+          if(allWalkPicks[wm].gotWalk) walkHitCount++;
         }
       }
 
@@ -2590,7 +2676,11 @@ function App(){
         avgPitcherK: pitchersWithStats > 0 ? (totalPitcherK / pitchersWithStats).toFixed(1) : "0",
         totalPitcherK: totalPitcherK,
         pitchersWithStats: pitchersWithStats,
-        pitcherOverCount: pitcherOverCount
+        pitcherOverCount: pitcherOverCount,
+        walkPicks: allWalkPicks,
+        walkHitRate: bGradeWalks > 0 ? ((walkHitCount / bGradeWalks) * 100).toFixed(0) : "0",
+        walkHitCount: walkHitCount,
+        bGradeWalks: bGradeWalks
       });
 
       // Auto-save to season history (state + localStorage)
@@ -2599,7 +2689,9 @@ function App(){
         batterHitRate: bGradeBatters > 0 ? parseFloat(((hitCount / bGradeBatters) * 100).toFixed(1)) : 0,
         pitcherOverRate: pitchersWithStats > 0 ? parseFloat(((pitcherOverCount / pitchersWithStats) * 100).toFixed(1)) : 0,
         batterCount: bGradeBatters,
-        pitcherCount: pitchersWithStats
+        pitcherCount: pitchersWithStats,
+        walkHitRate: bGradeWalks > 0 ? parseFloat(((walkHitCount / bGradeWalks) * 100).toFixed(1)) : 0,
+        walkCount: bGradeWalks
       };
       setSeasonHistory(function(prev){
         var filtered = prev.filter(function(e){ return e.date !== dateStr; });
@@ -3098,6 +3190,13 @@ function App(){
                       color:resultsTab==="pitchers"?"#000":C.muted}}>
                     PITCHERS
                   </button>
+                  <button onClick={function(){setResultsTab("walks");}}
+                    style={{padding:"10px 28px",fontSize:13,fontWeight:600,letterSpacing:2,cursor:"pointer",
+                      fontFamily:"'Bebas Neue',sans-serif",border:"none",
+                      background:resultsTab==="walks"?C.blue:"transparent",
+                      color:resultsTab==="walks"?"#000":C.muted}}>
+                    WALKS
+                  </button>
                 </div>
               </div>
 
@@ -3161,6 +3260,23 @@ function App(){
                       <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
                         <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>HIT PROJ K</div>
                         <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.pitcherOverRate||"0"}%</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {resultsTab==="walks"&&(
+                    <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>WALKS TRACKED</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.blue}}>{resultsData.walkPicks?resultsData.walkPicks.length:0}</div>
+                      </div>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>WALK HIT RATE</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.walkHitRate||"0"}%</div>
+                      </div>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>B-GRADE+ TRACKED</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.blue}}>{resultsData.bGradeWalks||0}</div>
                       </div>
                     </div>
                   )}
@@ -3279,6 +3395,60 @@ function App(){
                       </div>
                     )
                   )}
+
+                  {resultsTab==="walks"&&resultsData.walkPicks&&(
+                    resultsData.walkPicks.length>0?(
+                      <div style={{overflowX:"auto",marginBottom:20}}>
+                        <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                          <thead>
+                            <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RANK</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>WALK</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTER</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
+                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BvP BB%</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>ACTUAL BB</th>
+                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>WALKED?</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {resultsData.walkPicks.map(function(wp,idx){
+                              var wg=walkGrade(wp.walkScore);
+                              var walkedColor = wp.gotWalk ? C.green : (wp.actualStats ? C.red : C.muted);
+                              var walkedText = wp.actualStats ? (wp.gotWalk ? "YES" : "NO") : "N/A";
+                              return(
+                                <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
+                                  <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
+                                  <td style={{padding:"10px 8px"}}>
+                                    <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
+                                      background:wg.color+"18",border:"1px solid "+wg.color+"40",color:wg.color}}>
+                                      {wg.grade} <span style={{fontSize:9,color:C.muted}}>{wp.walkScore}</span>
+                                    </span>
+                                  </td>
+                                  <td style={{padding:"10px 8px",color:C.text}}>{wp.batter.fullName||"Unknown"}</td>
+                                  <td style={{padding:"10px 8px",color:C.muted}}>{wp.batterTeam||"—"}</td>
+                                  <td style={{padding:"10px 8px",color:C.subtext}}>{wp.pitcher.fullName||"—"}</td>
+                                  <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{wp.gameLabel||"—"}</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",color:wp.bvpBBRate>=0.14?C.green:C.text}}>{(wp.bvpBBRate*100).toFixed(1)}%</td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,
+                                    color:wp.actualStats?(wp.actualBB>=2?C.green:wp.actualBB>=1?C.blue:C.muted):C.muted}}>
+                                    {wp.actualStats?wp.actualBB:"DNP"}
+                                  </td>
+                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:walkedColor}}>{walkedText}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    ):(
+                      <div style={{textAlign:"center",padding:32,color:C.muted}}>
+                        <div style={{fontSize:13}}>No walk data for this date</div>
+                      </div>
+                    )
+                  )}
                 </>
               )}
 
@@ -3322,6 +3492,10 @@ function App(){
                       <div style={{width:24,height:3,background:C.purple,borderRadius:2}}></div>
                       <span style={{fontSize:11,color:C.muted}}>Pitcher Hit Proj K %</span>
                     </div>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{width:24,height:3,background:C.blue,borderRadius:2}}></div>
+                      <span style={{fontSize:11,color:C.muted}}>Walk Hit Rate %</span>
+                    </div>
                   </div>
 
                   {/* SVG Chart */}
@@ -3333,6 +3507,7 @@ function App(){
                     for(var i=0;i<data.length;i++){
                       if(data[i].batterHitRate>maxVal) maxVal=data[i].batterHitRate;
                       if(data[i].pitcherOverRate>maxVal) maxVal=data[i].pitcherOverRate;
+                      if((data[i].walkHitRate||0)>maxVal) maxVal=data[i].walkHitRate;
                     }
                     maxVal=Math.max(maxVal,50); // minimum 50% scale
                     maxVal=Math.ceil(maxVal/10)*10; // round up to nearest 10
@@ -3342,12 +3517,15 @@ function App(){
                     // Build line paths
                     var batterPath="";
                     var pitcherPath="";
+                    var walkPath="";
                     for(var j=0;j<data.length;j++){
                       var x=padL+(data.length>1?j*xStep:chartW/2);
                       var yB=yScale(data[j].batterHitRate);
                       var yP=yScale(data[j].pitcherOverRate);
+                      var yW=yScale(data[j].walkHitRate||0);
                       batterPath+=(j===0?"M":"L")+x.toFixed(1)+","+yB.toFixed(1);
                       pitcherPath+=(j===0?"M":"L")+x.toFixed(1)+","+yP.toFixed(1);
+                      walkPath+=(j===0?"M":"L")+x.toFixed(1)+","+yW.toFixed(1);
                     }
 
                     // Grid lines
@@ -3372,6 +3550,8 @@ function App(){
                         <path d={batterPath} fill="none" stroke={C.gold} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"/>
                         {/* Pitcher line */}
                         <path d={pitcherPath} fill="none" stroke={C.purple} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"/>
+                        {/* Walk line */}
+                        <path d={walkPath} fill="none" stroke={C.blue} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" strokeDasharray="6,3"/>
                         {/* Data points + labels */}
                         {data.map(function(d,idx){
                           var x=padL+(data.length>1?idx*xStep:chartW/2);
@@ -3381,10 +3561,12 @@ function App(){
                           return React.createElement("g",{key:"pt-"+idx},
                             React.createElement("circle",{cx:x,cy:yB,r:4,fill:C.gold,stroke:"#0d1220",strokeWidth:2}),
                             React.createElement("circle",{cx:x,cy:yP,r:4,fill:C.purple,stroke:"#0d1220",strokeWidth:2}),
+                            React.createElement("circle",{cx:x,cy:yScale(d.walkHitRate||0),r:4,fill:C.blue,stroke:"#0d1220",strokeWidth:2}),
                             React.createElement("text",{x:x,y:H-padB+16,fill:C.muted,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace",
                               transform:data.length>10?"rotate(-45,"+x+","+(H-padB+16)+")":""},labelDate),
                             React.createElement("text",{x:x,y:yB-10,fill:C.gold,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},d.batterHitRate.toFixed(0)+"%"),
-                            React.createElement("text",{x:x,y:yP-10,fill:C.purple,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},d.pitcherOverRate.toFixed(0)+"%")
+                            React.createElement("text",{x:x,y:yP-10,fill:C.purple,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},d.pitcherOverRate.toFixed(0)+"%"),
+                            React.createElement("text",{x:x,y:yScale(d.walkHitRate||0)-10,fill:C.blue,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},(d.walkHitRate||0).toFixed(0)+"%")
                           );
                         })}
                       </svg>
@@ -3406,6 +3588,12 @@ function App(){
                       </div>
                     </div>
                     <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG WALK HIT RATE</div>
+                      <div style={{fontSize:24,fontWeight:600,color:C.blue}}>
+                        {(seasonHistory.reduce(function(s,d){return s+(d.walkHitRate||0);},0)/seasonHistory.length).toFixed(1)}%
+                      </div>
+                    </div>
+                    <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
                       <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>DAYS TRACKED</div>
                       <div style={{fontSize:24,fontWeight:600,color:C.text}}>{seasonHistory.length}</div>
                     </div>
@@ -3419,6 +3607,7 @@ function App(){
                           <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>DATE</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:500,letterSpacing:1}}>BATTER HIT %</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>PITCHER HIT PROJ K %</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>WALK HIT %</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTERS</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHERS</th>
                         </tr>
@@ -3430,6 +3619,7 @@ function App(){
                               <td style={{padding:"8px",color:C.text}}>{d.date}</td>
                               <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:d.batterHitRate>=60?C.green:d.batterHitRate>=40?C.gold:C.red}}>{d.batterHitRate.toFixed(1)}%</td>
                               <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:d.pitcherOverRate>=60?C.green:d.pitcherOverRate>=40?C.purple:C.red}}>{d.pitcherOverRate.toFixed(1)}%</td>
+                              <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:(d.walkHitRate||0)>=60?C.green:(d.walkHitRate||0)>=40?C.blue:C.red}}>{(d.walkHitRate||0).toFixed(1)}%</td>
                               <td style={{padding:"8px",textAlign:"center",color:C.muted}}>{d.batterCount}</td>
                               <td style={{padding:"8px",textAlign:"center",color:C.muted}}>{d.pitcherCount}</td>
                             </tr>
