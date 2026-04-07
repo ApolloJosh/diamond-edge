@@ -10,6 +10,9 @@ on:
         description: 'Date to process results for (YYYY-MM-DD), defaults to yesterday'
         required: false
 
+permissions:
+  contents: write
+
 jobs:
   results:
     runs-on: ubuntu-latest
