@@ -152,12 +152,13 @@ async function main() {
     });
   }
 
-  const bGradeBatters = resultBatters.filter(b => b.edgeScore >= 55).length;
-  const bGradePitchers = resultPitchers.filter(p => p.whiffScore >= 55).length;
+  // Only count players who actually played (have actualStats) for hit rate calculations
+  const qualifiedBatters = resultBatters.filter(b => b.edgeScore >= 55 && b.actualStats);
+  const bGradeBatters = qualifiedBatters.length;
+  const bGradePitchers = resultPitchers.filter(p => p.whiffScore >= 55 && p.actualStats).length;
 
   let totalFantasy = 0;
   let hitCount = 0;
-  const qualifiedBatters = resultBatters.filter(b => b.edgeScore >= 55);
   for (const b of qualifiedBatters) {
     totalFantasy += b.fantasyScore;
     if (b.fantasyScore > 0) hitCount++;
@@ -166,7 +167,7 @@ async function main() {
   const hitRate = qualifiedBatters.length > 0 ? Math.round((hitCount / qualifiedBatters.length) * 100) : 0;
 
   let projHitCount = 0;
-  const qualifiedPitchers = resultPitchers.filter(p => p.whiffScore >= 55);
+  const qualifiedPitchers = resultPitchers.filter(p => p.whiffScore >= 55 && p.actualStats);
   for (const p of qualifiedPitchers) {
     if (p.hitProj) projHitCount++;
   }
