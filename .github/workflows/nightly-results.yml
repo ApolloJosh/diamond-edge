@@ -1,0 +1,39 @@
+name: Diamond Edge Nightly Results
+
+on:
+  schedule:
+    # 1:00 AM CT = 06:00 UTC (after all games finish)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to process results for (YYYY-MM-DD), defaults to yesterday'
+        required: false
+
+jobs:
+  results:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run results
+        run: |
+          if [ -n "${{ inputs.date }}" ]; then
+            DATE="${{ inputs.date }}"
+          else
+            DATE=$(TZ=America/Chicago date -d "yesterday" +%Y-%m-%d)
+          fi
+          echo "Processing results for $DATE"
+          node scripts/results.js "$DATE"
+
+      - name: Commit results
+        run: |
+          git config user.name "Diamond Edge Bot"
+          git config user.email "bot@diamond-edge.app"
+          git add results/
+          git diff --staged --quiet || git commit -m "Nightly results: $(TZ=America/Chicago date -d 'yesterday' +%Y-%m-%d)"
+          git push
