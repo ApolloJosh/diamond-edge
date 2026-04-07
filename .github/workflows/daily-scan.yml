@@ -1,0 +1,86 @@
+name: Diamond Edge Daily Scan
+
+on:
+  schedule:
+    # 10:30 AM CT = 15:30 UTC
+    - cron: '30 15 * * *'
+    # 4:30 PM CT = 21:30 UTC
+    - cron: '30 21 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to scan (YYYY-MM-DD)'
+        required: false
+      run_results:
+        description: 'Run results instead of scan'
+        type: boolean
+        default: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.run_results }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Determine scan type
+        id: scantype
+        run: |
+          HOUR=$(TZ=America/Chicago date +%H)
+          if [ "$HOUR" -ge 14 ]; then
+            echo "afternoon=true" >> $GITHUB_OUTPUT
+          else
+            echo "afternoon=false" >> $GITHUB_OUTPUT
+          fi
+          if [ -n "${{ inputs.date }}" ]; then
+            echo "date=${{ inputs.date }}" >> $GITHUB_OUTPUT
+          else
+            echo "date=$(TZ=America/Chicago date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run scan
+        run: |
+          DATE="${{ steps.scantype.outputs.date }}"
+          if [ "${{ steps.scantype.outputs.afternoon }}" = "true" ]; then
+            node scripts/scan.js "$DATE" --afternoon
+          else
+            node scripts/scan.js "$DATE"
+          fi
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "Diamond Edge Bot"
+          git config user.email "bot@diamond-edge.app"
+          git add snapshots/ results/
+          git diff --staged --quiet || git commit -m "Auto-scan: ${{ steps.scantype.outputs.date }}"
+          git push
+
+  results:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.run_results }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run results
+        run: |
+          DATE="${{ inputs.date || '' }}"
+          if [ -z "$DATE" ]; then
+            DATE=$(TZ=America/Chicago date +%Y-%m-%d)
+          fi
+          node scripts/results.js "$DATE"
+
+      - name: Commit results
+        run: |
+          git config user.name "Diamond Edge Bot"
+          git config user.email "bot@diamond-edge.app"
+          git add results/
+          git diff --staged --quiet || git commit -m "Results: $(TZ=America/Chicago date +%Y-%m-%d)"
+          git push
