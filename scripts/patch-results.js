@@ -1,4 +1,15 @@
+// patch-results.js — One-time script to reprocess all existing results files
+// Re-fetches box scores and recalculates summaries with:
+//   - DNP players excluded from hit rate denominators
+//   - Walk data added (if snapshots contain walks)
+//   - Consistent summary math across all dates
+//
+// Usage: node scripts/patch-results.js
+//   Processes every date listed in results/index.json
+
 const BASE = "https://statsapi.mlb.com/api/v1";
+const fs = require('fs');
+const path = require('path');
 
 async function fetchJSON(url) {
   const resp = await fetch(url);
@@ -29,35 +40,32 @@ function computeFantasyScore(stats) {
   return score;
 }
 
-async function main() {
-  const args = process.argv.slice(2);
-  const dateStr = args[0] || new Date().toISOString().slice(0, 10);
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-  const fs = require('fs');
-  const path = require('path');
-
+async function patchDate(dateStr) {
   const snapshotDir = path.join(__dirname, '..', 'snapshots');
+  const resultsDir = path.join(__dirname, '..', 'results');
   const snapshotPath = path.join(snapshotDir, dateStr + '.json');
 
   if (!fs.existsSync(snapshotPath)) {
-    console.log(`Snapshot not found for ${dateStr}`);
-    process.exit(0);
+    console.log(`  [${dateStr}] No snapshot found — skipping`);
+    return false;
   }
 
   const snapshot = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'));
-  console.log(`Processing results for ${dateStr}...`);
-  console.log(`  ${snapshot.batters.length} batters, ${snapshot.pitchers.length} pitchers, ${(snapshot.walks || []).length} walks`);
+  console.log(`  [${dateStr}] Snapshot: ${snapshot.batters.length} batters, ${snapshot.pitchers.length} pitchers, ${(snapshot.walks || []).length} walks`);
 
-  // Collect unique game PKs from all categories
+  // Collect unique game PKs
   const uniqueGamePks = new Set();
   for (const b of snapshot.batters) uniqueGamePks.add(b.gamePk);
   for (const p of snapshot.pitchers) uniqueGamePks.add(p.gamePk);
   for (const w of (snapshot.walks || [])) uniqueGamePks.add(w.gamePk);
 
+  // Fetch box scores
   const boxScores = {};
   for (const gamePk of uniqueGamePks) {
-    console.log(`  Fetching box score for game ${gamePk}...`);
     boxScores[gamePk] = await getGameBoxScore(gamePk);
+    await delay(200); // be nice to MLB API
   }
 
   // --- BATTERS ---
@@ -170,7 +178,7 @@ async function main() {
       }
     }
 
-    const actualBBWalk = walkFound ? (parseInt(walkFound.baseOnBalls) || 0) : 0;
+    const actualBB = walkFound ? (parseInt(walkFound.baseOnBalls) || 0) : 0;
 
     resultWalks.push({
       batterId: walk.batterId,
@@ -185,13 +193,13 @@ async function main() {
       bvpBBRate: walk.bvpBBRate || 0,
       gamePk: walk.gamePk,
       gameLabel: walk.gameLabel,
-      actualBB: actualBBWalk,
+      actualBB: actualBB,
       actualStats: walkFound ? true : null,
-      gotWalk: walkFound ? (actualBBWalk >= 1) : false
+      gotWalk: walkFound ? (actualBB >= 1) : false
     });
   }
 
-  // --- SUMMARY (DNP excluded from all denominators) ---
+  // --- SUMMARY (DNP players excluded) ---
   const qualifiedBatters = resultBatters.filter(b => b.edgeScore >= 55 && b.actualStats);
   const bGradeBatters = qualifiedBatters.length;
 
@@ -238,29 +246,58 @@ async function main() {
     walks: resultWalks
   };
 
-  const resultsDir = path.join(__dirname, '..', 'results');
   if (!fs.existsSync(resultsDir)) fs.mkdirSync(resultsDir, { recursive: true });
-  const resultsPath = path.join(resultsDir, dateStr + '.json');
+  fs.writeFileSync(path.join(resultsDir, dateStr + '.json'), JSON.stringify(results, null, 2));
 
-  fs.writeFileSync(resultsPath, JSON.stringify(results, null, 2));
-  console.log(`\nResults saved: ${resultsPath}`);
-  console.log(`  ${resultBatters.length} batters (${bGradeBatters} B-grade+ played), ${resultPitchers.length} pitchers (${bGradePitchers} B-grade+ played)`);
-  console.log(`  Avg Fantasy: ${avgFantasy}, Hit Rate: ${hitRate}%`);
-  console.log(`  Pitcher Hit Proj Rate: ${pitcherHitProjRate}%`);
-  console.log(`  Walks: ${resultWalks.length} total (${bGradeWalks} B-grade+ played, ${walkHitRate}% walked)`);
+  console.log(`  [${dateStr}] ✓ Batters: ${bGradeBatters} B-grade (${hitRate}% hit) | Pitchers: ${bGradePitchers} B-grade (${pitcherHitProjRate}% hit proj) | Walks: ${bGradeWalks} B-grade (${walkHitRate}% walked)`);
+  return true;
+}
 
-  // Update results index
+async function main() {
+  const resultsDir = path.join(__dirname, '..', 'results');
   const indexPath = path.join(resultsDir, 'index.json');
-  let index = [];
+
+  // Get all dates — from index.json + any snapshot files not in index
+  let dates = [];
   if (fs.existsSync(indexPath)) {
-    try { index = JSON.parse(fs.readFileSync(indexPath, 'utf8')); } catch(e) {}
+    try { dates = JSON.parse(fs.readFileSync(indexPath, 'utf8')); } catch(e) {}
   }
-  if (!index.includes(dateStr)) {
-    index.push(dateStr);
-    index.sort();
+
+  // Also check for snapshot files that might not be in the index yet
+  const snapshotDir = path.join(__dirname, '..', 'snapshots');
+  if (fs.existsSync(snapshotDir)) {
+    const snapshotFiles = fs.readdirSync(snapshotDir).filter(f => f.endsWith('.json'));
+    for (const f of snapshotFiles) {
+      const d = f.replace('.json', '');
+      if (!dates.includes(d)) dates.push(d);
+    }
   }
-  fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
-  console.log(`Results index updated: ${index.length} dates tracked`);
+
+  dates.sort();
+
+  if (dates.length === 0) {
+    console.log("No dates to patch — no snapshots or results found.");
+    return;
+  }
+
+  console.log(`\n=== PATCHING ${dates.length} DATES ===\n`);
+
+  let patched = 0;
+  for (const dateStr of dates) {
+    const success = await patchDate(dateStr);
+    if (success) patched++;
+    await delay(500); // pause between dates
+  }
+
+  // Update index with all patched dates
+  if (patched > 0) {
+    const allResults = fs.readdirSync(resultsDir).filter(f => f.endsWith('.json') && f !== 'index.json');
+    const updatedIndex = allResults.map(f => f.replace('.json', '')).sort();
+    fs.writeFileSync(indexPath, JSON.stringify(updatedIndex, null, 2));
+    console.log(`\n=== DONE: Patched ${patched}/${dates.length} dates, index updated (${updatedIndex.length} dates) ===\n`);
+  } else {
+    console.log("\n=== No dates were patched (no snapshots found) ===\n");
+  }
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

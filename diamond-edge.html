@@ -1901,13 +1901,8 @@ function App(){
   const [showSeason,setShowSeason]=_s(true);
   const [showPark,setShowPark]=_s(true);
   const [page,setPage]=_s("home"); // "home" | "game" | "results" | "season"
-  // Load season history from localStorage on startup
-  var _initSeasonHistory = [];
-  try{
-    var _shJson = localStorage.getItem("de_season_history");
-    if(_shJson) _initSeasonHistory = JSON.parse(_shJson);
-  }catch(e){}
-  const [seasonHistory, setSeasonHistory] = _s(_initSeasonHistory);
+  // Season history — populated from cloud results on startup (universal for all users)
+  const [seasonHistory, setSeasonHistory] = _s([]);
   const [sidebarOpen,setSidebarOpen]=_s(true);
 
   // Results page state
@@ -1942,48 +1937,36 @@ function App(){
     setResultsDate(yesterday.toISOString().slice(0, 10));
   },[]);
 
-  // Sync cloud results into season history on startup
+  // Build season history entirely from cloud results on startup (universal for all users)
   useEffect(function(){
     (async function(){
       try{
-        // Try to fetch results index
         var idxResp = await fetch("./results/index.json");
         if(!idxResp.ok) return;
-        var resultDates = await idxResp.json(); // ["2026-04-04","2026-04-05",...]
+        var resultDates = await idxResp.json();
         if(!Array.isArray(resultDates)||resultDates.length===0) return;
 
-        // Check which dates we're missing in season history
-        var existing = {};
-        try{
-          var sh = JSON.parse(localStorage.getItem("de_season_history")||"[]");
-          for(var i=0;i<sh.length;i++) existing[sh[i].date]=true;
-        }catch(e){}
-
-        var missing = resultDates.filter(function(d){return !existing[d];});
-        if(missing.length===0) return;
-
-        // Fetch missing results and add to history
-        for(var mi=0;mi<missing.length;mi++){
+        // Fetch all cloud results and build complete season history
+        var cloudHistory = [];
+        for(var mi=0;mi<resultDates.length;mi++){
           try{
-            var r = await fetch("./results/"+missing[mi]+".json");
+            var r = await fetch("./results/"+resultDates[mi]+".json");
             if(!r.ok) continue;
             var rd = await r.json();
             if(!rd.summary) continue;
-            setSeasonHistory(function(prev){
-              if(prev.some(function(e){return e.date===rd.date;})) return prev;
-              var updated = prev.concat([{
-                date:rd.date,
-                batterHitRate:rd.summary.hitRate||0,
-                pitcherOverRate:rd.summary.pitcherHitProjRate||0,
-                batterCount:rd.summary.bGradeBatters||0,
-                pitcherCount:rd.summary.bGradePitchers||0
-              }]);
-              updated.sort(function(a,b){return a.date.localeCompare(b.date);});
-              try{localStorage.setItem("de_season_history",JSON.stringify(updated));}catch(e){}
-              return updated;
+            cloudHistory.push({
+              date:rd.date,
+              batterHitRate:rd.summary.hitRate||0,
+              pitcherOverRate:rd.summary.pitcherHitProjRate||0,
+              batterCount:rd.summary.bGradeBatters||0,
+              pitcherCount:rd.summary.bGradePitchers||0,
+              walkHitRate:rd.summary.walkHitRate||0,
+              walkCount:rd.summary.bGradeWalks||0
             });
           }catch(e){}
         }
+        cloudHistory.sort(function(a,b){return a.date.localeCompare(b.date);});
+        setSeasonHistory(cloudHistory);
       }catch(e){}
     })();
   },[]);
@@ -2221,39 +2204,18 @@ function App(){
 
   async function loadResults(dateStr){
     setResultsLoading(true);
-    setResultsProgress("Loading games...");
+    setResultsProgress("Loading cloud results...");
     setResultsData(null);
     try{
-      var dateGames = await getGamesForDate(dateStr);
-      if(dateGames.length === 0){ setResultsData({picks:[], date:dateStr}); setResultsLoading(false); return; }
-
-      // ── Check for pre-game snapshot (cloud first, then localStorage) ──
-      var snapshot = null;
-      var usedSnapshot = false;
-      var snapshotSource = "";
-
-      // 1. Try cloud snapshot (GitHub Pages JSON)
-      try{
-        setResultsProgress("Checking cloud snapshot...");
-        var cloudSnap = await fetch("./snapshots/"+dateStr+".json");
-        if(cloudSnap.ok){
-          snapshot = await cloudSnap.json();
-          snapshotSource = "cloud";
-        }
-      }catch(e){}
-
-      // 2. Try cloud results (already processed by nightly job)
+      // ── Cloud results only — universal for all users ──
       var cloudResults = null;
       try{
         var cloudRes = await fetch("./results/"+dateStr+".json");
         if(cloudRes.ok) cloudResults = await cloudRes.json();
       }catch(e){}
 
-      // If cloud results exist, use them directly (fastest path — no box score fetching needed)
       if(cloudResults && cloudResults.batters && cloudResults.batters.length > 0){
-        usedSnapshot = true;
-        snapshotSource = "cloud-results";
-        setResultsProgress("Loading cloud results...");
+        setResultsProgress("Processing results...");
 
         var crPicks = cloudResults.batters.map(function(b){
           return {
@@ -2292,7 +2254,7 @@ function App(){
           };
         });
 
-        // Compute summaries from cloud results
+        // Compute summaries — only count players who actually played (have actualStats)
         var crTotalFantasy=0, crHitCount=0, crBGradeBatters=0;
         for(var ci=0;ci<crPicks.length;ci++){
           crTotalFantasy+=crPicks[ci].fantasyScore;
@@ -2309,6 +2271,13 @@ function App(){
             if(crPitchers[cpi].hitOver) crPitcherOver++;
           }
         }
+        var crWalkHit=0, crBGradeWalks=0;
+        for(var cwi=0;cwi<crWalks.length;cwi++){
+          if(crWalks[cwi].walkScore>=55&&crWalks[cwi].actualStats){
+            crBGradeWalks++;
+            if(crWalks[cwi].gotWalk) crWalkHit++;
+          }
+        }
 
         setResultsData({
           picks:crPicks, pitcherPicks:crPitchers, date:dateStr, usedSnapshot:true, snapshotSource:"cloud-results",
@@ -2319,379 +2288,18 @@ function App(){
           avgPitcherK:crPitchersWithStats>0?(crTotalK/crPitchersWithStats).toFixed(1):"0",
           totalPitcherK:crTotalK, pitchersWithStats:crPitchersWithStats, pitcherOverCount:crPitcherOver,
           walkPicks:crWalks,
-          walkHitRate:crWalks.length>0?((crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length/Math.max(crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length,1))*100).toFixed(0):"0",
-          walkHitCount:crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length,
-          bGradeWalks:crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length
+          walkHitRate:crBGradeWalks>0?((crWalkHit/crBGradeWalks)*100).toFixed(0):"0",
+          walkHitCount:crWalkHit,
+          bGradeWalks:crBGradeWalks
         });
 
-        // Save to season history
-        var crEntry={
-          date:dateStr,
-          batterHitRate:crBGradeBatters>0?parseFloat(((crHitCount/crBGradeBatters)*100).toFixed(1)):0,
-          pitcherOverRate:crPitchersWithStats>0?parseFloat(((crPitcherOver/crPitchersWithStats)*100).toFixed(1)):0,
-          batterCount:crBGradeBatters, pitcherCount:crPitchersWithStats,
-          walkHitRate:crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length>0?parseFloat(((crWalks.filter(function(w){return w.walkScore>=55&&w.gotWalk;}).length/crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length)*100).toFixed(1)):0,
-          walkCount:crWalks.filter(function(w){return w.walkScore>=55&&w.actualStats;}).length
-        };
-        setSeasonHistory(function(prev){
-          var filtered=prev.filter(function(e){return e.date!==dateStr;});
-          filtered.push(crEntry);
-          filtered.sort(function(a,b){return a.date.localeCompare(b.date);});
-          try{localStorage.setItem("de_season_history",JSON.stringify(filtered));}catch(e){}
-          return filtered;
-        });
         setResultsProgress("");
         setResultsLoading(false);
         return;
       }
 
-      // 3. Fall back to localStorage snapshot
-      if(!snapshot){
-        try{
-          var snapJson = localStorage.getItem("de_snapshot_"+dateStr);
-          if(snapJson){ snapshot = JSON.parse(snapJson); snapshotSource = "local"; }
-        }catch(e){}
-      }
-
-      var allPicks = [];
-      var allPitcherPicks = [];
-
-      if(snapshot && snapshot.batters && snapshot.batters.length > 0){
-        // ═══ USE FROZEN PRE-GAME SCORES ═══
-        usedSnapshot = true;
-        setResultsProgress("Using saved pre-game snapshot...");
-
-        // Restore batter picks from snapshot
-        for(var si=0; si<snapshot.batters.length; si++){
-          var sb = snapshot.batters[si];
-          allPicks.push({
-            batter: {id:sb.batterId, fullName:sb.batterName},
-            pitcher: {id:sb.pitcherId, fullName:sb.pitcherName},
-            batterTeam: sb.batterTeam,
-            pitcherTeam: sb.pitcherTeam,
-            edgeScore: sb.edgeScore,
-            bvpStat: sb.bvpAvg ? {avg:sb.bvpAvg, ops:sb.bvpOps} : null,
-            gamePk: sb.gamePk,
-            gameLabel: sb.gameLabel
-          });
-        }
-
-        // Restore pitcher picks from snapshot (whiff scores frozen)
-        // Still need to fetch season stats for K/9 and projected Ks
-        if(snapshot.pitchers && snapshot.pitchers.length > 0){
-          for(var spi=0; spi<snapshot.pitchers.length; spi++){
-            var sp = snapshot.pitchers[spi];
-            var spSeason = await getSeasonStats(sp.pitcherId, "pitching");
-            var spK9 = spSeason ? parseFloat(spSeason.strikeoutsPer9Inn)||0 : 0;
-            var spProjK = floorHalf((spK9 * 5.5 / 9) * 0.88);
-            // Find the pitcher's team/opp from the game schedule
-            var spGame = dateGames.find(function(g){return g.gamePk===sp.gamePk;});
-            var spTeam = "", spOpp = "";
-            if(spGame){
-              var spHomeP = spGame.teams.home.probablePitcher;
-              var spAwayP = spGame.teams.away.probablePitcher;
-              var spHomeAbbr = spGame.teams.home.team.abbreviation || spGame.teams.home.team.name || "HOME";
-              var spAwayAbbr = spGame.teams.away.team.abbreviation || spGame.teams.away.team.name || "AWAY";
-              if(spHomeP && spHomeP.id === sp.pitcherId){ spTeam=spHomeAbbr; spOpp=spAwayAbbr; }
-              else{ spTeam=spAwayAbbr; spOpp=spHomeAbbr; }
-            }
-            allPitcherPicks.push({
-              pitcher: {id:sp.pitcherId, fullName:sp.pitcherName},
-              team: spTeam, oppTeam: spOpp,
-              whiffScore: sp.whiffScore, seasonStat: spSeason,
-              projectedK: spProjK,
-              gamePk: sp.gamePk, gameLabel: sp.gameLabel
-            });
-          }
-        }
-
-        // Restore walk picks from snapshot
-        var allWalkPicks = [];
-        if(snapshot.walks && snapshot.walks.length > 0){
-          for(var swi=0;swi<snapshot.walks.length;swi++){
-            var sw = snapshot.walks[swi];
-            allWalkPicks.push({
-              batter:{id:sw.batterId, fullName:sw.batterName},
-              pitcher:{id:sw.pitcherId, fullName:sw.pitcherName},
-              batterTeam:sw.batterTeam, pitcherTeam:sw.pitcherTeam||"",
-              walkScore:sw.walkScore, bvpBB:sw.bvpBB||0, bvpPA:sw.bvpPA||0, bvpBBRate:sw.bvpBBRate||0,
-              gamePk:sw.gamePk, gameLabel:sw.gameLabel
-            });
-          }
-        }
-      } else {
-        // ═══ NO SNAPSHOT — RECALCULATE (fallback for older dates) ═══
-        var allWalkPicks = [];
-        for(var gi=0; gi<dateGames.length; gi++){
-          var game = dateGames[gi];
-          var homeId = game.teams.home.team.id;
-          var awayId = game.teams.away.team.id;
-          var homePitcher = game.teams.home.probablePitcher;
-          var awayPitcher = game.teams.away.probablePitcher;
-          if(!homePitcher && !awayPitcher) continue;
-
-          var awayAbbr = game.teams.away.team.abbreviation || game.teams.away.team.name || "AWAY";
-          var homeAbbr = game.teams.home.team.abbreviation || game.teams.home.team.name || "HOME";
-          var gameLabel = awayAbbr + " @ " + homeAbbr;
-          setResultsProgress("Scanning " + gameLabel + " (" + (gi+1) + "/" + dateGames.length + ")...");
-
-          var rosters = await Promise.all([getRoster(homeId), getRoster(awayId)]);
-          var homeRoster = rosters[0];
-          var awayRoster = rosters[1];
-
-          if(homePitcher){
-            for(var i=0; i<awayRoster.length; i++){
-              var batter = awayRoster[i];
-              var r = await Promise.all([
-                getBvPSplits(batter.person.id, homePitcher.id),
-                getSeasonStats(batter.person.id, "hitting")
-              ]);
-              if(r[0] && (parseInt(r[0].plateAppearances)||0) >= 5){
-                var es = computeEdgeScore(r[0], r[1], r[0].plateAppearances, null, null);
-                allPicks.push({
-                  batter: batter.person, pitcher: homePitcher,
-                  batterTeam: awayAbbr, pitcherTeam: homeAbbr,
-                  edgeScore: es.score, bvpStat: r[0],
-                  gamePk: game.gamePk, gameLabel: gameLabel
-                });
-              }
-            }
-          }
-          if(awayPitcher){
-            for(var j=0; j<homeRoster.length; j++){
-              var batter2 = homeRoster[j];
-              var r2 = await Promise.all([
-                getBvPSplits(batter2.person.id, awayPitcher.id),
-                getSeasonStats(batter2.person.id, "hitting")
-              ]);
-              if(r2[0] && (parseInt(r2[0].plateAppearances)||0) >= 5){
-                var es2 = computeEdgeScore(r2[0], r2[1], r2[0].plateAppearances, null, null);
-                allPicks.push({
-                  batter: batter2.person, pitcher: awayPitcher,
-                  batterTeam: homeAbbr, pitcherTeam: awayAbbr,
-                  edgeScore: es2.score, bvpStat: r2[0],
-                  gamePk: game.gamePk, gameLabel: gameLabel
-                });
-              }
-            }
-          }
-        }
-
-        // Pitcher scanning (no snapshot)
-        for(var pi=0; pi<dateGames.length; pi++){
-          var pGame = dateGames[pi];
-          var pHomeId = pGame.teams.home.team.id;
-          var pAwayId = pGame.teams.away.team.id;
-          var pHomePitcher = pGame.teams.home.probablePitcher;
-          var pAwayPitcher = pGame.teams.away.probablePitcher;
-          var pAwayAbbr = pGame.teams.away.team.abbreviation || pGame.teams.away.team.name || "AWAY";
-          var pHomeAbbr = pGame.teams.home.team.abbreviation || pGame.teams.home.team.name || "HOME";
-          var pGameLabel = pAwayAbbr + " @ " + pHomeAbbr;
-
-          setResultsProgress("Scanning pitchers " + (pi+1) + "/" + dateGames.length + "...");
-
-          var pTkRates = {};
-          await Promise.all([
-            getTeamSeasonStats(pHomeId).then(function(s){if(s) pTkRates[pHomeId]=s;}),
-            getTeamSeasonStats(pAwayId).then(function(s){if(s) pTkRates[pAwayId]=s;})
-          ]);
-
-          if(pHomePitcher){
-            var hpSeason = await getSeasonStats(pHomePitcher.id, "pitching");
-            var oppKRate = pTkRates[pAwayId] ? pTkRates[pAwayId].kRate : 0.200;
-            var hpWhiff = computeWhiffScore(pHomePitcher, hpSeason, null, oppKRate, []);
-            var hpK9 = hpSeason ? parseFloat(hpSeason.strikeoutsPer9Inn)||0 : 0;
-            var hpProjK = floorHalf((hpK9 * 5.5 / 9) * 0.88);
-            allPitcherPicks.push({
-              pitcher: pHomePitcher, team: pHomeAbbr, oppTeam: pAwayAbbr,
-              side: "home", whiffScore: hpWhiff.score, seasonStat: hpSeason,
-              projectedK: hpProjK, oppKRate: oppKRate,
-              gamePk: pGame.gamePk, gameLabel: pGameLabel
-            });
-          }
-          if(pAwayPitcher){
-            var apSeason = await getSeasonStats(pAwayPitcher.id, "pitching");
-            var oppKRate2 = pTkRates[pHomeId] ? pTkRates[pHomeId].kRate : 0.200;
-            var apWhiff = computeWhiffScore(pAwayPitcher, apSeason, null, oppKRate2, []);
-            var apK9 = apSeason ? parseFloat(apSeason.strikeoutsPer9Inn)||0 : 0;
-            var apProjK = floorHalf((apK9 * 5.5 / 9) * 0.88);
-            allPitcherPicks.push({
-              pitcher: pAwayPitcher, team: pAwayAbbr, oppTeam: pHomeAbbr,
-              side: "away", whiffScore: apWhiff.score, seasonStat: apSeason,
-              projectedK: apProjK, oppKRate: oppKRate2,
-              gamePk: pGame.gamePk, gameLabel: pGameLabel
-            });
-          }
-        }
-      }
-
-      // Sort pitchers by whiff score
-      allPitcherPicks.sort(function(a,b){ return b.whiffScore - a.whiffScore; });
-
-      // Sort by edge score, take top 15
-      allPicks.sort(function(a,b){ return b.edgeScore - a.edgeScore; });
-      var top15 = allPicks.slice(0, 15);
-
-      // Fetch box scores for the unique games in top 15 and pitcher picks
-      setResultsProgress("Fetching box scores...");
-      var uniqueGames = {};
-      for(var p of top15) uniqueGames[p.gamePk] = true;
-      for(var pp of allPitcherPicks) uniqueGames[pp.gamePk] = true;
-      for(var wp of allWalkPicks) uniqueGames[wp.gamePk] = true;
-      var boxScores = {};
-      var bsFetches = Object.keys(uniqueGames).map(function(gpk){
-        return getGameBoxScore(gpk).then(function(bs){ boxScores[gpk] = bs; });
-      });
-      await Promise.all(bsFetches);
-
-      // Match each pick to their actual box score line
-      for(var k=0; k<top15.length; k++){
-        var pick = top15[k];
-        var bs = boxScores[pick.gamePk];
-        pick.actualStats = null;
-        pick.fantasyScore = 0;
-        if(bs){
-          // Check both teams' batters
-          var allPlayers = Object.assign({},
-            bs.teams && bs.teams.home && bs.teams.home.players ? bs.teams.home.players : {},
-            bs.teams && bs.teams.away && bs.teams.away.players ? bs.teams.away.players : {}
-          );
-          var playerKey = "ID" + pick.batter.id;
-          var pData = allPlayers[playerKey];
-          if(pData && pData.stats && pData.stats.batting){
-            pick.actualStats = pData.stats.batting;
-            pick.fantasyScore = computeFantasyScore(pick.actualStats);
-          } else if(pData && pData.seasonStats && pData.seasonStats.batting){
-            // Fallback: some box score formats nest differently
-            pick.actualStats = pData.seasonStats.batting;
-            pick.fantasyScore = computeFantasyScore(pick.actualStats);
-          }
-        }
-      }
-
-      // Match pitcher picks to actual box score
-      for(var pk=0; pk<allPitcherPicks.length; pk++){
-        var pPick = allPitcherPicks[pk];
-        var pBs = boxScores[pPick.gamePk];
-        pPick.actualStats = null;
-        pPick.actualK = 0;
-        pPick.actualIP = "0";
-        pPick.actualLine = "";
-        if(pBs){
-          var pAllPlayers = Object.assign({},
-            pBs.teams && pBs.teams.home && pBs.teams.home.players ? pBs.teams.home.players : {},
-            pBs.teams && pBs.teams.away && pBs.teams.away.players ? pBs.teams.away.players : {}
-          );
-          var pPlayerKey = "ID" + pPick.pitcher.id;
-          var ppData = pAllPlayers[pPlayerKey];
-          if(ppData && ppData.stats && ppData.stats.pitching){
-            var ps = ppData.stats.pitching;
-            pPick.actualStats = ps;
-            pPick.actualK = parseInt(ps.strikeOuts)||0;
-            pPick.actualIP = ps.inningsPitched||"0";
-            pPick.actualER = parseInt(ps.earnedRuns)||0;
-            pPick.actualH = parseInt(ps.hits)||0;
-            pPick.actualBB = parseInt(ps.baseOnBalls)||0;
-            pPick.actualLine = pPick.actualIP + " IP, " + pPick.actualK + " K, " + (parseInt(ps.earnedRuns)||0) + " ER, " + (parseInt(ps.hits)||0) + " H";
-          }
-        }
-        pPick.hitOver = pPick.actualStats ? (pPick.actualK >= pPick.projectedK) : false;
-      }
-
-      // Match walk picks to actual box score
-      for(var wk=0; wk<allWalkPicks.length; wk++){
-        var wPick = allWalkPicks[wk];
-        var wBs = boxScores[wPick.gamePk];
-        wPick.actualBB = 0;
-        wPick.actualStats = null;
-        wPick.gotWalk = false;
-        if(wBs){
-          var wAllPlayers = Object.assign({},
-            wBs.teams && wBs.teams.home && wBs.teams.home.players ? wBs.teams.home.players : {},
-            wBs.teams && wBs.teams.away && wBs.teams.away.players ? wBs.teams.away.players : {}
-          );
-          var wPlayerKey = "ID" + wPick.batter.id;
-          var wData = wAllPlayers[wPlayerKey];
-          if(wData && wData.stats && wData.stats.batting){
-            wPick.actualStats = wData.stats.batting;
-            wPick.actualBB = parseInt(wData.stats.batting.baseOnBalls)||0;
-            wPick.gotWalk = wPick.actualBB >= 1;
-          }
-        }
-      }
-
-      // Pitcher summary stats (B grade = 55+ whiff score only)
-      var pitcherOverCount = 0;
-      var totalPitcherK = 0;
-      var pitchersWithStats = 0;
-      for(var pm=0; pm<allPitcherPicks.length; pm++){
-        if(allPitcherPicks[pm].whiffScore >= 55 && allPitcherPicks[pm].actualStats){
-          pitchersWithStats++;
-          totalPitcherK += allPitcherPicks[pm].actualK;
-          if(allPitcherPicks[pm].hitOver) pitcherOverCount++;
-        }
-      }
-
-      // Walk summary stats (B grade = 55+ walk score only)
-      var walkHitCount = 0;
-      var bGradeWalks = 0;
-      for(var wm=0; wm<allWalkPicks.length; wm++){
-        if(allWalkPicks[wm].walkScore >= 55 && allWalkPicks[wm].actualStats){
-          bGradeWalks++;
-          if(allWalkPicks[wm].gotWalk) walkHitCount++;
-        }
-      }
-
-      // Compute summary stats (B grade = 55+ edge score only for hit rate)
-      var totalFantasy = 0;
-      var hitCount = 0;
-      var bGradeBatters = 0;
-      for(var m=0; m<top15.length; m++){
-        totalFantasy += top15[m].fantasyScore;
-        if(top15[m].edgeScore >= 55 && top15[m].actualStats){
-          bGradeBatters++;
-          if((parseInt(top15[m].actualStats.hits)||0) > 0) hitCount++;
-        }
-      }
-
-      setResultsData({
-        picks: top15,
-        pitcherPicks: allPitcherPicks,
-        date: dateStr,
-        usedSnapshot: usedSnapshot, snapshotSource: snapshotSource,
-        avgFantasy: top15.length > 0 ? (totalFantasy / top15.length).toFixed(1) : "0",
-        totalFantasy: totalFantasy,
-        hitRate: bGradeBatters > 0 ? ((hitCount / bGradeBatters) * 100).toFixed(0) : "0",
-        pitcherOverRate: pitchersWithStats > 0 ? ((pitcherOverCount / pitchersWithStats) * 100).toFixed(0) : "0",
-        avgPitcherK: pitchersWithStats > 0 ? (totalPitcherK / pitchersWithStats).toFixed(1) : "0",
-        totalPitcherK: totalPitcherK,
-        pitchersWithStats: pitchersWithStats,
-        pitcherOverCount: pitcherOverCount,
-        walkPicks: allWalkPicks,
-        walkHitRate: bGradeWalks > 0 ? ((walkHitCount / bGradeWalks) * 100).toFixed(0) : "0",
-        walkHitCount: walkHitCount,
-        bGradeWalks: bGradeWalks
-      });
-
-      // Auto-save to season history (state + localStorage)
-      var newEntry = {
-        date: dateStr,
-        batterHitRate: bGradeBatters > 0 ? parseFloat(((hitCount / bGradeBatters) * 100).toFixed(1)) : 0,
-        pitcherOverRate: pitchersWithStats > 0 ? parseFloat(((pitcherOverCount / pitchersWithStats) * 100).toFixed(1)) : 0,
-        batterCount: bGradeBatters,
-        pitcherCount: pitchersWithStats,
-        walkHitRate: bGradeWalks > 0 ? parseFloat(((walkHitCount / bGradeWalks) * 100).toFixed(1)) : 0,
-        walkCount: bGradeWalks
-      };
-      setSeasonHistory(function(prev){
-        var filtered = prev.filter(function(e){ return e.date !== dateStr; });
-        filtered.push(newEntry);
-        filtered.sort(function(a,b){ return a.date.localeCompare(b.date); });
-        // Persist to localStorage
-        try{ localStorage.setItem("de_season_history", JSON.stringify(filtered)); }catch(e){}
-        return filtered;
-      });
-
+      // No cloud results available for this date
+      setResultsData({picks:[], pitcherPicks:[], walkPicks:[], date:dateStr, noCloudData:true});
       setResultsProgress("");
     }catch(e){
       setResultsProgress("Error: " + e.message);
@@ -3219,7 +2827,7 @@ function App(){
               )}
 
               {/* Summary Stats */}
-              {!resultsLoading&&resultsData&&(
+              {!resultsLoading&&resultsData&&!resultsData.noCloudData&&(
                 <>
                   {resultsTab==="batters"&&(
                     <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
@@ -3440,6 +3048,16 @@ function App(){
                     )
                   )}
                 </>
+              )}
+
+              {!resultsLoading&&resultsData&&resultsData.noCloudData&&(
+                <div style={{textAlign:"center",padding:48,color:C.muted}}>
+                  <div style={{fontSize:24,marginBottom:12}}>📡</div>
+                  <div style={{fontSize:14,fontWeight:500,color:C.subtext,marginBottom:8}}>No results available for {resultsData.date}</div>
+                  <div style={{fontSize:11,color:C.muted,maxWidth:340,margin:"0 auto",lineHeight:1.6}}>
+                    Results are processed automatically each night at 1:00 AM CT. Check back after games have been completed and results have been published.
+                  </div>
+                </div>
               )}
 
               {!resultsLoading&&!resultsDate&&(
