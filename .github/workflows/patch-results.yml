@@ -1,0 +1,30 @@
+name: Diamond Edge — Patch Historical Results
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "yes" to reprocess all historical results'
+        required: true
+
+jobs:
+  patch:
+    if: ${{ inputs.confirm == 'yes' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Patch all historical results
+        run: node scripts/patch-results.js
+
+      - name: Commit patched results
+        run: |
+          git config user.name "Diamond Edge Bot"
+          git config user.email "bot@diamond-edge.app"
+          git add results/
+          git diff --staged --quiet || git commit -m "Patch: reprocessed all historical results (DNP excluded, walks added)"
+          git push
