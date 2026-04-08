@@ -1,8 +1,8 @@
 {
   "date": "2026-04-08",
-  "savedAt": "2026-04-08T19:48:41.908Z",
+  "savedAt": "2026-04-08T23:27:11.595Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 2,
   "totalGames": 15,
   "batters": [
     {
@@ -102,6 +102,22 @@
       "gameLabel": "ATH @ NYY"
     },
     {
+      "batterId": 592450,
+      "batterName": "Aaron Judge",
+      "pitcherId": 622663,
+      "pitcherName": "Luis Severino",
+      "batterTeam": "NYY",
+      "pitcherTeam": "ATH",
+      "edgeScore": 65,
+      "grade": "B+",
+      "bvpAvg": ".600",
+      "bvpOps": "2.067",
+      "bvpPA": 6,
+      "bvpHR": 1,
+      "gamePk": 823564,
+      "gameLabel": "ATH @ NYY"
+    },
+    {
       "batterId": 596019,
       "batterName": "Francisco Lindor",
       "pitcherId": 669194,
@@ -150,38 +166,6 @@
       "gameLabel": "AZ @ NYM"
     },
     {
-      "batterId": 592450,
-      "batterName": "Aaron Judge",
-      "pitcherId": 622663,
-      "pitcherName": "Luis Severino",
-      "batterTeam": "NYY",
-      "pitcherTeam": "ATH",
-      "edgeScore": 60,
-      "grade": "B",
-      "bvpAvg": ".600",
-      "bvpOps": "2.067",
-      "bvpPA": 6,
-      "bvpHR": 1,
-      "gamePk": 823564,
-      "gameLabel": "ATH @ NYY"
-    },
-    {
-      "batterId": 641355,
-      "batterName": "Cody Bellinger",
-      "pitcherId": 622663,
-      "pitcherName": "Luis Severino",
-      "batterTeam": "NYY",
-      "pitcherTeam": "ATH",
-      "edgeScore": 58,
-      "grade": "B",
-      "bvpAvg": ".333",
-      "bvpOps": ".777",
-      "bvpPA": 9,
-      "bvpHR": 0,
-      "gamePk": 823564,
-      "gameLabel": "ATH @ NYY"
-    },
-    {
       "batterId": 663616,
       "batterName": "Trevor Larnach",
       "pitcherId": 664285,
@@ -214,22 +198,6 @@
       "gameLabel": "AZ @ NYM"
     },
     {
-      "batterId": 605137,
-      "batterName": "Josh Bell",
-      "pitcherId": 664285,
-      "pitcherName": "Framber Valdez",
-      "batterTeam": "MIN",
-      "pitcherTeam": "DET",
-      "edgeScore": 57,
-      "grade": "B",
-      "bvpAvg": ".308",
-      "bvpOps": ".938",
-      "bvpPA": 15,
-      "bvpHR": 1,
-      "gamePk": 823726,
-      "gameLabel": "DET @ MIN"
-    },
-    {
       "batterId": 622761,
       "batterName": "Jorge Mateo",
       "pitcherId": 672282,
@@ -244,6 +212,38 @@
       "bvpHR": 0,
       "gamePk": 824050,
       "gameLabel": "ATL @ LAA"
+    },
+    {
+      "batterId": 663837,
+      "batterName": "Matt Vierling",
+      "pitcherId": 641927,
+      "pitcherName": "Bailey Ober",
+      "batterTeam": "DET",
+      "pitcherTeam": "MIN",
+      "edgeScore": 56,
+      "grade": "B",
+      "bvpAvg": ".571",
+      "bvpOps": "1.285",
+      "bvpPA": 7,
+      "bvpHR": 0,
+      "gamePk": 823726,
+      "gameLabel": "DET @ MIN"
+    },
+    {
+      "batterId": 700250,
+      "batterName": "Ben Rice",
+      "pitcherId": 622663,
+      "pitcherName": "Luis Severino",
+      "batterTeam": "NYY",
+      "pitcherTeam": "ATH",
+      "edgeScore": 55,
+      "grade": "B",
+      "bvpAvg": ".000",
+      "bvpOps": ".500",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 823564,
+      "gameLabel": "ATH @ NYY"
     }
   ],
   "pitchers": [
@@ -287,19 +287,6 @@
       "gameLabel": "ATL @ LAA"
     },
     {
-      "pitcherId": 622663,
-      "pitcherName": "Luis Severino",
-      "team": "ATH",
-      "oppTeam": "NYY",
-      "whiffScore": 75,
-      "grade": "A",
-      "k9": 10.8,
-      "projectedIP": 4.1,
-      "projectedK": 4,
-      "gamePk": 823564,
-      "gameLabel": "ATH @ NYY"
-    },
-    {
       "pitcherId": 641816,
       "pitcherName": "Tyler Mahle",
       "team": "SF",
@@ -317,10 +304,23 @@
       "pitcherName": "Will Warren",
       "team": "NYY",
       "oppTeam": "ATH",
-      "whiffScore": 70,
+      "whiffScore": 74,
       "grade": "A",
-      "k9": 8.1,
-      "projectedIP": 5,
+      "k9": 9,
+      "projectedIP": 3.7,
+      "projectedK": 3,
+      "gamePk": 823564,
+      "gameLabel": "ATH @ NYY"
+    },
+    {
+      "pitcherId": 622663,
+      "pitcherName": "Luis Severino",
+      "team": "ATH",
+      "oppTeam": "NYY",
+      "whiffScore": 72,
+      "grade": "A",
+      "k9": 12,
+      "projectedIP": 3,
       "projectedK": 3.5,
       "gamePk": 823564,
       "gameLabel": "ATH @ NYY"
@@ -330,8 +330,8 @@
       "pitcherName": "Framber Valdez",
       "team": "DET",
       "oppTeam": "MIN",
-      "whiffScore": 70,
-      "grade": "A",
+      "whiffScore": 66,
+      "grade": "B+",
       "k9": 7.5,
       "projectedIP": 6,
       "projectedK": 4,
@@ -369,8 +369,8 @@
       "pitcherName": "Bailey Ober",
       "team": "MIN",
       "oppTeam": "DET",
-      "whiffScore": 62,
-      "grade": "B+",
+      "whiffScore": 58,
+      "grade": "B",
       "k9": 5.6,
       "projectedIP": 4,
       "projectedK": 2,
