@@ -1,8 +1,8 @@
 {
   "date": "2026-04-09",
-  "savedAt": "2026-04-09T18:41:25.561Z",
-  "scanType": "morning",
-  "gamesScanned": 6,
+  "savedAt": "2026-04-09T23:28:09.041Z",
+  "scanType": "afternoon",
+  "gamesScanned": 3,
   "totalGames": 6,
   "batters": [
     {
@@ -214,11 +214,11 @@
       "pitcherName": "Eduardo Rodriguez",
       "team": "AZ",
       "oppTeam": "NYM",
-      "whiffScore": 59,
+      "whiffScore": 55,
       "grade": "B",
-      "k9": 6,
-      "projectedIP": 6,
-      "projectedK": 3.5,
+      "k9": 5.5,
+      "projectedIP": 4.3,
+      "projectedK": 2,
       "gamePk": 823645,
       "gameLabel": "AZ @ NYM"
     },
