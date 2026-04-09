@@ -48,6 +48,213 @@ async function getSeasonStats(playerId, group) {
   } catch(e) { return null; }
 }
 
+async function getBatterRecentBBRate(playerId) {
+  try {
+    var year = new Date().getFullYear();
+    var both = await Promise.all([
+      fetchJSON(BASE + "/people/" + playerId + "/stats?stats=gameLog&group=hitting&season=" + year),
+      fetchJSON(BASE + "/people/" + playerId + "/stats?stats=gameLog&group=hitting&season=" + (year - 1))
+    ]);
+    var games = [];
+    for (var sg of (both[1].stats || [])) {
+      if (sg.group && sg.group.displayName === "hitting") {
+        for (var sp of (sg.splits || [])) games.push(sp);
+      }
+    }
+    for (var sg2 of (both[0].stats || [])) {
+      if (sg2.group && sg2.group.displayName === "hitting") {
+        for (var sp2 of (sg2.splits || [])) games.push(sp2);
+      }
+    }
+    var recent = games.slice(-10);
+    if (recent.length === 0) return null;
+    var totalPA = 0, totalBB = 0;
+    for (var g of recent) {
+      var s = g.stat || {};
+      totalPA += parseInt(s.plateAppearances) || 0;
+      totalBB += parseInt(s.baseOnBalls) || 0;
+    }
+    return { bbRate: totalPA > 0 ? (totalBB / totalPA) : 0, bb: totalBB, pa: totalPA, games: recent.length };
+  } catch (e) { return null; }
+}
+
+async function getBatterCareerBBRate(playerId) {
+  try {
+    var data = await fetchJSON(BASE + "/people/" + playerId + "/stats?stats=career&group=hitting");
+    for (var sg of (data.stats || [])) {
+      if (sg.group && sg.group.displayName === "hitting") {
+        var sp = sg.splits && sg.splits[0];
+        if (sp && sp.stat) {
+          var pa = parseInt(sp.stat.plateAppearances) || 0;
+          var bb = parseInt(sp.stat.baseOnBalls) || 0;
+          return { bbRate: pa > 0 ? (bb / pa) : 0, bb: bb, pa: pa };
+        }
+      }
+    }
+    return null;
+  } catch (e) { return null; }
+}
+
+async function getPitcherRecentBBRate(pitcherId) {
+  try {
+    var year = new Date().getFullYear();
+    var both = await Promise.all([
+      fetchJSON(BASE + "/people/" + pitcherId + "/stats?stats=gameLog&group=pitching&season=" + year),
+      fetchJSON(BASE + "/people/" + pitcherId + "/stats?stats=gameLog&group=pitching&season=" + (year - 1))
+    ]);
+    var games = [];
+    for (var sg of (both[1].stats || [])) {
+      if (sg.group && sg.group.displayName === "pitching") {
+        for (var sp of (sg.splits || [])) games.push(sp);
+      }
+    }
+    for (var sg2 of (both[0].stats || [])) {
+      if (sg2.group && sg2.group.displayName === "pitching") {
+        for (var sp2 of (sg2.splits || [])) games.push(sp2);
+      }
+    }
+    var recent = games.slice(-5);
+    if (recent.length === 0) return null;
+    var totalBF = 0, totalBB = 0;
+    for (var g of recent) {
+      var s = g.stat || {};
+      totalBF += parseInt(s.battersFaced) || parseInt(s.battersfaced) || 0;
+      totalBB += parseInt(s.baseOnBalls) || 0;
+      if (totalBF === 0) {
+        var ip = parseFloat(s.inningsPitched) || 0;
+        totalBF += Math.round(ip * 4.3);
+      }
+    }
+    return { bbRate: totalBF > 0 ? (totalBB / totalBF) : 0, bb: totalBB, bf: totalBF, starts: recent.length };
+  } catch (e) { return null; }
+}
+
+async function getPitcherCareerBBRate(pitcherId) {
+  try {
+    var data = await fetchJSON(BASE + "/people/" + pitcherId + "/stats?stats=career&group=pitching");
+    for (var sg of (data.stats || [])) {
+      if (sg.group && sg.group.displayName === "pitching") {
+        var sp = sg.splits && sg.splits[0];
+        if (sp && sp.stat) {
+          var bb9 = parseFloat(sp.stat.baseOnBallsPer9Inn) || 0;
+          var bbRate = bb9 / 9 / 4.3;
+          var totalBB = parseInt(sp.stat.baseOnBalls) || 0;
+          return { bbRate: bbRate, bb9: bb9, totalBB: totalBB };
+        }
+      }
+    }
+    return null;
+  } catch (e) { return null; }
+}
+
+function computeWalkScore(bvpStat, batterSeasonStat, batterRecentBB, batterCareerBB, pitcherSeasonStat, pitcherRecentBB, pitcherCareerBB) {
+  var score = 50;
+  var factors = {};
+
+  // 1. BvP walk history (weight: high)
+  var bvpPA = parseInt(bvpStat.plateAppearances) || 0;
+  var bvpBB = parseInt(bvpStat.baseOnBalls) || 0;
+  var bvpBBRate = bvpPA > 0 ? (bvpBB / bvpPA) : 0;
+  if (bvpBBRate >= 0.18) factors.bvpBB = 12;
+  else if (bvpBBRate >= 0.14) factors.bvpBB = 8;
+  else if (bvpBBRate >= 0.10) factors.bvpBB = 4;
+  else if (bvpBBRate < 0.04) factors.bvpBB = -8;
+  else if (bvpBBRate < 0.06) factors.bvpBB = -4;
+  else factors.bvpBB = 0;
+  var sampleFactor = Math.min(bvpPA / 20, 1.2);
+  factors.bvpBB = Math.round(factors.bvpBB * sampleFactor);
+  score += factors.bvpBB;
+
+  // 2. Batter recent BB% trend (last 10 games)
+  factors.batterRecent = 0;
+  if (batterRecentBB) {
+    var brRate = batterRecentBB.bbRate;
+    if (brRate >= 0.14) factors.batterRecent = 10;
+    else if (brRate >= 0.11) factors.batterRecent = 6;
+    else if (brRate >= 0.09) factors.batterRecent = 3;
+    else if (brRate < 0.04) factors.batterRecent = -8;
+    else if (brRate < 0.06) factors.batterRecent = -4;
+    else factors.batterRecent = 0;
+  }
+  score += factors.batterRecent;
+
+  // 3. Batter season BB%
+  factors.batterSeason = 0;
+  if (batterSeasonStat) {
+    var sPa = parseInt(batterSeasonStat.plateAppearances) || 0;
+    var sBb = parseInt(batterSeasonStat.baseOnBalls) || 0;
+    var sBBRate = sPa > 0 ? (sBb / sPa) : 0;
+    if (sBBRate >= 0.13) factors.batterSeason = 6;
+    else if (sBBRate >= 0.10) factors.batterSeason = 3;
+    else if (sBBRate < 0.05) factors.batterSeason = -5;
+    else if (sBBRate < 0.07) factors.batterSeason = -2;
+    else factors.batterSeason = 0;
+  }
+  score += factors.batterSeason;
+
+  // 4. Batter career BB%
+  factors.batterCareer = 0;
+  if (batterCareerBB) {
+    var cRate = batterCareerBB.bbRate;
+    if (cRate >= 0.12) factors.batterCareer = 4;
+    else if (cRate >= 0.10) factors.batterCareer = 2;
+    else if (cRate < 0.05) factors.batterCareer = -4;
+    else if (cRate < 0.07) factors.batterCareer = -2;
+    else factors.batterCareer = 0;
+  }
+  score += factors.batterCareer;
+
+  // 5. Pitcher recent BB% trend (last 5 starts)
+  factors.pitcherRecent = 0;
+  if (pitcherRecentBB) {
+    var prRate = pitcherRecentBB.bbRate;
+    if (prRate >= 0.12) factors.pitcherRecent = 10;
+    else if (prRate >= 0.09) factors.pitcherRecent = 6;
+    else if (prRate >= 0.07) factors.pitcherRecent = 3;
+    else if (prRate < 0.03) factors.pitcherRecent = -8;
+    else if (prRate < 0.05) factors.pitcherRecent = -4;
+    else factors.pitcherRecent = 0;
+  }
+  score += factors.pitcherRecent;
+
+  // 6. Pitcher season BB%
+  factors.pitcherSeason = 0;
+  if (pitcherSeasonStat) {
+    var pBB9 = parseFloat(pitcherSeasonStat.baseOnBallsPer9Inn) || 0;
+    if (pBB9 >= 4.5) factors.pitcherSeason = 8;
+    else if (pBB9 >= 3.5) factors.pitcherSeason = 4;
+    else if (pBB9 >= 2.8) factors.pitcherSeason = 1;
+    else if (pBB9 < 1.5) factors.pitcherSeason = -6;
+    else if (pBB9 < 2.0) factors.pitcherSeason = -3;
+    else factors.pitcherSeason = 0;
+  }
+  score += factors.pitcherSeason;
+
+  // 7. Pitcher career BB tendency
+  factors.pitcherCareer = 0;
+  if (pitcherCareerBB) {
+    var pcBB9 = pitcherCareerBB.bb9 || 0;
+    if (pcBB9 >= 4.0) factors.pitcherCareer = 4;
+    else if (pcBB9 >= 3.2) factors.pitcherCareer = 2;
+    else if (pcBB9 < 1.8) factors.pitcherCareer = -4;
+    else if (pcBB9 < 2.2) factors.pitcherCareer = -2;
+    else factors.pitcherCareer = 0;
+  }
+  score += factors.pitcherCareer;
+
+  return { score: Math.max(0, Math.min(99, Math.round(score))), factors: factors, bvpBBRate: bvpBBRate };
+}
+
+function walkGrade(score) {
+  if (score >= 80) return "A+";
+  if (score >= 70) return "A";
+  if (score >= 62) return "B+";
+  if (score >= 55) return "B";
+  if (score >= 45) return "C";
+  if (score >= 35) return "D";
+  return "F";
+}
+
 async function getTeamSeasonStats(teamId) {
   try {
     const year = new Date().getFullYear();
@@ -199,8 +406,31 @@ async function main() {
 
   if (isAfternoon) {
     const cutoff = new Date(now.getTime() - 30 * 60000);
-    gamesToScan = games.filter(g => new Date(g.gameDate) > cutoff);
-    console.log(`${gamesToScan.length} of ${games.length} games haven't started yet`);
+    const notStarted = games.filter(g => new Date(g.gameDate) > cutoff);
+    console.log(`${notStarted.length} of ${games.length} games haven't started yet`);
+
+    // Also catch games the morning scan missed (no probable pitcher at morning scan time)
+    let missedGames = [];
+    if (existingSnapshot) {
+      const scannedGamePks = new Set([
+        ...existingSnapshot.batters.map(b => b.gamePk),
+        ...existingSnapshot.pitchers.map(p => p.gamePk)
+      ]);
+      missedGames = games.filter(g => {
+        // Game wasn't in morning snapshot AND it has a probable pitcher now
+        const wasMissed = !scannedGamePks.has(g.gamePk);
+        const hasPitcher = g.teams.home.probablePitcher || g.teams.away.probablePitcher;
+        // Don't re-scan games we're already scanning as "not started"
+        const alreadyQueued = notStarted.some(ns => ns.gamePk === g.gamePk);
+        return wasMissed && hasPitcher && !alreadyQueued;
+      });
+      if (missedGames.length > 0) {
+        console.log(`${missedGames.length} games were missed by morning scan — picking them up now`);
+      }
+    }
+
+    gamesToScan = [...notStarted, ...missedGames];
+
     if (gamesToScan.length === 0 && existingSnapshot) {
       console.log('All games already scanned. No changes needed.');
       process.exit(0);
@@ -209,6 +439,7 @@ async function main() {
 
   const allBatters = [];
   const allPitchers = [];
+  const allWalks = [];
 
   for (let gi = 0; gi < gamesToScan.length; gi++) {
     const game = gamesToScan[gi];
@@ -321,20 +552,78 @@ async function main() {
         gamePk: game.gamePk, gameLabel
       });
     }
+
+    // --- WALK SCORING ---
+    console.log(`    Scanning walks for ${gameLabel}...`);
+    if (homePitcher && homeMatchupsForWhiff.length > 0) {
+      const hpSeasonForWalk = await getSeasonStats(homePitcher.id, "pitching");
+      const hpRecentBB = await getPitcherRecentBBRate(homePitcher.id);
+      const hpCareerBB = await getPitcherCareerBBRate(homePitcher.id);
+
+      for (const wBatter of homeMatchupsForWhiff) {
+        if (!wBatter.stat) continue;
+        const wBatterSeason = await getSeasonStats(wBatter.batter.id, "hitting");
+        const wBatterRecent = await getBatterRecentBBRate(wBatter.batter.id);
+        const wBatterCareer = await getBatterCareerBBRate(wBatter.batter.id);
+        const ws = computeWalkScore(wBatter.stat, wBatterSeason, wBatterRecent, wBatterCareer, hpSeasonForWalk, hpRecentBB, hpCareerBB);
+        if (ws.score >= 50) {
+          allWalks.push({
+            batterId: wBatter.batter.id, batterName: wBatter.batter.fullName,
+            pitcherId: homePitcher.id, pitcherName: homePitcher.fullName,
+            batterTeam: awayAbbr, pitcherTeam: homeAbbr,
+            walkScore: ws.score, grade: walkGrade(ws.score),
+            bvpBB: parseInt(wBatter.stat.baseOnBalls) || 0,
+            bvpPA: parseInt(wBatter.stat.plateAppearances) || 0,
+            bvpBBRate: ws.bvpBBRate,
+            gamePk: game.gamePk, gameLabel
+          });
+        }
+      }
+    }
+    if (awayPitcher && awayMatchupsForWhiff.length > 0) {
+      const apSeasonForWalk = await getSeasonStats(awayPitcher.id, "pitching");
+      const apRecentBB = await getPitcherRecentBBRate(awayPitcher.id);
+      const apCareerBB = await getPitcherCareerBBRate(awayPitcher.id);
+
+      for (const wBatter2 of awayMatchupsForWhiff) {
+        if (!wBatter2.stat) continue;
+        const wBatterSeason2 = await getSeasonStats(wBatter2.batter.id, "hitting");
+        const wBatterRecent2 = await getBatterRecentBBRate(wBatter2.batter.id);
+        const wBatterCareer2 = await getBatterCareerBBRate(wBatter2.batter.id);
+        const ws2 = computeWalkScore(wBatter2.stat, wBatterSeason2, wBatterRecent2, wBatterCareer2, apSeasonForWalk, apRecentBB, apCareerBB);
+        if (ws2.score >= 50) {
+          allWalks.push({
+            batterId: wBatter2.batter.id, batterName: wBatter2.batter.fullName,
+            pitcherId: awayPitcher.id, pitcherName: awayPitcher.fullName,
+            batterTeam: homeAbbr, pitcherTeam: awayAbbr,
+            walkScore: ws2.score, grade: walkGrade(ws2.score),
+            bvpBB: parseInt(wBatter2.stat.baseOnBalls) || 0,
+            bvpPA: parseInt(wBatter2.stat.plateAppearances) || 0,
+            bvpBBRate: ws2.bvpBBRate,
+            gamePk: game.gamePk, gameLabel
+          });
+        }
+      }
+    }
   }
 
   allBatters.sort((a, b) => b.edgeScore - a.edgeScore);
   allPitchers.sort((a, b) => b.whiffScore - a.whiffScore);
+  allWalks.sort((a, b) => b.walkScore - a.walkScore);
 
   const top15 = allBatters.slice(0, 15);
+  // Filter walks to B-grade+ (55+) for snapshot
+  const qualifiedWalks = allWalks.filter(w => w.walkScore >= 55);
 
   let finalBatters = top15;
   let finalPitchers = allPitchers;
+  let finalWalks = qualifiedWalks;
 
   if (isAfternoon && existingSnapshot) {
     const newGamePks = new Set(gamesToScan.map(g => g.gamePk));
     const existingBatters = existingSnapshot.batters.filter(b => !newGamePks.has(b.gamePk));
     const existingPitchers = existingSnapshot.pitchers.filter(p => !newGamePks.has(p.gamePk));
+    const existingWalks = (existingSnapshot.walks || []).filter(w => !newGamePks.has(w.gamePk));
 
     const combined = [...existingBatters, ...top15];
     combined.sort((a, b) => b.edgeScore - a.edgeScore);
@@ -343,8 +632,12 @@ async function main() {
     finalPitchers = [...existingPitchers, ...allPitchers];
     finalPitchers.sort((a, b) => b.whiffScore - a.whiffScore);
 
+    finalWalks = [...existingWalks, ...qualifiedWalks];
+    finalWalks.sort((a, b) => b.walkScore - a.walkScore);
+
     console.log(`Merged: ${existingBatters.length} existing + ${top15.length} new batters`);
     console.log(`Merged: ${existingPitchers.length} existing + ${allPitchers.length} new pitchers`);
+    console.log(`Merged: ${existingWalks.length} existing + ${qualifiedWalks.length} new walks`);
   }
 
   const snapshot = {
@@ -354,12 +647,13 @@ async function main() {
     gamesScanned: gamesToScan.length,
     totalGames: games.length,
     batters: finalBatters,
-    pitchers: finalPitchers
+    pitchers: finalPitchers,
+    walks: finalWalks
   };
 
   fs.writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2));
   console.log(`\nSnapshot saved: ${snapshotPath}`);
-  console.log(`  ${finalBatters.length} batters (top 15), ${finalPitchers.length} pitchers`);
+  console.log(`  ${finalBatters.length} batters (top 15), ${finalPitchers.length} pitchers, ${finalWalks.length} walks`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
