@@ -4,6 +4,7 @@ on:
   schedule:
     # 10:30 AM CT = 15:30 UTC
     - cron: '30 15 * * *'
+    - cron: '30 17 * * *'
     # 4:30 PM CT = 21:30 UTC
     - cron: '30 21 * * *'
   workflow_dispatch:
@@ -34,7 +35,7 @@ jobs:
         id: scantype
         run: |
           HOUR=$(TZ=America/Chicago date +%H)
-          if [ "$HOUR" -ge 14 ]; then
+          if [ "$HOUR" -ge 12 ]; then
             echo "afternoon=true" >> $GITHUB_OUTPUT
           else
             echo "afternoon=false" >> $GITHUB_OUTPUT
