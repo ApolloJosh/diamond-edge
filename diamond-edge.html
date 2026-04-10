@@ -860,7 +860,7 @@ async function getRoster(teamId){
 }
 async function getBvPSplits(batterId,pitcherId){
   try{
-    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=vsPlayer&opposingPlayerId="+pitcherId+"&sportId=1&group=hitting");
+    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=vsPlayerTotal&opposingPlayerId="+pitcherId+"&sportId=1&group=hitting");
     for(const sg of data.stats||[]){
       if(sg.group&&sg.group.displayName==="hitting"){
         const split=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
