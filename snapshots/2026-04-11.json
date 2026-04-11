@@ -1,8 +1,8 @@
 {
   "date": "2026-04-11",
-  "savedAt": "2026-04-11T17:08:05.650Z",
+  "savedAt": "2026-04-11T19:26:25.925Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 12,
   "totalGames": 15,
   "batters": [
     {
@@ -267,9 +267,9 @@
       "oppTeam": "MIN",
       "whiffScore": 72,
       "grade": "A",
-      "k9": 11.1,
-      "projectedIP": 3.6,
-      "projectedK": 3.5,
+      "k9": 10.8,
+      "projectedIP": 2.7,
+      "projectedK": 2.5,
       "gamePk": 822830,
       "gameLabel": "MIN @ TOR"
     },
@@ -319,9 +319,9 @@
       "oppTeam": "TOR",
       "whiffScore": 65,
       "grade": "B+",
-      "k9": 10.7,
-      "projectedIP": 4.7,
-      "projectedK": 4.5,
+      "k9": 10.4,
+      "projectedIP": 3.6,
+      "projectedK": 3.5,
       "gamePk": 822830,
       "gameLabel": "MIN @ TOR"
     },
@@ -1020,6 +1020,21 @@
       "grade": "B",
       "bvpBB": 0,
       "bvpPA": 10,
+      "bvpBBRate": 0,
+      "gamePk": 822830,
+      "gameLabel": "MIN @ TOR"
+    },
+    {
+      "batterId": 543807,
+      "batterName": "George Springer",
+      "pitcherId": 657746,
+      "pitcherName": "Joe Ryan",
+      "batterTeam": "TOR",
+      "pitcherTeam": "MIN",
+      "walkScore": 55,
+      "grade": "B",
+      "bvpBB": 0,
+      "bvpPA": 16,
       "bvpBBRate": 0,
       "gamePk": 822830,
       "gameLabel": "MIN @ TOR"
