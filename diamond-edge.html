@@ -860,14 +860,47 @@ async function getRoster(teamId){
 }
 async function getBvPSplits(batterId,pitcherId){
   try{
-    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=vsPlayerTotal&opposingPlayerId="+pitcherId+"&sportId=1&group=hitting");
+    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=vsPlayer&opposingPlayerId="+pitcherId+"&sportId=1&group=hitting");
+    let ab=0,h=0,hr=0,rbi=0,bb=0,so=0,pa=0,d=0,t=0,sf=0,hbp=0,sac=0;
+    let found=false;
     for(const sg of data.stats||[]){
       if(sg.group&&sg.group.displayName==="hitting"){
-        const split=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
-        if(split) return split;
+        for(const sp of (sg.splits||[])){
+          const s=sp.stat||{};
+          const spAB=parseInt(s.atBats)||0;
+          const spPA=parseInt(s.plateAppearances)||0;
+          if(spAB===0&&spPA===0) continue;
+          found=true;
+          ab+=spAB;
+          h +=parseInt(s.hits)||0;
+          hr+=parseInt(s.homeRuns)||0;
+          rbi+=parseInt(s.rbi)||0;
+          bb+=parseInt(s.baseOnBalls)||0;
+          so+=parseInt(s.strikeOuts)||0;
+          pa+=spPA;
+          d +=parseInt(s.doubles)||0;
+          t +=parseInt(s.triples)||0;
+          sf+=parseInt(s.sacFlies)||0;
+          hbp+=parseInt(s.hitByPitch)||0;
+          sac+=parseInt(s.sacBunts)||0;
+        }
       }
     }
-    return null;
+    if(!found) return null;
+    const tb=h+d+(2*t)+(3*hr);
+    const avg=ab>0?(h/ab):0;
+    const obpDen=ab+bb+hbp+sf;
+    const obp=obpDen>0?((h+bb+hbp)/obpDen):0;
+    const slg=ab>0?(tb/ab):0;
+    const ops=obp+slg;
+    const fmt=function(n){return n.toFixed(3).replace(/^0\./,".");};
+    return {
+      atBats:ab, hits:h, homeRuns:hr, rbi:rbi,
+      baseOnBalls:bb, strikeOuts:so, plateAppearances:pa,
+      doubles:d, triples:t, sacFlies:sf, hitByPitch:hbp, sacBunts:sac,
+      totalBases:tb,
+      avg:fmt(avg), obp:fmt(obp), slg:fmt(slg), ops:fmt(ops)
+    };
   }catch(e){return null;}
 }
 async function getSeasonStats(playerId, group){
