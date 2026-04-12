@@ -864,7 +864,7 @@ async function getBvPSplits(batterId,pitcherId){
     let ab=0,h=0,hr=0,rbi=0,bb=0,so=0,pa=0,d=0,t=0,sf=0,hbp=0,sac=0;
     let found=false;
     for(const sg of data.stats||[]){
-      if(sg.group&&sg.group.displayName==="hitting"){
+      if(ssg.type&&sg.type.displayName==="vsPlayer"{
         for(const sp of (sg.splits||[])){
           const s=sp.stat||{};
           const spAB=parseInt(s.atBats)||0;
