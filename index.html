@@ -2291,9 +2291,9 @@ function App(){
         var crTotalFantasy=0, crHitCount=0, crBGradeBatters=0;
         for(var ci=0;ci<crPicks.length;ci++){
           crTotalFantasy+=crPicks[ci].fantasyScore;
-          if(crPicks[ci].edgeScore>=55&&crPicks[ci].actualStats){
+          if(crPicks[ci].edgeScore>=55&&crPicks[ci].actualStats&&(parseInt(crPicks[ci].actualStats.atBats)||0)>0){
             crBGradeBatters++;
-            if((parseInt(crPicks[ci].actualStats.hits)||0)>0) crHitCount++;
+            if((crPicks[ci].fantasyScore||0)>=3) crHitCount++;
           }
         }
         var crPitcherOver=0, crPitchersWithStats=0, crTotalK=0;
