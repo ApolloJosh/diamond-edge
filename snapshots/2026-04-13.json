@@ -1,6 +1,6 @@
 {
   "date": "2026-04-13",
-  "savedAt": "2026-04-13T19:51:40.386Z",
+  "savedAt": "2026-04-13T20:37:43.305Z",
   "scanType": "afternoon",
   "gamesScanned": 10,
   "totalGames": 10,
@@ -134,6 +134,22 @@
       "gameLabel": "MIA @ ATL"
     },
     {
+      "batterId": 621043,
+      "batterName": "Carlos Correa",
+      "pitcherId": 669923,
+      "pitcherName": "George Kirby",
+      "batterTeam": "HOU",
+      "pitcherTeam": "SEA",
+      "edgeScore": 78,
+      "grade": "A",
+      "bvpAvg": ".364",
+      "bvpOps": "1.144",
+      "bvpPA": 24,
+      "bvpHR": 2,
+      "gamePk": 823153,
+      "gameLabel": "HOU @ SEA"
+    },
+    {
       "batterId": 663624,
       "batterName": "Ryan Mountcastle",
       "pitcherId": 669194,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 825024,
       "gameLabel": "TEX @ ATH"
-    },
-    {
-      "batterId": 621043,
-      "batterName": "Carlos Correa",
-      "pitcherId": 669923,
-      "pitcherName": "George Kirby",
-      "batterTeam": "HOU",
-      "pitcherTeam": "SEA",
-      "edgeScore": 75,
-      "grade": "A",
-      "bvpAvg": ".364",
-      "bvpOps": "1.144",
-      "bvpPA": 24,
-      "bvpHR": 2,
-      "gamePk": 823153,
-      "gameLabel": "HOU @ SEA"
     }
   ],
   "pitchers": [
@@ -293,9 +293,9 @@
       "oppTeam": "SEA",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 8.4,
-      "projectedIP": 5.3,
-      "projectedK": 4,
+      "k9": 8.3,
+      "projectedIP": 4.3,
+      "projectedK": 3,
       "gamePk": 823153,
       "gameLabel": "HOU @ SEA"
     },
@@ -434,11 +434,11 @@
       "pitcherName": "George Kirby",
       "team": "SEA",
       "oppTeam": "HOU",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 7.2,
-      "projectedIP": 6.7,
-      "projectedK": 4.5,
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 6.6,
+      "projectedIP": 5.5,
+      "projectedK": 3.5,
       "gamePk": 823153,
       "gameLabel": "HOU @ SEA"
     },
@@ -986,8 +986,8 @@
       "walkScore": 55,
       "grade": "B",
       "bvpBB": 6,
-      "bvpPA": 6,
-      "bvpBBRate": 1,
+      "bvpPA": 7,
+      "bvpBBRate": 0.8571428571428571,
       "gamePk": 823153,
       "gameLabel": "HOU @ SEA"
     },
