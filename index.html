@@ -1989,7 +1989,7 @@ function App(){
             if(!rd.summary) continue;
             cloudHistory.push({
               date:rd.date,
-              batterHitRate:rd.summary.hitRate||0,
+              batterHitRate:(function(){var bs=rd.batters||[];var dn=0,nm=0;for(var bi=0;bi<bs.length;bi++){if(bs[bi].edgeScore>=55&&bs[bi].actualStats&&(parseInt(bs[bi].actualStats.atBats)||0)>0){dn++;if((bs[bi].fantasyScore||0)>=3)nm++;}}return dn>0?Math.round((nm/dn)*100):0;})(),
               pitcherOverRate:rd.summary.pitcherHitProjRate||0,
               batterCount:rd.summary.bGradeBatters||0,
               pitcherCount:rd.summary.bGradePitchers||0,
