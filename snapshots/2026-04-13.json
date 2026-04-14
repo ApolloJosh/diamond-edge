@@ -1,8 +1,8 @@
 {
   "date": "2026-04-13",
-  "savedAt": "2026-04-13T20:37:43.305Z",
+  "savedAt": "2026-04-14T00:02:21.837Z",
   "scanType": "afternoon",
-  "gamesScanned": 10,
+  "gamesScanned": 4,
   "totalGames": 10,
   "batters": [
     {
@@ -254,9 +254,9 @@
       "oppTeam": "MIN",
       "whiffScore": 82,
       "grade": "A+",
-      "k9": 11.4,
-      "projectedIP": 5.7,
-      "projectedK": 6,
+      "k9": 10.8,
+      "projectedIP": 4.5,
+      "projectedK": 4.5,
       "gamePk": 823725,
       "gameLabel": "BOS @ MIN"
     },
@@ -359,8 +359,8 @@
       "whiffScore": 64,
       "grade": "B+",
       "k9": 12.7,
-      "projectedIP": 5.7,
-      "projectedK": 7,
+      "projectedIP": 4.3,
+      "projectedK": 5,
       "gamePk": 823073,
       "gameLabel": "CLE @ STL"
     },
@@ -423,8 +423,8 @@
       "oppTeam": "BOS",
       "whiffScore": 58,
       "grade": "B",
-      "k9": 4.6,
-      "projectedIP": 4.4,
+      "k9": 4.9,
+      "projectedIP": 3.6,
       "projectedK": 1.5,
       "gamePk": 823725,
       "gameLabel": "BOS @ MIN"
@@ -475,9 +475,9 @@
       "oppTeam": "CLE",
       "whiffScore": 41,
       "grade": "D",
-      "k9": 5.6,
-      "projectedIP": 5.3,
-      "projectedK": 2.5,
+      "k9": 5.3,
+      "projectedIP": 4.3,
+      "projectedK": 2,
       "gamePk": 823073,
       "gameLabel": "CLE @ STL"
     },
@@ -493,6 +493,19 @@
       "projectedK": 0,
       "gamePk": 824856,
       "gameLabel": "AZ @ BAL"
+    },
+    {
+      "pitcherId": 680736,
+      "pitcherName": "Justin Wrobleski",
+      "team": "LAD",
+      "oppTeam": "NYM",
+      "whiffScore": 37,
+      "grade": "D",
+      "k9": 4,
+      "projectedIP": 9,
+      "projectedK": 3.5,
+      "gamePk": 823964,
+      "gameLabel": "NYM @ LAD"
     }
   ],
   "walks": [
@@ -602,21 +615,6 @@
       "gameLabel": "LAA @ NYY"
     },
     {
-      "batterId": 680777,
-      "batterName": "Ryan Jeffers",
-      "pitcherId": 676979,
-      "pitcherName": "Garrett Crochet",
-      "batterTeam": "MIN",
-      "pitcherTeam": "BOS",
-      "walkScore": 66,
-      "grade": "B+",
-      "bvpBB": 4,
-      "bvpPA": 24,
-      "bvpBBRate": 0.16666666666666666,
-      "gamePk": 823725,
-      "gameLabel": "BOS @ MIN"
-    },
-    {
       "batterId": 643376,
       "batterName": "Danny Jansen",
       "pitcherId": 622663,
@@ -677,21 +675,6 @@
       "gameLabel": "CLE @ STL"
     },
     {
-      "batterId": 656555,
-      "batterName": "Rhys Hoskins",
-      "pitcherId": 669461,
-      "pitcherName": "Matthew Liberatore",
-      "batterTeam": "CLE",
-      "pitcherTeam": "STL",
-      "walkScore": 63,
-      "grade": "B+",
-      "bvpBB": 4,
-      "bvpPA": 16,
-      "bvpBBRate": 0.25,
-      "gamePk": 823073,
-      "gameLabel": "CLE @ STL"
-    },
-    {
       "batterId": 641355,
       "batterName": "Cody Bellinger",
       "pitcherId": 579328,
@@ -707,17 +690,17 @@
       "gameLabel": "LAA @ NYY"
     },
     {
-      "batterId": 668885,
-      "batterName": "Austin Martin",
+      "batterId": 680777,
+      "batterName": "Ryan Jeffers",
       "pitcherId": 676979,
       "pitcherName": "Garrett Crochet",
       "batterTeam": "MIN",
       "pitcherTeam": "BOS",
       "walkScore": 62,
       "grade": "B+",
-      "bvpBB": 2,
-      "bvpPA": 6,
-      "bvpBBRate": 0.3333333333333333,
+      "bvpBB": 4,
+      "bvpPA": 25,
+      "bvpBBRate": 0.16,
       "gamePk": 823725,
       "gameLabel": "BOS @ MIN"
     },
@@ -735,21 +718,6 @@
       "bvpBBRate": 0,
       "gamePk": 823563,
       "gameLabel": "LAA @ NYY"
-    },
-    {
-      "batterId": 663616,
-      "batterName": "Trevor Larnach",
-      "pitcherId": 676979,
-      "pitcherName": "Garrett Crochet",
-      "batterTeam": "MIN",
-      "pitcherTeam": "BOS",
-      "walkScore": 61,
-      "grade": "B",
-      "bvpBB": 2,
-      "bvpPA": 16,
-      "bvpBBRate": 0.125,
-      "gamePk": 823725,
-      "gameLabel": "BOS @ MIN"
     },
     {
       "batterId": 682998,
@@ -780,6 +748,21 @@
       "bvpBBRate": 0,
       "gamePk": 824937,
       "gameLabel": "MIA @ ATL"
+    },
+    {
+      "batterId": 656555,
+      "batterName": "Rhys Hoskins",
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "batterTeam": "CLE",
+      "pitcherTeam": "STL",
+      "walkScore": 60,
+      "grade": "B",
+      "bvpBB": 4,
+      "bvpPA": 16,
+      "bvpBBRate": 0.25,
+      "gamePk": 823073,
+      "gameLabel": "CLE @ STL"
     },
     {
       "batterId": 669701,
@@ -857,6 +840,21 @@
       "gameLabel": "NYM @ LAD"
     },
     {
+      "batterId": 668885,
+      "batterName": "Austin Martin",
+      "pitcherId": 676979,
+      "pitcherName": "Garrett Crochet",
+      "batterTeam": "MIN",
+      "pitcherTeam": "BOS",
+      "walkScore": 58,
+      "grade": "B",
+      "bvpBB": 2,
+      "bvpPA": 6,
+      "bvpBBRate": 0.3333333333333333,
+      "gamePk": 823725,
+      "gameLabel": "BOS @ MIN"
+    },
+    {
       "batterId": 608070,
       "batterName": "José Ramírez",
       "pitcherId": 669461,
@@ -915,6 +913,21 @@
       "bvpBBRate": 0,
       "gamePk": 823563,
       "gameLabel": "LAA @ NYY"
+    },
+    {
+      "batterId": 663616,
+      "batterName": "Trevor Larnach",
+      "pitcherId": 676979,
+      "pitcherName": "Garrett Crochet",
+      "batterTeam": "MIN",
+      "pitcherTeam": "BOS",
+      "walkScore": 57,
+      "grade": "B",
+      "bvpBB": 2,
+      "bvpPA": 16,
+      "bvpBBRate": 0.125,
+      "gamePk": 823725,
+      "gameLabel": "BOS @ MIN"
     },
     {
       "batterId": 602104,
