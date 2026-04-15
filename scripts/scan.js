@@ -82,54 +82,11 @@ async function getSeasonStats(playerId, group) {
   } catch(e) { return null; }
 }
 
-async function getBatterRecentBBRate(playerId) {
-  try {
-    var year = new Date().getFullYear();
-    var both = await Promise.all([
-      fetchJSON(BASE + "/people/" + playerId + "/stats?stats=gameLog&group=hitting&season=" + year),
-      fetchJSON(BASE + "/people/" + playerId + "/stats?stats=gameLog&group=hitting&season=" + (year - 1))
-    ]);
-    var games = [];
-    for (var sg of (both[1].stats || [])) {
-      if (sg.group && sg.group.displayName === "hitting") {
-        for (var sp of (sg.splits || [])) games.push(sp);
-      }
-    }
-    for (var sg2 of (both[0].stats || [])) {
-      if (sg2.group && sg2.group.displayName === "hitting") {
-        for (var sp2 of (sg2.splits || [])) games.push(sp2);
-      }
-    }
-    var recent = games.slice(-10);
-    if (recent.length === 0) return null;
-    var totalPA = 0, totalBB = 0;
-    for (var g of recent) {
-      var s = g.stat || {};
-      totalPA += parseInt(s.plateAppearances) || 0;
-      totalBB += parseInt(s.baseOnBalls) || 0;
-    }
-    return { bbRate: totalPA > 0 ? (totalBB / totalPA) : 0, bb: totalBB, pa: totalPA, games: recent.length };
-  } catch (e) { return null; }
-}
+// --- PITCHES-THROWN HELPERS ---
 
-async function getBatterCareerBBRate(playerId) {
-  try {
-    var data = await fetchJSON(BASE + "/people/" + playerId + "/stats?stats=career&group=hitting");
-    for (var sg of (data.stats || [])) {
-      if (sg.group && sg.group.displayName === "hitting") {
-        var sp = sg.splits && sg.splits[0];
-        if (sp && sp.stat) {
-          var pa = parseInt(sp.stat.plateAppearances) || 0;
-          var bb = parseInt(sp.stat.baseOnBalls) || 0;
-          return { bbRate: pa > 0 ? (bb / pa) : 0, bb: bb, pa: pa };
-        }
-      }
-    }
-    return null;
-  } catch (e) { return null; }
-}
-
-async function getPitcherRecentBBRate(pitcherId) {
+// Pull the last 5 starts across this and last season. Return avg pitches/start
+// (only starts where the pitcher actually started, i.e. gamesStarted > 0, ip > 0).
+async function getPitcherRecent5PitchAvg(pitcherId) {
   try {
     var year = new Date().getFullYear();
     var both = await Promise.all([
@@ -147,139 +104,129 @@ async function getPitcherRecentBBRate(pitcherId) {
         for (var sp2 of (sg2.splits || [])) games.push(sp2);
       }
     }
-    var recent = games.slice(-5);
+    // Filter to starts only: gamesStarted >= 1 in that log row
+    var starts = games.filter(function(g){
+      var s = g.stat || {};
+      return (parseInt(s.gamesStarted) || 0) >= 1 && (parseFloat(s.inningsPitched) || 0) > 0;
+    });
+    var recent = starts.slice(-5);
     if (recent.length === 0) return null;
-    var totalBF = 0, totalBB = 0;
+    var totalPitches = 0, cnt = 0;
     for (var g of recent) {
       var s = g.stat || {};
-      totalBF += parseInt(s.battersFaced) || parseInt(s.battersfaced) || 0;
-      totalBB += parseInt(s.baseOnBalls) || 0;
-      if (totalBF === 0) {
-        var ip = parseFloat(s.inningsPitched) || 0;
-        totalBF += Math.round(ip * 4.3);
-      }
+      var p = parseInt(s.numberOfPitches) || parseInt(s.pitchesThrown) || 0;
+      if (p > 0) { totalPitches += p; cnt++; }
     }
-    return { bbRate: totalBF > 0 ? (totalBB / totalBF) : 0, bb: totalBB, bf: totalBF, starts: recent.length };
+    if (cnt === 0) return null;
+    return { avg: totalPitches / cnt, starts: cnt };
   } catch (e) { return null; }
 }
 
-async function getPitcherCareerBBRate(pitcherId) {
+// Pull the past 2 seasons (current + prior). Return avg pitches/start weighted by starts.
+async function getPitcher2YrPitchAvg(pitcherId) {
   try {
-    var data = await fetchJSON(BASE + "/people/" + pitcherId + "/stats?stats=career&group=pitching");
-    for (var sg of (data.stats || [])) {
-      if (sg.group && sg.group.displayName === "pitching") {
-        var sp = sg.splits && sg.splits[0];
-        if (sp && sp.stat) {
-          var bb9 = parseFloat(sp.stat.baseOnBallsPer9Inn) || 0;
-          var bbRate = bb9 / 9 / 4.3;
-          var totalBB = parseInt(sp.stat.baseOnBalls) || 0;
-          return { bbRate: bbRate, bb9: bb9, totalBB: totalBB };
+    var year = new Date().getFullYear();
+    var both = await Promise.all([
+      fetchJSON(BASE + "/people/" + pitcherId + "/stats?stats=season&season=" + year + "&group=pitching"),
+      fetchJSON(BASE + "/people/" + pitcherId + "/stats?stats=season&season=" + (year - 1) + "&group=pitching")
+    ]);
+    var totalPitches = 0, totalStarts = 0;
+    for (var data of both) {
+      for (var sg of (data.stats || [])) {
+        if (sg.group && sg.group.displayName === "pitching") {
+          var sp = sg.splits && sg.splits[0];
+          if (sp && sp.stat) {
+            var p = parseInt(sp.stat.numberOfPitches) || parseInt(sp.stat.pitchesThrown) || 0;
+            var gs = parseInt(sp.stat.gamesStarted) || 0;
+            if (gs > 0 && p > 0) {
+              totalPitches += p;
+              totalStarts += gs;
+            }
+          }
         }
       }
     }
-    return null;
+    if (totalStarts === 0) return null;
+    return { avg: totalPitches / totalStarts, starts: totalStarts };
   } catch (e) { return null; }
 }
 
-function computeWalkScore(bvpStat, batterSeasonStat, batterRecentBB, batterCareerBB, pitcherSeasonStat, pitcherRecentBB, pitcherCareerBB) {
-  var score = 50;
-  var factors = {};
-
-  // 1. BvP walk history (weight: high)
-  var bvpPA = parseInt(bvpStat.plateAppearances) || 0;
-  var bvpBB = parseInt(bvpStat.baseOnBalls) || 0;
-  var bvpBBRate = bvpPA > 0 ? (bvpBB / bvpPA) : 0;
-  if (bvpBBRate >= 0.18) factors.bvpBB = 12;
-  else if (bvpBBRate >= 0.14) factors.bvpBB = 8;
-  else if (bvpBBRate >= 0.10) factors.bvpBB = 4;
-  else if (bvpBBRate < 0.04) factors.bvpBB = -8;
-  else if (bvpBBRate < 0.06) factors.bvpBB = -4;
-  else factors.bvpBB = 0;
-  var sampleFactor = Math.min(bvpPA / 20, 1.2);
-  factors.bvpBB = Math.round(factors.bvpBB * sampleFactor);
-  score += factors.bvpBB;
-
-  // 2. Batter recent BB% trend (last 10 games)
-  factors.batterRecent = 0;
-  if (batterRecentBB) {
-    var brRate = batterRecentBB.bbRate;
-    if (brRate >= 0.14) factors.batterRecent = 10;
-    else if (brRate >= 0.11) factors.batterRecent = 6;
-    else if (brRate >= 0.09) factors.batterRecent = 3;
-    else if (brRate < 0.04) factors.batterRecent = -8;
-    else if (brRate < 0.06) factors.batterRecent = -4;
-    else factors.batterRecent = 0;
+// BvP adjustment based on opposing lineup's history vs this pitcher.
+// More PA means we expect MORE pitches; high K-rate BvP means more pitches per PA; low contact means more pitches.
+// Returns an additive adjustment (typically -8 .. +8) applied to the base line.
+function computeLineupBvPPitchAdj(matchups) {
+  if (!matchups || matchups.length === 0) return 0;
+  var totalPA = 0, totalAB = 0, totalK = 0, totalBB = 0, totalH = 0;
+  for (var m of matchups) {
+    var s = m.stat || {};
+    totalPA += parseInt(s.plateAppearances) || 0;
+    totalAB += parseInt(s.atBats) || 0;
+    totalK  += parseInt(s.strikeOuts) || 0;
+    totalBB += parseInt(s.baseOnBalls) || 0;
+    totalH  += parseInt(s.hits) || 0;
   }
-  score += factors.batterRecent;
-
-  // 3. Batter season BB%
-  factors.batterSeason = 0;
-  if (batterSeasonStat) {
-    var sPa = parseInt(batterSeasonStat.plateAppearances) || 0;
-    var sBb = parseInt(batterSeasonStat.baseOnBalls) || 0;
-    var sBBRate = sPa > 0 ? (sBb / sPa) : 0;
-    if (sBBRate >= 0.13) factors.batterSeason = 6;
-    else if (sBBRate >= 0.10) factors.batterSeason = 3;
-    else if (sBBRate < 0.05) factors.batterSeason = -5;
-    else if (sBBRate < 0.07) factors.batterSeason = -2;
-    else factors.batterSeason = 0;
-  }
-  score += factors.batterSeason;
-
-  // 4. Batter career BB%
-  factors.batterCareer = 0;
-  if (batterCareerBB) {
-    var cRate = batterCareerBB.bbRate;
-    if (cRate >= 0.12) factors.batterCareer = 4;
-    else if (cRate >= 0.10) factors.batterCareer = 2;
-    else if (cRate < 0.05) factors.batterCareer = -4;
-    else if (cRate < 0.07) factors.batterCareer = -2;
-    else factors.batterCareer = 0;
-  }
-  score += factors.batterCareer;
-
-  // 5. Pitcher recent BB% trend (last 5 starts)
-  factors.pitcherRecent = 0;
-  if (pitcherRecentBB) {
-    var prRate = pitcherRecentBB.bbRate;
-    if (prRate >= 0.12) factors.pitcherRecent = 10;
-    else if (prRate >= 0.09) factors.pitcherRecent = 6;
-    else if (prRate >= 0.07) factors.pitcherRecent = 3;
-    else if (prRate < 0.03) factors.pitcherRecent = -8;
-    else if (prRate < 0.05) factors.pitcherRecent = -4;
-    else factors.pitcherRecent = 0;
-  }
-  score += factors.pitcherRecent;
-
-  // 6. Pitcher season BB%
-  factors.pitcherSeason = 0;
-  if (pitcherSeasonStat) {
-    var pBB9 = parseFloat(pitcherSeasonStat.baseOnBallsPer9Inn) || 0;
-    if (pBB9 >= 4.5) factors.pitcherSeason = 8;
-    else if (pBB9 >= 3.5) factors.pitcherSeason = 4;
-    else if (pBB9 >= 2.8) factors.pitcherSeason = 1;
-    else if (pBB9 < 1.5) factors.pitcherSeason = -6;
-    else if (pBB9 < 2.0) factors.pitcherSeason = -3;
-    else factors.pitcherSeason = 0;
-  }
-  score += factors.pitcherSeason;
-
-  // 7. Pitcher career BB tendency
-  factors.pitcherCareer = 0;
-  if (pitcherCareerBB) {
-    var pcBB9 = pitcherCareerBB.bb9 || 0;
-    if (pcBB9 >= 4.0) factors.pitcherCareer = 4;
-    else if (pcBB9 >= 3.2) factors.pitcherCareer = 2;
-    else if (pcBB9 < 1.8) factors.pitcherCareer = -4;
-    else if (pcBB9 < 2.2) factors.pitcherCareer = -2;
-    else factors.pitcherCareer = 0;
-  }
-  score += factors.pitcherCareer;
-
-  return { score: Math.max(0, Math.min(99, Math.round(score))), factors: factors, bvpBBRate: bvpBBRate };
+  if (totalPA < 10) return 0;
+  var kRate = totalAB > 0 ? (totalK / totalAB) : 0;
+  var bbRate = totalPA > 0 ? (totalBB / totalPA) : 0;
+  var obp = totalPA > 0 ? ((totalH + totalBB) / totalPA) : 0;
+  var adj = 0;
+  // High lineup K-rate vs this pitcher -> more pitches per PA
+  if (kRate >= 0.28) adj += 4;
+  else if (kRate >= 0.23) adj += 2;
+  else if (kRate < 0.15) adj -= 2;
+  // High walk/obp vs this pitcher -> more base runners, more pitches
+  if (bbRate >= 0.12) adj += 3;
+  else if (bbRate < 0.05) adj -= 2;
+  if (obp >= 0.360) adj += 3;
+  else if (obp < 0.280) adj -= 2;
+  // Dampen by sample size
+  var sampleFactor = Math.min(totalPA / 60, 1);
+  return Math.round(adj * sampleFactor);
 }
 
-function walkGrade(score) {
+// Weighted predicted line: 25% 2yr avg, 50% recent-5 avg, 25% lineup BvP adjustment.
+// The BvP piece is added as an adjustment on top of the stats-based blend, scaled to 25% influence.
+function computePitchLine(twoYr, recent5, bvpAdj) {
+  var parts = [];
+  if (twoYr && twoYr.avg > 0) parts.push({ w: 0.25, v: twoYr.avg });
+  if (recent5 && recent5.avg > 0) parts.push({ w: 0.50, v: recent5.avg });
+  if (parts.length === 0) return null;
+  var totalW = 0, sum = 0;
+  for (var p of parts) { totalW += p.w; sum += p.w * p.v; }
+  var base = sum / totalW;
+  // BvP adjustment gets the remaining 25% weight as a direct shift
+  var line = base + (bvpAdj || 0);
+  return Math.round(line * 2) / 2; // round to nearest 0.5
+}
+
+// Confidence score for the over/under call.
+// Strong recent trends + large BvP sample push the confidence higher.
+function computePitchScore(line, twoYr, recent5, matchupsCount, bvpAdj) {
+  var score = 50;
+  // Signal strength: agreement between recent5 and 2yr
+  if (twoYr && recent5) {
+    var diff = Math.abs(recent5.avg - twoYr.avg);
+    if (diff < 3) score += 10;       // very stable
+    else if (diff < 6) score += 5;
+    else if (diff > 12) score -= 6;  // volatile
+  }
+  // Recent sample depth
+  if (recent5 && recent5.starts >= 5) score += 6;
+  else if (recent5 && recent5.starts >= 3) score += 3;
+  // BvP sample depth adds confidence either direction
+  if (matchupsCount >= 6) score += 6;
+  else if (matchupsCount >= 4) score += 3;
+  // Strong BvP adjustment means the matchup signal is clear
+  var absAdj = Math.abs(bvpAdj || 0);
+  if (absAdj >= 5) score += 4;
+  else if (absAdj >= 3) score += 2;
+  // Pitchers with very high recent averages (>100) tend to be workhorses — predictable
+  if (recent5 && recent5.avg >= 100) score += 3;
+  if (recent5 && recent5.avg < 75) score -= 3;
+  return Math.max(0, Math.min(99, Math.round(score)));
+}
+
+function pitchGrade(score) {
   if (score >= 80) return "A+";
   if (score >= 70) return "A";
   if (score >= 62) return "B+";
@@ -287,6 +234,25 @@ function walkGrade(score) {
   if (score >= 45) return "C";
   if (score >= 35) return "D";
   return "F";
+}
+
+// Decide OVER or UNDER: compare weighted prediction (recent5 biased) against the rounded line.
+// If recent5 > 2yr avg, lean OVER; if recent5 < 2yr avg, lean UNDER; BvP adj breaks ties.
+function computeOverUnder(line, twoYr, recent5, bvpAdj) {
+  // Raw (unrounded) expected value using same weights without BvP, then BvP pushes it
+  var base = 0, w = 0;
+  if (twoYr && twoYr.avg > 0) { base += 0.25 * twoYr.avg; w += 0.25; }
+  if (recent5 && recent5.avg > 0) { base += 0.50 * recent5.avg; w += 0.50; }
+  if (w === 0) return null;
+  var expected = (base / w) + (bvpAdj || 0);
+  if (expected > line + 0.25) return "OVER";
+  if (expected < line - 0.25) return "UNDER";
+  // Tie — use BvP direction
+  if ((bvpAdj || 0) > 0) return "OVER";
+  if ((bvpAdj || 0) < 0) return "UNDER";
+  // Still tied — default to recent trend
+  if (recent5 && twoYr && recent5.avg > twoYr.avg) return "OVER";
+  return "UNDER";
 }
 
 async function getTeamSeasonStats(teamId) {
@@ -473,7 +439,7 @@ async function main() {
 
   const allBatters = [];
   const allPitchers = [];
-  const allWalks = [];
+  const allPitches = []; // pitches-thrown over/under predictions
 
   for (let gi = 0; gi < gamesToScan.length; gi++) {
     const game = gamesToScan[gi];
@@ -587,77 +553,81 @@ async function main() {
       });
     }
 
-    // --- WALK SCORING ---
-    console.log(`    Scanning walks for ${gameLabel}...`);
-    if (homePitcher && homeMatchupsForWhiff.length > 0) {
-      const hpSeasonForWalk = await getSeasonStats(homePitcher.id, "pitching");
-      const hpRecentBB = await getPitcherRecentBBRate(homePitcher.id);
-      const hpCareerBB = await getPitcherCareerBBRate(homePitcher.id);
-
-      for (const wBatter of homeMatchupsForWhiff) {
-        if (!wBatter.stat) continue;
-        const wBatterSeason = await getSeasonStats(wBatter.batter.id, "hitting");
-        const wBatterRecent = await getBatterRecentBBRate(wBatter.batter.id);
-        const wBatterCareer = await getBatterCareerBBRate(wBatter.batter.id);
-        const ws = computeWalkScore(wBatter.stat, wBatterSeason, wBatterRecent, wBatterCareer, hpSeasonForWalk, hpRecentBB, hpCareerBB);
-        if (ws.score >= 50) {
-          allWalks.push({
-            batterId: wBatter.batter.id, batterName: wBatter.batter.fullName,
+    // --- PITCHES-THROWN SCORING ---
+    console.log(`    Scanning pitches thrown for ${gameLabel}...`);
+    if (homePitcher) {
+      try {
+        const [hp2yr, hpRecent5] = await Promise.all([
+          getPitcher2YrPitchAvg(homePitcher.id),
+          getPitcherRecent5PitchAvg(homePitcher.id)
+        ]);
+        const bvpAdj = computeLineupBvPPitchAdj(homeMatchupsForWhiff);
+        const line = computePitchLine(hp2yr, hpRecent5, bvpAdj);
+        if (line !== null) {
+          const overUnder = computeOverUnder(line, hp2yr, hpRecent5, bvpAdj);
+          const score = computePitchScore(line, hp2yr, hpRecent5, homeMatchupsForWhiff.length, bvpAdj);
+          allPitches.push({
             pitcherId: homePitcher.id, pitcherName: homePitcher.fullName,
-            batterTeam: awayAbbr, pitcherTeam: homeAbbr,
-            walkScore: ws.score, grade: walkGrade(ws.score),
-            bvpBB: parseInt(wBatter.stat.baseOnBalls) || 0,
-            bvpPA: parseInt(wBatter.stat.plateAppearances) || 0,
-            bvpBBRate: ws.bvpBBRate,
+            team: homeAbbr, oppTeam: awayAbbr,
+            line: line, overUnder: overUnder,
+            pitchScore: score, grade: pitchGrade(score),
+            recent5Avg: hpRecent5 ? Math.round(hpRecent5.avg * 10) / 10 : null,
+            recent5Starts: hpRecent5 ? hpRecent5.starts : 0,
+            twoYrAvg: hp2yr ? Math.round(hp2yr.avg * 10) / 10 : null,
+            twoYrStarts: hp2yr ? hp2yr.starts : 0,
+            bvpAdj: bvpAdj,
+            lineupPA: homeMatchupsForWhiff.reduce((a, m) => a + (parseInt(m.stat.plateAppearances) || 0), 0),
             gamePk: game.gamePk, gameLabel
           });
         }
-      }
+      } catch(e) {}
     }
-    if (awayPitcher && awayMatchupsForWhiff.length > 0) {
-      const apSeasonForWalk = await getSeasonStats(awayPitcher.id, "pitching");
-      const apRecentBB = await getPitcherRecentBBRate(awayPitcher.id);
-      const apCareerBB = await getPitcherCareerBBRate(awayPitcher.id);
-
-      for (const wBatter2 of awayMatchupsForWhiff) {
-        if (!wBatter2.stat) continue;
-        const wBatterSeason2 = await getSeasonStats(wBatter2.batter.id, "hitting");
-        const wBatterRecent2 = await getBatterRecentBBRate(wBatter2.batter.id);
-        const wBatterCareer2 = await getBatterCareerBBRate(wBatter2.batter.id);
-        const ws2 = computeWalkScore(wBatter2.stat, wBatterSeason2, wBatterRecent2, wBatterCareer2, apSeasonForWalk, apRecentBB, apCareerBB);
-        if (ws2.score >= 50) {
-          allWalks.push({
-            batterId: wBatter2.batter.id, batterName: wBatter2.batter.fullName,
+    if (awayPitcher) {
+      try {
+        const [ap2yr, apRecent5] = await Promise.all([
+          getPitcher2YrPitchAvg(awayPitcher.id),
+          getPitcherRecent5PitchAvg(awayPitcher.id)
+        ]);
+        const bvpAdj2 = computeLineupBvPPitchAdj(awayMatchupsForWhiff);
+        const line2 = computePitchLine(ap2yr, apRecent5, bvpAdj2);
+        if (line2 !== null) {
+          const overUnder2 = computeOverUnder(line2, ap2yr, apRecent5, bvpAdj2);
+          const score2 = computePitchScore(line2, ap2yr, apRecent5, awayMatchupsForWhiff.length, bvpAdj2);
+          allPitches.push({
             pitcherId: awayPitcher.id, pitcherName: awayPitcher.fullName,
-            batterTeam: homeAbbr, pitcherTeam: awayAbbr,
-            walkScore: ws2.score, grade: walkGrade(ws2.score),
-            bvpBB: parseInt(wBatter2.stat.baseOnBalls) || 0,
-            bvpPA: parseInt(wBatter2.stat.plateAppearances) || 0,
-            bvpBBRate: ws2.bvpBBRate,
+            team: awayAbbr, oppTeam: homeAbbr,
+            line: line2, overUnder: overUnder2,
+            pitchScore: score2, grade: pitchGrade(score2),
+            recent5Avg: apRecent5 ? Math.round(apRecent5.avg * 10) / 10 : null,
+            recent5Starts: apRecent5 ? apRecent5.starts : 0,
+            twoYrAvg: ap2yr ? Math.round(ap2yr.avg * 10) / 10 : null,
+            twoYrStarts: ap2yr ? ap2yr.starts : 0,
+            bvpAdj: bvpAdj2,
+            lineupPA: awayMatchupsForWhiff.reduce((a, m) => a + (parseInt(m.stat.plateAppearances) || 0), 0),
             gamePk: game.gamePk, gameLabel
           });
         }
-      }
+      } catch(e) {}
     }
   }
 
   allBatters.sort((a, b) => b.edgeScore - a.edgeScore);
   allPitchers.sort((a, b) => b.whiffScore - a.whiffScore);
-  allWalks.sort((a, b) => b.walkScore - a.walkScore);
+  allPitches.sort((a, b) => b.pitchScore - a.pitchScore);
 
   const top15 = allBatters.slice(0, 15);
-  // Filter walks to B-grade+ (55+) for snapshot
-  const qualifiedWalks = allWalks.filter(w => w.walkScore >= 55);
+  // Top 5 pitches-thrown picks per day (requires at least B-grade confidence)
+  const top5Pitches = allPitches.filter(p => p.pitchScore >= 55).slice(0, 5);
 
   let finalBatters = top15;
   let finalPitchers = allPitchers;
-  let finalWalks = qualifiedWalks;
+  let finalPitches = top5Pitches;
 
   if (isAfternoon && existingSnapshot) {
     const newGamePks = new Set(gamesToScan.map(g => g.gamePk));
     const existingBatters = existingSnapshot.batters.filter(b => !newGamePks.has(b.gamePk));
     const existingPitchers = existingSnapshot.pitchers.filter(p => !newGamePks.has(p.gamePk));
-    const existingWalks = (existingSnapshot.walks || []).filter(w => !newGamePks.has(w.gamePk));
+    const existingPitches = (existingSnapshot.pitches || []).filter(p => !newGamePks.has(p.gamePk));
 
     const combined = [...existingBatters, ...top15];
     combined.sort((a, b) => b.edgeScore - a.edgeScore);
@@ -666,12 +636,13 @@ async function main() {
     finalPitchers = [...existingPitchers, ...allPitchers];
     finalPitchers.sort((a, b) => b.whiffScore - a.whiffScore);
 
-    finalWalks = [...existingWalks, ...qualifiedWalks];
-    finalWalks.sort((a, b) => b.walkScore - a.walkScore);
+    const combinedPitches = [...existingPitches, ...allPitches.filter(p => p.pitchScore >= 55)];
+    combinedPitches.sort((a, b) => b.pitchScore - a.pitchScore);
+    finalPitches = combinedPitches.slice(0, 5);
 
     console.log(`Merged: ${existingBatters.length} existing + ${top15.length} new batters`);
     console.log(`Merged: ${existingPitchers.length} existing + ${allPitchers.length} new pitchers`);
-    console.log(`Merged: ${existingWalks.length} existing + ${qualifiedWalks.length} new walks`);
+    console.log(`Merged pitches: ${existingPitches.length} existing + ${allPitches.filter(p => p.pitchScore >= 55).length} new -> top 5`);
   }
 
   const snapshot = {
@@ -682,12 +653,12 @@ async function main() {
     totalGames: games.length,
     batters: finalBatters,
     pitchers: finalPitchers,
-    walks: finalWalks
+    pitches: finalPitches
   };
 
   fs.writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2));
   console.log(`\nSnapshot saved: ${snapshotPath}`);
-  console.log(`  ${finalBatters.length} batters (top 15), ${finalPitchers.length} pitchers, ${finalWalks.length} walks`);
+  console.log(`  ${finalBatters.length} batters (top 15), ${finalPitchers.length} pitchers, ${finalPitches.length} pitches picks`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
