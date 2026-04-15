@@ -46,13 +46,13 @@ async function main() {
 
   const snapshot = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'));
   console.log(`Processing results for ${dateStr}...`);
-  console.log(`  ${snapshot.batters.length} batters, ${snapshot.pitchers.length} pitchers, ${(snapshot.walks || []).length} walks`);
+  console.log(`  ${snapshot.batters.length} batters, ${snapshot.pitchers.length} pitchers, ${(snapshot.pitches || []).length} pitches picks`);
 
   // Collect unique game PKs from all categories
   const uniqueGamePks = new Set();
   for (const b of snapshot.batters) uniqueGamePks.add(b.gamePk);
   for (const p of snapshot.pitchers) uniqueGamePks.add(p.gamePk);
-  for (const w of (snapshot.walks || [])) uniqueGamePks.add(w.gamePk);
+  for (const p of (snapshot.pitches || [])) uniqueGamePks.add(p.gamePk);
 
   const boxScores = {};
   for (const gamePk of uniqueGamePks) {
@@ -151,43 +151,50 @@ async function main() {
     });
   }
 
-  // --- WALKS ---
-  const resultWalks = [];
-  for (const walk of (snapshot.walks || [])) {
-    const boxScore = boxScores[walk.gamePk];
+  // --- PITCHES THROWN ---
+  const resultPitches = [];
+  for (const pick of (snapshot.pitches || [])) {
+    const boxScore = boxScores[pick.gamePk];
     if (!boxScore || !boxScore.teams) continue;
 
-    let walkFound = null;
+    let pitcherFound = null;
     for (const teamKey in boxScore.teams) {
       const team = boxScore.teams[teamKey];
-      const playerKey = "ID" + walk.batterId;
+      const playerKey = "ID" + pick.pitcherId;
       if (team.players && team.players[playerKey]) {
         const playerData = team.players[playerKey];
-        if (playerData.stats && playerData.stats.batting) {
-          walkFound = playerData.stats.batting;
+        if (playerData.stats && playerData.stats.pitching) {
+          pitcherFound = playerData.stats.pitching;
         }
         break;
       }
     }
 
-    const actualBBWalk = walkFound ? (parseInt(walkFound.baseOnBalls) || 0) : 0;
+    const actualPitches = pitcherFound ? (parseInt(pitcherFound.numberOfPitches) || parseInt(pitcherFound.pitchesThrown) || 0) : 0;
+    const played = pitcherFound !== null && actualPitches > 0;
+    let hit = false;
+    if (played) {
+      if (pick.overUnder === "OVER") hit = actualPitches > pick.line;
+      else if (pick.overUnder === "UNDER") hit = actualPitches < pick.line;
+    }
 
-    resultWalks.push({
-      batterId: walk.batterId,
-      batterName: walk.batterName,
-      pitcherId: walk.pitcherId || 0,
-      pitcherName: walk.pitcherName || "",
-      batterTeam: walk.batterTeam,
-      pitcherTeam: walk.pitcherTeam || "",
-      walkScore: walk.walkScore,
-      bvpBB: walk.bvpBB || 0,
-      bvpPA: walk.bvpPA || 0,
-      bvpBBRate: walk.bvpBBRate || 0,
-      gamePk: walk.gamePk,
-      gameLabel: walk.gameLabel,
-      actualBB: actualBBWalk,
-      actualStats: walkFound ? true : null,
-      gotWalk: walkFound ? (actualBBWalk >= 1) : false
+    resultPitches.push({
+      pitcherId: pick.pitcherId,
+      pitcherName: pick.pitcherName,
+      team: pick.team,
+      oppTeam: pick.oppTeam,
+      line: pick.line,
+      overUnder: pick.overUnder,
+      pitchScore: pick.pitchScore,
+      grade: pick.grade,
+      recent5Avg: pick.recent5Avg || null,
+      twoYrAvg: pick.twoYrAvg || null,
+      bvpAdj: pick.bvpAdj || 0,
+      gamePk: pick.gamePk,
+      gameLabel: pick.gameLabel,
+      actualPitches: actualPitches,
+      actualStats: played ? true : null,
+      hit: hit
     });
   }
 
@@ -211,13 +218,13 @@ async function main() {
   }
   const pitcherHitProjRate = bGradePitchers > 0 ? Math.round((projHitCount / bGradePitchers) * 100) : 0;
 
-  const qualifiedWalks = resultWalks.filter(w => w.walkScore >= 55 && w.actualStats);
-  const bGradeWalks = qualifiedWalks.length;
-  let walkHitCount = 0;
-  for (const w of qualifiedWalks) {
-    if (w.gotWalk) walkHitCount++;
+  const qualifiedPitches = resultPitches.filter(p => p.pitchScore >= 55 && p.actualStats);
+  const bGradePitches = qualifiedPitches.length;
+  let pitchesHitCount = 0;
+  for (const p of qualifiedPitches) {
+    if (p.hit) pitchesHitCount++;
   }
-  const walkHitRate = bGradeWalks > 0 ? Math.round((walkHitCount / bGradeWalks) * 100) : 0;
+  const pitchesHitRate = bGradePitches > 0 ? Math.round((pitchesHitCount / bGradePitches) * 100) : 0;
 
   // --- SAVE ---
   const results = {
@@ -230,12 +237,12 @@ async function main() {
       pitcherHitProjRate,
       bGradeBatters,
       bGradePitchers,
-      walkHitRate,
-      bGradeWalks
+      pitchesHitRate,
+      bGradePitches
     },
     batters: resultBatters,
     pitchers: resultPitchers,
-    walks: resultWalks
+    pitches: resultPitches
   };
 
   const resultsDir = path.join(__dirname, '..', 'results');
@@ -247,7 +254,7 @@ async function main() {
   console.log(`  ${resultBatters.length} batters (${bGradeBatters} B-grade+ played), ${resultPitchers.length} pitchers (${bGradePitchers} B-grade+ played)`);
   console.log(`  Avg Fantasy: ${avgFantasy}, Hit Rate: ${hitRate}%`);
   console.log(`  Pitcher Hit Proj Rate: ${pitcherHitProjRate}%`);
-  console.log(`  Walks: ${resultWalks.length} total (${bGradeWalks} B-grade+ played, ${walkHitRate}% walked)`);
+  console.log(`  Pitches picks: ${resultPitches.length} total (${bGradePitches} B-grade+ pitched, ${pitchesHitRate}% hit over/under)`);
 
   // Update results index
   const indexPath = path.join(resultsDir, 'index.json');
