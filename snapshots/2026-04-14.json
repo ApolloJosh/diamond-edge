@@ -1,8 +1,8 @@
 {
   "date": "2026-04-14",
-  "savedAt": "2026-04-14T20:39:20.780Z",
+  "savedAt": "2026-04-15T00:02:16.753Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 8,
   "totalGames": 15,
   "batters": [
     {
@@ -150,22 +150,6 @@
       "gameLabel": "WSH @ PIT"
     },
     {
-      "batterId": 663616,
-      "batterName": "Trevor Larnach",
-      "pitcherId": 543243,
-      "pitcherName": "Sonny Gray",
-      "batterTeam": "MIN",
-      "pitcherTeam": "BOS",
-      "edgeScore": 81,
-      "grade": "A+",
-      "bvpAvg": ".600",
-      "bvpOps": "2.400",
-      "bvpPA": 10,
-      "bvpHR": 4,
-      "gamePk": 823723,
-      "gameLabel": "BOS @ MIN"
-    },
-    {
       "batterId": 553993,
       "batterName": "Eugenio Suárez",
       "pitcherId": 592662,
@@ -212,6 +196,22 @@
       "bvpHR": 2,
       "gamePk": 825022,
       "gameLabel": "TEX @ ATH"
+    },
+    {
+      "batterId": 663616,
+      "batterName": "Trevor Larnach",
+      "pitcherId": 543243,
+      "pitcherName": "Sonny Gray",
+      "batterTeam": "MIN",
+      "pitcherTeam": "BOS",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".545",
+      "bvpOps": "2.182",
+      "bvpPA": 11,
+      "bvpHR": 4,
+      "gamePk": 823723,
+      "gameLabel": "BOS @ MIN"
     },
     {
       "batterId": 695578,
@@ -306,9 +306,9 @@
       "oppTeam": "CWS",
       "whiffScore": 78,
       "grade": "A",
-      "k9": 9.4,
-      "projectedIP": 4.1,
-      "projectedK": 3.5,
+      "k9": 9,
+      "projectedIP": 3,
+      "projectedK": 2.5,
       "gamePk": 824616,
       "gameLabel": "TB @ CWS"
     },
@@ -319,9 +319,9 @@
       "oppTeam": "MIL",
       "whiffScore": 78,
       "grade": "A",
-      "k9": 13.5,
-      "projectedIP": 5.7,
-      "projectedK": 7.5,
+      "k9": 13.3,
+      "projectedIP": 4.5,
+      "projectedK": 5.5,
       "gamePk": 823802,
       "gameLabel": "TOR @ MIL"
     },
@@ -475,9 +475,9 @@
       "oppTeam": "MIN",
       "whiffScore": 52,
       "grade": "C",
-      "k9": 5.5,
-      "projectedIP": 5.4,
-      "projectedK": 2.5,
+      "k9": 5.7,
+      "projectedIP": 4.3,
+      "projectedK": 2,
       "gamePk": 823723,
       "gameLabel": "BOS @ MIN"
     },
@@ -776,6 +776,21 @@
       "gameLabel": "WSH @ PIT"
     },
     {
+      "batterId": 605170,
+      "batterName": "Victor Caratini",
+      "pitcherId": 543243,
+      "pitcherName": "Sonny Gray",
+      "batterTeam": "MIN",
+      "pitcherTeam": "BOS",
+      "walkScore": 59,
+      "grade": "B",
+      "bvpBB": 4,
+      "bvpPA": 16,
+      "bvpBBRate": 0.25,
+      "gamePk": 823723,
+      "gameLabel": "BOS @ MIN"
+    },
+    {
       "batterId": 630105,
       "batterName": "Jake Cronenworth",
       "pitcherId": 693433,
@@ -896,19 +911,19 @@
       "gameLabel": "CHC @ PHI"
     },
     {
-      "batterId": 605170,
-      "batterName": "Victor Caratini",
-      "pitcherId": 543243,
-      "pitcherName": "Sonny Gray",
-      "batterTeam": "MIN",
-      "pitcherTeam": "BOS",
+      "batterId": 641343,
+      "batterName": "Jake Bauers",
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "batterTeam": "MIL",
+      "pitcherTeam": "TOR",
       "walkScore": 55,
       "grade": "B",
       "bvpBB": 4,
-      "bvpPA": 16,
-      "bvpBBRate": 0.25,
-      "gamePk": 823723,
-      "gameLabel": "BOS @ MIN"
+      "bvpPA": 12,
+      "bvpBBRate": 0.3333333333333333,
+      "gamePk": 823802,
+      "gameLabel": "TOR @ MIL"
     },
     {
       "batterId": 666211,
