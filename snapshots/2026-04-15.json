@@ -1,8 +1,8 @@
 {
   "date": "2026-04-15",
-  "savedAt": "2026-04-15T19:51:43.985Z",
+  "savedAt": "2026-04-15T20:14:54.955Z",
   "scanType": "afternoon",
-  "gamesScanned": 12,
+  "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
     {
@@ -102,6 +102,22 @@
       "gameLabel": "KC @ DET"
     },
     {
+      "batterId": 669236,
+      "batterName": "Jeremiah Jackson",
+      "pitcherId": 593958,
+      "pitcherName": "Eduardo Rodriguez",
+      "batterTeam": "BAL",
+      "pitcherTeam": "AZ",
+      "edgeScore": 82,
+      "grade": "A+",
+      "bvpAvg": ".667",
+      "bvpOps": "2.333",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 824855,
+      "gameLabel": "AZ @ BAL"
+    },
+    {
       "batterId": 670541,
       "batterName": "Yordan Alvarez",
       "pitcherId": 500779,
@@ -148,6 +164,22 @@
       "bvpHR": 0,
       "gamePk": 824936,
       "gameLabel": "MIA @ ATL"
+    },
+    {
+      "batterId": 606466,
+      "batterName": "Ketel Marte",
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "batterTeam": "AZ",
+      "pitcherTeam": "BAL",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": "1.000",
+      "bvpOps": "2.500",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 824855,
+      "gameLabel": "AZ @ BAL"
     },
     {
       "batterId": 664040,
@@ -198,52 +230,20 @@
       "gameLabel": "TEX @ ATH"
     },
     {
-      "batterId": 607043,
-      "batterName": "Brandon Nimmo",
-      "pitcherId": 669372,
-      "pitcherName": "J.T. Ginn",
-      "batterTeam": "TEX",
-      "pitcherTeam": "ATH",
-      "edgeScore": 71,
+      "batterId": 701350,
+      "batterName": "Roman Anthony",
+      "pitcherId": 680573,
+      "pitcherName": "Simeon Woods Richardson",
+      "batterTeam": "BOS",
+      "pitcherTeam": "MIN",
+      "edgeScore": 72,
       "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": "1.667",
+      "bvpAvg": "1.000",
+      "bvpOps": "2.000",
       "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 825021,
-      "gameLabel": "TEX @ ATH"
-    },
-    {
-      "batterId": 592626,
-      "batterName": "Joc Pederson",
-      "pitcherId": 669372,
-      "pitcherName": "J.T. Ginn",
-      "batterTeam": "TEX",
-      "pitcherTeam": "ATH",
-      "edgeScore": 70,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "2.100",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 825021,
-      "gameLabel": "TEX @ ATH"
-    },
-    {
-      "batterId": 693307,
-      "batterName": "Dillon Dingler",
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "batterTeam": "DET",
-      "pitcherTeam": "KC",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".273",
-      "bvpOps": ".970",
-      "bvpPA": 24,
-      "bvpHR": 2,
-      "gamePk": 824291,
-      "gameLabel": "KC @ DET"
+      "bvpHR": 0,
+      "gamePk": 823722,
+      "gameLabel": "BOS @ MIN"
     }
   ],
   "pitchers": [
@@ -313,6 +313,19 @@
       "gameLabel": "KC @ DET"
     },
     {
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "team": "BAL",
+      "oppTeam": "AZ",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9.6,
+      "projectedIP": 4.8,
+      "projectedK": 4.5,
+      "gamePk": 824855,
+      "gameLabel": "AZ @ BAL"
+    },
+    {
       "pitcherId": 605280,
       "pitcherName": "Clay Holmes",
       "team": "NYM",
@@ -350,6 +363,32 @@
       "projectedK": 1.5,
       "gamePk": 823561,
       "gameLabel": "LAA @ NYY"
+    },
+    {
+      "pitcherId": 593958,
+      "pitcherName": "Eduardo Rodriguez",
+      "team": "AZ",
+      "oppTeam": "BAL",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 5.5,
+      "projectedIP": 5.8,
+      "projectedK": 3,
+      "gamePk": 824855,
+      "gameLabel": "AZ @ BAL"
+    },
+    {
+      "pitcherId": 680573,
+      "pitcherName": "Simeon Woods Richardson",
+      "team": "MIN",
+      "oppTeam": "BOS",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 4.8,
+      "projectedIP": 5.1,
+      "projectedK": 2,
+      "gamePk": 823722,
+      "gameLabel": "BOS @ MIN"
     },
     {
       "pitcherId": 680732,
@@ -404,6 +443,19 @@
       "gameLabel": "NYM @ LAD"
     },
     {
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "team": "STL",
+      "oppTeam": "CLE",
+      "whiffScore": 59,
+      "grade": "B",
+      "k9": 7,
+      "projectedIP": 4.8,
+      "projectedK": 3,
+      "gamePk": 823071,
+      "gameLabel": "CLE @ STL"
+    },
+    {
       "pitcherId": 676106,
       "pitcherName": "Emerson Hancock",
       "team": "SEA",
@@ -415,6 +467,19 @@
       "projectedK": 5,
       "gamePk": 823314,
       "gameLabel": "SEA @ SD"
+    },
+    {
+      "pitcherId": 677944,
+      "pitcherName": "Slade Cecconi",
+      "team": "CLE",
+      "oppTeam": "STL",
+      "whiffScore": 57,
+      "grade": "B",
+      "k9": 8.2,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 823071,
+      "gameLabel": "CLE @ STL"
     },
     {
       "pitcherId": 686799,
@@ -598,6 +663,21 @@
       "gameLabel": "NYM @ LAD"
     },
     {
+      "batterId": 624413,
+      "batterName": "Pete Alonso",
+      "pitcherId": 593958,
+      "pitcherName": "Eduardo Rodriguez",
+      "batterTeam": "BAL",
+      "pitcherTeam": "AZ",
+      "walkScore": 71,
+      "grade": "A",
+      "bvpBB": 4,
+      "bvpPA": 20,
+      "bvpBBRate": 0.2,
+      "gamePk": 824855,
+      "gameLabel": "AZ @ BAL"
+    },
+    {
       "batterId": 682985,
       "batterName": "Riley Greene",
       "pitcherId": 607625,
@@ -641,6 +721,21 @@
       "bvpBBRate": 0.16666666666666666,
       "gamePk": 823399,
       "gameLabel": "WSH @ PIT"
+    },
+    {
+      "batterId": 671286,
+      "batterName": "Johnathan Rodríguez",
+      "pitcherId": 593958,
+      "pitcherName": "Eduardo Rodriguez",
+      "batterTeam": "BAL",
+      "pitcherTeam": "AZ",
+      "walkScore": 67,
+      "grade": "B+",
+      "bvpBB": 2,
+      "bvpPA": 6,
+      "bvpBBRate": 0.3333333333333333,
+      "gamePk": 824855,
+      "gameLabel": "AZ @ BAL"
     },
     {
       "batterId": 657041,
@@ -731,6 +826,36 @@
       "bvpBBRate": 0,
       "gamePk": 823561,
       "gameLabel": "LAA @ NYY"
+    },
+    {
+      "batterId": 602104,
+      "batterName": "Ramón Urías",
+      "pitcherId": 677944,
+      "pitcherName": "Slade Cecconi",
+      "batterTeam": "STL",
+      "pitcherTeam": "CLE",
+      "walkScore": 64,
+      "grade": "B+",
+      "bvpBB": 2,
+      "bvpPA": 8,
+      "bvpBBRate": 0.25,
+      "gamePk": 823071,
+      "gameLabel": "CLE @ STL"
+    },
+    {
+      "batterId": 701350,
+      "batterName": "Roman Anthony",
+      "pitcherId": 680573,
+      "pitcherName": "Simeon Woods Richardson",
+      "batterTeam": "BOS",
+      "pitcherTeam": "MIN",
+      "walkScore": 64,
+      "grade": "B+",
+      "bvpBB": 4,
+      "bvpPA": 6,
+      "bvpBBRate": 0.6666666666666666,
+      "gamePk": 823722,
+      "gameLabel": "BOS @ MIN"
     },
     {
       "batterId": 596142,
@@ -988,6 +1113,21 @@
       "gameLabel": "NYM @ LAD"
     },
     {
+      "batterId": 608070,
+      "batterName": "José Ramírez",
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "batterTeam": "CLE",
+      "pitcherTeam": "STL",
+      "walkScore": 58,
+      "grade": "B",
+      "bvpBB": 2,
+      "bvpPA": 8,
+      "bvpBBRate": 0.25,
+      "gamePk": 823071,
+      "gameLabel": "CLE @ STL"
+    },
+    {
       "batterId": 665833,
       "batterName": "Oneil Cruz",
       "pitcherId": 663623,
@@ -1031,6 +1171,36 @@
       "bvpBBRate": 0,
       "gamePk": 823803,
       "gameLabel": "TOR @ MIL"
+    },
+    {
+      "batterId": 682998,
+      "batterName": "Corbin Carroll",
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "batterTeam": "AZ",
+      "pitcherTeam": "BAL",
+      "walkScore": 57,
+      "grade": "B",
+      "bvpBB": 1,
+      "bvpPA": 9,
+      "bvpBBRate": 0.1111111111111111,
+      "gamePk": 824855,
+      "gameLabel": "AZ @ BAL"
+    },
+    {
+      "batterId": 691026,
+      "batterName": "Masyn Winn",
+      "pitcherId": 677944,
+      "pitcherName": "Slade Cecconi",
+      "batterTeam": "STL",
+      "pitcherTeam": "CLE",
+      "walkScore": 57,
+      "grade": "B",
+      "bvpBB": 0,
+      "bvpPA": 7,
+      "bvpBBRate": 0,
+      "gamePk": 823071,
+      "gameLabel": "CLE @ STL"
     },
     {
       "batterId": 686668,
