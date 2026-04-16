@@ -1,8 +1,8 @@
 {
   "date": "2026-04-16",
-  "savedAt": "2026-04-16T20:09:35.343Z",
+  "savedAt": "2026-04-16T23:59:51.108Z",
   "scanType": "afternoon",
-  "gamesScanned": 10,
+  "gamesScanned": 2,
   "totalGames": 10,
   "batters": [
     {
@@ -70,22 +70,6 @@
       "gameLabel": "KC @ DET"
     },
     {
-      "batterId": 572233,
-      "batterName": "Christian Walker",
-      "pitcherId": 675848,
-      "pitcherName": "Juan Mejia",
-      "batterTeam": "HOU",
-      "pitcherTeam": "COL",
-      "edgeScore": 70,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.000",
-      "bvpPA": 8,
-      "bvpHR": 0,
-      "gamePk": 824208,
-      "gameLabel": "COL @ HOU"
-    },
-    {
       "batterId": 669127,
       "batterName": "Shea Langeliers",
       "pitcherId": 683004,
@@ -102,20 +86,20 @@
       "gameLabel": "TEX @ ATH"
     },
     {
-      "batterId": 680977,
-      "batterName": "Brendan Donovan",
-      "pitcherId": 621111,
-      "pitcherName": "Walker Buehler",
-      "batterTeam": "SEA",
-      "pitcherTeam": "SD",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": "1.667",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 823313,
-      "gameLabel": "SEA @ SD"
+      "batterId": 572233,
+      "batterName": "Christian Walker",
+      "pitcherId": 675848,
+      "pitcherName": "Juan Mejia",
+      "batterTeam": "HOU",
+      "pitcherTeam": "COL",
+      "edgeScore": 70,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "1.000",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 824208,
+      "gameLabel": "COL @ HOU"
     },
     {
       "batterId": 502671,
@@ -132,6 +116,22 @@
       "bvpHR": 2,
       "gamePk": 823560,
       "gameLabel": "LAA @ NYY"
+    },
+    {
+      "batterId": 680977,
+      "batterName": "Brendan Donovan",
+      "pitcherId": 621111,
+      "pitcherName": "Walker Buehler",
+      "batterTeam": "SEA",
+      "pitcherTeam": "SD",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".333",
+      "bvpOps": "1.667",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 823313,
+      "gameLabel": "SEA @ SD"
     },
     {
       "batterId": 668930,
@@ -404,19 +404,6 @@
       "gameLabel": "SF @ CIN"
     },
     {
-      "pitcherId": 621111,
-      "pitcherName": "Walker Buehler",
-      "team": "SD",
-      "oppTeam": "SEA",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 7.8,
-      "projectedIP": 4.1,
-      "projectedK": 3,
-      "gamePk": 823313,
-      "gameLabel": "SEA @ SD"
-    },
-    {
       "pitcherId": 656492,
       "pitcherName": "Foster Griffin",
       "team": "WSH",
@@ -454,6 +441,19 @@
       "projectedK": 4.5,
       "gamePk": 824614,
       "gameLabel": "TB @ CWS"
+    },
+    {
+      "pitcherId": 621111,
+      "pitcherName": "Walker Buehler",
+      "team": "SD",
+      "oppTeam": "SEA",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7.8,
+      "projectedIP": 4.1,
+      "projectedK": 3,
+      "gamePk": 823313,
+      "gameLabel": "SEA @ SD"
     },
     {
       "pitcherId": 687075,
@@ -538,24 +538,6 @@
       "gameLabel": "LAA @ NYY"
     },
     {
-      "pitcherId": 622491,
-      "pitcherName": "Luis Castillo",
-      "team": "SEA",
-      "oppTeam": "SD",
-      "line": 90.5,
-      "overUnder": "UNDER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 89.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 93.1,
-      "twoYrStarts": 35,
-      "bvpAdj": 0,
-      "lineupPA": 132,
-      "gamePk": 823313,
-      "gameLabel": "SEA @ SD"
-    },
-    {
       "pitcherId": 695505,
       "pitcherName": "Chase Burns",
       "team": "CIN",
@@ -572,6 +554,24 @@
       "lineupPA": 1476,
       "gamePk": 824530,
       "gameLabel": "SF @ CIN"
+    },
+    {
+      "pitcherId": 622491,
+      "pitcherName": "Luis Castillo",
+      "team": "SEA",
+      "oppTeam": "SD",
+      "line": 90.5,
+      "overUnder": "UNDER",
+      "pitchScore": 67,
+      "grade": "B+",
+      "recent5Avg": 89.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 93.1,
+      "twoYrStarts": 35,
+      "bvpAdj": 0,
+      "lineupPA": 132,
+      "gamePk": 823313,
+      "gameLabel": "SEA @ SD"
     }
   ]
 }
