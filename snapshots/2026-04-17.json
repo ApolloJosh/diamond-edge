@@ -1,8 +1,8 @@
 {
   "date": "2026-04-17",
-  "savedAt": "2026-04-17T20:06:27.304Z",
+  "savedAt": "2026-04-17T23:27:44.881Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -182,6 +182,22 @@
       "gameLabel": "TB @ PIT"
     },
     {
+      "batterId": 669397,
+      "batterName": "Nick Allen",
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "batterTeam": "HOU",
+      "pitcherTeam": "STL",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".311",
+      "bvpOps": ".924",
+      "bvpPA": 408,
+      "bvpHR": 26,
+      "gamePk": 824207,
+      "gameLabel": "STL @ HOU"
+    },
+    {
       "batterId": 607208,
       "batterName": "Trea Turner",
       "pitcherId": 527048,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823476,
       "gameLabel": "ATL @ PHI"
-    },
-    {
-      "batterId": 608369,
-      "batterName": "Corey Seager",
-      "pitcherId": 669302,
-      "pitcherName": "Logan Gilbert",
-      "batterTeam": "TEX",
-      "pitcherTeam": "SEA",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".323",
-      "bvpOps": ".931",
-      "bvpPA": 68,
-      "bvpHR": 2,
-      "gamePk": 823152,
-      "gameLabel": "TEX @ SEA"
     }
   ],
   "pitchers": [
@@ -313,19 +313,6 @@
       "gameLabel": "TEX @ SEA"
     },
     {
-      "pitcherId": 663554,
-      "pitcherName": "Casey Mize",
-      "team": "DET",
-      "oppTeam": "BOS",
-      "whiffScore": 72,
-      "grade": "A",
-      "k9": 10.1,
-      "projectedIP": 5.3,
-      "projectedK": 5,
-      "gamePk": 824778,
-      "gameLabel": "DET @ BOS"
-    },
-    {
       "pitcherId": 676440,
       "pitcherName": "Tanner Bibee",
       "team": "CLE",
@@ -345,11 +332,24 @@
       "oppTeam": "NYY",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 7.3,
-      "projectedIP": 7,
-      "projectedK": 4.5,
+      "k9": 7.4,
+      "projectedIP": 5.5,
+      "projectedK": 3.5,
       "gamePk": 823559,
       "gameLabel": "KC @ NYY"
+    },
+    {
+      "pitcherId": 663554,
+      "pitcherName": "Casey Mize",
+      "team": "DET",
+      "oppTeam": "BOS",
+      "whiffScore": 68,
+      "grade": "B+",
+      "k9": 9.9,
+      "projectedIP": 4,
+      "projectedK": 3.5,
+      "gamePk": 824778,
+      "gameLabel": "DET @ BOS"
     },
     {
       "pitcherId": 665795,
@@ -456,6 +456,19 @@
       "gameLabel": "TB @ PIT"
     },
     {
+      "pitcherId": 624133,
+      "pitcherName": "Ranger Suarez",
+      "team": "BOS",
+      "oppTeam": "DET",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7,
+      "projectedIP": 3.8,
+      "projectedK": 2.5,
+      "gamePk": 824778,
+      "gameLabel": "DET @ BOS"
+    },
+    {
       "pitcherId": 667755,
       "pitcherName": "José Soriano",
       "team": "LAA",
@@ -480,19 +493,6 @@
       "projectedK": 4.5,
       "gamePk": 822752,
       "gameLabel": "SF @ WSH"
-    },
-    {
-      "pitcherId": 624133,
-      "pitcherName": "Ranger Suarez",
-      "team": "BOS",
-      "oppTeam": "DET",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 6.9,
-      "projectedIP": 4.7,
-      "projectedK": 3,
-      "gamePk": 824778,
-      "gameLabel": "DET @ BOS"
     },
     {
       "pitcherId": 592836,
@@ -521,6 +521,19 @@
       "gameLabel": "ATL @ PHI"
     },
     {
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "team": "STL",
+      "oppTeam": "HOU",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 4.5,
+      "projectedIP": 4.7,
+      "projectedK": 2,
+      "gamePk": 824207,
+      "gameLabel": "STL @ HOU"
+    },
+    {
       "pitcherId": 605135,
       "pitcherName": "Chris Bassitt",
       "team": "BAL",
@@ -540,9 +553,9 @@
       "oppTeam": "MIL",
       "whiffScore": 44,
       "grade": "D",
-      "k9": 6.5,
-      "projectedIP": 5.4,
-      "projectedK": 3,
+      "k9": 6.1,
+      "projectedIP": 4.3,
+      "projectedK": 2.5,
       "gamePk": 823883,
       "gameLabel": "MIL @ MIA"
     },
@@ -558,19 +571,6 @@
       "projectedK": 2.5,
       "gamePk": 823720,
       "gameLabel": "CIN @ MIN"
-    },
-    {
-      "pitcherId": 681517,
-      "pitcherName": "Kyle Leahy",
-      "team": "STL",
-      "oppTeam": "HOU",
-      "whiffScore": 37,
-      "grade": "D",
-      "k9": 4.5,
-      "projectedIP": 4.7,
-      "projectedK": 2,
-      "gamePk": 824207,
-      "gameLabel": "STL @ HOU"
     }
   ],
   "pitches": [
@@ -611,42 +611,6 @@
       "gameLabel": "NYM @ CHC"
     },
     {
-      "pitcherId": 608379,
-      "pitcherName": "Michael Wacha",
-      "team": "KC",
-      "oppTeam": "NYY",
-      "line": 89.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 88.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 86.4,
-      "twoYrStarts": 34,
-      "bvpAdj": 2,
-      "lineupPA": 256,
-      "gamePk": 823559,
-      "gameLabel": "KC @ NYY"
-    },
-    {
-      "pitcherId": 663554,
-      "pitcherName": "Casey Mize",
-      "team": "DET",
-      "oppTeam": "BOS",
-      "line": 87,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 86.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 84.2,
-      "twoYrStarts": 31,
-      "bvpAdj": 1,
-      "lineupPA": 86,
-      "gamePk": 824778,
-      "gameLabel": "DET @ BOS"
-    },
-    {
       "pitcherId": 607192,
       "pitcherName": "Tyler Glasnow",
       "team": "LAD",
@@ -663,6 +627,42 @@
       "lineupPA": 78,
       "gamePk": 824373,
       "gameLabel": "LAD @ COL"
+    },
+    {
+      "pitcherId": 669302,
+      "pitcherName": "Logan Gilbert",
+      "team": "SEA",
+      "oppTeam": "TEX",
+      "line": 89,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 87.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 86.8,
+      "twoYrStarts": 29,
+      "bvpAdj": 2,
+      "lineupPA": 318,
+      "gamePk": 823152,
+      "gameLabel": "TEX @ SEA"
+    },
+    {
+      "pitcherId": 594798,
+      "pitcherName": "Jacob deGrom",
+      "team": "TEX",
+      "oppTeam": "SEA",
+      "line": 89.5,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 83.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 86.8,
+      "twoYrStarts": 33,
+      "bvpAdj": 5,
+      "lineupPA": 168,
+      "gamePk": 823152,
+      "gameLabel": "TEX @ SEA"
     }
   ]
 }
