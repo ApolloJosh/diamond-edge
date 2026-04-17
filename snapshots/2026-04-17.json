@@ -1,8 +1,8 @@
 {
   "date": "2026-04-17",
-  "savedAt": "2026-04-17T18:09:21.425Z",
+  "savedAt": "2026-04-17T20:06:27.304Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -49,22 +49,6 @@
       "bvpAvg": ".375",
       "bvpOps": "1.670",
       "bvpPA": 22,
-      "bvpHR": 4,
-      "gamePk": 825101,
-      "gameLabel": "TOR @ AZ"
-    },
-    {
-      "batterId": 606466,
-      "batterName": "Ketel Marte",
-      "pitcherId": 641778,
-      "pitcherName": "Eric Lauer",
-      "batterTeam": "AZ",
-      "pitcherTeam": "TOR",
-      "edgeScore": 88,
-      "grade": "A+",
-      "bvpAvg": ".368",
-      "bvpOps": "1.137",
-      "bvpPA": 40,
       "bvpHR": 4,
       "gamePk": 825101,
       "gameLabel": "TOR @ AZ"
@@ -198,22 +182,6 @@
       "gameLabel": "TB @ PIT"
     },
     {
-      "batterId": 571448,
-      "batterName": "Nolan Arenado",
-      "pitcherId": 641778,
-      "pitcherName": "Eric Lauer",
-      "batterTeam": "AZ",
-      "pitcherTeam": "TOR",
-      "edgeScore": 76,
-      "grade": "A",
-      "bvpAvg": ".292",
-      "bvpOps": "1.108",
-      "bvpPA": 60,
-      "bvpHR": 6,
-      "gamePk": 825101,
-      "gameLabel": "TOR @ AZ"
-    },
-    {
       "batterId": 607208,
       "batterName": "Trea Turner",
       "pitcherId": 527048,
@@ -244,6 +212,38 @@
       "bvpHR": 2,
       "gamePk": 823476,
       "gameLabel": "ATL @ PHI"
+    },
+    {
+      "batterId": 571657,
+      "batterName": "Kyle Farmer",
+      "pitcherId": 592836,
+      "pitcherName": "Taijuan Walker",
+      "batterTeam": "ATL",
+      "pitcherTeam": "PHI",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".600",
+      "bvpOps": "1.400",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 823476,
+      "gameLabel": "ATL @ PHI"
+    },
+    {
+      "batterId": 608369,
+      "batterName": "Corey Seager",
+      "pitcherId": 669302,
+      "pitcherName": "Logan Gilbert",
+      "batterTeam": "TEX",
+      "pitcherTeam": "SEA",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".323",
+      "bvpOps": ".931",
+      "bvpPA": 68,
+      "bvpHR": 2,
+      "gamePk": 823152,
+      "gameLabel": "TEX @ SEA"
     }
   ],
   "pitchers": [
@@ -400,19 +400,6 @@
       "k9": 13.2,
       "projectedIP": 5.1,
       "projectedK": 6.5,
-      "gamePk": 825101,
-      "gameLabel": "TOR @ AZ"
-    },
-    {
-      "pitcherId": 641778,
-      "pitcherName": "Eric Lauer",
-      "team": "TOR",
-      "oppTeam": "AZ",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 8.5,
-      "projectedIP": 4.1,
-      "projectedK": 3,
       "gamePk": 825101,
       "gameLabel": "TOR @ AZ"
     },
