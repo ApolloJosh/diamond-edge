@@ -2227,6 +2227,10 @@ function App(){
           };
         });
         var crPitches = (cloudResults.pitches||[]).map(function(p){
+          var ap=p.actualPitches||0;
+          var played=p.actualStats&&ap>0;
+          // Always compute projHit on the fly so historical data works
+          var computedProjHit=played?Math.abs(ap-p.line)<=2.5:false;
           return {
             pitcher:{id:p.pitcherId, fullName:p.pitcherName},
             team:p.team, oppTeam:p.oppTeam,
@@ -2234,10 +2238,10 @@ function App(){
             pitchScore:p.pitchScore, grade:p.grade,
             recent5Avg:p.recent5Avg, twoYrAvg:p.twoYrAvg, bvpAdj:p.bvpAdj||0,
             gamePk:p.gamePk, gameLabel:p.gameLabel,
-            actualPitches:p.actualPitches||0,
+            actualPitches:ap,
             actualStats:p.actualStats||null,
             hit:p.hit||false,
-            projHit:p.projHit||false
+            projHit:computedProjHit
           };
         });
 
