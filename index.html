@@ -1490,10 +1490,38 @@ function TopEdgesBanner({matchups}){
 /* ─────────────────────────────────────────────── */
 /* ─── HOME PAGE: League-Wide Edge Scanner ────── */
 /* ─────────────────────────────────────────────── */
-function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allPitchScores, scanState, onStartScan}){
+function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allPitchScores, ppLines, scanState, onStartScan}){
   var topEdges = allEdges.filter(function(m){return m.edgeScore>=55;}).sort(function(a,b){return b.edgeScore-a.edgeScore;});
   var topWhiffs = allWhiffScores.filter(function(w){return w.score>=55;}).sort(function(a,b){return b.score-a.score;});
-  var topPitches = allPitchScores.filter(function(p){return p.pitchScore>=55;}).sort(function(a,b){return b.pitchScore-a.pitchScore;}).slice(0,5);
+
+  // Pitches thrown: merge with PrizePicks lines, filter by >1.5 gap, rank by discrepancy
+  var topPitches = (function(){
+    if(!ppLines) return []; // no PP data today — skip section
+    var merged=[];
+    for(var pi=0;pi<allPitchScores.length;pi++){
+      var p=allPitchScores[pi];
+      // Match pitcher name to PP lines (fuzzy: last name match)
+      var pName=p.pitcher.fullName;
+      var ppLine=null;
+      if(ppLines[pName]!=null){ ppLine=ppLines[pName]; }
+      else{
+        // Try last-name matching
+        var lastName=pName.split(" ").slice(-1)[0].toLowerCase();
+        for(var key in ppLines){
+          if(key.toLowerCase().split(" ").slice(-1)[0]===lastName){
+            ppLine=ppLines[key]; break;
+          }
+        }
+      }
+      if(ppLine==null) continue; // skip if no PP line
+      var gap=Math.abs(p.line-ppLine);
+      if(gap<=1.5) continue; // only show >1.5 discrepancy
+      var overUnder=p.line>ppLine?"OVER":"UNDER";
+      merged.push(Object.assign({},p,{ppLine:ppLine,gap:gap,overUnder:overUnder}));
+    }
+    merged.sort(function(a,b){return b.gap-a.gap;});
+    return merged;
+  })();
 
   return(
     <div style={{padding:24,overflowY:"auto",height:"100%"}}>
@@ -1638,12 +1666,12 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         </div>
       )}
 
-      {/* Pitches Thrown — Top 5 Over/Under Picks */}
+      {/* Pitches Thrown — Ranked by Proj vs PrizePicks Discrepancy */}
       {topPitches.length>0&&(
         <div className="fade-in" style={{marginBottom:32}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
             <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.blue}}>🎯 PITCHES THROWN</div>
-            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>TOP 5 OVER/UNDER PICKS</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>RANKED BY LINE DISCREPANCY</div>
             <div style={{
               padding:"3px 10px",borderRadius:10,background:C.blue+"20",border:"1px solid "+C.blue+"40",
               color:C.blue,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
@@ -1653,12 +1681,13 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
               <thead>
                 <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
-                  <th style={{textAlign:"left",padding:"10px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>CONF</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>GAP</th>
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>PICK</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>LINE</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PP LINE</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RECENT 5</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>2YR AVG</th>
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
@@ -1666,23 +1695,24 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
               </thead>
               <tbody>
                 {topPitches.map(function(p,idx){
-                  var pg=pitchGrade(p.pitchScore);
                   var pickColor=p.overUnder==="OVER"?C.green:C.red;
+                  var gapDisplay=p.gap.toFixed(1);
                   return(
                     <tr key={idx} style={{borderBottom:"1px solid "+C.border,cursor:"pointer",transition:"background 0.1s"}}
                       onMouseOver={function(e){e.currentTarget.style.background="#1a2234";}}
                       onMouseOut={function(e){e.currentTarget.style.background="transparent";}}
                       onClick={function(){onSelectGame(p.gamePk);}}>
-                      <td style={{padding:"10px 8px"}}>
-                        <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
-                          background:pg.color+"18",border:"1px solid "+pg.color+"40",color:pg.color}}>
-                          {pg.grade} <span style={{fontSize:9,color:C.muted}}>{p.pitchScore}</span>
+                      <td style={{padding:"10px 8px",textAlign:"center"}}>
+                        <span style={{padding:"2px 8px",borderRadius:4,fontSize:12,fontWeight:700,
+                          background:C.gold+"18",border:"1px solid "+C.gold+"40",color:C.gold}}>
+                          {gapDisplay}
                         </span>
                       </td>
                       <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{p.pitcher.fullName}</td>
                       <td style={{padding:"10px 8px",color:C.muted}}>{p.team||"—"}</td>
                       <td style={{padding:"10px 8px",color:C.subtext}}>{p.oppTeam||"—"}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:pickColor}}>{p.overUnder}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#e67e22"}}>{p.ppLine}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.gold}}>{p.line}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{p.recent5Avg!=null?p.recent5Avg:"—"}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",color:C.muted}}>{p.twoYrAvg!=null?p.twoYrAvg:"—"}</td>
@@ -1852,6 +1882,7 @@ function App(){
   const [allEdges,setAllEdges]=_s([]);
   const [allWhiffScores,setAllWhiffScores]=_s([]);
   const [allPitchScores,setAllPitchScores]=_s([]);
+  const [ppLines,setPpLines]=_s(null); // {pitcherName: line} from PrizePicks scrape
   const [scanState,setScanState]=_s("idle"); // "idle" | "scanning" | "done"
   const scanAbort=ref_(false);
   const [whiffScores,setWhiffScores]=_s({});
@@ -1862,6 +1893,15 @@ function App(){
     setGamesLoading(true);
     getTodayGames().then(function(g){setGames(g);setGamesLoading(false);})
       .catch(function(e){setError("Failed to load games: "+e.message);setGamesLoading(false);});
+    // Load PrizePicks lines from localStorage (saved by daily scraper)
+    try{
+      var today=new Date().toISOString().slice(0,10);
+      var ppRaw=localStorage.getItem("de_pp_lines_"+today);
+      if(ppRaw){
+        var ppData=JSON.parse(ppRaw);
+        if(ppData&&ppData.lines) setPpLines(ppData.lines);
+      }
+    }catch(e){}
   },[]);
 
   useEffect(function(){
@@ -2083,12 +2123,15 @@ function App(){
           k9: w.k9||0, projectedIP: w.projectedIP||5.5, projectedK: w.projectedK||0
         };
       });
-      // Top 5 pitches-thrown over/under picks
-      var pitchSnap = pitchAccum.filter(function(p){return p.pitchScore>=55;}).sort(function(a,b){return b.pitchScore-a.pitchScore;}).slice(0,5).map(function(p){
+      // All pitches-thrown picks (with PP line data if available)
+      var ppRaw2=null; try{var td2=new Date().toISOString().slice(0,10); var pr2=localStorage.getItem("de_pp_lines_"+td2); if(pr2) ppRaw2=JSON.parse(pr2);}catch(e){}
+      var ppL2=ppRaw2&&ppRaw2.lines?ppRaw2.lines:{};
+      var pitchSnap = pitchAccum.map(function(p){
+        var ppVal=ppL2[p.pitcher.fullName]||null;
         return {
           pitcherId:p.pitcher.id, pitcherName:p.pitcher.fullName,
           team:p.team, oppTeam:p.oppTeam,
-          line:p.line, overUnder:p.overUnder, pitchScore:p.pitchScore,
+          line:p.line, ppLine:ppVal, overUnder:p.overUnder, pitchScore:p.pitchScore,
           recent5Avg:p.recent5Avg, twoYrAvg:p.twoYrAvg, bvpAdj:p.bvpAdj,
           gamePk:p.gamePk, gameLabel:p.gameLabel
         };
@@ -2500,6 +2543,7 @@ function App(){
               allEdges={allEdges}
               allWhiffScores={allWhiffScores}
               allPitchScores={allPitchScores}
+              ppLines={ppLines}
               scanState={scanState}
               onStartScan={scanAllGames}
             />
