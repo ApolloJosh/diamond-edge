@@ -439,7 +439,22 @@ function pitchGrade(score){
   return {grade:"F",color:"#ef4444"};
 }
 
-/* ─── Pitches-Thrown Engine ─── */
+/* ─── Pitches-Thrown Engine v2 — Enhanced Multi-Factor Model ─── */
+/*
+ * WEIGHT ALLOCATION (total = 1.0):
+ *   Recent 5 starts avg        0.28  — most predictive single factor
+ *   Pitcher P/PA               0.18  — efficiency fingerprint
+ *   Opposing team P/PA faced   0.14  — demand-side efficiency
+ *   2-year season avg          0.12  — long-term baseline
+ *   BvP lineup adjustment      0.08  — matchup-specific edge
+ *   Bullpen fatigue            0.07  — leash extension signal
+ *   First-pitch strike %       0.05  — pace proxy
+ *   Park run factor            0.04  — environment
+ *   Lineup handedness split    0.04  — nibble factor
+ */
+
+// ── Data Fetchers ──
+
 async function getPitcherRecent5PitchAvg(pitcherId){
   try{
     var year=new Date().getFullYear();
@@ -500,6 +515,152 @@ async function getPitcher2YrPitchAvg(pitcherId){
   }catch(e){return null;}
 }
 
+// Pitcher P/PA + First-pitch strike % (from season stats, both years)
+async function getPitcherEfficiency(pitcherId){
+  try{
+    var year=new Date().getFullYear();
+    var both=await Promise.all([
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=season&season="+year+"&group=pitching"),
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=season&season="+(year-1)+"&group=pitching")
+    ]);
+    var totalPitches=0, totalBF=0, totalStrikes=0, totalFirstStrikes=0, totalGS=0;
+    for(var di=0;di<both.length;di++){
+      for(var sg of (both[di].stats||[])){
+        if(sg.group&&sg.group.displayName==="pitching"){
+          var sp=sg.splits&&sg.splits[0];
+          if(sp&&sp.stat){
+            var s=sp.stat;
+            var p=parseInt(s.numberOfPitches)||parseInt(s.pitchesThrown)||0;
+            var bf=parseInt(s.battersFaced)||0;
+            var strikes=parseInt(s.strikes)||0;
+            var gs=parseInt(s.gamesStarted)||0;
+            if(bf>0&&p>0){ totalPitches+=p; totalBF+=bf; totalStrikes+=strikes; totalGS+=gs; }
+          }
+        }
+      }
+    }
+    if(totalBF===0) return null;
+    return {
+      ppa: totalPitches/totalBF,                          // pitches per plate appearance
+      fpStrikePct: totalBF>0?(totalStrikes/totalPitches):0, // strike % as proxy for FPS
+      battersFaced: totalBF,
+      starts: totalGS
+    };
+  }catch(e){return null;}
+}
+
+// Opposing team's P/PA faced (how many pitches do they see per PA as a lineup)
+async function getTeamPPAFaced(teamId){
+  try{
+    var year=new Date().getFullYear();
+    var data=await fetchJSON(BASE+"/teams/"+teamId+"/stats?stats=season&season="+year+"&group=hitting");
+    for(var sg of (data.stats||[])){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        var sp=sg.splits&&sg.splits[0];
+        if(sp&&sp.stat){
+          var s=sp.stat;
+          var pa=parseInt(s.plateAppearances)||0;
+          // MLB API doesn't always expose pitchesSeen directly, estimate from AB+BB+HBP+SF+SH
+          // We'll use atBats and walks as proxy for plate discipline
+          var ab=parseInt(s.atBats)||0;
+          var bb=parseInt(s.baseOnBalls)||0;
+          var k=parseInt(s.strikeOuts)||0;
+          var hits=parseInt(s.hits)||0;
+          if(pa<50) return null;
+          // Higher K% = fewer pitches per PA (Ks average ~4.5 pitches, walks ~5.5, BIP ~3.5)
+          var kRate=ab>0?k/ab:0.20;
+          var bbRate=pa>0?bb/pa:0.08;
+          // Estimate P/PA: league avg ~3.9. High-K teams see fewer, high-BB teams see more
+          var estPPA=3.90 - (kRate-0.22)*1.5 + (bbRate-0.08)*3.0;
+          return {ppa:Math.max(3.4,Math.min(4.5,estPPA)), pa:pa, kRate:kRate, bbRate:bbRate};
+        }
+      }
+    }
+    return null;
+  }catch(e){return null;}
+}
+
+// Bullpen usage: total pitches thrown by relievers in last 3 games
+async function getBullpenFatigue(teamId){
+  try{
+    var today=new Date().toISOString().slice(0,10);
+    var startDate=new Date();
+    startDate.setDate(startDate.getDate()-4);
+    var start=startDate.toISOString().slice(0,10);
+    var sched=await fetchJSON(BASE+"/schedule?sportId=1&teamId="+teamId+"&startDate="+start+"&endDate="+today+"&gameType=R");
+    var recentGames=[];
+    for(var d of (sched.dates||[])){
+      for(var g of (d.games||[])){
+        if(g.status&&g.status.detailedState==="Final") recentGames.push(g.gamePk);
+      }
+    }
+    if(recentGames.length===0) return {totalRelPitches:0, games:0, fatigueLevel:"unknown"};
+    var last3=recentGames.slice(-3);
+    var totalRelPitches=0, totalRelIP=0;
+    for(var gi2=0;gi2<last3.length;gi2++){
+      var box=await fetchJSON(BASE+"/game/"+last3[gi2]+"/boxscore");
+      if(!box||!box.teams) continue;
+      for(var tk in box.teams){
+        var team=box.teams[tk];
+        if(!team.team||team.team.id!==teamId) continue;
+        for(var pk in (team.players||{})){
+          var pl=team.players[pk];
+          if(!pl.stats||!pl.stats.pitching) continue;
+          var ps=pl.stats.pitching;
+          var gs=parseInt(ps.gamesStarted)||0;
+          if(gs>0) continue; // skip starter
+          totalRelPitches+=parseInt(ps.numberOfPitches)||parseInt(ps.pitchesThrown)||0;
+          totalRelIP+=parseFloat(ps.inningsPitched)||0;
+        }
+      }
+    }
+    // League avg: ~60 reliever pitches/game. High = 75+, Low = 45-
+    var avgPerGame=last3.length>0?totalRelPitches/last3.length:60;
+    var fatigueLevel=avgPerGame>=75?"high":avgPerGame>=60?"medium":"low";
+    return {totalRelPitches:totalRelPitches, games:last3.length, avgPerGame:avgPerGame, fatigueLevel:fatigueLevel};
+  }catch(e){return {totalRelPitches:0, games:0, fatigueLevel:"unknown"};}
+}
+
+// Park run factor from venue data
+function getParkRunFactor(venueId){
+  // Run factors: >1.0 = hitter friendly (more runs = more pitches), <1.0 = pitcher friendly
+  var PARK_FACTORS={
+    15:{f:1.28,n:"Coors Field"},           // COL
+    31:{f:1.10,n:"Great American Ball Park"},// CIN
+    4:{f:1.08,n:"Fenway Park"},             // BOS
+    10:{f:1.06,n:"Globe Life Field"},        // TEX
+    680:{f:1.05,n:"Wrigley Field"},          // CHC
+    2394:{f:1.04,n:"Nationals Park"},         // WSH
+    2680:{f:1.03,n:"Yankee Stadium"},         // NYY
+    32:{f:1.02,n:"Miller Park"},             // MIL
+    2392:{f:1.02,n:"Citizens Bank Park"},     // PHI
+    17:{f:1.01,n:"Angel Stadium"},           // LAA
+    2889:{f:1.00,n:"Target Field"},           // MIN
+    3289:{f:1.00,n:"Truist Park"},            // ATL
+    2602:{f:0.99,n:"Comerica Park"},          // DET
+    2395:{f:0.99,n:"Guaranteed Rate Field"},  // CWS
+    3312:{f:0.98,n:"loanDepot Park"},         // MIA
+    5325:{f:0.98,n:"T-Mobile Park"},          // SEA
+    2681:{f:0.97,n:"Citi Field"},             // NYM
+    3313:{f:0.97,n:"Chase Field"},            // ARI
+    1:{f:0.97,n:"Rogers Centre"},            // TOR
+    2518:{f:0.96,n:"Busch Stadium"},          // STL
+    2532:{f:0.96,n:"Kauffman Stadium"},        // KC
+    2856:{f:0.95,n:"Tropicana Field"},         // TB
+    594:{f:0.95,n:"PNC Park"},               // PIT
+    2536:{f:0.94,n:"Minute Maid Park"},        // HOU
+    22:{f:0.94,n:"Dodger Stadium"},          // LAD
+    2396:{f:0.93,n:"Oracle Park"},             // SF
+    2507:{f:0.93,n:"Oakland Coliseum"},        // OAK/ATH
+    2443:{f:0.92,n:"Petco Park"},              // SD
+    2657:{f:0.92,n:"Progressive Field"},       // CLE
+  };
+  if(!venueId||!PARK_FACTORS[venueId]) return {factor:1.0, name:"Unknown"};
+  return PARK_FACTORS[venueId];
+}
+
+// ── BvP Lineup Adjustment (enhanced) ──
+
 function computeLineupBvPPitchAdj(matchups){
   if(!matchups||matchups.length===0) return 0;
   var totalPA=0, totalAB=0, totalK=0, totalBB=0, totalH=0;
@@ -527,48 +688,155 @@ function computeLineupBvPPitchAdj(matchups){
   return Math.round(adj*sampleFactor);
 }
 
-function computePitchLine(twoYr, recent5, bvpAdj){
+// Lineup handedness mismatch: returns adjustment in pitches
+// Pitchers facing opposite-hand-heavy lineups tend to nibble more → higher pitch count
+function computeHandednessAdj(pitcherHand, oppRoster){
+  if(!pitcherHand||!oppRoster||oppRoster.length===0) return 0;
+  var dominated=0; // batters on the dominated side (same hand as pitcher)
+  var advantaged=0; // batters with platoon advantage (opposite hand)
+  for(var ri=0;ri<oppRoster.length;ri++){
+    var bHand=oppRoster[ri].batSide;
+    if(!bHand) continue;
+    if(bHand==="S") { advantaged+=0.5; dominated+=0.5; continue; } // switch hitters neutral
+    if(pitcherHand==="R"&&bHand==="L") advantaged++;
+    else if(pitcherHand==="L"&&bHand==="R") advantaged++;
+    else dominated++;
+  }
+  var total=advantaged+dominated;
+  if(total<5) return 0;
+  var advPct=advantaged/total;
+  // League avg ~55% of PAs have platoon advantage. Deviation = adjustment
+  if(advPct>=0.70) return 3;  // very heavy platoon advantage lineup
+  if(advPct>=0.60) return 1.5;
+  if(advPct<=0.35) return -2; // mostly same-hand = pitcher dominates, fewer pitches
+  if(advPct<=0.45) return -1;
+  return 0;
+}
+
+// ── Core Projection Functions ──
+
+function computePitchLine(params){
+  // params: {twoYr, recent5, bvpAdj, pitcherEff, teamPPA, bullpenFatigue, parkFactor, handednessAdj}
+  var p=params;
+  var twoYr=p.twoYr, recent5=p.recent5, bvpAdj=p.bvpAdj||0;
+
+  // Start with weighted base from historical pitch counts
   var parts=[];
-  if(twoYr&&twoYr.avg>0) parts.push({w:0.25, v:twoYr.avg});
-  if(recent5&&recent5.avg>0) parts.push({w:0.50, v:recent5.avg});
+  if(recent5&&recent5.avg>0)    parts.push({w:0.28, v:recent5.avg});
+  if(twoYr&&twoYr.avg>0)       parts.push({w:0.12, v:twoYr.avg});
   if(parts.length===0) return null;
   var totalW=0, sum=0;
   for(var pi=0;pi<parts.length;pi++){ totalW+=parts[pi].w; sum+=parts[pi].w*parts[pi].v; }
   var base=sum/totalW;
-  return Math.round((base+(bvpAdj||0))*2)/2;
+
+  // P/PA efficiency adjustment (weight: 0.18)
+  // League avg P/PA ~3.90. Each 0.1 above = ~2.5 more pitches per game
+  var effAdj=0;
+  if(p.pitcherEff&&p.pitcherEff.ppa>0){
+    effAdj=(p.pitcherEff.ppa-3.90)*25; // 25 pitches per 1.0 P/PA deviation
+    effAdj=effAdj*0.18;
+  }
+
+  // Opposing team P/PA faced (weight: 0.14)
+  // Patient lineups drive up pitch counts
+  var teamAdj=0;
+  if(p.teamPPA&&p.teamPPA.ppa>0){
+    teamAdj=(p.teamPPA.ppa-3.90)*25;
+    teamAdj=teamAdj*0.14;
+  }
+
+  // BvP matchup adjustment (weight: 0.08)
+  var bvpScaled=bvpAdj*0.08/0.25; // rescale from old 0.25 weight
+
+  // Bullpen fatigue adjustment (weight: 0.07)
+  // Tired bullpen = longer leash for starter
+  var bpAdj=0;
+  if(p.bullpenFatigue){
+    if(p.bullpenFatigue.fatigueLevel==="high") bpAdj=3;
+    else if(p.bullpenFatigue.fatigueLevel==="medium") bpAdj=0;
+    else if(p.bullpenFatigue.fatigueLevel==="low") bpAdj=-2;
+    bpAdj=bpAdj*0.07/0.07; // weight already baked into magnitude
+  }
+
+  // First-pitch strike % adjustment (weight: 0.05)
+  // Higher strike % = more efficient = fewer pitches
+  var fpsAdj=0;
+  if(p.pitcherEff&&p.pitcherEff.fpStrikePct>0){
+    // League avg strike% ~0.62. Higher = fewer pitches
+    fpsAdj=(0.62-p.pitcherEff.fpStrikePct)*40; // 40 pitch swing per 1.0 deviation
+    fpsAdj=fpsAdj*0.05;
+  }
+
+  // Park run factor (weight: 0.04)
+  // Higher scoring parks = longer innings = more pitches
+  var parkAdj=0;
+  if(p.parkFactor&&p.parkFactor.factor!==1.0){
+    parkAdj=(p.parkFactor.factor-1.0)*30; // ~3 pitch swing for Coors (+0.28)
+    parkAdj=parkAdj*0.04;
+  }
+
+  // Handedness mismatch (weight: 0.04)
+  var handAdj=(p.handednessAdj||0)*0.04/0.04;
+
+  var projected=base+effAdj+teamAdj+bvpScaled+bpAdj+fpsAdj+parkAdj+handAdj;
+  return Math.round(projected*2)/2; // round to nearest 0.5
 }
 
-function computeOverUnder(line, twoYr, recent5, bvpAdj){
-  var base=0, w=0;
-  if(twoYr&&twoYr.avg>0){ base+=0.25*twoYr.avg; w+=0.25; }
-  if(recent5&&recent5.avg>0){ base+=0.50*recent5.avg; w+=0.50; }
-  if(w===0) return null;
-  var expected=(base/w)+(bvpAdj||0);
-  if(expected>line+0.25) return "OVER";
-  if(expected<line-0.25) return "UNDER";
-  if((bvpAdj||0)>0) return "OVER";
-  if((bvpAdj||0)<0) return "UNDER";
-  if(recent5&&twoYr&&recent5.avg>twoYr.avg) return "OVER";
+function computeOverUnder(line, params){
+  var projected=computePitchLine(params);
+  if(projected==null) return null;
+  if(projected>line+0.25) return "OVER";
+  if(projected<line-0.25) return "UNDER";
+  // tiebreakers
+  if((params.bvpAdj||0)>0) return "OVER";
+  if((params.bvpAdj||0)<0) return "UNDER";
+  if(params.recent5&&params.twoYr&&params.recent5.avg>params.twoYr.avg) return "OVER";
   return "UNDER";
 }
 
-function computePitchScore(line, twoYr, recent5, matchupsCount, bvpAdj){
+function computePitchScore(params){
+  // Confidence score: how reliable is this projection?
+  var p=params;
   var score=50;
-  if(twoYr&&recent5){
-    var diff=Math.abs(recent5.avg-twoYr.avg);
+
+  // Consistency between recent and long-term (strong signal)
+  if(p.twoYr&&p.recent5){
+    var diff=Math.abs(p.recent5.avg-p.twoYr.avg);
     if(diff<3) score+=10;
     else if(diff<6) score+=5;
     else if(diff>12) score-=6;
   }
-  if(recent5&&recent5.starts>=5) score+=6;
-  else if(recent5&&recent5.starts>=3) score+=3;
-  if(matchupsCount>=6) score+=6;
-  else if(matchupsCount>=4) score+=3;
-  var absAdj=Math.abs(bvpAdj||0);
+
+  // Sample size — more starts = more confidence
+  if(p.recent5&&p.recent5.starts>=5) score+=6;
+  else if(p.recent5&&p.recent5.starts>=3) score+=3;
+
+  // BvP matchup data available
+  if(p.matchupsCount>=6) score+=5;
+  else if(p.matchupsCount>=4) score+=3;
+
+  // Strong BvP signal
+  var absAdj=Math.abs(p.bvpAdj||0);
   if(absAdj>=5) score+=4;
   else if(absAdj>=3) score+=2;
-  if(recent5&&recent5.avg>=100) score+=3;
-  if(recent5&&recent5.avg<75) score-=3;
+
+  // Pitcher efficiency data quality
+  if(p.pitcherEff&&p.pitcherEff.battersFaced>=100) score+=4;
+  else if(p.pitcherEff&&p.pitcherEff.battersFaced>=50) score+=2;
+
+  // Opposing team P/PA data quality
+  if(p.teamPPA&&p.teamPPA.pa>=200) score+=3;
+  else if(p.teamPPA&&p.teamPPA.pa>=100) score+=1;
+
+  // Bullpen fatigue signal strength
+  if(p.bullpenFatigue&&p.bullpenFatigue.games>=3) score+=3;
+  else if(p.bullpenFatigue&&p.bullpenFatigue.games>=2) score+=1;
+
+  // Pitcher is in a predictable range
+  if(p.recent5&&p.recent5.avg>=85&&p.recent5.avg<=100) score+=3; // sweet spot
+  if(p.recent5&&p.recent5.avg<70) score-=4; // short-leash or opener territory
+  if(p.recent5&&p.recent5.avg>110) score-=2; // high variance workhorse
+
   return Math.max(0, Math.min(99, Math.round(score)));
 }
 
@@ -786,8 +1054,17 @@ function safeVenueStat(playerId, homeTeamId, isPlayerHome, group){
   return getVenueStat(playerId, homeTeamId, isPlayerHome, group).catch(function(){return null;});
 }
 async function getRoster(teamId){
-  const data=await fetchJSON(BASE+"/teams/"+teamId+"/roster?rosterType=active");
-  return (data.roster||[]).filter(function(p){return p.position&&p.position.abbreviation!=="P";});
+  const data=await fetchJSON(BASE+"/teams/"+teamId+"/roster?rosterType=active&hydrate=person");
+  return (data.roster||[]).filter(function(p){return p.position&&p.position.abbreviation!=="P";}).map(function(p){
+    return {person:p.person, position:p.position, batSide:p.person&&p.person.batSide?p.person.batSide.code:null};
+  });
+}
+async function getPitcherHand(pitcherId){
+  try{
+    var data=await fetchJSON(BASE+"/people/"+pitcherId);
+    if(data.people&&data.people[0]&&data.people[0].pitchHand) return data.people[0].pitchHand.code; // "R" or "L"
+    return null;
+  }catch(e){return null;}
 }
 async function getBvPSplits(batterId,pitcherId){
   try{
@@ -2071,16 +2348,31 @@ function App(){
             team:awayAbbr, oppTeam:homeAbbr, k9:aK9, projectedIP:aExpIP, projectedK:aProjK, seasonStat:awaySeasonStat});
         }
 
-        // Pitches-thrown scanning for this game
+        // Pitches-thrown scanning for this game (v2 multi-factor)
         try{
+          var venueId=game.venue?game.venue.id:null;
+          var parkFactor=getParkRunFactor(venueId);
+
           if(homePitcher){
-            var hp2yr=await getPitcher2YrPitchAvg(homePitcher.id);
-            var hpRecent5=await getPitcherRecent5PitchAvg(homePitcher.id);
+            var hpFetches=await Promise.all([
+              getPitcher2YrPitchAvg(homePitcher.id),
+              getPitcherRecent5PitchAvg(homePitcher.id),
+              getPitcherEfficiency(homePitcher.id),
+              getTeamPPAFaced(awayId),
+              getBullpenFatigue(homeId),
+              getPitcherHand(homePitcher.id)
+            ]);
+            var hp2yr=hpFetches[0], hpRecent5=hpFetches[1], hpEff=hpFetches[2];
+            var hOppTeamPPA=hpFetches[3], hBpFatigue=hpFetches[4], hPitchHand=hpFetches[5];
             var hBvpAdj=computeLineupBvPPitchAdj(homeMatchupsForWhiff);
-            var hLine=computePitchLine(hp2yr, hpRecent5, hBvpAdj);
+            var hHandAdj=computeHandednessAdj(hPitchHand, awayRoster);
+            var hParams={twoYr:hp2yr, recent5:hpRecent5, bvpAdj:hBvpAdj, pitcherEff:hpEff,
+              teamPPA:hOppTeamPPA, bullpenFatigue:hBpFatigue, parkFactor:parkFactor,
+              handednessAdj:hHandAdj, matchupsCount:homeMatchupsForWhiff.length};
+            var hLine=computePitchLine(hParams);
             if(hLine!=null){
-              var hOU=computeOverUnder(hLine, hp2yr, hpRecent5, hBvpAdj);
-              var hPs=computePitchScore(hLine, hp2yr, hpRecent5, homeMatchupsForWhiff.length, hBvpAdj);
+              var hOU=computeOverUnder(hLine, hParams);
+              var hPs=computePitchScore(hParams);
               pitchAccum.push({
                 pitcher:homePitcher, team:homeAbbr, oppTeam:awayAbbr,
                 line:hLine, overUnder:hOU, pitchScore:hPs,
@@ -2092,13 +2384,25 @@ function App(){
             }
           }
           if(awayPitcher){
-            var ap2yr=await getPitcher2YrPitchAvg(awayPitcher.id);
-            var apRecent5=await getPitcherRecent5PitchAvg(awayPitcher.id);
+            var apFetches=await Promise.all([
+              getPitcher2YrPitchAvg(awayPitcher.id),
+              getPitcherRecent5PitchAvg(awayPitcher.id),
+              getPitcherEfficiency(awayPitcher.id),
+              getTeamPPAFaced(homeId),
+              getBullpenFatigue(awayId),
+              getPitcherHand(awayPitcher.id)
+            ]);
+            var ap2yr=apFetches[0], apRecent5=apFetches[1], apEff=apFetches[2];
+            var aOppTeamPPA=apFetches[3], aBpFatigue=apFetches[4], aPitchHand=apFetches[5];
             var aBvpAdj=computeLineupBvPPitchAdj(awayMatchupsForWhiff);
-            var aLine=computePitchLine(ap2yr, apRecent5, aBvpAdj);
+            var aHandAdj=computeHandednessAdj(aPitchHand, homeRoster);
+            var aParams={twoYr:ap2yr, recent5:apRecent5, bvpAdj:aBvpAdj, pitcherEff:apEff,
+              teamPPA:aOppTeamPPA, bullpenFatigue:aBpFatigue, parkFactor:parkFactor,
+              handednessAdj:aHandAdj, matchupsCount:awayMatchupsForWhiff.length};
+            var aLine=computePitchLine(aParams);
             if(aLine!=null){
-              var aOU=computeOverUnder(aLine, ap2yr, apRecent5, aBvpAdj);
-              var aPs=computePitchScore(aLine, ap2yr, apRecent5, awayMatchupsForWhiff.length, aBvpAdj);
+              var aOU=computeOverUnder(aLine, aParams);
+              var aPs=computePitchScore(aParams);
               pitchAccum.push({
                 pitcher:awayPitcher, team:awayAbbr, oppTeam:homeAbbr,
                 line:aLine, overUnder:aOU, pitchScore:aPs,
