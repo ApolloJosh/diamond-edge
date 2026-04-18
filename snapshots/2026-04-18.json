@@ -1,8 +1,8 @@
 {
   "date": "2026-04-18",
-  "savedAt": "2026-04-18T17:24:40.116Z",
+  "savedAt": "2026-04-18T19:52:21.662Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 12,
   "totalGames": 15,
   "batters": [
     {
@@ -417,19 +417,6 @@
       "gameLabel": "TEX @ SEA"
     },
     {
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "team": "TB",
-      "oppTeam": "PIT",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 9.6,
-      "projectedIP": 5.3,
-      "projectedK": 4.5,
-      "gamePk": 823394,
-      "gameLabel": "TB @ PIT"
-    },
-    {
       "pitcherId": 579328,
       "pitcherName": "Yusei Kikuchi",
       "team": "LAA",
@@ -441,6 +428,19 @@
       "projectedK": 4,
       "gamePk": 824049,
       "gameLabel": "SD @ LAA"
+    },
+    {
+      "pitcherId": 453286,
+      "pitcherName": "Max Scherzer",
+      "team": "TOR",
+      "oppTeam": "AZ",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 7.8,
+      "projectedIP": 3.4,
+      "projectedK": 2.5,
+      "gamePk": 825098,
+      "gameLabel": "TOR @ AZ"
     },
     {
       "pitcherId": 701542,
@@ -456,27 +456,14 @@
       "gameLabel": "KC @ NYY"
     },
     {
-      "pitcherId": 453286,
-      "pitcherName": "Max Scherzer",
-      "team": "TOR",
-      "oppTeam": "AZ",
-      "whiffScore": 59,
-      "grade": "B",
-      "k9": 7.8,
-      "projectedIP": 3.4,
-      "projectedK": 2.5,
-      "gamePk": 825098,
-      "gameLabel": "TOR @ AZ"
-    },
-    {
-      "pitcherId": 694973,
-      "pitcherName": "Paul Skenes",
-      "team": "PIT",
-      "oppTeam": "TB",
-      "whiffScore": 58,
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "team": "TB",
+      "oppTeam": "PIT",
+      "whiffScore": 60,
       "grade": "B",
       "k9": 9,
-      "projectedIP": 4.5,
+      "projectedIP": 4.3,
       "projectedK": 3.5,
       "gamePk": 823394,
       "gameLabel": "TB @ PIT"
@@ -532,6 +519,19 @@
       "projectedK": 2.5,
       "gamePk": 822751,
       "gameLabel": "SF @ WSH"
+    },
+    {
+      "pitcherId": 694973,
+      "pitcherName": "Paul Skenes",
+      "team": "PIT",
+      "oppTeam": "TB",
+      "whiffScore": 54,
+      "grade": "C",
+      "k9": 8.5,
+      "projectedIP": 3.8,
+      "projectedK": 3,
+      "gamePk": 823394,
+      "gameLabel": "TB @ PIT"
     },
     {
       "pitcherId": 671096,
