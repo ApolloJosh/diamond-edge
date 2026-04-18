@@ -1494,9 +1494,15 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
   var topEdges = allEdges.filter(function(m){return m.edgeScore>=55;}).sort(function(a,b){return b.edgeScore-a.edgeScore;});
   var topWhiffs = allWhiffScores.filter(function(w){return w.score>=55;}).sort(function(a,b){return b.score-a.score;});
 
-  // Pitches thrown: merge with PrizePicks lines, filter by >1.5 gap, rank by discrepancy
+  // Pitches thrown: if PP lines available, rank by discrepancy; otherwise fallback to top 10 by grade
+  var hasPPLines = ppLines && Object.keys(ppLines).length > 0;
   var topPitches = (function(){
-    if(!ppLines) return []; // no PP data today — skip section
+    if(!hasPPLines){
+      // Fallback: top 10 by confidence grade
+      return allPitchScores.filter(function(p){return p.pitchScore>=55;})
+        .sort(function(a,b){return b.pitchScore-a.pitchScore;}).slice(0,10)
+        .map(function(p){return Object.assign({},p,{ppLine:null,gap:null});});
+    }
     var merged=[];
     for(var pi=0;pi<allPitchScores.length;pi++){
       var p=allPitchScores[pi];
@@ -1666,12 +1672,12 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         </div>
       )}
 
-      {/* Pitches Thrown — Ranked by Proj vs PrizePicks Discrepancy */}
+      {/* Pitches Thrown — Ranked by Discrepancy (or fallback: top 10 by grade) */}
       {topPitches.length>0&&(
         <div className="fade-in" style={{marginBottom:32}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
             <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.blue}}>🎯 PITCHES THROWN</div>
-            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>RANKED BY LINE DISCREPANCY</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>{hasPPLines?"RANKED BY LINE DISCREPANCY":"TOP 10 BY CONFIDENCE"}</div>
             <div style={{
               padding:"3px 10px",borderRadius:10,background:C.blue+"20",border:"1px solid "+C.blue+"40",
               color:C.blue,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
@@ -1681,12 +1687,18 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
               <thead>
                 <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>GAP</th>
+                  {hasPPLines?(
+                    <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>GAP</th>
+                  ):(
+                    <th style={{textAlign:"left",padding:"10px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>CONF</th>
+                  )}
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>PICK</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PP LINE</th>
+                  {hasPPLines&&(
+                    <th style={{textAlign:"center",padding:"10px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PP LINE</th>
+                  )}
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RECENT 5</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>2YR AVG</th>
@@ -1696,23 +1708,33 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
               <tbody>
                 {topPitches.map(function(p,idx){
                   var pickColor=p.overUnder==="OVER"?C.green:C.red;
-                  var gapDisplay=p.gap.toFixed(1);
                   return(
                     <tr key={idx} style={{borderBottom:"1px solid "+C.border,cursor:"pointer",transition:"background 0.1s"}}
                       onMouseOver={function(e){e.currentTarget.style.background="#1a2234";}}
                       onMouseOut={function(e){e.currentTarget.style.background="transparent";}}
                       onClick={function(){onSelectGame(p.gamePk);}}>
-                      <td style={{padding:"10px 8px",textAlign:"center"}}>
-                        <span style={{padding:"2px 8px",borderRadius:4,fontSize:12,fontWeight:700,
-                          background:C.gold+"18",border:"1px solid "+C.gold+"40",color:C.gold}}>
-                          {gapDisplay}
-                        </span>
-                      </td>
+                      {hasPPLines?(
+                        <td style={{padding:"10px 8px",textAlign:"center"}}>
+                          <span style={{padding:"2px 8px",borderRadius:4,fontSize:12,fontWeight:700,
+                            background:C.gold+"18",border:"1px solid "+C.gold+"40",color:C.gold}}>
+                            {p.gap.toFixed(1)}
+                          </span>
+                        </td>
+                      ):(
+                        <td style={{padding:"10px 8px"}}>
+                          <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
+                            background:pitchGrade(p.pitchScore).color+"18",border:"1px solid "+pitchGrade(p.pitchScore).color+"40",color:pitchGrade(p.pitchScore).color}}>
+                            {pitchGrade(p.pitchScore).grade} <span style={{fontSize:9,color:C.muted}}>{p.pitchScore}</span>
+                          </span>
+                        </td>
+                      )}
                       <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{p.pitcher.fullName}</td>
                       <td style={{padding:"10px 8px",color:C.muted}}>{p.team||"—"}</td>
                       <td style={{padding:"10px 8px",color:C.subtext}}>{p.oppTeam||"—"}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:pickColor}}>{p.overUnder}</td>
-                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#e67e22"}}>{p.ppLine}</td>
+                      {hasPPLines&&(
+                        <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#e67e22"}}>{p.ppLine}</td>
+                      )}
                       <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.gold}}>{p.line}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{p.recent5Avg!=null?p.recent5Avg:"—"}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",color:C.muted}}>{p.twoYrAvg!=null?p.twoYrAvg:"—"}</td>
