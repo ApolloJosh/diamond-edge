@@ -172,11 +172,18 @@ async function main() {
 
     const actualPitches = pitcherFound ? (parseInt(pitcherFound.numberOfPitches) || parseInt(pitcherFound.pitchesThrown) || 0) : 0;
     const played = pitcherFound !== null && actualPitches > 0;
+    // O/U hit: did the over/under call vs PP line land?
     let hit = false;
-    if (played) {
+    if (played && pick.ppLine != null) {
+      if (pick.overUnder === "OVER") hit = actualPitches > pick.ppLine;
+      else if (pick.overUnder === "UNDER") hit = actualPitches < pick.ppLine;
+    } else if (played) {
+      // Fallback: compare vs our own line if no PP line
       if (pick.overUnder === "OVER") hit = actualPitches > pick.line;
       else if (pick.overUnder === "UNDER") hit = actualPitches < pick.line;
     }
+    // Proj hit: actual pitches within 2.5 of our projection
+    const projHit = played ? (Math.abs(actualPitches - pick.line) <= 2.5) : false;
 
     resultPitches.push({
       pitcherId: pick.pitcherId,
@@ -184,6 +191,7 @@ async function main() {
       team: pick.team,
       oppTeam: pick.oppTeam,
       line: pick.line,
+      ppLine: pick.ppLine || null,
       overUnder: pick.overUnder,
       pitchScore: pick.pitchScore,
       grade: pick.grade,
@@ -194,7 +202,8 @@ async function main() {
       gameLabel: pick.gameLabel,
       actualPitches: actualPitches,
       actualStats: played ? true : null,
-      hit: hit
+      hit: hit,
+      projHit: projHit
     });
   }
 
@@ -218,13 +227,15 @@ async function main() {
   }
   const pitcherHitProjRate = bGradePitchers > 0 ? Math.round((projHitCount / bGradePitchers) * 100) : 0;
 
-  const qualifiedPitches = resultPitches.filter(p => p.pitchScore >= 55 && p.actualStats);
+  const qualifiedPitches = resultPitches.filter(p => p.actualStats);
   const bGradePitches = qualifiedPitches.length;
-  let pitchesHitCount = 0;
+  let pitchesHitCount = 0, pitchesProjHitCount = 0;
   for (const p of qualifiedPitches) {
     if (p.hit) pitchesHitCount++;
+    if (p.projHit) pitchesProjHitCount++;
   }
   const pitchesHitRate = bGradePitches > 0 ? Math.round((pitchesHitCount / bGradePitches) * 100) : 0;
+  const pitchesProjHitRate = bGradePitches > 0 ? Math.round((pitchesProjHitCount / bGradePitches) * 100) : 0;
 
   // --- SAVE ---
   const results = {
@@ -238,6 +249,7 @@ async function main() {
       bGradeBatters,
       bGradePitchers,
       pitchesHitRate,
+      pitchesProjHitRate,
       bGradePitches
     },
     batters: resultBatters,
@@ -254,7 +266,7 @@ async function main() {
   console.log(`  ${resultBatters.length} batters (${bGradeBatters} B-grade+ played), ${resultPitchers.length} pitchers (${bGradePitchers} B-grade+ played)`);
   console.log(`  Avg Fantasy: ${avgFantasy}, Hit Rate: ${hitRate}%`);
   console.log(`  Pitcher Hit Proj Rate: ${pitcherHitProjRate}%`);
-  console.log(`  Pitches picks: ${resultPitches.length} total (${bGradePitches} B-grade+ pitched, ${pitchesHitRate}% hit over/under)`);
+  console.log(`  Pitches picks: ${resultPitches.length} total (${bGradePitches} pitched, ${pitchesHitRate}% O/U hit, ${pitchesProjHitRate}% proj hit)`);
 
   // Update results index
   const indexPath = path.join(resultsDir, 'index.json');
