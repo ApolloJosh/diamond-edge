@@ -2315,13 +2315,17 @@ function App(){
           var venueId=game.venue?game.venue.id:null;
           var parkFactor=getParkRunFactor(venueId);
 
-          // Match pitcher names to PP lines (exact then last-name fuzzy)
+          // Match pitcher names to PP lines (read directly from localStorage for reliability)
+          var _ppScanLines=ppLines;
+          if(!_ppScanLines){
+            try{var _ppTd=new Date().toISOString().slice(0,10);var _ppR=localStorage.getItem("de_pp_lines_"+_ppTd);if(_ppR){var _ppD=JSON.parse(_ppR);if(_ppD&&_ppD.lines)_ppScanLines=_ppD.lines;}}catch(e){}
+          }
           function matchPPLine(pitcherName){
-            if(!ppLines||!pitcherName) return null;
-            if(ppLines[pitcherName]!=null) return ppLines[pitcherName];
+            if(!_ppScanLines||!pitcherName) return null;
+            if(_ppScanLines[pitcherName]!=null) return _ppScanLines[pitcherName];
             var last=pitcherName.split(" ").slice(-1)[0].toLowerCase();
-            for(var k in ppLines){
-              if(k.toLowerCase().split(" ").slice(-1)[0]===last) return ppLines[k];
+            for(var k in _ppScanLines){
+              if(k.toLowerCase().split(" ").slice(-1)[0]===last) return _ppScanLines[k];
             }
             return null;
           }
