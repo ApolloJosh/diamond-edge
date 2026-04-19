@@ -729,24 +729,25 @@ function computePitchLine(params){
   for(var pi=0;pi<parts.length;pi++){ totalW+=parts[pi].w; sum+=parts[pi].w*parts[pi].v; }
   var base=sum/totalW;
 
+  // Helper: safe number — coerce NaN/undefined/null to 0
+  function safe(v){return (typeof v==="number"&&!isNaN(v))?v:0;}
+
   // P/PA efficiency adjustment (weight: 0.18)
   // League avg P/PA ~3.90. Each 0.1 above = ~2.5 more pitches per game
   var effAdj=0;
-  if(p.pitcherEff&&p.pitcherEff.ppa>0){
-    effAdj=(p.pitcherEff.ppa-3.90)*25; // 25 pitches per 1.0 P/PA deviation
-    effAdj=effAdj*0.18;
+  if(p.pitcherEff&&typeof p.pitcherEff.ppa==="number"&&p.pitcherEff.ppa>0&&!isNaN(p.pitcherEff.ppa)){
+    effAdj=safe((p.pitcherEff.ppa-3.90)*25*0.18);
   }
 
   // Opposing team P/PA faced (weight: 0.14)
   // Patient lineups drive up pitch counts
   var teamAdj=0;
-  if(p.teamPPA&&p.teamPPA.ppa>0){
-    teamAdj=(p.teamPPA.ppa-3.90)*25;
-    teamAdj=teamAdj*0.14;
+  if(p.teamPPA&&typeof p.teamPPA.ppa==="number"&&p.teamPPA.ppa>0&&!isNaN(p.teamPPA.ppa)){
+    teamAdj=safe((p.teamPPA.ppa-3.90)*25*0.14);
   }
 
   // BvP matchup adjustment (weight: 0.08)
-  var bvpScaled=bvpAdj*0.08/0.25; // rescale from old 0.25 weight
+  var bvpScaled=safe(bvpAdj*0.32); // 0.08/0.25 = 0.32 rescale factor
 
   // Bullpen fatigue adjustment (weight: 0.07)
   // Tired bullpen = longer leash for starter
@@ -755,36 +756,33 @@ function computePitchLine(params){
     if(p.bullpenFatigue.fatigueLevel==="high") bpAdj=3;
     else if(p.bullpenFatigue.fatigueLevel==="medium") bpAdj=0;
     else if(p.bullpenFatigue.fatigueLevel==="low") bpAdj=-2;
-    bpAdj=bpAdj*0.07/0.07; // weight already baked into magnitude
   }
 
   // First-pitch strike % adjustment (weight: 0.05)
   // Higher strike % = more efficient = fewer pitches
   var fpsAdj=0;
-  if(p.pitcherEff&&p.pitcherEff.fpStrikePct>0){
-    // League avg strike% ~0.62. Higher = fewer pitches
-    fpsAdj=(0.62-p.pitcherEff.fpStrikePct)*40; // 40 pitch swing per 1.0 deviation
-    fpsAdj=fpsAdj*0.05;
+  if(p.pitcherEff&&typeof p.pitcherEff.fpStrikePct==="number"&&p.pitcherEff.fpStrikePct>0&&!isNaN(p.pitcherEff.fpStrikePct)){
+    fpsAdj=safe((0.62-p.pitcherEff.fpStrikePct)*40*0.05);
   }
 
   // Park run factor (weight: 0.04)
   // Higher scoring parks = longer innings = more pitches
   var parkAdj=0;
-  if(p.parkFactor&&p.parkFactor.factor!==1.0){
-    parkAdj=(p.parkFactor.factor-1.0)*30; // ~3 pitch swing for Coors (+0.28)
-    parkAdj=parkAdj*0.04;
+  if(p.parkFactor&&typeof p.parkFactor.factor==="number"&&p.parkFactor.factor!==1.0){
+    parkAdj=safe((p.parkFactor.factor-1.0)*30*0.04);
   }
 
   // Handedness mismatch (weight: 0.04)
-  var handAdj=(p.handednessAdj||0)*0.04/0.04;
+  var handAdj=safe(p.handednessAdj||0);
 
   var projected=base+effAdj+teamAdj+bvpScaled+bpAdj+fpsAdj+parkAdj+handAdj;
+  if(isNaN(projected)) return null; // safety net
   return Math.round(projected*2)/2; // round to nearest 0.5
 }
 
 function computeOverUnder(line, params){
   var projected=computePitchLine(params);
-  if(projected==null) return null;
+  if(projected==null||isNaN(projected)||isNaN(line)) return null;
   if(projected>line+0.25) return "OVER";
   if(projected<line-0.25) return "UNDER";
   // tiebreakers
@@ -2370,7 +2368,7 @@ function App(){
               teamPPA:hOppTeamPPA, bullpenFatigue:hBpFatigue, parkFactor:parkFactor,
               handednessAdj:hHandAdj, matchupsCount:homeMatchupsForWhiff.length};
             var hLine=computePitchLine(hParams);
-            if(hLine!=null){
+            if(hLine!=null&&!isNaN(hLine)){
               var hOU=computeOverUnder(hLine, hParams);
               var hPs=computePitchScore(hParams);
               pitchAccum.push({
@@ -2400,7 +2398,7 @@ function App(){
               teamPPA:aOppTeamPPA, bullpenFatigue:aBpFatigue, parkFactor:parkFactor,
               handednessAdj:aHandAdj, matchupsCount:awayMatchupsForWhiff.length};
             var aLine=computePitchLine(aParams);
-            if(aLine!=null){
+            if(aLine!=null&&!isNaN(aLine)){
               var aOU=computeOverUnder(aLine, aParams);
               var aPs=computePitchScore(aParams);
               pitchAccum.push({
