@@ -1,8 +1,8 @@
 {
   "date": "2026-04-19",
-  "savedAt": "2026-04-19T17:24:13.970Z",
+  "savedAt": "2026-04-19T19:52:44.089Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 6,
   "totalGames": 15,
   "batters": [
     {
@@ -230,18 +230,18 @@
       "gameLabel": "CIN @ MIN"
     },
     {
-      "batterId": 657656,
-      "batterName": "Ramón Laureano",
-      "pitcherId": 672282,
-      "pitcherName": "Reid Detmers",
-      "batterTeam": "SD",
-      "pitcherTeam": "LAA",
-      "edgeScore": 68,
+      "batterId": 624428,
+      "batterName": "Adam Frazier",
+      "pitcherId": 650633,
+      "pitcherName": "Michael King",
+      "batterTeam": "LAA",
+      "pitcherTeam": "SD",
+      "edgeScore": 66,
       "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.500",
-      "bvpPA": 12,
-      "bvpHR": 2,
+      "bvpAvg": ".333",
+      "bvpOps": ".762",
+      "bvpPA": 14,
+      "bvpHR": 0,
       "gamePk": 824047,
       "gameLabel": "SD @ LAA"
     }
@@ -311,19 +311,6 @@
       "projectedK": 5,
       "gamePk": 822750,
       "gameLabel": "SF @ WSH"
-    },
-    {
-      "pitcherId": 672282,
-      "pitcherName": "Reid Detmers",
-      "team": "LAA",
-      "oppTeam": "SD",
-      "whiffScore": 71,
-      "grade": "A",
-      "k9": 10.3,
-      "projectedIP": 5.6,
-      "projectedK": 5.5,
-      "gamePk": 824047,
-      "gameLabel": "SD @ LAA"
     },
     {
       "pitcherId": 650633,
