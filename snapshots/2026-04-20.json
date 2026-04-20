@@ -1,8 +1,8 @@
 {
   "date": "2026-04-20",
-  "savedAt": "2026-04-20T18:45:29.296Z",
+  "savedAt": "2026-04-20T20:08:14.488Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 10,
   "totalGames": 10,
   "batters": [
     {
@@ -86,6 +86,22 @@
       "gameLabel": "LAD @ COL"
     },
     {
+      "batterId": 643396,
+      "batterName": "Isiah Kiner-Falefa",
+      "pitcherId": 656427,
+      "pitcherName": "Jack Flaherty",
+      "batterTeam": "BOS",
+      "pitcherTeam": "DET",
+      "edgeScore": 82,
+      "grade": "A+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.806",
+      "bvpPA": 18,
+      "bvpHR": 2,
+      "gamePk": 824776,
+      "gameLabel": "DET @ BOS"
+    },
+    {
       "batterId": 671739,
       "batterName": "Michael Harris II",
       "pitcherId": 663623,
@@ -132,6 +148,22 @@
       "bvpHR": 0,
       "gamePk": 824046,
       "gameLabel": "TOR @ LAA"
+    },
+    {
+      "batterId": 807799,
+      "batterName": "Masataka Yoshida",
+      "pitcherId": 656427,
+      "pitcherName": "Jack Flaherty",
+      "batterTeam": "BOS",
+      "pitcherTeam": "DET",
+      "edgeScore": 73,
+      "grade": "A",
+      "bvpAvg": ".571",
+      "bvpOps": "1.196",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 824776,
+      "gameLabel": "DET @ BOS"
     },
     {
       "batterId": 694384,
@@ -212,38 +244,6 @@
       "bvpHR": 2,
       "gamePk": 824450,
       "gameLabel": "HOU @ CLE"
-    },
-    {
-      "batterId": 624428,
-      "batterName": "Adam Frazier",
-      "pitcherId": 656302,
-      "pitcherName": "Dylan Cease",
-      "batterTeam": "LAA",
-      "pitcherTeam": "TOR",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".294",
-      "bvpOps": ".686",
-      "bvpPA": 36,
-      "bvpHR": 0,
-      "gamePk": 824046,
-      "gameLabel": "TOR @ LAA"
-    },
-    {
-      "batterId": 687263,
-      "batterName": "Zach Neto",
-      "pitcherId": 656302,
-      "pitcherName": "Dylan Cease",
-      "batterTeam": "LAA",
-      "pitcherTeam": "TOR",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "2.000",
-      "bvpPA": 10,
-      "bvpHR": 4,
-      "gamePk": 824046,
-      "gameLabel": "TOR @ LAA"
     }
   ],
   "pitchers": [
@@ -259,6 +259,19 @@
       "projectedK": 6.5,
       "gamePk": 824046,
       "gameLabel": "TOR @ LAA"
+    },
+    {
+      "pitcherId": 656427,
+      "pitcherName": "Jack Flaherty",
+      "team": "DET",
+      "oppTeam": "BOS",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 9.3,
+      "projectedIP": 4.6,
+      "projectedK": 4,
+      "gamePk": 824776,
+      "gameLabel": "DET @ BOS"
     },
     {
       "pitcherId": 681293,
@@ -352,6 +365,19 @@
       "gameLabel": "ATL @ WSH"
     },
     {
+      "pitcherId": 677944,
+      "pitcherName": "Slade Cecconi",
+      "team": "CLE",
+      "oppTeam": "HOU",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.2,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 824450,
+      "gameLabel": "HOU @ CLE"
+    },
+    {
       "pitcherId": 669372,
       "pitcherName": "J.T. Ginn",
       "team": "ATH",
@@ -365,19 +391,6 @@
       "gameLabel": "ATH @ SEA"
     },
     {
-      "pitcherId": 677944,
-      "pitcherName": "Slade Cecconi",
-      "team": "CLE",
-      "oppTeam": "HOU",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 8.2,
-      "projectedIP": 4.8,
-      "projectedK": 3.5,
-      "gamePk": 824450,
-      "gameLabel": "HOU @ CLE"
-    },
-    {
       "pitcherId": 607067,
       "pitcherName": "Colin Rea",
       "team": "CHC",
@@ -389,6 +402,19 @@
       "projectedK": 13,
       "gamePk": 824692,
       "gameLabel": "PHI @ CHC"
+    },
+    {
+      "pitcherId": 543243,
+      "pitcherName": "Sonny Gray",
+      "team": "BOS",
+      "oppTeam": "DET",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 5.1,
+      "projectedIP": 4.6,
+      "projectedK": 2,
+      "gamePk": 824776,
+      "gameLabel": "DET @ BOS"
     },
     {
       "pitcherId": 676974,
@@ -543,22 +569,22 @@
       "gameLabel": "TOR @ LAA"
     },
     {
-      "pitcherId": 677944,
-      "pitcherName": "Slade Cecconi",
-      "team": "CLE",
-      "oppTeam": "HOU",
-      "line": 88.5,
+      "pitcherId": 656427,
+      "pitcherName": "Jack Flaherty",
+      "team": "DET",
+      "oppTeam": "BOS",
+      "line": 92,
       "overUnder": "OVER",
-      "pitchScore": 67,
+      "pitchScore": 69,
       "grade": "B+",
-      "recent5Avg": 85,
+      "recent5Avg": 86.8,
       "recent5Starts": 5,
-      "twoYrAvg": 89.4,
-      "twoYrStarts": 27,
-      "bvpAdj": 2,
-      "lineupPA": 40,
-      "gamePk": 824450,
-      "gameLabel": "HOU @ CLE"
+      "twoYrAvg": 90.7,
+      "twoYrStarts": 36,
+      "bvpAdj": 4,
+      "lineupPA": 135,
+      "gamePk": 824776,
+      "gameLabel": "DET @ BOS"
     }
   ]
 }
