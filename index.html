@@ -1729,7 +1729,7 @@ function TopEdgesBanner({matchups}){
 /* ─────────────────────────────────────────────── */
 /* ─── HOME PAGE: League-Wide Edge Scanner ────── */
 /* ─────────────────────────────────────────────── */
-function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allPitchScores, ppLines, scanState, onStartScan}){
+function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allPitchScores, ppLines, goblinLines, scanState, onStartScan}){
   var topEdges = allEdges.filter(function(m){return m.edgeScore>=55;}).sort(function(a,b){return b.edgeScore-a.edgeScore;});
   var topWhiffs = allWhiffScores.filter(function(w){return w.score>=55;}).sort(function(a,b){return b.score-a.score;});
 
@@ -1766,6 +1766,40 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
     }
     merged.sort(function(a,b){return b.gap-a.gap;});
     return merged;
+  })();
+
+  // Goblin OVER picks: rank pitchers where our projection is above the goblin line
+  var hasGoblinLines = goblinLines && Object.keys(goblinLines).length > 0;
+  var goblinPicks = (function(){
+    if(!hasGoblinLines || allPitchScores.length===0) return [];
+    var picks=[];
+    for(var gi=0;gi<allPitchScores.length;gi++){
+      var p=allPitchScores[gi];
+      var pName=p.pitcher.fullName;
+      var gLine=null;
+      if(goblinLines[pName]!=null){ gLine=goblinLines[pName]; }
+      else{
+        var lastName=pName.split(" ").slice(-1)[0].toLowerCase();
+        for(var key in goblinLines){
+          if(key.toLowerCase().split(" ").slice(-1)[0]===lastName){
+            gLine=goblinLines[key]; break;
+          }
+        }
+      }
+      if(gLine==null) continue;
+      var gap=p.line-gLine; // positive = OVER
+      if(gap<=1.5) continue; // only show meaningful OVER gaps
+      // Also get standard PP line for reference
+      var stdLine=null;
+      if(ppLines&&ppLines[pName]!=null) stdLine=ppLines[pName];
+      else if(ppLines){
+        var ln2=pName.split(" ").slice(-1)[0].toLowerCase();
+        for(var k2 in ppLines){if(k2.toLowerCase().split(" ").slice(-1)[0]===ln2){stdLine=ppLines[k2];break;}}
+      }
+      picks.push(Object.assign({},p,{goblinLine:gLine,gap:Math.round(gap*10)/10,ppLine:stdLine,overUnder:"OVER"}));
+    }
+    picks.sort(function(a,b){return b.gap-a.gap;});
+    return picks;
   })();
 
   return(
@@ -1987,6 +2021,64 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         </div>
       )}
 
+      {/* Goblin OVER Picks */}
+      {goblinPicks.length>0&&(
+        <div className="fade-in" style={{marginBottom:32}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.green}}>👹 GOBLIN OVERS</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>PROJ ABOVE GOBLIN LINE</div>
+            <div style={{
+              padding:"3px 10px",borderRadius:10,background:C.green+"20",border:"1px solid "+C.green+"40",
+              color:C.green,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
+            }}>{goblinPicks.length}</div>
+          </div>
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+              <thead>
+                <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.green,fontWeight:600,letterSpacing:1}}>GAP</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.green,fontWeight:600,letterSpacing:1}}>PICK</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:"#9b59b6",fontWeight:600,letterSpacing:1}}>GOBLIN</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PP LINE</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RECENT 5</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                </tr>
+              </thead>
+              <tbody>
+                {goblinPicks.map(function(p,idx){
+                  return(
+                    <tr key={idx} style={{borderBottom:"1px solid "+C.border,cursor:"pointer",transition:"background 0.1s"}}
+                      onMouseOver={function(e){e.currentTarget.style.background="#1a2234";}}
+                      onMouseOut={function(e){e.currentTarget.style.background="transparent";}}
+                      onClick={function(){onSelectGame(p.gamePk);}}>
+                      <td style={{padding:"10px 8px",textAlign:"center"}}>
+                        <span style={{padding:"2px 8px",borderRadius:4,fontSize:12,fontWeight:700,
+                          background:C.green+"18",border:"1px solid "+C.green+"40",color:C.green}}>
+                          {p.gap.toFixed(1)}
+                        </span>
+                      </td>
+                      <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{p.pitcher.fullName}</td>
+                      <td style={{padding:"10px 8px",color:C.muted}}>{p.team||"—"}</td>
+                      <td style={{padding:"10px 8px",color:C.subtext}}>{p.oppTeam||"—"}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:C.green}}>OVER</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#9b59b6"}}>{p.goblinLine}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#e67e22"}}>{p.ppLine||"—"}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.gold}}>{p.line}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{p.recent5Avg!=null?p.recent5Avg:"—"}</td>
+                      <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{p.gameLabel||"—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* Pitcher K Projections Table */}
       {allWhiffScores.length>0&&(
         <div className="fade-in" style={{marginBottom:32}}>
@@ -2144,6 +2236,7 @@ function App(){
   const [allWhiffScores,setAllWhiffScores]=_s([]);
   const [allPitchScores,setAllPitchScores]=_s([]);
   const [ppLines,setPpLines]=_s(null); // {pitcherName: line} from PrizePicks scrape
+  const [goblinLines,setGoblinLines]=_s(null); // {pitcherName: line} from PrizePicks goblin lines
   const [scanState,setScanState]=_s("idle"); // "idle" | "scanning" | "done"
   const scanAbort=ref_(false);
   const [whiffScores,setWhiffScores]=_s({});
@@ -2161,6 +2254,7 @@ function App(){
       if(ppRaw){
         var ppData=JSON.parse(ppRaw);
         if(ppData&&ppData.lines) setPpLines(ppData.lines);
+        if(ppData&&ppData.goblinLines) setGoblinLines(ppData.goblinLines);
       }
     }catch(e){}
   },[]);
@@ -2860,6 +2954,7 @@ function App(){
               allWhiffScores={allWhiffScores}
               allPitchScores={allPitchScores}
               ppLines={ppLines}
+              goblinLines={goblinLines}
               scanState={scanState}
               onStartScan={scanAllGames}
             />
