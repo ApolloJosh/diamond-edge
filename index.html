@@ -659,11 +659,12 @@ function getParkRunFactor(venueId){
   return PARK_FACTORS[venueId];
 }
 
-// ── Bullpen Quality Fetcher ──
+// ── Bullpen Quality Fetcher (lightweight — uses team season pitching stats) ──
+var _bpCache={};
 async function getBullpenQuality(teamId){
+  if(_bpCache[teamId]) return _bpCache[teamId];
   try{
     var year=new Date().getFullYear();
-    // Get team pitching stats
     var data=await fetchJSON(BASE+"/teams/"+teamId+"/stats?stats=season&group=pitching&season="+year);
     var teamPitching=null;
     for(var sg of (data.stats||[])){
@@ -671,48 +672,25 @@ async function getBullpenQuality(teamId){
         teamPitching=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
       }
     }
-    if(!teamPitching) return {era:4.50, whip:1.35, quality:"average"};
-
-    // Get recent 3 game boxscores to isolate bullpen stats
-    var today=new Date().toISOString().slice(0,10);
-    var startDate=new Date(); startDate.setDate(startDate.getDate()-7);
-    var start=startDate.toISOString().slice(0,10);
-    var sched=await fetchJSON(BASE+"/schedule?sportId=1&teamId="+teamId+"&startDate="+start+"&endDate="+today+"&gameType=R");
-    var recentGames=[];
-    for(var d of (sched.dates||[])){
-      for(var g of (d.games||[])) if(g.status&&g.status.detailedState==="Final") recentGames.push(g.gamePk);
-    }
-    var last5=recentGames.slice(-5);
-    var bpER=0, bpIP=0, bpH=0, bpBB=0, bpK=0, bpGames=0;
-    for(var gi=0;gi<last5.length;gi++){
-      var box=await fetchJSON(BASE+"/game/"+last5[gi]+"/boxscore");
-      if(!box||!box.teams) continue;
-      for(var tk in box.teams){
-        var team=box.teams[tk];
-        if(!team.team||team.team.id!==teamId) continue;
-        bpGames++;
-        for(var pk in (team.players||{})){
-          var pl=team.players[pk];
-          if(!pl.stats||!pl.stats.pitching) continue;
-          var ps=pl.stats.pitching;
-          if((parseInt(ps.gamesStarted)||0)>0) continue; // skip starters
-          bpER+=parseInt(ps.earnedRuns)||0;
-          bpIP+=parseFloat(ps.inningsPitched)||0;
-          bpH+=parseInt(ps.hits)||0;
-          bpBB+=parseInt(ps.baseOnBalls)||0;
-          bpK+=parseInt(ps.strikeOuts)||0;
-        }
-      }
-    }
-    var bpERA=bpIP>0?Math.round((bpER/bpIP*9)*100)/100:4.50;
-    var bpWHIP=bpIP>0?Math.round(((bpH+bpBB)/bpIP)*100)/100:1.35;
+    if(!teamPitching){_bpCache[teamId]={era:4.50,whip:1.35,quality:"average"};return _bpCache[teamId];}
+    // Estimate bullpen ERA from team stats: team ERA is a blend of starters + relievers
+    // Relievers typically pitch ~35-40% of innings. We use team ERA as proxy and adjust.
+    var teamERA=parseFloat(teamPitching.era)||4.50;
+    var teamWHIP=parseFloat(teamPitching.whip)||1.35;
+    // Bullpen ERA tends to be ~0.3 higher than team ERA (starters drag it down)
+    var bpERA=Math.round((teamERA+0.30)*100)/100;
+    var bpWHIP=Math.round((teamWHIP+0.05)*100)/100;
     var quality=bpERA<=3.00?"elite":bpERA<=3.75?"good":bpERA<=4.50?"average":bpERA<=5.50?"poor":"bad";
-    return {era:bpERA, whip:bpWHIP, ip:bpIP, games:bpGames, k:bpK, quality:quality};
+    var result={era:bpERA, whip:bpWHIP, quality:quality};
+    _bpCache[teamId]=result;
+    return result;
   }catch(e){return {era:4.50, whip:1.35, quality:"average"};}
 }
 
 // ── Team Offense Stats Fetcher ──
+var _offCache={};
 async function getTeamOffense(teamId){
+  if(_offCache[teamId]) return _offCache[teamId];
   try{
     var year=new Date().getFullYear();
     var data=await fetchJSON(BASE+"/teams/"+teamId+"/stats?stats=season&group=hitting&season="+year);
@@ -728,7 +706,9 @@ async function getTeamOffense(teamId){
           var slg=parseFloat(stat.slg)||0.380;
           var obp=parseFloat(stat.obp)||0.310;
           var hr=parseInt(stat.homeRuns)||0;
-          return {rpg:rpg, ops:ops, avg:avg, slg:slg, obp:obp, hr:hr, gamesPlayed:gamesPlayed};
+          var result={rpg:rpg, ops:ops, avg:avg, slg:slg, obp:obp, hr:hr, gamesPlayed:gamesPlayed};
+          _offCache[teamId]=result;
+          return result;
         }
       }
     }
@@ -2730,8 +2710,8 @@ function App(){
 
         // ── Game Total Runs Projection ──
         try{
-          var venueId2=game.venue?game.venue.id:null;
-          var parkFactor2=getParkRunFactor(venueId2);
+          var gtVenueId=game.venue?game.venue.id:null;
+          var parkFactor2=getParkRunFactor(gtVenueId);
           var totalFetches=await Promise.all([
             getTeamOffense(homeId),
             getTeamOffense(awayId),
