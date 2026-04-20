@@ -1876,97 +1876,119 @@ function GameTotalsPage({games}){
   var [totals,setTotals]=useState([]);
   var [scanning,setScanning]=useState(false);
   var [scanProgress,setScanProgress]=useState("");
+  var [scanError,setScanError]=useState("");
 
   async function scanTotals(){
     setScanning(true);
     setTotals([]);
+    setScanError("");
     var results=[];
 
-    for(var gi=0;gi<games.length;gi++){
-      var game=games[gi];
-      var homeId=game.teams.home.team.id;
-      var awayId=game.teams.away.team.id;
-      var homePitcher=game.teams.home.probablePitcher;
-      var awayPitcher=game.teams.away.probablePitcher;
-      var awayAbbr=game.teams.away.team.abbreviation;
-      var homeAbbr=game.teams.home.team.abbreviation;
-      var gameLabel=awayAbbr+" @ "+homeAbbr;
-      setScanProgress(gameLabel+" ("+(gi+1)+"/"+games.length+")");
+    try{
+      for(var gi=0;gi<games.length;gi++){
+        var game=games[gi];
+        if(!game||!game.teams||!game.teams.home||!game.teams.away) continue;
+        var homeId=game.teams.home.team.id;
+        var awayId=game.teams.away.team.id;
+        var homePitcher=game.teams.home.probablePitcher;
+        var awayPitcher=game.teams.away.probablePitcher;
+        var awayAbbr=game.teams.away.team.abbreviation||"???";
+        var homeAbbr=game.teams.home.team.abbreviation||"???";
+        var gameLabel=awayAbbr+" @ "+homeAbbr;
+        setScanProgress(gameLabel+" ("+(gi+1)+"/"+games.length+")");
 
-      try{
-        // Fetch all data in parallel — lightweight calls only
-        var [homeOff, awayOff, homeBP, awayBP]=await Promise.all([
-          getTeamOffense(homeId),
-          getTeamOffense(awayId),
-          getBullpenQuality(homeId),
-          getBullpenQuality(awayId)
-        ]);
+        // Yield to browser between games
+        await new Promise(function(r){setTimeout(r,50);});
 
-        // Get starter ERA from season stats
-        var homeStarter=null, awayStarter=null;
-        if(homePitcher){
-          try{
-            var yr=new Date().getFullYear();
-            var hpData=await fetchJSON(BASE+"/people/"+homePitcher.id+"/stats?stats=season&group=pitching&season="+yr);
-            for(var sg of (hpData.stats||[])){
-              if(sg.splits&&sg.splits[0]&&sg.splits[0].stat){
-                homeStarter={era:parseFloat(sg.splits[0].stat.era)||4.50, k9:parseFloat(sg.splits[0].stat.strikeoutsPer9Inn)||7.0, ip:parseFloat(sg.splits[0].stat.inningsPitched)||0};
-                break;
+        try{
+          // Fetch team offense + bullpen in parallel (cached after first call)
+          var fetched=await Promise.all([
+            getTeamOffense(homeId),
+            getTeamOffense(awayId),
+            getBullpenQuality(homeId),
+            getBullpenQuality(awayId)
+          ]);
+          var homeOff=fetched[0], awayOff=fetched[1], homeBP=fetched[2], awayBP=fetched[3];
+
+          // Get starter ERA from season stats (sequential to avoid burst)
+          var homeStarter=null, awayStarter=null;
+          if(homePitcher&&homePitcher.id){
+            try{
+              var yr=new Date().getFullYear();
+              var hpData=await fetchJSON(BASE+"/people/"+homePitcher.id+"/stats?stats=season&group=pitching&season="+yr);
+              var hpStats=(hpData&&hpData.stats)||[];
+              for(var si=0;si<hpStats.length;si++){
+                var sp=hpStats[si].splits;
+                if(sp&&sp[0]&&sp[0].stat){
+                  homeStarter={era:parseFloat(sp[0].stat.era)||4.50, k9:parseFloat(sp[0].stat.strikeoutsPer9Inn)||7.0, ip:parseFloat(sp[0].stat.inningsPitched)||0};
+                  break;
+                }
               }
-            }
-          }catch(e){}
-        }
-        if(awayPitcher){
-          try{
-            var yr2=new Date().getFullYear();
-            var apData=await fetchJSON(BASE+"/people/"+awayPitcher.id+"/stats?stats=season&group=pitching&season="+yr2);
-            for(var sg2 of (apData.stats||[])){
-              if(sg2.splits&&sg2.splits[0]&&sg2.splits[0].stat){
-                awayStarter={era:parseFloat(sg2.splits[0].stat.era)||4.50, k9:parseFloat(sg2.splits[0].stat.strikeoutsPer9Inn)||7.0, ip:parseFloat(sg2.splits[0].stat.inningsPitched)||0};
-                break;
+            }catch(e2){}
+          }
+          if(awayPitcher&&awayPitcher.id){
+            try{
+              var yr2=new Date().getFullYear();
+              var apData=await fetchJSON(BASE+"/people/"+awayPitcher.id+"/stats?stats=season&group=pitching&season="+yr2);
+              var apStats=(apData&&apData.stats)||[];
+              for(var si2=0;si2<apStats.length;si2++){
+                var sp2=apStats[si2].splits;
+                if(sp2&&sp2[0]&&sp2[0].stat){
+                  awayStarter={era:parseFloat(sp2[0].stat.era)||4.50, k9:parseFloat(sp2[0].stat.strikeoutsPer9Inn)||7.0, ip:parseFloat(sp2[0].stat.inningsPitched)||0};
+                  break;
+                }
               }
-            }
-          }catch(e){}
+            }catch(e3){}
+          }
+
+          // Build whiff proxy from K/9 (K/9 of 9.0 = score 65, 7.0 = 50, 11.0 = 80)
+          var hk9=homeStarter?homeStarter.k9:7.0;
+          var ak9=awayStarter?awayStarter.k9:7.0;
+          var homeWhiffProxy={score:Math.min(95,Math.max(20, 50+(hk9-7.0)*7.5))};
+          var awayWhiffProxy={score:Math.min(95,Math.max(20, 50+(ak9-7.0)*7.5))};
+
+          // Park factor
+          var venueId=(game.venue&&game.venue.id)?game.venue.id:null;
+          var parkFactor=getParkRunFactor(venueId);
+
+          // Compute game total
+          var projected=computeGameTotal({
+            homeOffense:homeOff, awayOffense:awayOff,
+            homeStarter:homeStarter, awayStarter:awayStarter,
+            homeBullpen:homeBP, awayBullpen:awayBP,
+            parkFactor:parkFactor,
+            homeWhiff:homeWhiffProxy, awayWhiff:awayWhiffProxy
+          });
+
+          var confidence=computeTotalConfidence({
+            homeOffense:homeOff, awayOffense:awayOff,
+            homeBullpen:homeBP, awayBullpen:awayBP,
+            parkFactor:parkFactor,
+            homeWhiff:homeWhiffProxy, awayWhiff:awayWhiffProxy
+          });
+
+          // Safety: ensure projected is a valid number
+          if(typeof projected!=="number"||isNaN(projected)) projected=8.5;
+          if(typeof confidence!=="number"||isNaN(confidence)) confidence=50;
+
+          results.push({
+            gamePk:game.gamePk, gameLabel:gameLabel,
+            projected:projected, confidence:confidence,
+            homeOff:homeOff||{rpg:4.5}, awayOff:awayOff||{rpg:4.5},
+            homeBP:homeBP||{era:4.50,quality:"average"}, awayBP:awayBP||{era:4.50,quality:"average"},
+            homeStarter:homeStarter, awayStarter:awayStarter,
+            homePitcherName:homePitcher?homePitcher.fullName:"TBD",
+            awayPitcherName:awayPitcher?awayPitcher.fullName:"TBD",
+            parkFactor:parkFactor||{factor:1.0,name:"Unknown"},
+            homeWhiff:homeWhiffProxy.score, awayWhiff:awayWhiffProxy.score
+          });
+        }catch(e){
+          console.warn("Totals scan error for "+gameLabel, e);
         }
-
-        // Build whiff-like score from K/9 for the formula (scale: K/9 of 9.0 = score 65, 7.0 = 50, 11.0 = 80)
-        var homeWhiffProxy={score:homeStarter?Math.min(95,Math.max(20, 50+(homeStarter.k9-7.0)*7.5)):50};
-        var awayWhiffProxy={score:awayStarter?Math.min(95,Math.max(20, 50+(awayStarter.k9-7.0)*7.5)):50};
-
-        // Park factor
-        var venueId=game.venue?game.venue.id:null;
-        var parkFactor=getParkRunFactor(venueId);
-
-        // Compute game total
-        var projected=computeGameTotal({
-          homeOffense:homeOff, awayOffense:awayOff,
-          homeStarter:homeStarter, awayStarter:awayStarter,
-          homeBullpen:homeBP, awayBullpen:awayBP,
-          parkFactor:parkFactor,
-          homeWhiff:homeWhiffProxy, awayWhiff:awayWhiffProxy
-        });
-
-        var confidence=computeTotalConfidence({
-          homeOffense:homeOff, awayOffense:awayOff,
-          homeBullpen:homeBP, awayBullpen:awayBP,
-          parkFactor:parkFactor,
-          homeWhiff:homeWhiffProxy, awayWhiff:awayWhiffProxy
-        });
-
-        results.push({
-          gamePk:game.gamePk, gameLabel:gameLabel,
-          projected:projected, confidence:confidence,
-          homeOff:homeOff, awayOff:awayOff,
-          homeBP:homeBP, awayBP:awayBP,
-          homeStarter:homeStarter, awayStarter:awayStarter,
-          homePitcherName:homePitcher?homePitcher.fullName:"TBD",
-          awayPitcherName:awayPitcher?awayPitcher.fullName:"TBD",
-          parkFactor:parkFactor,
-          homeWhiff:homeWhiffProxy.score, awayWhiff:awayWhiffProxy.score
-        });
-      }catch(e){
-        console.warn("Totals scan error for "+gameLabel, e);
       }
+    }catch(outerErr){
+      console.error("Game totals scan crashed:", outerErr);
+      setScanError("Scan error: "+(outerErr.message||"unknown"));
     }
 
     results.sort(function(a,b){return b.projected-a.projected;});
@@ -2012,7 +2034,13 @@ function GameTotalsPage({games}){
         </div>
       )}
 
-      {!scanning&&totals.length===0&&(
+      {scanError&&(
+        <div style={{padding:16,background:"#2d1215",border:"1px solid "+C.red,borderRadius:6,color:C.red,fontSize:11,marginBottom:16}}>
+          {scanError}
+        </div>
+      )}
+
+      {!scanning&&totals.length===0&&!scanError&&(
         <div style={{textAlign:"center",padding:48,color:C.muted}}>
           <div style={{fontSize:40,marginBottom:16}}>🎯</div>
           <div style={{fontSize:13}}>Hit "Scan Totals" to project O/U for today's games</div>
@@ -2038,39 +2066,44 @@ function GameTotalsPage({games}){
             </thead>
             <tbody>
               {totals.map(function(t){
-                var signal=getSignal(t.projected);
-                var hBP=bpBadge(t.homeBP.quality);
-                var aBP=bpBadge(t.awayBP.quality);
-                var hERA=t.homeStarter?t.homeStarter.era.toFixed(2):"--";
-                var aERA=t.awayStarter?t.awayStarter.era.toFixed(2):"--";
-                var hName=t.homePitcherName.split(" ").pop();
-                var aName=t.awayPitcherName.split(" ").pop();
+                var proj=typeof t.projected==="number"&&!isNaN(t.projected)?t.projected:8.5;
+                var conf=typeof t.confidence==="number"&&!isNaN(t.confidence)?t.confidence:50;
+                var signal=getSignal(proj);
+                var hBP=bpBadge(t.homeBP?t.homeBP.quality:"average");
+                var aBP=bpBadge(t.awayBP?t.awayBP.quality:"average");
+                var hERA=(t.homeStarter&&typeof t.homeStarter.era==="number")?t.homeStarter.era.toFixed(2):"--";
+                var aERA=(t.awayStarter&&typeof t.awayStarter.era==="number")?t.awayStarter.era.toFixed(2):"--";
+                var hName=(t.homePitcherName||"TBD").split(" ").pop();
+                var aName=(t.awayPitcherName||"TBD").split(" ").pop();
+                var pf=(t.parkFactor&&typeof t.parkFactor.factor==="number")?t.parkFactor.factor:1.0;
+                var hBPera=(t.homeBP&&t.homeBP.era)?t.homeBP.era:"--";
+                var aBPera=(t.awayBP&&t.awayBP.era)?t.awayBP.era:"--";
                 return(
                   <tr key={t.gamePk} style={{borderBottom:"1px solid "+C.border}} className="matchup-row">
                     <td style={{padding:"10px 8px",fontWeight:600,color:C.text,whiteSpace:"nowrap"}}>{t.gameLabel}</td>
-                    <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,color:C.gold}}>{t.projected.toFixed(1)}</td>
+                    <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,color:C.gold}}>{proj.toFixed(1)}</td>
                     <td style={{padding:"10px 8px",textAlign:"center"}}>
                       <span style={{background:signal.color+"20",color:signal.color,padding:"3px 8px",borderRadius:4,fontSize:10,fontWeight:600,letterSpacing:0.5}}>{signal.label}</span>
                     </td>
-                    <td style={{padding:"10px 8px",textAlign:"center",color:t.confidence>=70?C.green:t.confidence>=55?C.gold:C.muted,fontWeight:600}}>{t.confidence}</td>
+                    <td style={{padding:"10px 8px",textAlign:"center",color:conf>=70?C.green:conf>=55?C.gold:C.muted,fontWeight:600}}>{conf}</td>
                     <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
                       <div style={{color:C.text}}>{hName}</div>
-                      <div style={{color:parseFloat(hERA)<=3.50?C.green:parseFloat(hERA)<=4.50?C.muted:C.red,fontSize:9}}>{hERA} ERA</div>
+                      <div style={{color:hERA!=="--"&&parseFloat(hERA)<=3.50?C.green:hERA!=="--"&&parseFloat(hERA)>=4.50?C.red:C.muted,fontSize:9}}>{hERA} ERA</div>
                     </td>
                     <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
                       <div style={{color:C.text}}>{aName}</div>
-                      <div style={{color:parseFloat(aERA)<=3.50?C.green:parseFloat(aERA)<=4.50?C.muted:C.red,fontSize:9}}>{aERA} ERA</div>
+                      <div style={{color:aERA!=="--"&&parseFloat(aERA)<=3.50?C.green:aERA!=="--"&&parseFloat(aERA)>=4.50?C.red:C.muted,fontSize:9}}>{aERA} ERA</div>
                     </td>
                     <td style={{padding:"10px 8px",textAlign:"center"}}>
                       <span style={{color:hBP.color,fontSize:10,fontWeight:600}}>{hBP.label}</span>
-                      <div style={{color:C.muted,fontSize:9}}>{t.homeBP.era} ERA</div>
+                      <div style={{color:C.muted,fontSize:9}}>{hBPera} ERA</div>
                     </td>
                     <td style={{padding:"10px 8px",textAlign:"center"}}>
                       <span style={{color:aBP.color,fontSize:10,fontWeight:600}}>{aBP.label}</span>
-                      <div style={{color:C.muted,fontSize:9}}>{t.awayBP.era} ERA</div>
+                      <div style={{color:C.muted,fontSize:9}}>{aBPera} ERA</div>
                     </td>
-                    <td style={{padding:"10px 8px",textAlign:"center",color:t.parkFactor.factor>=1.05?C.red:t.parkFactor.factor<=0.95?C.blue:C.muted,fontWeight:600,fontSize:10}}>
-                      {t.parkFactor.factor.toFixed(2)}
+                    <td style={{padding:"10px 8px",textAlign:"center",color:pf>=1.05?C.red:pf<=0.95?C.blue:C.muted,fontWeight:600,fontSize:10}}>
+                      {pf.toFixed(2)}
                     </td>
                   </tr>
                 );
