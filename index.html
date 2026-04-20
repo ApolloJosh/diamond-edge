@@ -1870,6 +1870,229 @@ function TopEdgesBanner({matchups}){
 }
 
 /* ─────────────────────────────────────────────── */
+/* ─── GAME TOTALS PAGE: Separate O/U Scanner ─── */
+/* ─────────────────────────────────────────────── */
+function GameTotalsPage({games}){
+  var [totals,setTotals]=useState([]);
+  var [scanning,setScanning]=useState(false);
+  var [scanProgress,setScanProgress]=useState("");
+
+  async function scanTotals(){
+    setScanning(true);
+    setTotals([]);
+    var results=[];
+
+    for(var gi=0;gi<games.length;gi++){
+      var game=games[gi];
+      var homeId=game.teams.home.team.id;
+      var awayId=game.teams.away.team.id;
+      var homePitcher=game.teams.home.probablePitcher;
+      var awayPitcher=game.teams.away.probablePitcher;
+      var awayAbbr=game.teams.away.team.abbreviation;
+      var homeAbbr=game.teams.home.team.abbreviation;
+      var gameLabel=awayAbbr+" @ "+homeAbbr;
+      setScanProgress(gameLabel+" ("+(gi+1)+"/"+games.length+")");
+
+      try{
+        // Fetch all data in parallel — lightweight calls only
+        var [homeOff, awayOff, homeBP, awayBP]=await Promise.all([
+          getTeamOffense(homeId),
+          getTeamOffense(awayId),
+          getBullpenQuality(homeId),
+          getBullpenQuality(awayId)
+        ]);
+
+        // Get starter ERA from season stats
+        var homeStarter=null, awayStarter=null;
+        if(homePitcher){
+          try{
+            var yr=new Date().getFullYear();
+            var hpData=await fetchJSON(BASE+"/people/"+homePitcher.id+"/stats?stats=season&group=pitching&season="+yr);
+            for(var sg of (hpData.stats||[])){
+              if(sg.splits&&sg.splits[0]&&sg.splits[0].stat){
+                homeStarter={era:parseFloat(sg.splits[0].stat.era)||4.50, k9:parseFloat(sg.splits[0].stat.strikeoutsPer9Inn)||7.0, ip:parseFloat(sg.splits[0].stat.inningsPitched)||0};
+                break;
+              }
+            }
+          }catch(e){}
+        }
+        if(awayPitcher){
+          try{
+            var yr2=new Date().getFullYear();
+            var apData=await fetchJSON(BASE+"/people/"+awayPitcher.id+"/stats?stats=season&group=pitching&season="+yr2);
+            for(var sg2 of (apData.stats||[])){
+              if(sg2.splits&&sg2.splits[0]&&sg2.splits[0].stat){
+                awayStarter={era:parseFloat(sg2.splits[0].stat.era)||4.50, k9:parseFloat(sg2.splits[0].stat.strikeoutsPer9Inn)||7.0, ip:parseFloat(sg2.splits[0].stat.inningsPitched)||0};
+                break;
+              }
+            }
+          }catch(e){}
+        }
+
+        // Build whiff-like score from K/9 for the formula (scale: K/9 of 9.0 = score 65, 7.0 = 50, 11.0 = 80)
+        var homeWhiffProxy={score:homeStarter?Math.min(95,Math.max(20, 50+(homeStarter.k9-7.0)*7.5)):50};
+        var awayWhiffProxy={score:awayStarter?Math.min(95,Math.max(20, 50+(awayStarter.k9-7.0)*7.5)):50};
+
+        // Park factor
+        var venueId=game.venue?game.venue.id:null;
+        var parkFactor=getParkRunFactor(venueId);
+
+        // Compute game total
+        var projected=computeGameTotal({
+          homeOffense:homeOff, awayOffense:awayOff,
+          homeStarter:homeStarter, awayStarter:awayStarter,
+          homeBullpen:homeBP, awayBullpen:awayBP,
+          parkFactor:parkFactor,
+          homeWhiff:homeWhiffProxy, awayWhiff:awayWhiffProxy
+        });
+
+        var confidence=computeTotalConfidence({
+          homeOffense:homeOff, awayOffense:awayOff,
+          homeBullpen:homeBP, awayBullpen:awayBP,
+          parkFactor:parkFactor,
+          homeWhiff:homeWhiffProxy, awayWhiff:awayWhiffProxy
+        });
+
+        results.push({
+          gamePk:game.gamePk, gameLabel:gameLabel,
+          projected:projected, confidence:confidence,
+          homeOff:homeOff, awayOff:awayOff,
+          homeBP:homeBP, awayBP:awayBP,
+          homeStarter:homeStarter, awayStarter:awayStarter,
+          homePitcherName:homePitcher?homePitcher.fullName:"TBD",
+          awayPitcherName:awayPitcher?awayPitcher.fullName:"TBD",
+          parkFactor:parkFactor,
+          homeWhiff:homeWhiffProxy.score, awayWhiff:awayWhiffProxy.score
+        });
+      }catch(e){
+        console.warn("Totals scan error for "+gameLabel, e);
+      }
+    }
+
+    results.sort(function(a,b){return b.projected-a.projected;});
+    setTotals(results);
+    setScanning(false);
+    setScanProgress("");
+  }
+
+  // O/U signal: projected vs typical Vegas line (8.5 default)
+  function getSignal(projected){
+    if(projected>=10.0) return {label:"STRONG OVER",color:C.green};
+    if(projected>=9.0) return {label:"LEAN OVER",color:"#86efac"};
+    if(projected<=7.0) return {label:"STRONG UNDER",color:C.blue};
+    if(projected<=8.0) return {label:"LEAN UNDER",color:"#7dd3fc"};
+    return {label:"NEUTRAL",color:C.muted};
+  }
+
+  function bpBadge(quality){
+    var colors={elite:C.green,good:"#86efac",average:C.muted,poor:C.orange,bad:C.red};
+    return {color:colors[quality]||C.muted, label:quality?quality.toUpperCase():"AVG"};
+  }
+
+  return(
+    <div style={{padding:"32px 24px",maxWidth:1000,margin:"0 auto"}}>
+      <div style={{marginBottom:24,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12}}>
+        <div>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3}}>🎯 GAME TOTALS</div>
+          <div style={{fontSize:11,color:C.muted,marginTop:4}}>O/U run projections using offense, starters, bullpens & park factors</div>
+        </div>
+        <button className="scan-btn" onClick={scanTotals} disabled={scanning||games.length===0}
+          style={{padding:"10px 24px",fontSize:12,fontWeight:600,letterSpacing:1,
+            background:scanning?"#1e2d40":"linear-gradient(135deg,#f0b429,#fb923c)",
+            color:scanning?C.muted:"#000",border:"none",borderRadius:8,cursor:scanning?"not-allowed":"pointer",
+            fontFamily:"'DM Mono',monospace"}}>
+          {scanning?"SCANNING...":"⚡ SCAN TOTALS"}
+        </button>
+      </div>
+
+      {scanning&&(
+        <div style={{textAlign:"center",padding:32,color:C.gold}} className="loading-pulse">
+          <div style={{fontSize:13,marginBottom:8}}>Scanning game totals...</div>
+          <div style={{fontSize:11,color:C.muted}}>{scanProgress}</div>
+        </div>
+      )}
+
+      {!scanning&&totals.length===0&&(
+        <div style={{textAlign:"center",padding:48,color:C.muted}}>
+          <div style={{fontSize:40,marginBottom:16}}>🎯</div>
+          <div style={{fontSize:13}}>Hit "Scan Totals" to project O/U for today's games</div>
+          <div style={{fontSize:10,marginTop:8,color:C.subtext}}>Uses team offense, starter ERA/K9, bullpen quality, and park factors</div>
+        </div>
+      )}
+
+      {totals.length>0&&(
+        <div style={{overflowX:"auto"}}>
+          <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+            <thead>
+              <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
+                <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:500,letterSpacing:1}}>PROJ TOTAL</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.green,fontWeight:500,letterSpacing:1}}>SIGNAL</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>CONF</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>HOME SP</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>AWAY SP</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.orange,fontWeight:500,letterSpacing:1}}>HOME BP</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.orange,fontWeight:500,letterSpacing:1}}>AWAY BP</th>
+                <th style={{textAlign:"center",padding:"10px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>PARK</th>
+              </tr>
+            </thead>
+            <tbody>
+              {totals.map(function(t){
+                var signal=getSignal(t.projected);
+                var hBP=bpBadge(t.homeBP.quality);
+                var aBP=bpBadge(t.awayBP.quality);
+                var hERA=t.homeStarter?t.homeStarter.era.toFixed(2):"--";
+                var aERA=t.awayStarter?t.awayStarter.era.toFixed(2):"--";
+                var hName=t.homePitcherName.split(" ").pop();
+                var aName=t.awayPitcherName.split(" ").pop();
+                return(
+                  <tr key={t.gamePk} style={{borderBottom:"1px solid "+C.border}} className="matchup-row">
+                    <td style={{padding:"10px 8px",fontWeight:600,color:C.text,whiteSpace:"nowrap"}}>{t.gameLabel}</td>
+                    <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,color:C.gold}}>{t.projected.toFixed(1)}</td>
+                    <td style={{padding:"10px 8px",textAlign:"center"}}>
+                      <span style={{background:signal.color+"20",color:signal.color,padding:"3px 8px",borderRadius:4,fontSize:10,fontWeight:600,letterSpacing:0.5}}>{signal.label}</span>
+                    </td>
+                    <td style={{padding:"10px 8px",textAlign:"center",color:t.confidence>=70?C.green:t.confidence>=55?C.gold:C.muted,fontWeight:600}}>{t.confidence}</td>
+                    <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
+                      <div style={{color:C.text}}>{hName}</div>
+                      <div style={{color:parseFloat(hERA)<=3.50?C.green:parseFloat(hERA)<=4.50?C.muted:C.red,fontSize:9}}>{hERA} ERA</div>
+                    </td>
+                    <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
+                      <div style={{color:C.text}}>{aName}</div>
+                      <div style={{color:parseFloat(aERA)<=3.50?C.green:parseFloat(aERA)<=4.50?C.muted:C.red,fontSize:9}}>{aERA} ERA</div>
+                    </td>
+                    <td style={{padding:"10px 8px",textAlign:"center"}}>
+                      <span style={{color:hBP.color,fontSize:10,fontWeight:600}}>{hBP.label}</span>
+                      <div style={{color:C.muted,fontSize:9}}>{t.homeBP.era} ERA</div>
+                    </td>
+                    <td style={{padding:"10px 8px",textAlign:"center"}}>
+                      <span style={{color:aBP.color,fontSize:10,fontWeight:600}}>{aBP.label}</span>
+                      <div style={{color:C.muted,fontSize:9}}>{t.awayBP.era} ERA</div>
+                    </td>
+                    <td style={{padding:"10px 8px",textAlign:"center",color:t.parkFactor.factor>=1.05?C.red:t.parkFactor.factor<=0.95?C.blue:C.muted,fontWeight:600,fontSize:10}}>
+                      {t.parkFactor.factor.toFixed(2)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {/* Legend */}
+          <div style={{marginTop:16,padding:12,background:C.card,borderRadius:6,border:"1px solid "+C.border,fontSize:10,color:C.muted}}>
+            <span style={{color:C.green}}>● STRONG OVER</span>{" = Proj ≥ 10.0 | "}
+            <span style={{color:"#86efac"}}>● LEAN OVER</span>{" = Proj 9.0-9.9 | "}
+            <span style={{color:C.blue}}>● STRONG UNDER</span>{" = Proj ≤ 7.0 | "}
+            <span style={{color:"#7dd3fc"}}>● LEAN UNDER</span>{" = Proj 7.1-8.0 | "}
+            <span>● NEUTRAL = 8.1-8.9</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────── */
 /* ─── HOME PAGE: League-Wide Edge Scanner ────── */
 /* ─────────────────────────────────────────────── */
 function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allPitchScores, allGameTotals, ppLines, goblinLines, scanState, onStartScan}){
@@ -2222,77 +2445,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         </div>
       )}
 
-      {/* Game Total Runs O/U Projections */}
-      {allGameTotals.length>0&&(
-        <div className="fade-in" style={{marginBottom:32}}>
-          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
-            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:"#e67e22"}}>📊 GAME TOTALS</div>
-            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>PROJECTED RUNS O/U</div>
-            <div style={{
-              padding:"3px 10px",borderRadius:10,background:"#e67e22"+"20",border:"1px solid #e67e22"+"40",
-              color:"#e67e22",fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
-            }}>{allGameTotals.length}</div>
-          </div>
-          <div style={{overflowX:"auto"}}>
-            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
-              <thead>
-                <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
-                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PROJ TOTAL</th>
-                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>AWAY SP</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>WHIFF</th>
-                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HOME SP</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>WHIFF</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>AWAY BP</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HOME BP</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PARK</th>
-                  <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>CONF</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allGameTotals.slice().sort(function(a,b){return b.confidence-a.confidence;}).map(function(g,idx){
-                  var totalColor=g.projTotal>=9.5?C.green:g.projTotal<=7.5?C.blue:"#e67e22";
-                  var bpColor=function(q){return q==="elite"||q==="good"?C.green:q==="poor"||q==="bad"?C.red:C.muted;};
-                  var whiffColor=function(s){return s>=70?C.green:s>=55?C.gold:s>=40?C.red:"#888";};
-                  var confGrade=g.confidence>=75?"A":g.confidence>=65?"B":g.confidence>=55?"C":"D";
-                  var confColor=confGrade==="A"?C.green:confGrade==="B"?C.gold:confGrade==="C"?"#e67e22":C.red;
-                  return(
-                    <tr key={idx} style={{borderBottom:"1px solid "+C.border,cursor:"pointer",transition:"background 0.1s"}}
-                      onMouseOver={function(e){e.currentTarget.style.background="#1a2234";}}
-                      onMouseOut={function(e){e.currentTarget.style.background="transparent";}}
-                      onClick={function(){onSelectGame(g.gamePk);}}>
-                      <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{g.gameLabel}</td>
-                      <td style={{padding:"10px 8px",textAlign:"center"}}>
-                        <span style={{padding:"3px 12px",borderRadius:4,fontSize:14,fontWeight:700,
-                          background:totalColor+"18",border:"1px solid "+totalColor+"40",color:totalColor}}>
-                          {g.projTotal.toFixed(1)}
-                        </span>
-                      </td>
-                      <td style={{padding:"10px 8px",color:C.subtext,fontSize:10}}>{g.awayStarter||"TBD"}</td>
-                      <td style={{padding:"10px 8px",textAlign:"center",color:whiffColor(g.awayWhiff),fontWeight:600}}>{g.awayWhiff||"—"}</td>
-                      <td style={{padding:"10px 8px",color:C.subtext,fontSize:10}}>{g.homeStarter||"TBD"}</td>
-                      <td style={{padding:"10px 8px",textAlign:"center",color:whiffColor(g.homeWhiff),fontWeight:600}}>{g.homeWhiff||"—"}</td>
-                      <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
-                        <span style={{color:bpColor(g.awayBullpen?g.awayBullpen.quality:"")}}>{g.awayBullpen?g.awayBullpen.era.toFixed(2):"—"}</span>
-                      </td>
-                      <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
-                        <span style={{color:bpColor(g.homeBullpen?g.homeBullpen.quality:"")}}>{g.homeBullpen?g.homeBullpen.era.toFixed(2):"—"}</span>
-                      </td>
-                      <td style={{padding:"10px 8px",textAlign:"center",fontSize:10,color:C.muted}}>{g.parkFactor?g.parkFactor.factor.toFixed(2):"1.00"}</td>
-                      <td style={{padding:"10px 8px",textAlign:"center"}}>
-                        <span style={{padding:"2px 6px",borderRadius:4,fontSize:11,fontWeight:700,
-                          background:confColor+"18",border:"1px solid "+confColor+"40",color:confColor}}>
-                          {confGrade} <span style={{fontSize:9,color:C.muted}}>{g.confidence}</span>
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+
 
       {/* Pitcher K Projections Table */}
       {allWhiffScores.length>0&&(
@@ -2524,11 +2677,9 @@ function App(){
     setAllEdges([]);
     setAllWhiffScores([]);
     setAllPitchScores([]);
-    setAllGameTotals([]);
     var accumulated=[];
     var whiffAccum=[];
     var pitchAccum=[];
-    var totalAccum=[];
 
     for(var gi=0;gi<games.length;gi++){
       if(scanAbort.current) break;
@@ -2708,47 +2859,6 @@ function App(){
           }
         }catch(pitchErr){}
 
-        // ── Game Total Runs Projection ──
-        try{
-          var gtVenueId=game.venue?game.venue.id:null;
-          var parkFactor2=getParkRunFactor(gtVenueId);
-          var totalFetches=await Promise.all([
-            getTeamOffense(homeId),
-            getTeamOffense(awayId),
-            getBullpenQuality(homeId),
-            getBullpenQuality(awayId)
-          ]);
-          var homeOff=totalFetches[0], awayOff=totalFetches[1];
-          var homeBP=totalFetches[2], awayBP=totalFetches[3];
-          var homeW=typeof homeWhiffResult!=="undefined"?homeWhiffResult:null;
-          var awayW=typeof awayWhiffResult!=="undefined"?awayWhiffResult:null;
-          var hStarterInfo=typeof homeSeasonStat!=="undefined"&&homeSeasonStat?{era:homeSeasonStat.era}:null;
-          var aStarterInfo=typeof awaySeasonStat!=="undefined"&&awaySeasonStat?{era:awaySeasonStat.era}:null;
-          var totalParams={
-            homeOffense:homeOff, awayOffense:awayOff,
-            homeStarter:hStarterInfo, awayStarter:aStarterInfo,
-            homeBullpen:homeBP, awayBullpen:awayBP,
-            parkFactor:parkFactor2,
-            homeWhiff:homeW, awayWhiff:awayW
-          };
-          var projTotal=computeGameTotal(totalParams);
-          var totalConf=computeTotalConfidence(totalParams);
-          if(projTotal&&!isNaN(projTotal)){
-            totalAccum.push({
-              gamePk:game.gamePk, gameLabel:gameLabel,
-              homeTeam:homeAbbr, awayTeam:awayAbbr,
-              projTotal:projTotal, confidence:totalConf,
-              homeOffense:homeOff, awayOffense:awayOff,
-              homeBullpen:homeBP, awayBullpen:awayBP,
-              homeStarter:homePitcher?homePitcher.fullName:null,
-              awayStarter:awayPitcher?awayPitcher.fullName:null,
-              homeWhiff:homeW?homeW.score:null,
-              awayWhiff:awayW?awayW.score:null,
-              parkFactor:parkFactor2
-            });
-          }
-        }catch(totalErr){}
-
       }catch(e){
         // skip game on error, continue scanning
       }
@@ -2756,7 +2866,6 @@ function App(){
       setAllEdges(accumulated.slice());
       setAllWhiffScores(whiffAccum.slice());
       setAllPitchScores(pitchAccum.slice());
-      setAllGameTotals(totalAccum.slice());
     }
     setAllEdges(accumulated.slice());
     setAllWhiffScores(whiffAccum.slice());
@@ -3110,13 +3219,13 @@ function App(){
             {sidebarOpen?"\u2630":"\u2630"}
           </button>
           <div onClick={goHome} style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,color:C.gold,cursor:"pointer"}}>⚾ DIAMOND EDGE</div>
-          {(page==="game"||page==="results"||page==="season")&&(
+          {(page==="game"||page==="results"||page==="season"||page==="totals")&&(
             <button onClick={goHome} style={{padding:"4px 12px",fontSize:10,background:"transparent",color:C.muted,
               border:"1px solid "+C.border,borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",letterSpacing:1}}>
               ← HOME
             </button>
           )}
-          {(page==="home"||page==="results"||page==="season")&&(
+          {(page==="home"||page==="results"||page==="season"||page==="totals")&&(
             <div style={{color:C.muted,fontSize:10,letterSpacing:2,paddingTop:4}}>MLB MATCHUP INTELLIGENCE</div>
           )}
         </div>
@@ -3177,6 +3286,16 @@ function App(){
               fontFamily:"'DM Mono',monospace"}}>
             <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.purple}}>📈 SEASON RESULTS</div>
             <div style={{fontSize:10,color:C.muted,marginTop:2}}>Hit rate trends</div>
+          </button>
+
+          <button className="game-btn" onClick={function(){setPage("totals");}}
+            style={{display:"block",width:"calc(100% - 8px)",margin:"0 4px 8px",textAlign:"left",
+              background:page==="totals"?"#1a2234":"transparent",
+              border:"1px solid "+(page==="totals"?C.gold:"transparent"),
+              borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,
+              fontFamily:"'DM Mono',monospace"}}>
+            <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.orange}}>🎯 GAME TOTALS</div>
+            <div style={{fontSize:10,color:C.muted,marginTop:2}}>O/U run projections</div>
           </button>
 
           <div style={{padding:"0 14px 10px",fontSize:10,letterSpacing:2,color:C.muted}}>GAMES</div>
@@ -3718,6 +3837,10 @@ function App(){
                 </div>
               )}
             </div>
+          )}
+
+          {page==="totals"&&(
+            <GameTotalsPage games={games}/>
           )}
 
           {page==="season"&&(
