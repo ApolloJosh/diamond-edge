@@ -1,5 +1,5 @@
 // Diamond Edge Service Worker — cache-first for assets, network-first for API
-var CACHE_NAME = 'diamond-edge-v10';
+var CACHE_NAME = 'diamond-edge-v11';
 var STATIC_ASSETS = [
   './',
   './index.html',

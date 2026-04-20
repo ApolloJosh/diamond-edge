@@ -659,6 +659,169 @@ function getParkRunFactor(venueId){
   return PARK_FACTORS[venueId];
 }
 
+// ── Bullpen Quality Fetcher ──
+async function getBullpenQuality(teamId){
+  try{
+    var year=new Date().getFullYear();
+    // Get team pitching stats
+    var data=await fetchJSON(BASE+"/teams/"+teamId+"/stats?stats=season&group=pitching&season="+year);
+    var teamPitching=null;
+    for(var sg of (data.stats||[])){
+      if(sg.group&&sg.group.displayName==="pitching"){
+        teamPitching=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
+      }
+    }
+    if(!teamPitching) return {era:4.50, whip:1.35, quality:"average"};
+
+    // Get recent 3 game boxscores to isolate bullpen stats
+    var today=new Date().toISOString().slice(0,10);
+    var startDate=new Date(); startDate.setDate(startDate.getDate()-7);
+    var start=startDate.toISOString().slice(0,10);
+    var sched=await fetchJSON(BASE+"/schedule?sportId=1&teamId="+teamId+"&startDate="+start+"&endDate="+today+"&gameType=R");
+    var recentGames=[];
+    for(var d of (sched.dates||[])){
+      for(var g of (d.games||[])) if(g.status&&g.status.detailedState==="Final") recentGames.push(g.gamePk);
+    }
+    var last5=recentGames.slice(-5);
+    var bpER=0, bpIP=0, bpH=0, bpBB=0, bpK=0, bpGames=0;
+    for(var gi=0;gi<last5.length;gi++){
+      var box=await fetchJSON(BASE+"/game/"+last5[gi]+"/boxscore");
+      if(!box||!box.teams) continue;
+      for(var tk in box.teams){
+        var team=box.teams[tk];
+        if(!team.team||team.team.id!==teamId) continue;
+        bpGames++;
+        for(var pk in (team.players||{})){
+          var pl=team.players[pk];
+          if(!pl.stats||!pl.stats.pitching) continue;
+          var ps=pl.stats.pitching;
+          if((parseInt(ps.gamesStarted)||0)>0) continue; // skip starters
+          bpER+=parseInt(ps.earnedRuns)||0;
+          bpIP+=parseFloat(ps.inningsPitched)||0;
+          bpH+=parseInt(ps.hits)||0;
+          bpBB+=parseInt(ps.baseOnBalls)||0;
+          bpK+=parseInt(ps.strikeOuts)||0;
+        }
+      }
+    }
+    var bpERA=bpIP>0?Math.round((bpER/bpIP*9)*100)/100:4.50;
+    var bpWHIP=bpIP>0?Math.round(((bpH+bpBB)/bpIP)*100)/100:1.35;
+    var quality=bpERA<=3.00?"elite":bpERA<=3.75?"good":bpERA<=4.50?"average":bpERA<=5.50?"poor":"bad";
+    return {era:bpERA, whip:bpWHIP, ip:bpIP, games:bpGames, k:bpK, quality:quality};
+  }catch(e){return {era:4.50, whip:1.35, quality:"average"};}
+}
+
+// ── Team Offense Stats Fetcher ──
+async function getTeamOffense(teamId){
+  try{
+    var year=new Date().getFullYear();
+    var data=await fetchJSON(BASE+"/teams/"+teamId+"/stats?stats=season&group=hitting&season="+year);
+    for(var sg of (data.stats||[])){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        var stat=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
+        if(stat){
+          var runs=parseInt(stat.runs)||0;
+          var gamesPlayed=parseInt(stat.gamesPlayed)||1;
+          var rpg=Math.round((runs/gamesPlayed)*100)/100;
+          var ops=parseFloat(stat.ops)||0.700;
+          var avg=parseFloat(stat.avg)||0.240;
+          var slg=parseFloat(stat.slg)||0.380;
+          var obp=parseFloat(stat.obp)||0.310;
+          var hr=parseInt(stat.homeRuns)||0;
+          return {rpg:rpg, ops:ops, avg:avg, slg:slg, obp:obp, hr:hr, gamesPlayed:gamesPlayed};
+        }
+      }
+    }
+    return {rpg:4.5, ops:0.700, avg:0.240, gamesPlayed:0};
+  }catch(e){return {rpg:4.5, ops:0.700, avg:0.240, gamesPlayed:0};}
+}
+
+// ── Game Total Runs Projector ──
+function computeGameTotal(params){
+  // params: {homeOffense, awayOffense, homeStarter, awayStarter, homeBullpen, awayBullpen, parkFactor, homeWhiff, awayWhiff}
+  var p=params;
+  var LEAGUE_AVG_RPG=4.50; // per team, ~9.0 combined
+
+  // --- TEAM OFFENSE COMPONENT (40% weight) ---
+  // Each team's runs/game, regressed 30% toward league mean
+  var homeRPG=p.homeOffense?p.homeOffense.rpg:LEAGUE_AVG_RPG;
+  var awayRPG=p.awayOffense?p.awayOffense.rpg:LEAGUE_AVG_RPG;
+  homeRPG=homeRPG*0.70+LEAGUE_AVG_RPG*0.30;
+  awayRPG=awayRPG*0.70+LEAGUE_AVG_RPG*0.30;
+  var offenseTotal=homeRPG+awayRPG;
+
+  // --- STARTER QUALITY COMPONENT (30% weight) ---
+  // Use whiff scores as proxy: high whiff = suppress runs, low whiff = more runs
+  // League avg whiff ~55. Scale: each 10 pts above/below = ~0.5 runs adjustment
+  var starterAdj=0;
+  if(p.homeWhiff&&typeof p.homeWhiff.score==="number"){
+    starterAdj-=(p.homeWhiff.score-55)*0.05; // high whiff = fewer runs
+  }
+  if(p.awayWhiff&&typeof p.awayWhiff.score==="number"){
+    starterAdj-=(p.awayWhiff.score-55)*0.05;
+  }
+
+  // Also factor in starter ERA if available
+  if(p.homeStarter&&p.homeStarter.era!=null){
+    var hERA=parseFloat(p.homeStarter.era)||4.50;
+    starterAdj+=(hERA-4.50)*0.20; // high ERA = more runs
+  }
+  if(p.awayStarter&&p.awayStarter.era!=null){
+    var aERA=parseFloat(p.awayStarter.era)||4.50;
+    starterAdj+=(aERA-4.50)*0.20;
+  }
+
+  // --- BULLPEN COMPONENT (15% weight) ---
+  // Bad bullpen = more runs. League avg bullpen ERA ~4.00
+  var bpAdj=0;
+  if(p.homeBullpen&&p.homeBullpen.era){
+    bpAdj+=(p.homeBullpen.era-4.00)*0.15;
+  }
+  if(p.awayBullpen&&p.awayBullpen.era){
+    bpAdj+=(p.awayBullpen.era-4.00)*0.15;
+  }
+
+  // --- PARK FACTOR (10% weight) ---
+  var parkMult=1.0;
+  if(p.parkFactor&&typeof p.parkFactor.factor==="number"){
+    parkMult=p.parkFactor.factor;
+  }
+
+  // --- COMBINE ---
+  var rawTotal=offenseTotal+starterAdj+bpAdj;
+  var projected=rawTotal*parkMult;
+
+  // Clamp to reasonable range (5.5 - 14.0)
+  projected=Math.max(5.5, Math.min(14.0, projected));
+  return Math.round(projected*2)/2; // round to nearest 0.5
+}
+
+// ── Game Total Confidence Score ──
+function computeTotalConfidence(params){
+  var score=50;
+  // Both starters have strong whiff data
+  if(params.homeWhiff&&params.awayWhiff){
+    if(params.homeWhiff.score>=70&&params.awayWhiff.score>=70) score+=12; // two aces = confident under
+    else if(params.homeWhiff.score<=40&&params.awayWhiff.score<=40) score+=12; // two bad = confident over
+    else if(params.homeWhiff.score>=65||params.awayWhiff.score>=65) score+=5;
+  }
+  // Bullpen data available and extreme
+  if(params.homeBullpen&&params.awayBullpen){
+    if(params.homeBullpen.quality==="elite"&&params.awayBullpen.quality==="elite") score+=8;
+    else if(params.homeBullpen.quality==="bad"||params.awayBullpen.quality==="bad") score+=8;
+    score+=3; // bonus for having bullpen data
+  }
+  // Park factor is extreme
+  if(params.parkFactor){
+    var pf=params.parkFactor.factor;
+    if(pf>=1.08||pf<=0.93) score+=5;
+  }
+  // Offense data sample size
+  if(params.homeOffense&&params.homeOffense.gamesPlayed>=15) score+=3;
+  if(params.awayOffense&&params.awayOffense.gamesPlayed>=15) score+=3;
+  return Math.min(99, score);
+}
+
 // ── BvP Lineup Adjustment (enhanced) ──
 
 function computeLineupBvPPitchAdj(matchups){
@@ -1729,7 +1892,7 @@ function TopEdgesBanner({matchups}){
 /* ─────────────────────────────────────────────── */
 /* ─── HOME PAGE: League-Wide Edge Scanner ────── */
 /* ─────────────────────────────────────────────── */
-function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allPitchScores, ppLines, goblinLines, scanState, onStartScan}){
+function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores, allPitchScores, allGameTotals, ppLines, goblinLines, scanState, onStartScan}){
   var topEdges = allEdges.filter(function(m){return m.edgeScore>=55;}).sort(function(a,b){return b.edgeScore-a.edgeScore;});
   var topWhiffs = allWhiffScores.filter(function(w){return w.score>=55;}).sort(function(a,b){return b.score-a.score;});
 
@@ -2079,6 +2242,78 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         </div>
       )}
 
+      {/* Game Total Runs O/U Projections */}
+      {allGameTotals.length>0&&(
+        <div className="fade-in" style={{marginBottom:32}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:"#e67e22"}}>📊 GAME TOTALS</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>PROJECTED RUNS O/U</div>
+            <div style={{
+              padding:"3px 10px",borderRadius:10,background:"#e67e22"+"20",border:"1px solid #e67e22"+"40",
+              color:"#e67e22",fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
+            }}>{allGameTotals.length}</div>
+          </div>
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+              <thead>
+                <tr style={{borderBottom:"2px solid "+C.border,background:C.card}}>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PROJ TOTAL</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>AWAY SP</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>WHIFF</th>
+                  <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HOME SP</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>WHIFF</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>AWAY BP</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HOME BP</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PARK</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>CONF</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allGameTotals.slice().sort(function(a,b){return b.confidence-a.confidence;}).map(function(g,idx){
+                  var totalColor=g.projTotal>=9.5?C.green:g.projTotal<=7.5?C.blue:"#e67e22";
+                  var bpColor=function(q){return q==="elite"||q==="good"?C.green:q==="poor"||q==="bad"?C.red:C.muted;};
+                  var whiffColor=function(s){return s>=70?C.green:s>=55?C.gold:s>=40?C.red:"#888";};
+                  var confGrade=g.confidence>=75?"A":g.confidence>=65?"B":g.confidence>=55?"C":"D";
+                  var confColor=confGrade==="A"?C.green:confGrade==="B"?C.gold:confGrade==="C"?"#e67e22":C.red;
+                  return(
+                    <tr key={idx} style={{borderBottom:"1px solid "+C.border,cursor:"pointer",transition:"background 0.1s"}}
+                      onMouseOver={function(e){e.currentTarget.style.background="#1a2234";}}
+                      onMouseOut={function(e){e.currentTarget.style.background="transparent";}}
+                      onClick={function(){onSelectGame(g.gamePk);}}>
+                      <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{g.gameLabel}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center"}}>
+                        <span style={{padding:"3px 12px",borderRadius:4,fontSize:14,fontWeight:700,
+                          background:totalColor+"18",border:"1px solid "+totalColor+"40",color:totalColor}}>
+                          {g.projTotal.toFixed(1)}
+                        </span>
+                      </td>
+                      <td style={{padding:"10px 8px",color:C.subtext,fontSize:10}}>{g.awayStarter||"TBD"}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",color:whiffColor(g.awayWhiff),fontWeight:600}}>{g.awayWhiff||"—"}</td>
+                      <td style={{padding:"10px 8px",color:C.subtext,fontSize:10}}>{g.homeStarter||"TBD"}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",color:whiffColor(g.homeWhiff),fontWeight:600}}>{g.homeWhiff||"—"}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
+                        <span style={{color:bpColor(g.awayBullpen?g.awayBullpen.quality:"")}}>{g.awayBullpen?g.awayBullpen.era.toFixed(2):"—"}</span>
+                      </td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontSize:10}}>
+                        <span style={{color:bpColor(g.homeBullpen?g.homeBullpen.quality:"")}}>{g.homeBullpen?g.homeBullpen.era.toFixed(2):"—"}</span>
+                      </td>
+                      <td style={{padding:"10px 8px",textAlign:"center",fontSize:10,color:C.muted}}>{g.parkFactor?g.parkFactor.factor.toFixed(2):"1.00"}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center"}}>
+                        <span style={{padding:"2px 6px",borderRadius:4,fontSize:11,fontWeight:700,
+                          background:confColor+"18",border:"1px solid "+confColor+"40",color:confColor}}>
+                          {confGrade} <span style={{fontSize:9,color:C.muted}}>{g.confidence}</span>
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* Pitcher K Projections Table */}
       {allWhiffScores.length>0&&(
         <div className="fade-in" style={{marginBottom:32}}>
@@ -2237,6 +2472,7 @@ function App(){
   const [allPitchScores,setAllPitchScores]=_s([]);
   const [ppLines,setPpLines]=_s(null); // {pitcherName: line} from PrizePicks scrape
   const [goblinLines,setGoblinLines]=_s(null); // {pitcherName: line} from PrizePicks goblin lines
+  const [allGameTotals,setAllGameTotals]=_s([]); // game total runs projections
   const [scanState,setScanState]=_s("idle"); // "idle" | "scanning" | "done"
   const scanAbort=ref_(false);
   const [whiffScores,setWhiffScores]=_s({});
@@ -2308,9 +2544,11 @@ function App(){
     setAllEdges([]);
     setAllWhiffScores([]);
     setAllPitchScores([]);
+    setAllGameTotals([]);
     var accumulated=[];
     var whiffAccum=[];
     var pitchAccum=[];
+    var totalAccum=[];
 
     for(var gi=0;gi<games.length;gi++){
       if(scanAbort.current) break;
@@ -2489,6 +2727,48 @@ function App(){
             }
           }
         }catch(pitchErr){}
+
+        // ── Game Total Runs Projection ──
+        try{
+          var venueId2=game.venue?game.venue.id:null;
+          var parkFactor2=getParkRunFactor(venueId2);
+          var totalFetches=await Promise.all([
+            getTeamOffense(homeId),
+            getTeamOffense(awayId),
+            getBullpenQuality(homeId),
+            getBullpenQuality(awayId)
+          ]);
+          var homeOff=totalFetches[0], awayOff=totalFetches[1];
+          var homeBP=totalFetches[2], awayBP=totalFetches[3];
+          var homeW=typeof homeWhiffResult!=="undefined"?homeWhiffResult:null;
+          var awayW=typeof awayWhiffResult!=="undefined"?awayWhiffResult:null;
+          var hStarterInfo=typeof homeSeasonStat!=="undefined"&&homeSeasonStat?{era:homeSeasonStat.era}:null;
+          var aStarterInfo=typeof awaySeasonStat!=="undefined"&&awaySeasonStat?{era:awaySeasonStat.era}:null;
+          var totalParams={
+            homeOffense:homeOff, awayOffense:awayOff,
+            homeStarter:hStarterInfo, awayStarter:aStarterInfo,
+            homeBullpen:homeBP, awayBullpen:awayBP,
+            parkFactor:parkFactor2,
+            homeWhiff:homeW, awayWhiff:awayW
+          };
+          var projTotal=computeGameTotal(totalParams);
+          var totalConf=computeTotalConfidence(totalParams);
+          if(projTotal&&!isNaN(projTotal)){
+            totalAccum.push({
+              gamePk:game.gamePk, gameLabel:gameLabel,
+              homeTeam:homeAbbr, awayTeam:awayAbbr,
+              projTotal:projTotal, confidence:totalConf,
+              homeOffense:homeOff, awayOffense:awayOff,
+              homeBullpen:homeBP, awayBullpen:awayBP,
+              homeStarter:homePitcher?homePitcher.fullName:null,
+              awayStarter:awayPitcher?awayPitcher.fullName:null,
+              homeWhiff:homeW?homeW.score:null,
+              awayWhiff:awayW?awayW.score:null,
+              parkFactor:parkFactor2
+            });
+          }
+        }catch(totalErr){}
+
       }catch(e){
         // skip game on error, continue scanning
       }
@@ -2496,10 +2776,12 @@ function App(){
       setAllEdges(accumulated.slice());
       setAllWhiffScores(whiffAccum.slice());
       setAllPitchScores(pitchAccum.slice());
+      setAllGameTotals(totalAccum.slice());
     }
     setAllEdges(accumulated.slice());
     setAllWhiffScores(whiffAccum.slice());
     setAllPitchScores(pitchAccum.slice());
+    setAllGameTotals(totalAccum.slice());
     setScanState("done");
 
     // ── Snapshot: freeze today's pre-game scores for results comparison ──
@@ -2953,6 +3235,7 @@ function App(){
               allEdges={allEdges}
               allWhiffScores={allWhiffScores}
               allPitchScores={allPitchScores}
+              allGameTotals={allGameTotals}
               ppLines={ppLines}
               goblinLines={goblinLines}
               scanState={scanState}
