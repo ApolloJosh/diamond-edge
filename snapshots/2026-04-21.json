@@ -1,8 +1,8 @@
 {
   "date": "2026-04-21",
-  "savedAt": "2026-04-21T20:30:12.964Z",
+  "savedAt": "2026-04-21T23:24:23.098Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -254,9 +254,9 @@
       "oppTeam": "MIN",
       "whiffScore": 82,
       "grade": "A+",
-      "k9": 10.7,
-      "projectedIP": 5.8,
-      "projectedK": 6,
+      "k9": 11,
+      "projectedIP": 4.8,
+      "projectedK": 5,
       "gamePk": 823640,
       "gameLabel": "MIN @ NYM"
     },
@@ -514,9 +514,9 @@
       "oppTeam": "NYM",
       "whiffScore": 45,
       "grade": "C",
-      "k9": 4.8,
-      "projectedIP": 5.1,
-      "projectedK": 2,
+      "k9": 4.6,
+      "projectedIP": 4.2,
+      "projectedK": 1.5,
       "gamePk": 823640,
       "gameLabel": "MIN @ NYM"
     },
@@ -549,24 +549,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 680573,
-      "pitcherName": "Simeon Woods Richardson",
-      "team": "MIN",
-      "oppTeam": "NYM",
-      "line": 89.5,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 82.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 85,
-      "twoYrStarts": 26,
-      "bvpAdj": 6,
-      "lineupPA": 60,
-      "gamePk": 823640,
-      "gameLabel": "MIN @ NYM"
-    },
-    {
       "pitcherId": 666200,
       "pitcherName": "Jesús Luzardo",
       "team": "PHI",
@@ -583,6 +565,24 @@
       "lineupPA": 248,
       "gamePk": 824690,
       "gameLabel": "PHI @ CHC"
+    },
+    {
+      "pitcherId": 694738,
+      "pitcherName": "Landen Roupp",
+      "team": "SF",
+      "oppTeam": "LAD",
+      "line": 92.5,
+      "overUnder": "OVER",
+      "pitchScore": 76,
+      "grade": "A",
+      "recent5Avg": 85.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 85.2,
+      "twoYrStarts": 26,
+      "bvpAdj": 7,
+      "lineupPA": 64,
+      "gamePk": 823236,
+      "gameLabel": "LAD @ SF"
     },
     {
       "pitcherId": 808967,
@@ -621,22 +621,22 @@
       "gameLabel": "NYY @ BOS"
     },
     {
-      "pitcherId": 694738,
-      "pitcherName": "Landen Roupp",
-      "team": "SF",
-      "oppTeam": "LAD",
-      "line": 88.5,
-      "overUnder": "OVER",
-      "pitchScore": 74,
+      "pitcherId": 622491,
+      "pitcherName": "Luis Castillo",
+      "team": "SEA",
+      "oppTeam": "ATH",
+      "line": 92.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
       "grade": "A",
-      "recent5Avg": 85.6,
+      "recent5Avg": 92.2,
       "recent5Starts": 5,
-      "twoYrAvg": 85.2,
-      "twoYrStarts": 26,
-      "bvpAdj": 3,
-      "lineupPA": 52,
-      "gamePk": 823236,
-      "gameLabel": "LAD @ SF"
+      "twoYrAvg": 93.2,
+      "twoYrStarts": 36,
+      "bvpAdj": 0,
+      "lineupPA": 142,
+      "gamePk": 823148,
+      "gameLabel": "ATH @ SEA"
     }
   ]
 }
