@@ -2911,66 +2911,75 @@ function App(){
         var homeMatchupsForWhiff=[];
         var awayMatchupsForWhiff=[];
 
+        // Helper: race a promise against a hard timeout
+        function withTimeout(promise,ms){
+          return Promise.race([promise,new Promise(function(_,rej){setTimeout(function(){rej(new Error("timeout"));},ms);})]);
+        }
+
         if(homePitcher){
           for(var bi=0;bi<awayRoster.length;bi++){
             if(scanAbort.current) break;
             var batter=awayRoster[bi];
-            var results=await Promise.all([
-              getBvPSplits(batter.person.id,homePitcher.id),
-              getSeasonStats(batter.person.id,"hitting"),
-              getBatterRecentForm(batter.person.id),
-              getBatterPlatoonSplits(batter.person.id)
-            ]);
-            var stat=results[0];
-            var seasonStat=results[1];
-            var recentForm=results[2];
-            var platoonSplit=results[3];
-            var pitcherStat=homePitcherStat;
-            var pitcherHand=homePitcherHand;
-            if(stat&&(parseInt(stat.plateAppearances)||0)>=5){
-              var venueId=game.venue?game.venue.id:null;
-              var parkRunFactor=getParkRunFactor(venueId);
-              var teamGP=game.teams.away.gamesPlayed||162;
-              var playingTimeRisk=getPlayingTimeRisk(seasonStat,teamGP);
-              var extras={pitcherStat:pitcherStat,recentForm:recentForm,platoonSplit:platoonSplit,pitcherHand:pitcherHand,parkRunFactor:parkRunFactor.factor,playingTimeRisk:playingTimeRisk};
-              var esr=computeEdgeScore(stat,seasonStat,stat.plateAppearances,null,null,extras);
-              accumulated.push({batter:batter.person,pitcher:homePitcher,
-                pitcherTeam:game.teams.home.team.name,
-                batterTeam:awayAbbr,side:"away",stat:stat,seasonStat:seasonStat,
-                edgeScore:esr.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
-              homeMatchupsForWhiff.push({stat:stat,batter:batter.person});
-            }
+            try{
+              var results=await withTimeout(Promise.all([
+                getBvPSplits(batter.person.id,homePitcher.id),
+                getSeasonStats(batter.person.id,"hitting"),
+                getBatterRecentForm(batter.person.id).catch(function(){return null;}),
+                getBatterPlatoonSplits(batter.person.id).catch(function(){return {vsLeft:null,vsRight:null};})
+              ]),15000);
+              var stat=results[0];
+              var seasonStat=results[1];
+              var recentForm=results[2];
+              var platoonSplit=results[3];
+              var pitcherStat=homePitcherStat;
+              var pitcherHand=homePitcherHand;
+              if(stat&&(parseInt(stat.plateAppearances)||0)>=5){
+                var venueId=game.venue?game.venue.id:null;
+                var parkRunFactor=getParkRunFactor(venueId);
+                var teamGP=game.teams.away.gamesPlayed||162;
+                var playingTimeRisk=getPlayingTimeRisk(seasonStat,teamGP);
+                var extras={pitcherStat:pitcherStat,recentForm:recentForm,platoonSplit:platoonSplit,pitcherHand:pitcherHand,parkRunFactor:parkRunFactor.factor,playingTimeRisk:playingTimeRisk};
+                var esr=computeEdgeScore(stat,seasonStat,stat.plateAppearances,null,null,extras);
+                accumulated.push({batter:batter.person,pitcher:homePitcher,
+                  pitcherTeam:game.teams.home.team.name,
+                  batterTeam:awayAbbr,side:"away",stat:stat,seasonStat:seasonStat,
+                  edgeScore:esr.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
+                homeMatchupsForWhiff.push({stat:stat,batter:batter.person});
+              }
+            }catch(bErr){/* skip this batter on timeout */}
           }
         }
         if(awayPitcher){
           for(var bi2=0;bi2<homeRoster.length;bi2++){
             if(scanAbort.current) break;
             var batter2=homeRoster[bi2];
-            var results2=await Promise.all([
-              getBvPSplits(batter2.person.id,awayPitcher.id),
-              getSeasonStats(batter2.person.id,"hitting"),
-              getBatterRecentForm(batter2.person.id),
-              getBatterPlatoonSplits(batter2.person.id)
-            ]);
-            var stat2=results2[0];
-            var seasonStat2=results2[1];
-            var recentForm2=results2[2];
-            var platoonSplit2=results2[3];
-            var pitcherStat2=awayPitcherStat;
-            var pitcherHand2=awayPitcherHand;
-            if(stat2&&(parseInt(stat2.plateAppearances)||0)>=5){
-              var venueId2=game.venue?game.venue.id:null;
-              var parkRunFactor2=getParkRunFactor(venueId2);
-              var teamGP2=game.teams.home.gamesPlayed||162;
-              var playingTimeRisk2=getPlayingTimeRisk(seasonStat2,teamGP2);
-              var extras2={pitcherStat:pitcherStat2,recentForm:recentForm2,platoonSplit:platoonSplit2,pitcherHand:pitcherHand2,parkRunFactor:parkRunFactor2.factor,playingTimeRisk:playingTimeRisk2};
-              var esr2=computeEdgeScore(stat2,seasonStat2,stat2.plateAppearances,null,null,extras2);
-              accumulated.push({batter:batter2.person,pitcher:awayPitcher,
-                pitcherTeam:game.teams.away.team.name,
-                batterTeam:homeAbbr,side:"home",stat:stat2,seasonStat:seasonStat2,
-                edgeScore:esr2.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
-              awayMatchupsForWhiff.push({stat:stat2,batter:batter2.person});
-            }
+            try{
+              var results2=await withTimeout(Promise.all([
+                getBvPSplits(batter2.person.id,awayPitcher.id),
+                getSeasonStats(batter2.person.id,"hitting"),
+                getBatterRecentForm(batter2.person.id).catch(function(){return null;}),
+                getBatterPlatoonSplits(batter2.person.id).catch(function(){return {vsLeft:null,vsRight:null};})
+              ]),15000);
+              var stat2=results2[0];
+              var seasonStat2=results2[1];
+              var recentForm2=results2[2];
+              var platoonSplit2=results2[3];
+              var pitcherStat2=awayPitcherStat;
+              var pitcherHand2=awayPitcherHand;
+              if(stat2&&(parseInt(stat2.plateAppearances)||0)>=5){
+                var venueId2=game.venue?game.venue.id:null;
+                var parkRunFactor2=getParkRunFactor(venueId2);
+                var teamGP2=game.teams.home.gamesPlayed||162;
+                var playingTimeRisk2=getPlayingTimeRisk(seasonStat2,teamGP2);
+                var extras2={pitcherStat:pitcherStat2,recentForm:recentForm2,platoonSplit:platoonSplit2,pitcherHand:pitcherHand2,parkRunFactor:parkRunFactor2.factor,playingTimeRisk:playingTimeRisk2};
+                var esr2=computeEdgeScore(stat2,seasonStat2,stat2.plateAppearances,null,null,extras2);
+                accumulated.push({batter:batter2.person,pitcher:awayPitcher,
+                  pitcherTeam:game.teams.away.team.name,
+                  batterTeam:homeAbbr,side:"home",stat:stat2,seasonStat:seasonStat2,
+                  edgeScore:esr2.score,parkDelta:0,gamePk:game.gamePk,gameLabel:gameLabel});
+                awayMatchupsForWhiff.push({stat:stat2,batter:batter2.person});
+              }
+            }catch(bErr2){/* skip this batter on timeout */}
           }
         }
 
