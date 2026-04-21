@@ -1134,10 +1134,22 @@ function starColor(stars){
 }
 
 /* ─── API Fetchers ─── */
+var _fetchCache={};
 async function fetchJSON(url){
-  const r=await fetch(url);
-  if(!r.ok) throw new Error("HTTP "+r.status);
-  return r.json();
+  if(_fetchCache[url]) return _fetchCache[url];
+  var controller=new AbortController();
+  var timeout=setTimeout(function(){controller.abort();},12000);
+  try{
+    var r=await fetch(url,{signal:controller.signal});
+    clearTimeout(timeout);
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    var data=await r.json();
+    _fetchCache[url]=data;
+    return data;
+  }catch(e){
+    clearTimeout(timeout);
+    throw e;
+  }
 }
 async function getTodayGames(){
   const today=new Date().toISOString().slice(0,10);
@@ -1313,14 +1325,16 @@ async function getBatterRecentForm(batterId){
 async function getBatterPlatoonSplits(batterId){
   try{
     const year=new Date().getFullYear();
-    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=statSplits&group=hitting&season="+year+"&sitCodes=vl,vr");
+    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=statSplits&group=hitting&season="+year);
     const result={vsLeft:null, vsRight:null};
     for(const sg of data.stats||[]){
       if(sg.group&&sg.group.displayName==="hitting"){
         for(const split of sg.splits||[]){
-          if(!split.stat) continue;
-          if(split.split&&split.split.description&&split.split.description.includes("Left")) result.vsLeft=split.stat;
-          if(split.split&&split.split.description&&split.split.description.includes("Right")) result.vsRight=split.stat;
+          if(!split.stat||!split.split) continue;
+          var desc=(split.split.description||"").toLowerCase();
+          var code=(split.split.code||"").toLowerCase();
+          if(desc.indexOf("left")!==-1||code==="vl") result.vsLeft=split.stat;
+          if(desc.indexOf("right")!==-1||code==="vr") result.vsRight=split.stat;
         }
       }
     }
