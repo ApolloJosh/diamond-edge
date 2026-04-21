@@ -1,8 +1,8 @@
 {
   "date": "2026-04-20",
-  "savedAt": "2026-04-20T20:08:14.488Z",
+  "savedAt": "2026-04-21T00:01:17.991Z",
   "scanType": "afternoon",
-  "gamesScanned": 10,
+  "gamesScanned": 5,
   "totalGames": 10,
   "batters": [
     {
@@ -70,22 +70,6 @@
       "gameLabel": "PHI @ CHC"
     },
     {
-      "batterId": 681624,
-      "batterName": "Andy Pages",
-      "pitcherId": 500779,
-      "pitcherName": "Jose Quintana",
-      "batterTeam": "LAD",
-      "pitcherTeam": "COL",
-      "edgeScore": 82,
-      "grade": "A+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.250",
-      "bvpPA": 16,
-      "bvpHR": 0,
-      "gamePk": 824370,
-      "gameLabel": "LAD @ COL"
-    },
-    {
       "batterId": 643396,
       "batterName": "Isiah Kiner-Falefa",
       "pitcherId": 656427,
@@ -100,6 +84,22 @@
       "bvpHR": 2,
       "gamePk": 824776,
       "gameLabel": "DET @ BOS"
+    },
+    {
+      "batterId": 681624,
+      "batterName": "Andy Pages",
+      "pitcherId": 500779,
+      "pitcherName": "Jose Quintana",
+      "batterTeam": "LAD",
+      "pitcherTeam": "COL",
+      "edgeScore": 82,
+      "grade": "A+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.250",
+      "bvpPA": 16,
+      "bvpHR": 0,
+      "gamePk": 824370,
+      "gameLabel": "LAD @ COL"
     },
     {
       "batterId": 671739,
@@ -294,8 +294,8 @@
       "whiffScore": 74,
       "grade": "A",
       "k9": 9.6,
-      "projectedIP": 4.8,
-      "projectedK": 4.5,
+      "projectedIP": 4,
+      "projectedK": 3.5,
       "gamePk": 824125,
       "gameLabel": "BAL @ KC"
     },
@@ -306,9 +306,9 @@
       "oppTeam": "CHC",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 9.7,
-      "projectedIP": 5.5,
-      "projectedK": 5,
+      "k9": 9.6,
+      "projectedIP": 4.6,
+      "projectedK": 4,
       "gamePk": 824692,
       "gameLabel": "PHI @ CHC"
     },
@@ -346,8 +346,8 @@
       "whiffScore": 66,
       "grade": "B+",
       "k9": 7.8,
-      "projectedIP": 6,
-      "projectedK": 4.5,
+      "projectedIP": 5,
+      "projectedK": 3.5,
       "gamePk": 824125,
       "gameLabel": "BAL @ KC"
     },
@@ -397,9 +397,9 @@
       "oppTeam": "PHI",
       "whiffScore": 59,
       "grade": "B",
-      "k9": 7.8,
-      "projectedIP": 17.1,
-      "projectedK": 13,
+      "k9": 7.6,
+      "projectedIP": 9.5,
+      "projectedK": 7,
       "gamePk": 824692,
       "gameLabel": "PHI @ CHC"
     },
@@ -515,24 +515,6 @@
       "gameLabel": "ATL @ WSH"
     },
     {
-      "pitcherId": 605400,
-      "pitcherName": "Aaron Nola",
-      "team": "PHI",
-      "oppTeam": "CHC",
-      "line": 92,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 89.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.7,
-      "twoYrStarts": 21,
-      "bvpAdj": 2,
-      "lineupPA": 426,
-      "gamePk": 824692,
-      "gameLabel": "PHI @ CHC"
-    },
-    {
       "pitcherId": 656302,
       "pitcherName": "Dylan Cease",
       "team": "TOR",
@@ -585,6 +567,24 @@
       "lineupPA": 135,
       "gamePk": 824776,
       "gameLabel": "DET @ BOS"
+    },
+    {
+      "pitcherId": 500779,
+      "pitcherName": "Jose Quintana",
+      "team": "COL",
+      "oppTeam": "LAD",
+      "line": 83.5,
+      "overUnder": "UNDER",
+      "pitchScore": 62,
+      "grade": "B+",
+      "recent5Avg": 80.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.5,
+      "twoYrStarts": 26,
+      "bvpAdj": 0,
+      "lineupPA": 164,
+      "gamePk": 824370,
+      "gameLabel": "LAD @ COL"
     }
   ]
 }
