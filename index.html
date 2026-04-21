@@ -208,7 +208,7 @@ function eraColor(era){
 }
 
 /* ─── Edge Score Engine ─── */
-function computeEdgeScore(bvpStat, seasonStat, pa, venueStat, weather){
+function computeEdgeScore(bvpStat, seasonStat, pa, venueStat, weather, extras){
   if(!bvpStat) return {score:0, parkDelta:0, weatherDelta:0};
   let score = 50;
   const bvpAvg = parseFloat(bvpStat.avg)||0;
@@ -216,8 +216,23 @@ function computeEdgeScore(bvpStat, seasonStat, pa, venueStat, weather){
   const bvpPA = parseInt(pa)||parseInt(bvpStat.plateAppearances)||0;
   score += (bvpAvg - 0.250) * 100;
   score += (bvpOps - 0.700) * 25;
-  const sampleFactor = Math.min(bvpPA / 30, 1.5);
+
+  // IMPROVEMENT #3: Better BvP Sample Size Weighting
+  var sampleFactor = 1.0;
+  if(bvpPA < 4){
+    score -= 5; // flat penalty for too few PA
+    sampleFactor = 0.3;
+  }else if(bvpPA < 8){
+    sampleFactor = 0.4;
+  }else if(bvpPA < 15){
+    sampleFactor = 0.7;
+  }else if(bvpPA < 25){
+    sampleFactor = 1.0;
+  }else{
+    sampleFactor = Math.min(bvpPA / 30, 1.3);
+  }
   score = 50 + (score - 50) * sampleFactor;
+
   const hrs = parseInt(bvpStat.homeRuns)||0;
   if(hrs >= 3) score += 8;
   else if(hrs >= 1) score += 4;
@@ -234,6 +249,67 @@ function computeEdgeScore(bvpStat, seasonStat, pa, venueStat, weather){
     if(sOps >= 0.850) score += 5;
     else if(sOps < 0.600) score -= 4;
   }
+
+  // IMPROVEMENT #1: Pitcher Quality Context
+  var pitcherDelta = 0;
+  if(extras && extras.pitcherStat){
+    const pERA = parseFloat(extras.pitcherStat.era)||4.50;
+    const pK9 = parseFloat(extras.pitcherStat.strikeoutsPer9Inn)||8.0;
+    const pWHIP = parseFloat(extras.pitcherStat.whip)||1.30;
+    // Low ERA (hard to hit) = penalty
+    if(pERA <= 2.50) pitcherDelta -= 6;
+    else if(pERA <= 3.50) pitcherDelta -= 3;
+    // High ERA (easy to hit) = bonus
+    else if(pERA >= 5.00) pitcherDelta += 6;
+    else if(pERA >= 4.00) pitcherDelta += 3;
+    // High K/9 (dominant) = penalty
+    if(pK9 >= 10.0) pitcherDelta -= 4;
+    // High WHIP (bad control) = bonus for batter
+    if(pWHIP >= 1.40) pitcherDelta += 3;
+    score += pitcherDelta;
+  }
+
+  // IMPROVEMENT #2: Recent Batter Form (hot/cold)
+  var formDelta = 0;
+  if(extras && extras.recentForm){
+    const rAvg = extras.recentForm.avg;
+    const rOPS = extras.recentForm.ops;
+    if(rAvg >= 0.330 || rOPS >= 0.900) formDelta += 5;
+    else if(rAvg < 0.180) formDelta -= 5;
+    score += formDelta;
+  }
+
+  // IMPROVEMENT #4: Platoon/Handedness using actual split stats
+  var platoonDelta = 0;
+  if(extras && extras.platoonSplit && extras.pitcherHand){
+    const hand = extras.pitcherHand; // "L" or "R"
+    const relevantSplit = (hand === "L") ? extras.platoonSplit.vsLeft : extras.platoonSplit.vsRight;
+    if(relevantSplit){
+      const splitOPS = parseFloat(relevantSplit.ops)||0.700;
+      if(splitOPS >= 0.850) platoonDelta += 5;
+      else if(splitOPS <= 0.600) platoonDelta -= 5;
+    }
+    score += platoonDelta;
+  }
+
+  // IMPROVEMENT #5: Park Factor for Hitters (general, not venue-specific)
+  var parkFactorDelta = 0;
+  if(extras && extras.parkRunFactor){
+    const factor = extras.parkRunFactor;
+    if(factor >= 1.05) parkFactorDelta = 5;
+    else if(factor >= 1.02) parkFactorDelta = 3;
+    else if(factor <= 0.95) parkFactorDelta = -5;
+    else if(factor <= 0.98) parkFactorDelta = -3;
+    score += parkFactorDelta;
+  }
+
+  // IMPROVEMENT #6: Lineup Position / Playing Time Risk
+  var playingTimeRiskDelta = 0;
+  if(extras && extras.playingTimeRisk){
+    playingTimeRiskDelta = extras.playingTimeRisk;
+    score += playingTimeRiskDelta;
+  }
+
   // Ballpark factor — weighted by sample size (need 5+ games to apply)
   var parkDelta = 0;
   if(venueStat && venueStat.gamesPlayed >= 5){
@@ -1196,6 +1272,70 @@ async function getSeasonStats(playerId, group){
     }
     return null;
   }catch(e){return null;}
+}
+
+async function getBatterRecentForm(batterId){
+  try{
+    const year=new Date().getFullYear();
+    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=gameLog&group=hitting&season="+year);
+    for(const sg of data.stats||[]){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        const splits=sg.splits||[];
+        if(splits.length<1) return null;
+        const recent=splits.slice(0,10);
+        var recentAB=0, recentH=0, recentOPS_OBP=0, recentOPS_SLG=0, recentPA=0, recentBB=0, recentHBP=0, recentSF=0;
+        for(const game of recent){
+          if(!game.stat) continue;
+          recentAB+=parseInt(game.stat.atBats)||0;
+          recentH+=parseInt(game.stat.hits)||0;
+          recentPA+=(parseInt(game.stat.plateAppearances)||parseInt(game.stat.atBats))||0;
+          recentBB+=parseInt(game.stat.baseOnBalls)||0;
+          recentHBP+=parseInt(game.stat.hitByPitch)||0;
+          recentSF+=parseInt(game.stat.sacFlies)||0;
+        }
+        const recentAVG=recentAB>0?(recentH/recentAB):0;
+        const denom=recentAB+recentBB+recentHBP+recentSF;
+        const recentOBP=denom>0?((recentH+recentBB+recentHBP)/denom):0;
+        var recentTB=recentH;
+        for(const game of recent){
+          if(!game.stat) continue;
+          recentTB+=(parseInt(game.stat.doubles)||0)+(parseInt(game.stat.triples||0)*2)+(parseInt(game.stat.homeRuns||0)*3);
+        }
+        const recentSLG=recentAB>0?(recentTB/recentAB):0;
+        const recentOPS=recentOBP+recentSLG;
+        return {avg:recentAVG, ops:recentOPS, pa:recentPA};
+      }
+    }
+    return null;
+  }catch(e){return null;}
+}
+
+async function getBatterPlatoonSplits(batterId){
+  try{
+    const year=new Date().getFullYear();
+    const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=statSplits&group=hitting&season="+year+"&sitCodes=vl,vr");
+    const result={vsLeft:null, vsRight:null};
+    for(const sg of data.stats||[]){
+      if(sg.group&&sg.group.displayName==="hitting"){
+        for(const split of sg.splits||[]){
+          if(!split.stat) continue;
+          if(split.split&&split.split.description&&split.split.description.includes("Left")) result.vsLeft=split.stat;
+          if(split.split&&split.split.description&&split.split.description.includes("Right")) result.vsRight=split.stat;
+        }
+      }
+    }
+    return result;
+  }catch(e){return {vsLeft:null, vsRight:null};}
+}
+
+function getPlayingTimeRisk(batterSeasonStat, teamGamesPlayed){
+  if(!batterSeasonStat||!teamGamesPlayed) return 0;
+  const batterGamesPlayed=parseInt(batterSeasonStat.gamesPlayed)||0;
+  const playingTimePercent=teamGamesPlayed>0?(batterGamesPlayed/teamGamesPlayed):0;
+  if(playingTimePercent<0.50){
+    return playingTimePercent<0.30?-10:-5;
+  }
+  return 0;
 }
 
 async function getGameBoxScore(gamePk){
@@ -2740,6 +2880,20 @@ function App(){
         ];
         await Promise.all(tkFetches);
 
+        // Pre-fetch pitcher hands and season stats (once per pitcher, not per batter)
+        var homePitcherHand=null, awayPitcherHand=null;
+        var homePitcherStat=null, awayPitcherStat=null;
+        var handFetches=[];
+        if(homePitcher){
+          handFetches.push(getPitcherHand(homePitcher.id).then(function(h){homePitcherHand=h;}));
+          handFetches.push(getSeasonStats(homePitcher.id,"pitching").then(function(s){homePitcherStat=s;}));
+        }
+        if(awayPitcher){
+          handFetches.push(getPitcherHand(awayPitcher.id).then(function(h){awayPitcherHand=h;}));
+          handFetches.push(getSeasonStats(awayPitcher.id,"pitching").then(function(s){awayPitcherStat=s;}));
+        }
+        await Promise.all(handFetches);
+
         var homeMatchupsForWhiff=[];
         var awayMatchupsForWhiff=[];
 
@@ -2749,12 +2903,23 @@ function App(){
             var batter=awayRoster[bi];
             var results=await Promise.all([
               getBvPSplits(batter.person.id,homePitcher.id),
-              getSeasonStats(batter.person.id,"hitting")
+              getSeasonStats(batter.person.id,"hitting"),
+              getBatterRecentForm(batter.person.id),
+              getBatterPlatoonSplits(batter.person.id)
             ]);
             var stat=results[0];
             var seasonStat=results[1];
+            var recentForm=results[2];
+            var platoonSplit=results[3];
+            var pitcherStat=homePitcherStat;
+            var pitcherHand=homePitcherHand;
             if(stat&&(parseInt(stat.plateAppearances)||0)>=5){
-              var esr=computeEdgeScore(stat,seasonStat,stat.plateAppearances,null);
+              var venueId=game.venue?game.venue.id:null;
+              var parkRunFactor=getParkRunFactor(venueId);
+              var teamGP=game.teams.away.gamesPlayed||162;
+              var playingTimeRisk=getPlayingTimeRisk(seasonStat,teamGP);
+              var extras={pitcherStat:pitcherStat,recentForm:recentForm,platoonSplit:platoonSplit,pitcherHand:pitcherHand,parkRunFactor:parkRunFactor.factor,playingTimeRisk:playingTimeRisk};
+              var esr=computeEdgeScore(stat,seasonStat,stat.plateAppearances,null,null,extras);
               accumulated.push({batter:batter.person,pitcher:homePitcher,
                 pitcherTeam:game.teams.home.team.name,
                 batterTeam:awayAbbr,side:"away",stat:stat,seasonStat:seasonStat,
@@ -2769,12 +2934,23 @@ function App(){
             var batter2=homeRoster[bi2];
             var results2=await Promise.all([
               getBvPSplits(batter2.person.id,awayPitcher.id),
-              getSeasonStats(batter2.person.id,"hitting")
+              getSeasonStats(batter2.person.id,"hitting"),
+              getBatterRecentForm(batter2.person.id),
+              getBatterPlatoonSplits(batter2.person.id)
             ]);
             var stat2=results2[0];
             var seasonStat2=results2[1];
+            var recentForm2=results2[2];
+            var platoonSplit2=results2[3];
+            var pitcherStat2=awayPitcherStat;
+            var pitcherHand2=awayPitcherHand;
             if(stat2&&(parseInt(stat2.plateAppearances)||0)>=5){
-              var esr2=computeEdgeScore(stat2,seasonStat2,stat2.plateAppearances,null);
+              var venueId2=game.venue?game.venue.id:null;
+              var parkRunFactor2=getParkRunFactor(venueId2);
+              var teamGP2=game.teams.home.gamesPlayed||162;
+              var playingTimeRisk2=getPlayingTimeRisk(seasonStat2,teamGP2);
+              var extras2={pitcherStat:pitcherStat2,recentForm:recentForm2,platoonSplit:platoonSplit2,pitcherHand:pitcherHand2,parkRunFactor:parkRunFactor2.factor,playingTimeRisk:playingTimeRisk2};
+              var esr2=computeEdgeScore(stat2,seasonStat2,stat2.plateAppearances,null,null,extras2);
               accumulated.push({batter:batter2.person,pitcher:awayPitcher,
                 pitcherTeam:game.teams.away.team.name,
                 batterTeam:homeAbbr,side:"home",stat:stat2,seasonStat:seasonStat2,
@@ -3146,12 +3322,19 @@ function App(){
             getBvPSplits(batter.person.id,homePitcher.id),
             getSeasonStats(batter.person.id,"hitting"),
             safeVenueStat(batter.person.id,homeId,false,"hitting"),
-            getBatterKRateHistory(batter.person.id)
+            getBatterKRateHistory(batter.person.id),
+            getBatterRecentForm(batter.person.id),
+            getBatterPlatoonSplits(batter.person.id)
           ]);
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
           if(r[0]&&(r[0].plateAppearances||0)>=1){
-            var esResult=computeEdgeScore(r[0],r[1],r[0].plateAppearances,r[2],weatherData);
+            var parkRunFactor=getParkRunFactor(venueId);
+            var teamGP=game.teams.away.gamesPlayed||162;
+            var playingTimeRisk=getPlayingTimeRisk(r[1],teamGP);
+            var extras={pitcherStat:pitcherStats[homePitcher.id],recentForm:r[4],platoonSplit:r[5],pitcherHand:null,parkRunFactor:parkRunFactor.factor,playingTimeRisk:playingTimeRisk};
+            if(pitcherStats[homePitcher.id]) extras.pitcherStat=pitcherStats[homePitcher.id];
+            var esResult=computeEdgeScore(r[0],r[1],r[0].plateAppearances,r[2],weatherData,extras);
             results.push({batter:batter.person,pitcher:homePitcher,pitcherTeam:game.teams.home.team.name,
               batterTeam:game.teams.away.team.abbreviation||game.teams.away.team.name,
               side:"away",stat:r[0],seasonStat:r[1],venueStat:r[2],
@@ -3166,12 +3349,19 @@ function App(){
             getBvPSplits(batter2.person.id,awayPitcher.id),
             getSeasonStats(batter2.person.id,"hitting"),
             safeVenueStat(batter2.person.id,homeId,true,"hitting"),
-            getBatterKRateHistory(batter2.person.id)
+            getBatterKRateHistory(batter2.person.id),
+            getBatterRecentForm(batter2.person.id),
+            getBatterPlatoonSplits(batter2.person.id)
           ]);
           done++;
           setProgress("Querying "+done+"/"+total+" matchups...");
           if(r2[0]&&(r2[0].plateAppearances||0)>=1){
-            var esResult2=computeEdgeScore(r2[0],r2[1],r2[0].plateAppearances,r2[2],weatherData);
+            var parkRunFactor2=getParkRunFactor(venueId);
+            var teamGP2=game.teams.home.gamesPlayed||162;
+            var playingTimeRisk2=getPlayingTimeRisk(r2[1],teamGP2);
+            var extras2={pitcherStat:pitcherStats[awayPitcher.id],recentForm:r2[4],platoonSplit:r2[5],pitcherHand:null,parkRunFactor:parkRunFactor2.factor,playingTimeRisk:playingTimeRisk2};
+            if(pitcherStats[awayPitcher.id]) extras2.pitcherStat=pitcherStats[awayPitcher.id];
+            var esResult2=computeEdgeScore(r2[0],r2[1],r2[0].plateAppearances,r2[2],weatherData,extras2);
             results.push({batter:batter2.person,pitcher:awayPitcher,pitcherTeam:game.teams.away.team.name,
               batterTeam:game.teams.home.team.abbreviation||game.teams.home.team.name,
               side:"home",stat:r2[0],seasonStat:r2[1],venueStat:r2[2],
