@@ -1135,8 +1135,29 @@ function starColor(stars){
 
 /* ─── API Fetchers ─── */
 var _fetchCache={};
+// Global concurrency limiter: max 4 in-flight fetches at once
+var _fetchQueue=[], _fetchActive=0, _FETCH_MAX=4;
+function _fetchNext(){
+  while(_fetchQueue.length>0 && _fetchActive<_FETCH_MAX){
+    _fetchActive++;
+    var item=_fetchQueue.shift();
+    item();
+  }
+}
 async function fetchJSON(url){
   if(_fetchCache[url]) return _fetchCache[url];
+  // Wait in queue until a slot opens
+  await new Promise(function(resolve){
+    function run(){
+      resolve();
+    }
+    if(_fetchActive<_FETCH_MAX){
+      _fetchActive++;
+      resolve();
+    } else {
+      _fetchQueue.push(run);
+    }
+  });
   var controller=new AbortController();
   var timeout=setTimeout(function(){controller.abort();},12000);
   try{
@@ -1149,6 +1170,9 @@ async function fetchJSON(url){
   }catch(e){
     clearTimeout(timeout);
     throw e;
+  }finally{
+    _fetchActive--;
+    _fetchNext();
   }
 }
 async function getTodayGames(){
