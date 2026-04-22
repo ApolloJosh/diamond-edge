@@ -625,6 +625,53 @@ async function getPitcherEfficiency(pitcherId){
   }catch(e){return null;}
 }
 
+// Pitcher season pitch profile: avg PC, ERA, WHIP, last 3 starts avg, short start rate
+var _pitchProfileCache={};
+async function getPitcherPitchProfile(pitcherId){
+  if(_pitchProfileCache[pitcherId]) return _pitchProfileCache[pitcherId];
+  try{
+    var year=new Date().getFullYear();
+    var both=await Promise.all([
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=gameLog&group=pitching&season="+year),
+      fetchJSON(BASE+"/people/"+pitcherId+"/stats?stats=season&season="+year+"&group=pitching")
+    ]);
+    // Season aggregates from season endpoint
+    var era=null, whip=null;
+    if(both[1].stats&&both[1].stats[0]&&both[1].stats[0].splits&&both[1].stats[0].splits[0]){
+      var ss=both[1].stats[0].splits[0].stat;
+      era=parseFloat(ss.era)||null;
+      whip=parseFloat(ss.whip)||null;
+    }
+    // Game log for per-start pitch counts
+    var starts=[];
+    if(both[0].stats){
+      for(var si=0;si<both[0].stats.length;si++){
+        var sg=both[0].stats[si];
+        if(sg.group&&sg.group.displayName==="pitching"&&sg.splits){
+          for(var spi=0;spi<sg.splits.length;spi++){
+            var sp=sg.splits[spi];
+            if(sp.stat&&(parseInt(sp.stat.gamesStarted)||0)>=1){
+              var pc=parseInt(sp.stat.numberOfPitches)||parseInt(sp.stat.pitchesThrown)||0;
+              if(pc>0) starts.push(pc);
+            }
+          }
+        }
+      }
+    }
+    if(starts.length===0){_pitchProfileCache[pitcherId]=null;return null;}
+    var totalPC=starts.reduce(function(a,b){return a+b;},0);
+    var seasonAvgPC=totalPC/starts.length;
+    var last3=starts.slice(-3);
+    var last3Avg=last3.reduce(function(a,b){return a+b;},0)/last3.length;
+    var sub75=starts.filter(function(c){return c<75;}).length;
+    var shortStartRate=sub75/starts.length;
+    var result={seasonAvgPC:seasonAvgPC,last3Avg:last3Avg,era:era,whip:whip,
+      starts:starts.length,shortStartRate:shortStartRate,sub75:sub75};
+    _pitchProfileCache[pitcherId]=result;
+    return result;
+  }catch(e){return null;}
+}
+
 // Opposing team's P/PA faced (how many pitches do they see per PA as a lineup)
 async function getTeamPPAFaced(teamId){
   try{
@@ -935,31 +982,65 @@ function computeHandednessAdj(pitcherHand, oppRoster){
 // ── Core Projection Functions ──
 
 function computePitchLine(params){
-  // V4 PP-anchored hybrid model
-  // When PP line available: 55% PP + 35% recent5 + 10% league mean
-  // Fallback (no PP): 70% recent5 + 15% season avg + 15% league mean
+  // V5 model — balanced multi-signal with blowup detection
+  // When PP line available: 35% PP + 30% seasonAvgPC + 25% recent5 + 10% league mean
+  // + blowup risk penalty + deep starter bonus + trend adjustment
+  // Fallback (no PP): 40% seasonAvgPC + 35% recent5 + 15% twoYr + 10% league mean
   var p=params;
   var LEAGUE_MEAN=91.5;
   var recent5Avg=(p.recent5&&p.recent5.avg>0)?p.recent5.avg:0;
   var twoYrAvg=(p.twoYr&&p.twoYr.avg>0)?p.twoYr.avg:0;
   var ppLine=(typeof p.ppLine==="number"&&!isNaN(p.ppLine))?p.ppLine:null;
+  var profile=p.pitchProfile||null;
+  var seasonAvgPC=(profile&&profile.seasonAvgPC>0)?profile.seasonAvgPC:0;
+  var last3Avg=(profile&&profile.last3Avg>0)?profile.last3Avg:0;
 
-  if(ppLine&&recent5Avg>0){
-    // PP-anchored mode: trust the market + recent performance
-    var projected=ppLine*0.55+recent5Avg*0.35+LEAGUE_MEAN*0.10;
-    if(isNaN(projected)) return null;
-    return Math.round(projected*2)/2;
+  var projected=null;
+
+  if(ppLine&&recent5Avg>0&&seasonAvgPC>0){
+    // Full V5 mode: PP anchor reduced, season avg PC is a core signal
+    projected=ppLine*0.35+seasonAvgPC*0.30+recent5Avg*0.25+LEAGUE_MEAN*0.10;
+  } else if(ppLine&&recent5Avg>0){
+    // Have PP + recent5 but no season profile
+    projected=ppLine*0.45+recent5Avg*0.40+LEAGUE_MEAN*0.15;
+  } else {
+    // Fallback: no PP line
+    var parts=[];
+    if(seasonAvgPC>0) parts.push({w:0.40,v:seasonAvgPC});
+    if(recent5Avg>0)  parts.push({w:0.35,v:recent5Avg});
+    if(twoYrAvg>0)    parts.push({w:0.15,v:twoYrAvg});
+    parts.push({w:0.10,v:LEAGUE_MEAN});
+    if(parts.length<2) return null;
+    var totalW=0,sum=0;
+    for(var pi=0;pi<parts.length;pi++){totalW+=parts[pi].w;sum+=parts[pi].w*parts[pi].v;}
+    projected=sum/totalW;
   }
-  // Fallback: no PP line available
-  var parts=[];
-  if(recent5Avg>0) parts.push({w:0.70,v:recent5Avg});
-  if(twoYrAvg>0)   parts.push({w:0.15,v:twoYrAvg});
-  parts.push({w:0.15,v:LEAGUE_MEAN});
-  if(parts.length<2) return null; // need at least recent5 + league mean
-  var totalW=0,sum=0;
-  for(var pi=0;pi<parts.length;pi++){totalW+=parts[pi].w;sum+=parts[pi].w*parts[pi].v;}
-  var projected=sum/totalW;
-  if(isNaN(projected)) return null;
+  if(projected==null||isNaN(projected)) return null;
+
+  // ── V5 adjustments ──
+
+  // Blowup risk penalty: ERA > 5.0 AND season avgPC < 85 = danger zone
+  if(profile&&profile.era>5.0&&seasonAvgPC<85){
+    var blowupPenalty=-4;
+    // Extra penalty if they've already had short starts this season
+    if(profile.shortStartRate>0.2) blowupPenalty=-6;
+    projected+=blowupPenalty;
+  }
+
+  // Deep starter bonus: season avgPC >= 94 means this pitcher consistently goes deep
+  if(seasonAvgPC>=94){
+    projected+=2;
+  } else if(seasonAvgPC>=90){
+    projected+=1;
+  }
+
+  // Trend adjustment: if last 3 starts avg is significantly below season avg, pitcher may be declining
+  if(last3Avg>0&&seasonAvgPC>0){
+    var trendDiff=last3Avg-seasonAvgPC;
+    if(trendDiff<-5) projected-=2;       // declining trend
+    else if(trendDiff>5) projected+=1.5;  // hot streak / ramping up
+  }
+
   return Math.round(projected*2)/2;
 }
 
@@ -969,6 +1050,10 @@ function computeOverUnder(line, params){
   if(projected>line+0.25) return "OVER";
   if(projected<line-0.25) return "UNDER";
   // tiebreakers
+  var profile=params.pitchProfile||null;
+  // Season avgPC above the line = lean OVER
+  if(profile&&profile.seasonAvgPC>line+1) return "OVER";
+  if(profile&&profile.seasonAvgPC<line-1) return "UNDER";
   if((params.bvpAdj||0)>0) return "OVER";
   if((params.bvpAdj||0)<0) return "UNDER";
   if(params.recent5&&params.twoYr&&params.recent5.avg>params.twoYr.avg) return "OVER";
@@ -976,47 +1061,66 @@ function computeOverUnder(line, params){
 }
 
 function computePitchScore(params){
-  // Confidence score: how reliable is this projection?
+  // V5 Confidence score: how reliable is this projection?
   var p=params;
   var score=50;
+  var profile=p.pitchProfile||null;
 
-  // Consistency between recent and long-term (strong signal)
+  // Season pitch profile consistency (strongest signal)
+  if(profile&&profile.starts>=4){
+    score+=8; // good sample of starts this season
+    // Low variance = high confidence
+    if(profile.shortStartRate===0) score+=4; // never blown up this season
+    else if(profile.shortStartRate>0.3) score-=6; // frequently short
+  } else if(profile&&profile.starts>=2){
+    score+=3;
+  }
+
+  // Consistency between season avg and recent5 (agreement = strong signal)
+  if(profile&&p.recent5&&profile.seasonAvgPC>0){
+    var profileDiff=Math.abs(p.recent5.avg-profile.seasonAvgPC);
+    if(profileDiff<3) score+=6; // very consistent pitcher
+    else if(profileDiff<6) score+=3;
+    else if(profileDiff>10) score-=4; // high variance
+  }
+
+  // Consistency between recent and long-term
   if(p.twoYr&&p.recent5){
     var diff=Math.abs(p.recent5.avg-p.twoYr.avg);
-    if(diff<3) score+=10;
-    else if(diff<6) score+=5;
+    if(diff<3) score+=6;
+    else if(diff<6) score+=3;
     else if(diff>12) score-=6;
   }
 
   // Sample size — more starts = more confidence
-  if(p.recent5&&p.recent5.starts>=5) score+=6;
-  else if(p.recent5&&p.recent5.starts>=3) score+=3;
+  if(p.recent5&&p.recent5.starts>=5) score+=4;
+  else if(p.recent5&&p.recent5.starts>=3) score+=2;
 
   // BvP matchup data available
-  if(p.matchupsCount>=6) score+=5;
-  else if(p.matchupsCount>=4) score+=3;
+  if(p.matchupsCount>=6) score+=4;
+  else if(p.matchupsCount>=4) score+=2;
 
   // Strong BvP signal
   var absAdj=Math.abs(p.bvpAdj||0);
-  if(absAdj>=5) score+=4;
-  else if(absAdj>=3) score+=2;
+  if(absAdj>=5) score+=3;
+  else if(absAdj>=3) score+=1;
 
   // Pitcher efficiency data quality
-  if(p.pitcherEff&&p.pitcherEff.battersFaced>=100) score+=4;
-  else if(p.pitcherEff&&p.pitcherEff.battersFaced>=50) score+=2;
+  if(p.pitcherEff&&p.pitcherEff.battersFaced>=100) score+=3;
+  else if(p.pitcherEff&&p.pitcherEff.battersFaced>=50) score+=1;
 
   // Opposing team P/PA data quality
-  if(p.teamPPA&&p.teamPPA.pa>=200) score+=3;
-  else if(p.teamPPA&&p.teamPPA.pa>=100) score+=1;
+  if(p.teamPPA&&p.teamPPA.pa>=200) score+=2;
 
   // Bullpen fatigue signal strength
-  if(p.bullpenFatigue&&p.bullpenFatigue.games>=3) score+=3;
-  else if(p.bullpenFatigue&&p.bullpenFatigue.games>=2) score+=1;
+  if(p.bullpenFatigue&&p.bullpenFatigue.games>=3) score+=2;
+
+  // Blowup risk flag lowers confidence
+  if(profile&&profile.era>5.0&&profile.seasonAvgPC<85) score-=5;
 
   // Pitcher is in a predictable range
-  if(p.recent5&&p.recent5.avg>=85&&p.recent5.avg<=100) score+=3; // sweet spot
-  if(p.recent5&&p.recent5.avg<70) score-=4; // short-leash or opener territory
-  if(p.recent5&&p.recent5.avg>110) score-=2; // high variance workhorse
+  if(profile&&profile.seasonAvgPC>=85&&profile.seasonAvgPC<=100) score+=3;
+  if(p.recent5&&p.recent5.avg<70) score-=4;
 
   return Math.max(0, Math.min(99, Math.round(score)));
 }
@@ -2550,6 +2654,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
                     <th style={{textAlign:"center",padding:"10px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PP LINE</th>
                   )}
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ</th>
+                  <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>SZN AVG</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RECENT 5</th>
                   <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>2YR AVG</th>
                   <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
@@ -2586,6 +2691,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
                         <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#e67e22"}}>{p.ppLine}</td>
                       )}
                       <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.gold}}>{p.line}</td>
+                      <td style={{padding:"10px 8px",textAlign:"center",color:C.blue}}>{p.seasonAvgPC!=null?p.seasonAvgPC:"—"}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",color:C.text}}>{p.recent5Avg!=null?p.recent5Avg:"—"}</td>
                       <td style={{padding:"10px 8px",textAlign:"center",color:C.muted}}>{p.twoYrAvg!=null?p.twoYrAvg:"—"}</td>
                       <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{p.gameLabel||"—"}</td>
@@ -3055,17 +3161,19 @@ function App(){
               getPitcherEfficiency(homePitcher.id),
               getTeamPPAFaced(awayId),
               getBullpenFatigue(homeId),
-              getPitcherHand(homePitcher.id)
+              getPitcherHand(homePitcher.id),
+              getPitcherPitchProfile(homePitcher.id)
             ]);
             var hp2yr=hpFetches[0], hpRecent5=hpFetches[1], hpEff=hpFetches[2];
             var hOppTeamPPA=hpFetches[3], hBpFatigue=hpFetches[4], hPitchHand=hpFetches[5];
+            var hProfile=hpFetches[6];
             var hBvpAdj=computeLineupBvPPitchAdj(homeMatchupsForWhiff);
             var hHandAdj=computeHandednessAdj(hPitchHand, awayRoster);
             var hPPLine=matchPPLine(homePitcher.fullName);
             var hParams={twoYr:hp2yr, recent5:hpRecent5, bvpAdj:hBvpAdj, pitcherEff:hpEff,
               teamPPA:hOppTeamPPA, bullpenFatigue:hBpFatigue, parkFactor:parkFactor,
               handednessAdj:hHandAdj, matchupsCount:homeMatchupsForWhiff.length,
-              ppLine:hPPLine};
+              ppLine:hPPLine, pitchProfile:hProfile};
             var hLine=computePitchLine(hParams);
             if(hLine!=null&&!isNaN(hLine)){
               var hOU=computeOverUnder(hLine, hParams);
@@ -3075,7 +3183,7 @@ function App(){
                 line:hLine, overUnder:hOU, pitchScore:hPs,
                 recent5Avg:hpRecent5?Math.round(hpRecent5.avg*10)/10:null,
                 twoYrAvg:hp2yr?Math.round(hp2yr.avg*10)/10:null,
-                bvpAdj:hBvpAdj,
+                bvpAdj:hBvpAdj, seasonAvgPC:hProfile?Math.round(hProfile.seasonAvgPC):null,
                 gamePk:game.gamePk, gameLabel:gameLabel
               });
             }
@@ -3087,17 +3195,19 @@ function App(){
               getPitcherEfficiency(awayPitcher.id),
               getTeamPPAFaced(homeId),
               getBullpenFatigue(awayId),
-              getPitcherHand(awayPitcher.id)
+              getPitcherHand(awayPitcher.id),
+              getPitcherPitchProfile(awayPitcher.id)
             ]);
             var ap2yr=apFetches[0], apRecent5=apFetches[1], apEff=apFetches[2];
             var aOppTeamPPA=apFetches[3], aBpFatigue=apFetches[4], aPitchHand=apFetches[5];
+            var aProfile=apFetches[6];
             var aBvpAdj=computeLineupBvPPitchAdj(awayMatchupsForWhiff);
             var aHandAdj=computeHandednessAdj(aPitchHand, homeRoster);
             var aPPLine=matchPPLine(awayPitcher.fullName);
             var aParams={twoYr:ap2yr, recent5:apRecent5, bvpAdj:aBvpAdj, pitcherEff:apEff,
               teamPPA:aOppTeamPPA, bullpenFatigue:aBpFatigue, parkFactor:parkFactor,
               handednessAdj:aHandAdj, matchupsCount:awayMatchupsForWhiff.length,
-              ppLine:aPPLine};
+              ppLine:aPPLine, pitchProfile:aProfile};
             var aLine=computePitchLine(aParams);
             if(aLine!=null&&!isNaN(aLine)){
               var aOU=computeOverUnder(aLine, aParams);
@@ -3107,7 +3217,7 @@ function App(){
                 line:aLine, overUnder:aOU, pitchScore:aPs,
                 recent5Avg:apRecent5?Math.round(apRecent5.avg*10)/10:null,
                 twoYrAvg:ap2yr?Math.round(ap2yr.avg*10)/10:null,
-                bvpAdj:aBvpAdj,
+                bvpAdj:aBvpAdj, seasonAvgPC:aProfile?Math.round(aProfile.seasonAvgPC):null,
                 gamePk:game.gamePk, gameLabel:gameLabel
               });
             }
