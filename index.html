@@ -746,37 +746,39 @@ async function getBullpenFatigue(teamId){
 
 // Park run factor from venue data
 function getParkRunFactor(venueId){
-  // Run factors: >1.0 = hitter friendly (more runs = more pitches), <1.0 = pitcher friendly
+  // Run factors — 2026 venue IDs from MLB Stats API /teams?sportId=1&season=2026&hydrate=venue
+  // >1.0 = hitter friendly, <1.0 = pitcher friendly
   var PARK_FACTORS={
-    15:{f:1.28,n:"Coors Field"},           // COL
-    31:{f:1.10,n:"Great American Ball Park"},// CIN
-    4:{f:1.08,n:"Fenway Park"},             // BOS
-    10:{f:1.06,n:"Globe Life Field"},        // TEX
-    680:{f:1.05,n:"Wrigley Field"},          // CHC
-    2394:{f:1.04,n:"Nationals Park"},         // WSH
-    2680:{f:1.03,n:"Yankee Stadium"},         // NYY
-    32:{f:1.02,n:"Miller Park"},             // MIL
-    2392:{f:1.02,n:"Citizens Bank Park"},     // PHI
-    17:{f:1.01,n:"Angel Stadium"},           // LAA
-    2889:{f:1.00,n:"Target Field"},           // MIN
-    3289:{f:1.00,n:"Truist Park"},            // ATL
-    2602:{f:0.99,n:"Comerica Park"},          // DET
-    2395:{f:0.99,n:"Guaranteed Rate Field"},  // CWS
-    3312:{f:0.98,n:"loanDepot Park"},         // MIA
-    5325:{f:0.98,n:"T-Mobile Park"},          // SEA
-    2681:{f:0.97,n:"Citi Field"},             // NYM
-    3313:{f:0.97,n:"Chase Field"},            // ARI
-    1:{f:0.97,n:"Rogers Centre"},            // TOR
-    2518:{f:0.96,n:"Busch Stadium"},          // STL
-    2532:{f:0.96,n:"Kauffman Stadium"},        // KC
-    2856:{f:0.95,n:"Tropicana Field"},         // TB
-    594:{f:0.95,n:"PNC Park"},               // PIT
-    2536:{f:0.94,n:"Minute Maid Park"},        // HOU
-    22:{f:0.94,n:"Dodger Stadium"},          // LAD
-    2396:{f:0.93,n:"Oracle Park"},             // SF
-    2507:{f:0.93,n:"Oakland Coliseum"},        // OAK/ATH
-    2443:{f:0.92,n:"Petco Park"},              // SD
-    2657:{f:0.92,n:"Progressive Field"},       // CLE
+    19:{f:1.28,n:"Coors Field"},              // COL
+    2602:{f:1.10,n:"Great American Ball Park"},// CIN
+    3:{f:1.08,n:"Fenway Park"},               // BOS
+    5325:{f:1.06,n:"Globe Life Field"},        // TEX
+    17:{f:1.05,n:"Wrigley Field"},            // CHC
+    3309:{f:1.04,n:"Nationals Park"},          // WSH
+    3313:{f:1.03,n:"Yankee Stadium"},          // NYY
+    32:{f:1.02,n:"American Family Field"},     // MIL
+    2681:{f:1.02,n:"Citizens Bank Park"},      // PHI
+    1:{f:1.01,n:"Angel Stadium"},             // LAA
+    3312:{f:1.00,n:"Target Field"},            // MIN
+    4705:{f:1.00,n:"Truist Park"},             // ATL
+    2394:{f:0.99,n:"Comerica Park"},           // DET
+    4:{f:0.99,n:"Rate Field"},                // CWS
+    4169:{f:0.98,n:"loanDepot park"},          // MIA
+    680:{f:0.98,n:"T-Mobile Park"},           // SEA
+    3289:{f:0.97,n:"Citi Field"},              // NYM
+    15:{f:0.97,n:"Chase Field"},              // ARI
+    14:{f:0.97,n:"Rogers Centre"},            // TOR
+    2889:{f:0.96,n:"Busch Stadium"},           // STL
+    7:{f:0.96,n:"Kauffman Stadium"},          // KC
+    12:{f:0.95,n:"Tropicana Field"},           // TB
+    31:{f:0.95,n:"PNC Park"},                 // PIT
+    2392:{f:0.94,n:"Daikin Park"},             // HOU
+    22:{f:0.94,n:"Dodger Stadium"},           // LAD
+    2395:{f:0.93,n:"Oracle Park"},             // SF
+    2529:{f:0.98,n:"Sutter Health Park"},      // ATH
+    2680:{f:0.92,n:"Petco Park"},              // SD
+    5:{f:0.92,n:"Progressive Field"},         // CLE
+    2:{f:1.01,n:"Camden Yards"},              // BAL
   };
   if(!venueId||!PARK_FACTORS[venueId]) return {factor:1.0, name:"Unknown"};
   return PARK_FACTORS[venueId];
@@ -839,52 +841,66 @@ async function getTeamOffense(teamId){
   }catch(e){return {rpg:4.5, ops:0.700, avg:0.240, gamesPlayed:0};}
 }
 
-// ── Game Total Runs Projector ──
+// ── Game Total Runs Projector V2 ──
 function computeGameTotal(params){
-  // params: {homeOffense, awayOffense, homeStarter, awayStarter, homeBullpen, awayBullpen, parkFactor, homeWhiff, awayWhiff}
+  // V2: rebalanced weights, interaction terms, wider range
+  // Pitching quality weighted higher than offense (research shows ERA/WHIP more predictive)
+  // Uses run differential thinking: good offense vs bad pitching = amplified
   var p=params;
-  var LEAGUE_AVG_RPG=4.50; // per team, ~9.0 combined
+  var LEAGUE_AVG_RPG=4.50; // per team
 
-  // --- TEAM OFFENSE COMPONENT (40% weight) ---
-  // Each team's runs/game, regressed 30% toward league mean
+  // --- TEAM OFFENSE BASE (30% weight) ---
+  // Regress only 15% toward mean (less smoothing = wider range)
   var homeRPG=p.homeOffense?p.homeOffense.rpg:LEAGUE_AVG_RPG;
   var awayRPG=p.awayOffense?p.awayOffense.rpg:LEAGUE_AVG_RPG;
-  homeRPG=homeRPG*0.70+LEAGUE_AVG_RPG*0.30;
-  awayRPG=awayRPG*0.70+LEAGUE_AVG_RPG*0.30;
+  homeRPG=homeRPG*0.85+LEAGUE_AVG_RPG*0.15;
+  awayRPG=awayRPG*0.85+LEAGUE_AVG_RPG*0.15;
   var offenseTotal=homeRPG+awayRPG;
 
-  // --- STARTER QUALITY COMPONENT (30% weight) ---
-  // Use whiff scores as proxy: high whiff = suppress runs, low whiff = more runs
-  // League avg whiff ~55. Scale: each 10 pts above/below = ~0.5 runs adjustment
+  // --- STARTER PITCHING COMPONENT (40% weight) ---
+  // ERA is the primary signal — each run of ERA above/below 4.50 = ~0.5 runs to total
   var starterAdj=0;
+  var hERA=4.50, aERA=4.50;
+  if(p.homeStarter&&p.homeStarter.era!=null) hERA=parseFloat(p.homeStarter.era)||4.50;
+  if(p.awayStarter&&p.awayStarter.era!=null) aERA=parseFloat(p.awayStarter.era)||4.50;
+
+  // ERA adjustment: each full run above 4.50 adds ~0.45 runs to game total
+  // (away starter ERA affects home team's run scoring and vice versa)
+  starterAdj+=(aERA-4.50)*0.45; // bad away starter → home team scores more
+  starterAdj+=(hERA-4.50)*0.45; // bad home starter → away team scores more
+
+  // K/9 modifier: high-K pitchers suppress offense beyond what ERA shows
+  // Only apply as a dampener on top of ERA, not as primary signal
   if(p.homeWhiff&&typeof p.homeWhiff.score==="number"){
-    starterAdj-=(p.homeWhiff.score-55)*0.05; // high whiff = fewer runs
+    starterAdj-=(p.homeWhiff.score-55)*0.02; // smaller coefficient than V1
   }
   if(p.awayWhiff&&typeof p.awayWhiff.score==="number"){
-    starterAdj-=(p.awayWhiff.score-55)*0.05;
+    starterAdj-=(p.awayWhiff.score-55)*0.02;
   }
 
-  // Also factor in starter ERA if available
-  if(p.homeStarter&&p.homeStarter.era!=null){
-    var hERA=parseFloat(p.homeStarter.era)||4.50;
-    starterAdj+=(hERA-4.50)*0.20; // high ERA = more runs
-  }
-  if(p.awayStarter&&p.awayStarter.era!=null){
-    var aERA=parseFloat(p.awayStarter.era)||4.50;
-    starterAdj+=(aERA-4.50)*0.20;
-  }
+  // --- INTERACTION TERM: offense quality × opposing starter quality ---
+  // Good offense vs bad pitcher = amplified run scoring (non-linear)
+  // Bad offense vs good pitcher = suppressed more than linear
+  var homeOPS=p.homeOffense&&p.homeOffense.ops?p.homeOffense.ops:0.700;
+  var awayOPS=p.awayOffense&&p.awayOffense.ops?p.awayOffense.ops:0.700;
+  // Home team OPS vs away starter ERA
+  if(homeOPS>=0.760&&aERA>=5.00) starterAdj+=0.8; // mismatch: good hitting vs bad pitching
+  else if(homeOPS<=0.680&&aERA<=3.50) starterAdj-=0.8; // mismatch: bad hitting vs good pitching
+  // Away team OPS vs home starter ERA
+  if(awayOPS>=0.760&&hERA>=5.00) starterAdj+=0.8;
+  else if(awayOPS<=0.680&&hERA<=3.50) starterAdj-=0.8;
 
   // --- BULLPEN COMPONENT (15% weight) ---
-  // Bad bullpen = more runs. League avg bullpen ERA ~4.00
+  // League avg bullpen ERA ~4.00. Bad bullpen = more runs
   var bpAdj=0;
   if(p.homeBullpen&&p.homeBullpen.era){
-    bpAdj+=(p.homeBullpen.era-4.00)*0.15;
+    bpAdj+=(p.homeBullpen.era-4.00)*0.20;
   }
   if(p.awayBullpen&&p.awayBullpen.era){
-    bpAdj+=(p.awayBullpen.era-4.00)*0.15;
+    bpAdj+=(p.awayBullpen.era-4.00)*0.20;
   }
 
-  // --- PARK FACTOR (10% weight) ---
+  // --- PARK FACTOR (15% weight — multiplicative) ---
   var parkMult=1.0;
   if(p.parkFactor&&typeof p.parkFactor.factor==="number"){
     parkMult=p.parkFactor.factor;
@@ -894,34 +910,47 @@ function computeGameTotal(params){
   var rawTotal=offenseTotal+starterAdj+bpAdj;
   var projected=rawTotal*parkMult;
 
-  // Clamp to reasonable range (5.5 - 14.0)
-  projected=Math.max(5.5, Math.min(14.0, projected));
+  // Wider range (3.0 - 16.0) to capture true bimodal distribution
+  projected=Math.max(3.0, Math.min(16.0, projected));
   return Math.round(projected*2)/2; // round to nearest 0.5
 }
 
-// ── Game Total Confidence Score ──
+// ── Game Total Confidence Score V2 ──
 function computeTotalConfidence(params){
-  var score=50;
-  // Both starters have strong whiff data
+  var score=45;
+  // Starter ERA extremes: both aces or both bad = more predictable
+  var hERA=params.homeStarter?parseFloat(params.homeStarter.era)||4.5:4.5;
+  var aERA=params.awayStarter?parseFloat(params.awayStarter.era)||4.5:4.5;
+  if(hERA<=3.00&&aERA<=3.00) score+=15; // two aces = very confident under
+  else if(hERA>=5.50&&aERA>=5.50) score+=15; // two bad = very confident over
+  else if(hERA<=3.50||aERA<=3.50) score+=5; // at least one ace
+  else if(hERA>=5.50||aERA>=5.50) score+=5; // at least one bad starter
+
+  // K/9 agreement with ERA (consistent signal = more confident)
   if(params.homeWhiff&&params.awayWhiff){
-    if(params.homeWhiff.score>=70&&params.awayWhiff.score>=70) score+=12; // two aces = confident under
-    else if(params.homeWhiff.score<=40&&params.awayWhiff.score<=40) score+=12; // two bad = confident over
-    else if(params.homeWhiff.score>=65||params.awayWhiff.score>=65) score+=5;
+    if(params.homeWhiff.score>=70&&params.awayWhiff.score>=70) score+=8;
+    else if(params.homeWhiff.score<=40&&params.awayWhiff.score<=40) score+=8;
   }
-  // Bullpen data available and extreme
+
+  // Interaction mismatch bonus: clear offensive advantage vs bad pitching
+  var homeOPS=params.homeOffense&&params.homeOffense.ops?params.homeOffense.ops:0.700;
+  var awayOPS=params.awayOffense&&params.awayOffense.ops?params.awayOffense.ops:0.700;
+  if((homeOPS>=0.760&&aERA>=5.00)||(awayOPS>=0.760&&hERA>=5.00)) score+=8;
+
+  // Bullpen extremes
   if(params.homeBullpen&&params.awayBullpen){
-    if(params.homeBullpen.quality==="elite"&&params.awayBullpen.quality==="elite") score+=8;
-    else if(params.homeBullpen.quality==="bad"||params.awayBullpen.quality==="bad") score+=8;
-    score+=3; // bonus for having bullpen data
+    if(params.homeBullpen.quality==="elite"&&params.awayBullpen.quality==="elite") score+=6;
+    else if(params.homeBullpen.quality==="bad"||params.awayBullpen.quality==="bad") score+=6;
+    score+=2;
   }
-  // Park factor is extreme
+  // Park factor extreme
   if(params.parkFactor){
     var pf=params.parkFactor.factor;
     if(pf>=1.08||pf<=0.93) score+=5;
   }
-  // Offense data sample size
-  if(params.homeOffense&&params.homeOffense.gamesPlayed>=15) score+=3;
-  if(params.awayOffense&&params.awayOffense.gamesPlayed>=15) score+=3;
+  // Sample size
+  if(params.homeOffense&&params.homeOffense.gamesPlayed>=15) score+=2;
+  if(params.awayOffense&&params.awayOffense.gamesPlayed>=15) score+=2;
   return Math.min(99, score);
 }
 
