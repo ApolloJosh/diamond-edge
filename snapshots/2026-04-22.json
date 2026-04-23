@@ -1,8 +1,8 @@
 {
   "date": "2026-04-22",
-  "savedAt": "2026-04-22T20:36:01.452Z",
+  "savedAt": "2026-04-23T00:05:13.615Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 5,
   "totalGames": 15,
   "batters": [
     {
@@ -214,22 +214,6 @@
       "gameLabel": "ATL @ WSH"
     },
     {
-      "batterId": 669257,
-      "batterName": "Will Smith",
-      "pitcherId": 641816,
-      "pitcherName": "Tyler Mahle",
-      "batterTeam": "LAD",
-      "pitcherTeam": "SF",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".375",
-      "bvpOps": "1.250",
-      "bvpPA": 16,
-      "bvpHR": 2,
-      "gamePk": 823231,
-      "gameLabel": "LAD @ SF"
-    },
-    {
       "batterId": 665750,
       "batterName": "Leody Taveras",
       "pitcherId": 608379,
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 824123,
       "gameLabel": "BAL @ KC"
+    },
+    {
+      "batterId": 669257,
+      "batterName": "Will Smith",
+      "pitcherId": 641816,
+      "pitcherName": "Tyler Mahle",
+      "batterTeam": "LAD",
+      "pitcherTeam": "SF",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".375",
+      "bvpOps": "1.250",
+      "bvpPA": 16,
+      "bvpHR": 2,
+      "gamePk": 823231,
+      "gameLabel": "LAD @ SF"
     }
   ],
   "pitchers": [
@@ -287,6 +287,19 @@
       "gameLabel": "HOU @ CLE"
     },
     {
+      "pitcherId": 679775,
+      "pitcherName": "Kyle Backhus",
+      "team": "PHI",
+      "oppTeam": "CHC",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 11.7,
+      "projectedIP": 7.2,
+      "projectedK": 8,
+      "gamePk": 824688,
+      "gameLabel": "PHI @ CHC"
+    },
+    {
       "pitcherId": 621111,
       "pitcherName": "Walker Buehler",
       "team": "SD",
@@ -326,19 +339,6 @@
       "gameLabel": "LAD @ SF"
     },
     {
-      "pitcherId": 571510,
-      "pitcherName": "Matthew Boyd",
-      "team": "CHC",
-      "oppTeam": "PHI",
-      "whiffScore": 68,
-      "grade": "B+",
-      "k9": 16.4,
-      "projectedIP": 4.6,
-      "projectedK": 7,
-      "gamePk": 824688,
-      "gameLabel": "PHI @ CHC"
-    },
-    {
       "pitcherId": 667755,
       "pitcherName": "José Soriano",
       "team": "LAA",
@@ -350,6 +350,19 @@
       "projectedK": 6,
       "gamePk": 824044,
       "gameLabel": "TOR @ LAA"
+    },
+    {
+      "pitcherId": 571510,
+      "pitcherName": "Matthew Boyd",
+      "team": "CHC",
+      "oppTeam": "PHI",
+      "whiffScore": 68,
+      "grade": "B+",
+      "k9": 15.7,
+      "projectedIP": 3.4,
+      "projectedK": 5,
+      "gamePk": 824688,
+      "gameLabel": "PHI @ CHC"
     },
     {
       "pitcherId": 608331,
@@ -417,19 +430,6 @@
       "gameLabel": "NYY @ BOS"
     },
     {
-      "pitcherId": 593958,
-      "pitcherName": "Eduardo Rodriguez",
-      "team": "AZ",
-      "oppTeam": "CWS",
-      "whiffScore": 62,
-      "grade": "B+",
-      "k9": 5.5,
-      "projectedIP": 5.8,
-      "projectedK": 3,
-      "gamePk": 825097,
-      "gameLabel": "CWS @ AZ"
-    },
-    {
       "pitcherId": 607259,
       "pitcherName": "Nick Martinez",
       "team": "TB",
@@ -441,6 +441,19 @@
       "projectedK": 3.5,
       "gamePk": 822993,
       "gameLabel": "CIN @ TB"
+    },
+    {
+      "pitcherId": 593958,
+      "pitcherName": "Eduardo Rodriguez",
+      "team": "AZ",
+      "oppTeam": "CWS",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 5.5,
+      "projectedIP": 5.8,
+      "projectedK": 3,
+      "gamePk": 825097,
+      "gameLabel": "CWS @ AZ"
     },
     {
       "pitcherId": 641778,
@@ -562,24 +575,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 641816,
-      "pitcherName": "Tyler Mahle",
-      "team": "SF",
-      "oppTeam": "LAD",
-      "line": 86.5,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 86.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 86.8,
-      "twoYrStarts": 20,
-      "bvpAdj": 0,
-      "lineupPA": 156,
-      "gamePk": 823231,
-      "gameLabel": "LAD @ SF"
-    },
-    {
       "pitcherId": 682227,
       "pitcherName": "Brandon Williamson",
       "team": "CIN",
@@ -616,6 +611,24 @@
       "gameLabel": "BAL @ KC"
     },
     {
+      "pitcherId": 641816,
+      "pitcherName": "Tyler Mahle",
+      "team": "SF",
+      "oppTeam": "LAD",
+      "line": 86.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 86.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 86.8,
+      "twoYrStarts": 20,
+      "bvpAdj": 0,
+      "lineupPA": 156,
+      "gamePk": 823231,
+      "gameLabel": "LAD @ SF"
+    },
+    {
       "pitcherId": 663554,
       "pitcherName": "Casey Mize",
       "team": "DET",
@@ -634,22 +647,22 @@
       "gameLabel": "MIL @ DET"
     },
     {
-      "pitcherId": 571510,
-      "pitcherName": "Matthew Boyd",
-      "team": "CHC",
-      "oppTeam": "PHI",
-      "line": 88.5,
+      "pitcherId": 593958,
+      "pitcherName": "Eduardo Rodriguez",
+      "team": "AZ",
+      "oppTeam": "CWS",
+      "line": 91.5,
       "overUnder": "OVER",
-      "pitchScore": 69,
+      "pitchScore": 67,
       "grade": "B+",
-      "recent5Avg": 82.6,
+      "recent5Avg": 92.8,
       "recent5Starts": 5,
-      "twoYrAvg": 88.1,
+      "twoYrAvg": 89.6,
       "twoYrStarts": 33,
-      "bvpAdj": 4,
-      "lineupPA": 44,
-      "gamePk": 824688,
-      "gameLabel": "PHI @ CHC"
+      "bvpAdj": 0,
+      "lineupPA": 42,
+      "gamePk": 825097,
+      "gameLabel": "CWS @ AZ"
     }
   ]
 }
