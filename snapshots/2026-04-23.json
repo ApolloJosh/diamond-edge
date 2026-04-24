@@ -1,8 +1,8 @@
 {
   "date": "2026-04-23",
-  "savedAt": "2026-04-23T20:40:08.080Z",
+  "savedAt": "2026-04-24T00:05:19.292Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 2,
   "totalGames": 9,
   "batters": [
     {
@@ -259,6 +259,19 @@
       "projectedK": 5,
       "gamePk": 822912,
       "gameLabel": "PIT @ TEX"
+    },
+    {
+      "pitcherId": 801139,
+      "pitcherName": "Payton Tolle",
+      "team": "BOS",
+      "oppTeam": "NYY",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 16.5,
+      "projectedIP": 6,
+      "projectedK": 9.5,
+      "gamePk": 824770,
+      "gameLabel": "NYY @ BOS"
     },
     {
       "pitcherId": 669373,
