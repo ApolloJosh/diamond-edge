@@ -209,135 +209,151 @@ function eraColor(era){
 
 /* ─── Edge Score Engine ─── */
 function computeEdgeScore(bvpStat, seasonStat, pa, venueStat, weather, extras){
+  // V2 Edge Score — rebalanced to reward "good hitters with BvP history"
+  // Old: BvP dominated (~60% of score). New: Hitter quality ~40%, BvP ~30%, context ~30%
   if(!bvpStat) return {score:0, parkDelta:0, weatherDelta:0};
-  let score = 50;
-  const bvpAvg = parseFloat(bvpStat.avg)||0;
-  const bvpOps = parseFloat(bvpStat.ops)||0;
-  const bvpPA = parseInt(pa)||parseInt(bvpStat.plateAppearances)||0;
-  score += (bvpAvg - 0.250) * 100;
-  score += (bvpOps - 0.700) * 25;
 
-  // IMPROVEMENT #3: Better BvP Sample Size Weighting
-  var sampleFactor = 1.0;
-  if(bvpPA < 4){
-    score -= 5; // flat penalty for too few PA
-    sampleFactor = 0.3;
-  }else if(bvpPA < 8){
-    sampleFactor = 0.4;
-  }else if(bvpPA < 15){
-    sampleFactor = 0.7;
-  }else if(bvpPA < 25){
-    sampleFactor = 1.0;
-  }else{
-    sampleFactor = Math.min(bvpPA / 30, 1.3);
-  }
-  score = 50 + (score - 50) * sampleFactor;
-
-  const hrs = parseInt(bvpStat.homeRuns)||0;
-  if(hrs >= 3) score += 8;
-  else if(hrs >= 1) score += 4;
-  const abs = parseInt(bvpStat.atBats)||1;
-  const ks = parseInt(bvpStat.strikeOuts)||0;
-  const kRate = ks/abs;
-  if(kRate > 0.35) score -= 8;
+  // ── COMPONENT 1: HITTER QUALITY BASE (up to ~40 pts above baseline) ──
+  // Season stats are the foundation — a .300/.900 hitter starts high, .220/.600 starts low
+  var hitterBase = 40; // neutral baseline
   if(seasonStat){
-    const sAvg = parseFloat(seasonStat.avg)||0;
-    const sOps = parseFloat(seasonStat.ops)||0;
-    if(sAvg >= 0.300) score += 6;
-    else if(sAvg >= 0.270) score += 3;
-    else if(sAvg < 0.200) score -= 5;
-    if(sOps >= 0.850) score += 5;
-    else if(sOps < 0.600) score -= 4;
+    var sAvg = parseFloat(seasonStat.avg)||0.240;
+    var sOps = parseFloat(seasonStat.ops)||0.700;
+    var sSlg = parseFloat(seasonStat.slg)||0.380;
+    // AVG component: scale from .200 to .320 → -10 to +12
+    hitterBase += Math.max(-10, Math.min(12, (sAvg - 0.250) * 170));
+    // OPS component: scale from .600 to .900 → -8 to +10
+    hitterBase += Math.max(-8, Math.min(10, (sOps - 0.720) * 55));
+    // SLG bonus for power (doubles/HR hitters are more likely to get a hit+extra bases)
+    if(sSlg >= 0.500) hitterBase += 4;
+    else if(sSlg >= 0.440) hitterBase += 2;
+    else if(sSlg < 0.330) hitterBase -= 3;
   }
 
-  // IMPROVEMENT #1: Pitcher Quality Context
+  // Recent form: hot/cold streaks (last 7-10 games)
+  if(extras && extras.recentForm){
+    var rAvg = extras.recentForm.avg;
+    var rOPS = extras.recentForm.ops;
+    // Stronger weight than V1 — hot hitters stay hot
+    if(rOPS >= 1.000) hitterBase += 8;
+    else if(rAvg >= 0.330 || rOPS >= 0.900) hitterBase += 6;
+    else if(rAvg >= 0.280 || rOPS >= 0.800) hitterBase += 2;
+    else if(rAvg < 0.150) hitterBase -= 8;
+    else if(rAvg < 0.200) hitterBase -= 5;
+  }
+
+  // ── COMPONENT 2: BvP MATCHUP (up to ~25 pts, heavily sample-weighted) ──
+  var bvpAvg = parseFloat(bvpStat.avg)||0;
+  var bvpOps = parseFloat(bvpStat.ops)||0;
+  var bvpPA = parseInt(pa)||parseInt(bvpStat.plateAppearances)||0;
+
+  // Raw BvP signal (before sample dampening)
+  var bvpRaw = 0;
+  bvpRaw += (bvpAvg - 0.250) * 60;  // was *100 — reduced
+  bvpRaw += (bvpOps - 0.700) * 15;  // was *25 — reduced
+
+  var hrs = parseInt(bvpStat.homeRuns)||0;
+  if(hrs >= 3) bvpRaw += 6;
+  else if(hrs >= 1) bvpRaw += 3;
+  var abs = parseInt(bvpStat.atBats)||1;
+  var ks = parseInt(bvpStat.strikeOuts)||0;
+  var kRate = ks/abs;
+  if(kRate > 0.40) bvpRaw -= 6;
+  else if(kRate > 0.30) bvpRaw -= 3;
+
+  // Sample size dampening — MUCH harsher on small samples
+  // Idea: BvP in <5 PA is nearly noise. 5-10 is suggestive. 15+ is real. 25+ is very real.
+  var sampleFactor = 0;
+  if(bvpPA < 3) sampleFactor = 0.10;       // 2 PA = basically ignore BvP
+  else if(bvpPA < 5) sampleFactor = 0.20;  // 3-4 PA = barely trust it
+  else if(bvpPA < 8) sampleFactor = 0.35;  // 5-7 PA = slight signal
+  else if(bvpPA < 12) sampleFactor = 0.55; // 8-11 PA = moderate
+  else if(bvpPA < 20) sampleFactor = 0.75; // 12-19 PA = solid
+  else if(bvpPA < 30) sampleFactor = 0.90; // 20-29 PA = strong
+  else sampleFactor = 1.0;                 // 30+ PA = full weight
+
+  var bvpComponent = bvpRaw * sampleFactor;
+  // Cap BvP contribution so it can't single-handedly make a bad hitter elite
+  bvpComponent = Math.max(-15, Math.min(25, bvpComponent));
+
+  // ── COMPONENT 3: PITCHER QUALITY CONTEXT (up to ±12 pts) ──
   var pitcherDelta = 0;
   if(extras && extras.pitcherStat){
-    const pERA = parseFloat(extras.pitcherStat.era)||4.50;
-    const pK9 = parseFloat(extras.pitcherStat.strikeoutsPer9Inn)||8.0;
-    const pWHIP = parseFloat(extras.pitcherStat.whip)||1.30;
-    // Low ERA (hard to hit) = penalty
-    if(pERA <= 2.50) pitcherDelta -= 6;
-    else if(pERA <= 3.50) pitcherDelta -= 3;
-    // High ERA (easy to hit) = bonus
-    else if(pERA >= 5.00) pitcherDelta += 6;
-    else if(pERA >= 4.00) pitcherDelta += 3;
-    // High K/9 (dominant) = penalty
-    if(pK9 >= 10.0) pitcherDelta -= 4;
-    // High WHIP (bad control) = bonus for batter
-    if(pWHIP >= 1.40) pitcherDelta += 3;
-    score += pitcherDelta;
+    var pERA = parseFloat(extras.pitcherStat.era)||4.50;
+    var pK9 = parseFloat(extras.pitcherStat.strikeoutsPer9Inn)||8.0;
+    var pWHIP = parseFloat(extras.pitcherStat.whip)||1.30;
+    if(pERA <= 2.50) pitcherDelta -= 7;
+    else if(pERA <= 3.25) pitcherDelta -= 4;
+    else if(pERA <= 3.75) pitcherDelta -= 1;
+    else if(pERA >= 5.50) pitcherDelta += 7;
+    else if(pERA >= 4.50) pitcherDelta += 4;
+    else if(pERA >= 4.00) pitcherDelta += 2;
+    if(pK9 >= 11.0) pitcherDelta -= 4;
+    else if(pK9 >= 9.5) pitcherDelta -= 2;
+    if(pWHIP >= 1.50) pitcherDelta += 4;
+    else if(pWHIP >= 1.35) pitcherDelta += 2;
   }
 
-  // IMPROVEMENT #2: Recent Batter Form (hot/cold)
-  var formDelta = 0;
-  if(extras && extras.recentForm){
-    const rAvg = extras.recentForm.avg;
-    const rOPS = extras.recentForm.ops;
-    if(rAvg >= 0.330 || rOPS >= 0.900) formDelta += 5;
-    else if(rAvg < 0.180) formDelta -= 5;
-    score += formDelta;
-  }
-
-  // IMPROVEMENT #4: Platoon/Handedness using actual split stats
+  // ── COMPONENT 4: PLATOON ADVANTAGE (up to ±6 pts) ──
   var platoonDelta = 0;
   if(extras && extras.platoonSplit && extras.pitcherHand){
-    const hand = extras.pitcherHand; // "L" or "R"
-    const relevantSplit = (hand === "L") ? extras.platoonSplit.vsLeft : extras.platoonSplit.vsRight;
+    var hand = extras.pitcherHand;
+    var relevantSplit = (hand === "L") ? extras.platoonSplit.vsLeft : extras.platoonSplit.vsRight;
     if(relevantSplit){
-      const splitOPS = parseFloat(relevantSplit.ops)||0.700;
-      if(splitOPS >= 0.850) platoonDelta += 5;
-      else if(splitOPS <= 0.600) platoonDelta -= 5;
+      var splitOPS = parseFloat(relevantSplit.ops)||0.700;
+      if(splitOPS >= 0.900) platoonDelta += 6;
+      else if(splitOPS >= 0.800) platoonDelta += 3;
+      else if(splitOPS <= 0.550) platoonDelta -= 6;
+      else if(splitOPS <= 0.650) platoonDelta -= 3;
     }
-    score += platoonDelta;
   }
 
-  // IMPROVEMENT #5: Park Factor for Hitters (general, not venue-specific)
+  // ── COMPONENT 5: PARK + WEATHER (up to ±8 pts) ──
   var parkFactorDelta = 0;
   if(extras && extras.parkRunFactor){
-    const factor = extras.parkRunFactor;
-    if(factor >= 1.05) parkFactorDelta = 5;
-    else if(factor >= 1.02) parkFactorDelta = 3;
-    else if(factor <= 0.95) parkFactorDelta = -5;
-    else if(factor <= 0.98) parkFactorDelta = -3;
-    score += parkFactorDelta;
+    var factor = extras.parkRunFactor;
+    if(factor >= 1.08) parkFactorDelta = 5;
+    else if(factor >= 1.04) parkFactorDelta = 3;
+    else if(factor >= 1.02) parkFactorDelta = 1;
+    else if(factor <= 0.93) parkFactorDelta = -5;
+    else if(factor <= 0.96) parkFactorDelta = -3;
+    else if(factor <= 0.98) parkFactorDelta = -1;
   }
 
-  // IMPROVEMENT #6: Lineup Position / Playing Time Risk
   var playingTimeRiskDelta = 0;
   if(extras && extras.playingTimeRisk){
     playingTimeRiskDelta = extras.playingTimeRisk;
-    score += playingTimeRiskDelta;
   }
 
-  // Ballpark factor — weighted by sample size (need 5+ games to apply)
+  // Venue-specific BvP at park (keep but cap at ±6)
   var parkDelta = 0;
   if(venueStat && venueStat.gamesPlayed >= 5){
-    const vOps = parseFloat(venueStat.stat.ops)||0;
-    const vFactor = Math.min(venueStat.gamesPlayed / 20, 1.0);
+    var vOps = parseFloat(venueStat.stat.ops)||0;
+    var vFactor = Math.min(venueStat.gamesPlayed / 20, 1.0);
     var raw = 0;
-    if(vOps >= 0.900) raw = 10;
-    else if(vOps >= 0.800) raw = 6;
-    else if(vOps >= 0.720) raw = 3;
-    else if(vOps < 0.500) raw = -10;
-    else if(vOps < 0.600) raw = -6;
-    else if(vOps < 0.660) raw = -3;
+    if(vOps >= 0.900) raw = 8;
+    else if(vOps >= 0.800) raw = 5;
+    else if(vOps >= 0.720) raw = 2;
+    else if(vOps < 0.500) raw = -8;
+    else if(vOps < 0.600) raw = -5;
+    else if(vOps < 0.660) raw = -2;
     parkDelta = Math.round(raw * vFactor);
-    score += parkDelta;
+    parkDelta = Math.max(-6, Math.min(6, parkDelta));
   }
-  // Weather / wind factor (batter edge only)
+
   var weatherDelta = 0;
   if(weather && weather.windScoreAdj){
     weatherDelta = weather.windScoreAdj;
-    score += weatherDelta;
   }
-  // Temperature bonus: hot air = more carry
   if(weather && weather.temp){
-    if(weather.temp >= 90) { weatherDelta += 3; score += 3; }
-    else if(weather.temp >= 80) { weatherDelta += 1; score += 1; }
-    else if(weather.temp <= 45) { weatherDelta -= 3; score -= 3; }
-    else if(weather.temp <= 55) { weatherDelta -= 1; score -= 1; }
+    if(weather.temp >= 90) weatherDelta += 3;
+    else if(weather.temp >= 80) weatherDelta += 1;
+    else if(weather.temp <= 45) weatherDelta -= 3;
+    else if(weather.temp <= 55) weatherDelta -= 1;
   }
+
+  // ── COMBINE ALL COMPONENTS ──
+  var score = hitterBase + bvpComponent + pitcherDelta + platoonDelta + parkFactorDelta + playingTimeRiskDelta + parkDelta + weatherDelta;
   return {score:Math.max(0, Math.min(99, Math.round(score))), parkDelta:parkDelta, weatherDelta:weatherDelta};
 }
 function edgeGrade(score){
