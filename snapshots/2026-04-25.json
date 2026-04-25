@@ -1,8 +1,8 @@
 {
   "date": "2026-04-25",
-  "savedAt": "2026-04-25T19:53:34.623Z",
+  "savedAt": "2026-04-25T23:24:50.800Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 7,
   "totalGames": 15,
   "batters": [
     {
@@ -182,6 +182,22 @@
       "gameLabel": "DET @ CIN"
     },
     {
+      "batterId": 543760,
+      "batterName": "Marcus Semien",
+      "pitcherId": 500779,
+      "pitcherName": "Jose Quintana",
+      "batterTeam": "NYM",
+      "pitcherTeam": "COL",
+      "edgeScore": 75,
+      "grade": "A",
+      "bvpAvg": ".400",
+      "bvpOps": "1.038",
+      "bvpPA": 32,
+      "bvpHR": 0,
+      "gamePk": 823637,
+      "gameLabel": "COL @ NYM"
+    },
+    {
       "batterId": 687401,
       "batterName": "Joey Ortiz",
       "pitcherId": 656605,
@@ -214,22 +230,6 @@
       "gameLabel": "DET @ CIN"
     },
     {
-      "batterId": 543760,
-      "batterName": "Marcus Semien",
-      "pitcherId": 500779,
-      "pitcherName": "Jose Quintana",
-      "batterTeam": "NYM",
-      "pitcherTeam": "COL",
-      "edgeScore": 75,
-      "grade": "A",
-      "bvpAvg": ".400",
-      "bvpOps": "1.038",
-      "bvpPA": 32,
-      "bvpHR": 0,
-      "gamePk": 823637,
-      "gameLabel": "COL @ NYM"
-    },
-    {
       "batterId": 686217,
       "batterName": "Sal Frelick",
       "pitcherId": 656605,
@@ -247,19 +247,6 @@
     }
   ],
   "pitchers": [
-    {
-      "pitcherId": 694819,
-      "pitcherName": "Jacob Misiorowski",
-      "team": "MIL",
-      "oppTeam": "PIT",
-      "whiffScore": 82,
-      "grade": "A+",
-      "k9": 14.2,
-      "projectedIP": 5.2,
-      "projectedK": 7,
-      "gamePk": 823799,
-      "gameLabel": "PIT @ MIL"
-    },
     {
       "pitcherId": 673540,
       "pitcherName": "Kodai Senga",
@@ -287,6 +274,32 @@
       "gameLabel": "BOS @ BAL"
     },
     {
+      "pitcherId": 666142,
+      "pitcherName": "Cole Ragans",
+      "team": "KC",
+      "oppTeam": "LAA",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 10.2,
+      "projectedIP": 3.7,
+      "projectedK": 3.5,
+      "gamePk": 824121,
+      "gameLabel": "LAA @ KC"
+    },
+    {
+      "pitcherId": 694819,
+      "pitcherName": "Jacob Misiorowski",
+      "team": "MIL",
+      "oppTeam": "PIT",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 14.6,
+      "projectedIP": 4.5,
+      "projectedK": 6,
+      "gamePk": 823799,
+      "gameLabel": "PIT @ MIL"
+    },
+    {
       "pitcherId": 663556,
       "pitcherName": "Shane McClanahan",
       "team": "TB",
@@ -298,19 +311,6 @@
       "projectedK": 3.5,
       "gamePk": 822989,
       "gameLabel": "MIN @ TB"
-    },
-    {
-      "pitcherId": 666142,
-      "pitcherName": "Cole Ragans",
-      "team": "KC",
-      "oppTeam": "LAA",
-      "whiffScore": 78,
-      "grade": "A",
-      "k9": 9.4,
-      "projectedIP": 4.2,
-      "projectedK": 3.5,
-      "gamePk": 824121,
-      "gameLabel": "LAA @ KC"
     },
     {
       "pitcherId": 677960,
@@ -358,9 +358,9 @@
       "oppTeam": "ATH",
       "whiffScore": 72,
       "grade": "A",
-      "k9": 12.1,
-      "projectedIP": 5.2,
-      "projectedK": 6,
+      "k9": 12.7,
+      "projectedIP": 4.5,
+      "projectedK": 5.5,
       "gamePk": 822910,
       "gameLabel": "ATH @ TEX"
     },
@@ -404,19 +404,6 @@
       "gameLabel": "DET @ CIN"
     },
     {
-      "pitcherId": 808963,
-      "pitcherName": "Roki Sasaki",
-      "team": "LAD",
-      "oppTeam": "CHC",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 8.7,
-      "projectedIP": 4.3,
-      "projectedK": 3.5,
-      "gamePk": 823960,
-      "gameLabel": "CHC @ LAD"
-    },
-    {
       "pitcherId": 669432,
       "pitcherName": "Trevor Rogers",
       "team": "BAL",
@@ -430,17 +417,17 @@
       "gameLabel": "BOS @ BAL"
     },
     {
-      "pitcherId": 605488,
-      "pitcherName": "Jeffrey Springs",
-      "team": "ATH",
-      "oppTeam": "TEX",
-      "whiffScore": 64,
+      "pitcherId": 808963,
+      "pitcherName": "Roki Sasaki",
+      "team": "LAD",
+      "oppTeam": "CHC",
+      "whiffScore": 66,
       "grade": "B+",
       "k9": 8.2,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
-      "gamePk": 822910,
-      "gameLabel": "ATH @ TEX"
+      "projectedIP": 3.6,
+      "projectedK": 2.5,
+      "gamePk": 823960,
+      "gameLabel": "CHC @ LAD"
     },
     {
       "pitcherId": 607067,
@@ -469,6 +456,19 @@
       "gameLabel": "MIN @ TB"
     },
     {
+      "pitcherId": 605488,
+      "pitcherName": "Jeffrey Springs",
+      "team": "ATH",
+      "oppTeam": "TEX",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 7.9,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 822910,
+      "gameLabel": "ATH @ TEX"
+    },
+    {
       "pitcherId": 693433,
       "pitcherName": "Bryan Woo",
       "team": "SEA",
@@ -482,15 +482,28 @@
       "gameLabel": "SEA @ STL"
     },
     {
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "team": "PIT",
+      "oppTeam": "MIL",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 6.3,
+      "projectedIP": 5,
+      "projectedK": 3,
+      "gamePk": 823799,
+      "gameLabel": "PIT @ MIL"
+    },
+    {
       "pitcherId": 663903,
       "pitcherName": "Brady Singer",
       "team": "CIN",
       "oppTeam": "DET",
       "whiffScore": 55,
       "grade": "B",
-      "k9": 6.1,
-      "projectedIP": 4.6,
-      "projectedK": 2.5,
+      "k9": 6,
+      "projectedIP": 4,
+      "projectedK": 2,
       "gamePk": 824527,
       "gameLabel": "DET @ CIN"
     },
@@ -547,19 +560,6 @@
       "gameLabel": "PHI @ ATL"
     },
     {
-      "pitcherId": 656605,
-      "pitcherName": "Mitch Keller",
-      "team": "PIT",
-      "oppTeam": "MIL",
-      "whiffScore": 51,
-      "grade": "C",
-      "k9": 5.9,
-      "projectedIP": 5.8,
-      "projectedK": 3,
-      "gamePk": 823799,
-      "gameLabel": "PIT @ MIL"
-    },
-    {
       "pitcherId": 693821,
       "pitcherName": "Bryce Elder",
       "team": "ATL",
@@ -601,24 +601,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 808963,
-      "pitcherName": "Roki Sasaki",
-      "team": "LAD",
-      "oppTeam": "CHC",
-      "line": 87,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 80.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 80.1,
-      "twoYrStarts": 12,
-      "bvpAdj": 7,
-      "lineupPA": 44,
-      "gamePk": 823960,
-      "gameLabel": "CHC @ LAD"
-    },
-    {
       "pitcherId": 554430,
       "pitcherName": "Zack Wheeler",
       "team": "PHI",
@@ -655,24 +637,6 @@
       "gameLabel": "BOS @ BAL"
     },
     {
-      "pitcherId": 669022,
-      "pitcherName": "MacKenzie Gore",
-      "team": "TEX",
-      "oppTeam": "ATH",
-      "line": 96.5,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 88.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 93.2,
-      "twoYrStarts": 35,
-      "bvpAdj": 6,
-      "lineupPA": 100,
-      "gamePk": 822910,
-      "gameLabel": "ATH @ TEX"
-    },
-    {
       "pitcherId": 656427,
       "pitcherName": "Jack Flaherty",
       "team": "DET",
@@ -689,6 +653,42 @@
       "lineupPA": 108,
       "gamePk": 824527,
       "gameLabel": "DET @ CIN"
+    },
+    {
+      "pitcherId": 693821,
+      "pitcherName": "Bryce Elder",
+      "team": "ATL",
+      "oppTeam": "PHI",
+      "line": 90.5,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 85,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.1,
+      "twoYrStarts": 33,
+      "bvpAdj": 4,
+      "lineupPA": 130,
+      "gamePk": 824933,
+      "gameLabel": "PHI @ ATL"
+    },
+    {
+      "pitcherId": 808963,
+      "pitcherName": "Roki Sasaki",
+      "team": "LAD",
+      "oppTeam": "CHC",
+      "line": 78,
+      "overUnder": "OVER",
+      "pitchScore": 68,
+      "grade": "B+",
+      "recent5Avg": 69.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 74.8,
+      "twoYrStarts": 13,
+      "bvpAdj": 7,
+      "lineupPA": 49,
+      "gamePk": 823960,
+      "gameLabel": "CHC @ LAD"
     }
   ]
 }
