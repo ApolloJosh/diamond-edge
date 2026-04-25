@@ -1437,8 +1437,38 @@ async function getBvPSplits(batterId,pitcherId){
     const data=await fetchJSON(BASE+"/people/"+batterId+"/stats?stats=vsPlayer&opposingPlayerId="+pitcherId+"&sportId=1&group=hitting");
     for(const sg of data.stats||[]){
       if(sg.group&&sg.group.displayName==="hitting"){
-        const split=sg.splits&&sg.splits[0]&&sg.splits[0].stat;
-        if(split) return split;
+        const splits=sg.splits||[];
+        if(splits.length===0) return null;
+        if(splits.length===1) return splits[0].stat;
+        // Aggregate all seasons into career BvP totals
+        var tPA=0,tAB=0,tH=0,tHR=0,tK=0,tBB=0,tTB=0,t2B=0,t3B=0,tHBP=0,tSF=0,tRBI=0,tGP=0;
+        for(var si=0;si<splits.length;si++){
+          var s=splits[si].stat;
+          tPA+=parseInt(s.plateAppearances)||0;
+          tAB+=parseInt(s.atBats)||0;
+          tH+=parseInt(s.hits)||0;
+          tHR+=parseInt(s.homeRuns)||0;
+          tK+=parseInt(s.strikeOuts)||0;
+          tBB+=parseInt(s.baseOnBalls)||0;
+          tTB+=parseInt(s.totalBases)||0;
+          t2B+=parseInt(s.doubles)||0;
+          t3B+=parseInt(s.triples)||0;
+          tHBP+=parseInt(s.hitByPitch)||0;
+          tSF+=parseInt(s.sacFlies)||0;
+          tRBI+=parseInt(s.rbi)||0;
+          tGP+=parseInt(s.gamesPlayed)||0;
+        }
+        var avg=tAB>0?(tH/tAB).toFixed(3):".000";
+        var obpDenom=tAB+tBB+tHBP+tSF;
+        var obp=obpDenom>0?((tH+tBB+tHBP)/obpDenom).toFixed(3):".000";
+        var slg=tAB>0?(tTB/tAB).toFixed(3):".000";
+        var ops=(parseFloat(obp)+parseFloat(slg)).toFixed(3);
+        return {
+          gamesPlayed:tGP,atBats:tAB,hits:tH,doubles:t2B,triples:t3B,
+          homeRuns:tHR,strikeOuts:tK,baseOnBalls:tBB,hitByPitch:tHBP,
+          sacFlies:tSF,rbi:tRBI,totalBases:tTB,plateAppearances:tPA,
+          avg:avg,obp:obp,slg:slg,ops:ops
+        };
       }
     }
     return null;
