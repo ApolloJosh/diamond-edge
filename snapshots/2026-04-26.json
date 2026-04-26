@@ -1,8 +1,8 @@
 {
   "date": "2026-04-26",
-  "savedAt": "2026-04-26T19:55:01.311Z",
+  "savedAt": "2026-04-26T23:26:02.669Z",
   "scanType": "afternoon",
-  "gamesScanned": 5,
+  "gamesScanned": 1,
   "totalGames": 16,
   "batters": [
     {
@@ -287,6 +287,19 @@
       "gameLabel": "PIT @ MIL"
     },
     {
+      "pitcherId": 663542,
+      "pitcherName": "Bryan Hudson",
+      "team": "CWS",
+      "oppTeam": "WSH",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 11.4,
+      "projectedIP": 6.1,
+      "projectedK": 6.5,
+      "gamePk": 824612,
+      "gameLabel": "WSH @ CWS"
+    },
+    {
       "pitcherId": 680694,
       "pitcherName": "Kyle Bradish",
       "team": "BAL",
@@ -311,6 +324,19 @@
       "projectedK": 4.5,
       "gamePk": 824122,
       "gameLabel": "LAA @ KC"
+    },
+    {
+      "pitcherId": 656492,
+      "pitcherName": "Foster Griffin",
+      "team": "WSH",
+      "oppTeam": "CWS",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8,
+      "projectedIP": 5.5,
+      "projectedK": 4,
+      "gamePk": 824612,
+      "gameLabel": "WSH @ CWS"
     },
     {
       "pitcherId": 519242,
@@ -603,6 +629,24 @@
       "gameLabel": "LAA @ KC"
     },
     {
+      "pitcherId": 656492,
+      "pitcherName": "Foster Griffin",
+      "team": "WSH",
+      "oppTeam": "CWS",
+      "line": 92.5,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 91,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.2,
+      "twoYrStarts": 6,
+      "bvpAdj": 2,
+      "lineupPA": 918,
+      "gamePk": 824612,
+      "gameLabel": "WSH @ CWS"
+    },
+    {
       "pitcherId": 677958,
       "pitcherName": "Kumar Rocker",
       "team": "TEX",
@@ -619,24 +663,6 @@
       "lineupPA": 78,
       "gamePk": 822911,
       "gameLabel": "ATH @ TEX"
-    },
-    {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "LAD",
-      "line": 90.5,
-      "overUnder": "OVER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 91.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 87.8,
-      "twoYrStarts": 30,
-      "bvpAdj": 0,
-      "lineupPA": 112,
-      "gamePk": 823959,
-      "gameLabel": "CHC @ LAD"
     }
   ]
 }
