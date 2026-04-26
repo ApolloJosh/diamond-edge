@@ -1,8 +1,8 @@
 {
   "date": "2026-04-26",
-  "savedAt": "2026-04-26T17:59:33.657Z",
+  "savedAt": "2026-04-26T19:55:01.311Z",
   "scanType": "afternoon",
-  "gamesScanned": 16,
+  "gamesScanned": 5,
   "totalGames": 16,
   "batters": [
     {
@@ -300,6 +300,19 @@
       "gameLabel": "BOS @ BAL"
     },
     {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "LAA",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8,
+      "projectedIP": 6.2,
+      "projectedK": 4.5,
+      "gamePk": 824122,
+      "gameLabel": "LAA @ KC"
+    },
+    {
       "pitcherId": 519242,
       "pitcherName": "Chris Sale",
       "team": "ATL",
@@ -311,19 +324,6 @@
       "projectedK": 4.5,
       "gamePk": 824934,
       "gameLabel": "PHI @ ATL"
-    },
-    {
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "team": "KC",
-      "oppTeam": "LAA",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8,
-      "projectedIP": 6.2,
-      "projectedK": 4.5,
-      "gamePk": 824122,
-      "gameLabel": "LAA @ KC"
     },
     {
       "pitcherId": 669387,
@@ -589,7 +589,7 @@
       "pitcherName": "Seth Lugo",
       "team": "KC",
       "oppTeam": "LAA",
-      "line": 89.5,
+      "line": 91.5,
       "overUnder": "UNDER",
       "pitchScore": 72,
       "grade": "A",
@@ -597,8 +597,8 @@
       "recent5Starts": 5,
       "twoYrAvg": 91.5,
       "twoYrStarts": 31,
-      "bvpAdj": -2,
-      "lineupPA": 84,
+      "bvpAdj": 0,
+      "lineupPA": 72,
       "gamePk": 824122,
       "gameLabel": "LAA @ KC"
     },
