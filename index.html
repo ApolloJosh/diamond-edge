@@ -1286,14 +1286,31 @@ function computeKPropConfidence(line, whiffData, seasonStat, extras){
   if(k9 === 0) return null;
   // Project Ks: k9 * (expectedIP / 9) with regression adjustment
   // K/9 overstates actual Ks because pitcher efficiency drops later in outings
-  // and early hooks / pitch counts limit deep-game Ks. Apply 0.88 deflator.
+  // and early hooks / pitch counts limit deep-game Ks. Apply 0.92 deflator (V2: raised from 0.88).
   var rawProjectedK = k9 * (expectedIP / 9);
-  var projectedK = rawProjectedK * 0.88;
+  var projectedK = rawProjectedK * 0.92;
+
+  // Opponent team K-rate adjustment (V2)
+  var oppKRate = (whiffData && whiffData.oppTeamKRate) ? whiffData.oppTeamKRate : 0.215;
+  var oppKMult = 1.0;
+  if(oppKRate >= 0.260) oppKMult = 1.12;
+  else if(oppKRate >= 0.240) oppKMult = 1.06;
+  else if(oppKRate >= 0.220) oppKMult = 1.02;
+  else if(oppKRate < 0.180) oppKMult = 0.88;
+  else if(oppKRate < 0.200) oppKMult = 0.94;
+  projectedK *= oppKMult;
 
   // Whiff score modifier: score > 60 = boost, < 40 = drag
-  // Reduced swing to ±15% to prevent over-inflation on high-whiff arms
+  // V2: widened swing to ±20% (was ±15%)
   var whiffMod = (whiffData.score - 50) / 50; // -1 to ~+1
-  var adjustedK = projectedK * (1 + whiffMod * 0.15);
+  var adjustedK = projectedK * (1 + whiffMod * 0.20);
+
+  // Blend recent per-game K average to capture "groove" effects (V2)
+  var recentL3 = extras ? extras.lastThree : null;
+  if(recentL3 && recentL3.k > 0 && recentL3.starts >= 2){
+    var recentKPerGame = recentL3.k / recentL3.starts;
+    adjustedK = adjustedK * 0.70 + recentKPerGame * 0.30;
+  }
 
   // How far above/below the line
   var margin = adjustedK - line;
@@ -3478,6 +3495,40 @@ function App(){
             hitOver:p.hitProj||false
           };
         });
+        // V2 Fix: backfill actualK from boxscore if cloud results have actualK=0
+        var pitchersNeedingK = crPitchers.filter(function(p){return p.gamePk && p.actualK===0 && p.pitcher.id;});
+        if(pitchersNeedingK.length > 0){
+          var boxscoreCache = {};
+          for(var bki=0; bki<pitchersNeedingK.length; bki++){
+            var bp = pitchersNeedingK[bki];
+            try{
+              if(!boxscoreCache[bp.gamePk]){
+                var bxData = await fetchJSON(BASE+"/game/"+bp.gamePk+"/boxscore");
+                boxscoreCache[bp.gamePk] = bxData;
+              }
+              var bx = boxscoreCache[bp.gamePk];
+              if(bx && bx.teams){
+                var sides = ["home","away"];
+                for(var si=0;si<sides.length;si++){
+                  var teamData = bx.teams[sides[si]];
+                  if(!teamData||!teamData.players) continue;
+                  var playerKeys = Object.keys(teamData.players);
+                  for(var pk=0;pk<playerKeys.length;pk++){
+                    var pl = teamData.players[playerKeys[pk]];
+                    if(pl.person && pl.person.id === bp.pitcher.id && pl.stats && pl.stats.pitching && pl.stats.pitching.strikeOuts !== undefined){
+                      bp.actualK = parseInt(pl.stats.pitching.strikeOuts)||0;
+                      bp.actualIP = pl.stats.pitching.inningsPitched||"0";
+                      bp.actualER = parseInt(pl.stats.pitching.earnedRuns)||0;
+                      bp.actualH = parseInt(pl.stats.pitching.hits)||0;
+                      bp.actualBB = parseInt(pl.stats.pitching.baseOnBalls)||0;
+                      bp.actualStats = {};
+                    }
+                  }
+                }
+              }
+            }catch(e){}
+          }
+        }
         var crPitches = (cloudResults.pitches||[]).map(function(p){
           var ap=p.actualPitches||0;
           var played=p.actualStats&&ap>0;
