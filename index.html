@@ -3129,7 +3129,9 @@ function App(){
               pitcherCount:rd.summary.bGradePitchers||0,
               pitchesHitRate:rd.summary.pitchesHitRate||0,
               pitchesProjHitRate:rd.summary.pitchesProjHitRate||0,
-              pitchesCount:rd.summary.bGradePitches||0
+              pitchesCount:rd.summary.bGradePitches||0,
+              regularOURate:rd.summary.regularOURate||0,
+              goblinHitRate:rd.summary.goblinHitRate||0
             });
           }catch(e){}
         }
@@ -3415,15 +3417,26 @@ function App(){
           k9: w.k9||0, projectedIP: w.projectedIP||5.5, projectedK: w.projectedK||0
         };
       });
-      // All pitches-thrown picks (with PP line data if available)
+      // All pitches-thrown picks (with PP line + goblin line data if available)
       var ppRaw2=null; try{var td2=new Date().toISOString().slice(0,10); var pr2=localStorage.getItem("de_pp_lines_"+td2); if(pr2) ppRaw2=JSON.parse(pr2);}catch(e){}
       var ppL2=ppRaw2&&ppRaw2.lines?ppRaw2.lines:{};
+      var gL2=ppRaw2&&ppRaw2.goblinLines?ppRaw2.goblinLines:{};
       var pitchSnap = pitchAccum.map(function(p){
-        var ppVal=ppL2[p.pitcher.fullName]||null;
+        var pName=p.pitcher.fullName;
+        var ppVal=ppL2[pName]||null;
+        var gVal=gL2[pName]||null;
+        if(!gVal){
+          var ln=pName.split(" ").slice(-1)[0].toLowerCase();
+          for(var gk in gL2){if(gk.toLowerCase().split(" ").slice(-1)[0]===ln){gVal=gL2[gk];break;}}
+        }
+        if(!ppVal){
+          var ln2=pName.split(" ").slice(-1)[0].toLowerCase();
+          for(var pk in ppL2){if(pk.toLowerCase().split(" ").slice(-1)[0]===ln2){ppVal=ppL2[pk];break;}}
+        }
         return {
           pitcherId:p.pitcher.id, pitcherName:p.pitcher.fullName,
           team:p.team, oppTeam:p.oppTeam,
-          line:p.line, ppLine:ppVal, overUnder:p.overUnder, pitchScore:p.pitchScore,
+          line:p.line, ppLine:ppVal, goblinLine:gVal, overUnder:p.overUnder, pitchScore:p.pitchScore,
           recent5Avg:p.recent5Avg, twoYrAvg:p.twoYrAvg, bvpAdj:p.bvpAdj,
           gamePk:p.gamePk, gameLabel:p.gameLabel
         };
@@ -3532,19 +3545,33 @@ function App(){
         var crPitches = (cloudResults.pitches||[]).map(function(p){
           var ap=p.actualPitches||0;
           var played=p.actualStats&&ap>0;
-          // Always compute projHit on the fly so historical data works
           var computedProjHit=played?Math.abs(ap-p.line)<=2.5:false;
+          // Compute O/U hit vs regular PP line
+          var ppLine=p.ppLine||null;
+          var ouHit=false;
+          if(played && ppLine!=null){
+            if(p.overUnder==="OVER") ouHit = ap > ppLine;
+            else ouHit = ap < ppLine;
+          }
+          // Compute goblin OVER hit
+          var gLine=p.goblinLine||null;
+          var goblinHit=false;
+          if(played && gLine!=null){
+            goblinHit = ap > gLine;
+          }
           return {
             pitcher:{id:p.pitcherId, fullName:p.pitcherName},
             team:p.team, oppTeam:p.oppTeam,
-            line:p.line, ppLine:p.ppLine||null, overUnder:p.overUnder,
+            line:p.line, ppLine:ppLine, goblinLine:gLine, overUnder:p.overUnder,
             pitchScore:p.pitchScore, grade:p.grade,
             recent5Avg:p.recent5Avg, twoYrAvg:p.twoYrAvg, bvpAdj:p.bvpAdj||0,
             gamePk:p.gamePk, gameLabel:p.gameLabel,
             actualPitches:ap,
             actualStats:p.actualStats||null,
             hit:p.hit||false,
-            projHit:computedProjHit
+            ouHit:ouHit,
+            projHit:computedProjHit,
+            goblinHit:goblinHit
           };
         });
 
@@ -3565,6 +3592,27 @@ function App(){
             if(crPitchers[cpi].hitOver) crPitcherOver++;
           }
         }
+        // Top 10 by pitchScore for regular PP O/U results
+        var crSortedByScore = crPitches.slice().sort(function(a,b){return (b.pitchScore||0)-(a.pitchScore||0);});
+        var crTop10Regular = crSortedByScore.filter(function(p){return p.ppLine!=null;}).slice(0,10);
+        var crRegularOUHit=0, crRegularOUTotal=0;
+        for(var ri=0;ri<crTop10Regular.length;ri++){
+          if(crTop10Regular[ri].actualStats && crTop10Regular[ri].ppLine!=null){
+            crRegularOUTotal++;
+            if(crTop10Regular[ri].ouHit) crRegularOUHit++;
+          }
+        }
+        // Top 10 goblin OVER picks (projection above goblin line, sorted by gap)
+        var crGoblinPicks = crPitches.filter(function(p){return p.goblinLine!=null && p.line > p.goblinLine;})
+          .sort(function(a,b){return (b.line-b.goblinLine)-(a.line-a.goblinLine);}).slice(0,10);
+        var crGoblinHit=0, crGoblinTotal=0;
+        for(var gi=0;gi<crGoblinPicks.length;gi++){
+          if(crGoblinPicks[gi].actualStats){
+            crGoblinTotal++;
+            if(crGoblinPicks[gi].goblinHit) crGoblinHit++;
+          }
+        }
+        // Legacy pitch summaries for season tracking
         var crPitchesHit=0, crPitchesProjHit=0, crBGradePitches=0;
         for(var cpi2=0;cpi2<crPitches.length;cpi2++){
           if(crPitches[cpi2].actualStats){
@@ -3583,6 +3631,12 @@ function App(){
           avgPitcherK:crPitchersWithStats>0?(crTotalK/crPitchersWithStats).toFixed(1):"0",
           totalPitcherK:crTotalK, pitchersWithStats:crPitchersWithStats, pitcherOverCount:crPitcherOver,
           pitchPicks:crPitches,
+          top10Regular:crTop10Regular,
+          regularOUHit:crRegularOUHit, regularOUTotal:crRegularOUTotal,
+          regularOURate:crRegularOUTotal>0?((crRegularOUHit/crRegularOUTotal)*100).toFixed(0):"0",
+          goblinPicks:crGoblinPicks,
+          goblinHit:crGoblinHit, goblinTotal:crGoblinTotal,
+          goblinHitRate:crGoblinTotal>0?((crGoblinHit/crGoblinTotal)*100).toFixed(0):"0",
           pitchesHitRate:crBGradePitches>0?((crPitchesHit/crBGradePitches)*100).toFixed(0):"0",
           pitchesProjHitRate:crBGradePitches>0?((crPitchesProjHit/crBGradePitches)*100).toFixed(0):"0",
           pitchesHitCount:crPitchesHit,
@@ -4188,21 +4242,23 @@ function App(){
 
                   {resultsTab==="pitches"&&(
                     <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:140}}>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>TOP 10 PP O/U</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.blue}}>
+                          {resultsData.regularOUHit||0}/{resultsData.regularOUTotal||0}
+                          <span style={{fontSize:14,color:C.muted,marginLeft:6}}>({resultsData.regularOURate||"0"}%)</span>
+                        </div>
+                      </div>
+                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:140}}>
+                        <div style={{fontSize:10,color:C.green,letterSpacing:1,marginBottom:8}}>GOBLIN OVERS HIT</div>
+                        <div style={{fontSize:24,fontWeight:600,color:C.green}}>
+                          {resultsData.goblinHit||0}/{resultsData.goblinTotal||0}
+                          <span style={{fontSize:14,color:C.muted,marginLeft:6}}>({resultsData.goblinHitRate||"0"}%)</span>
+                        </div>
+                      </div>
                       <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:120}}>
-                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>PITCHES PICKS</div>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>PITCHERS SCANNED</div>
                         <div style={{fontSize:24,fontWeight:600,color:C.blue}}>{resultsData.pitchPicks?resultsData.pitchPicks.length:0}</div>
-                      </div>
-                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:120}}>
-                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>O/U HIT RATE</div>
-                        <div style={{fontSize:24,fontWeight:600,color:C.blue}}>{resultsData.pitchesHitRate||"0"}%</div>
-                      </div>
-                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:120}}>
-                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>PROJ ACCURACY (±2.5)</div>
-                        <div style={{fontSize:24,fontWeight:600,color:C.green}}>{resultsData.pitchesProjHitRate||"0"}%</div>
-                      </div>
-                      <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>B-GRADE+ PITCHED</div>
-                        <div style={{fontSize:24,fontWeight:600,color:C.blue}}>{resultsData.bGradePitches||0}</div>
                       </div>
                     </div>
                   )}
@@ -4324,59 +4380,130 @@ function App(){
 
                   {resultsTab==="pitches"&&resultsData.pitchPicks&&(
                     resultsData.pitchPicks.length>0?(
-                      <div style={{overflowX:"auto",marginBottom:20}}>
-                        <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
-                          <thead>
-                            <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
-                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>RANK</th>
-                              <th style={{textAlign:"left",padding:"12px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>CONF</th>
-                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
-                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
-                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
-                              <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAME</th>
-                              <th style={{textAlign:"center",padding:"12px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PP LINE</th>
-                              <th style={{textAlign:"center",padding:"12px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ</th>
-                              <th style={{textAlign:"center",padding:"12px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>PICK</th>
-                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ACTUAL</th>
-                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>O/U HIT</th>
-                              <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PROJ HIT</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {resultsData.pitchPicks.map(function(pp,idx){
-                              var pg=pitchGrade(pp.pitchScore);
-                              var pickColor = pp.overUnder==="OVER" ? C.green : C.red;
-                              var ouHitColor = pp.hit ? C.green : (pp.actualStats ? C.red : C.muted);
-                              var ouHitText = pp.actualStats ? (pp.hit ? "YES" : "NO") : "N/A";
-                              var projHitColor = pp.projHit ? C.green : (pp.actualStats ? C.red : C.muted);
-                              var projHitText = pp.actualStats ? (pp.projHit ? "YES" : "NO") : "N/A";
-                              return(
-                                <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
-                                  <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
-                                  <td style={{padding:"10px 8px"}}>
-                                    <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
-                                      background:pg.color+"18",border:"1px solid "+pg.color+"40",color:pg.color}}>
-                                      {pg.grade} <span style={{fontSize:9,color:C.muted}}>{pp.pitchScore}</span>
-                                    </span>
-                                  </td>
-                                  <td style={{padding:"10px 8px",color:C.text}}>{pp.pitcher.fullName||"Unknown"}</td>
-                                  <td style={{padding:"10px 8px",color:C.muted}}>{pp.team||"—"}</td>
-                                  <td style={{padding:"10px 8px",color:C.subtext}}>{pp.oppTeam||"—"}</td>
-                                  <td style={{padding:"10px 8px",color:C.muted,fontSize:10}}>{pp.gameLabel||"—"}</td>
-                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#e67e22"}}>{pp.ppLine!=null?pp.ppLine:"—"}</td>
-                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.gold}}>{pp.line}</td>
-                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:pickColor}}>{pp.overUnder}</td>
-                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,
-                                    color:pp.actualStats?C.text:C.muted}}>
-                                    {pp.actualStats?pp.actualPitches:"DNP"}
-                                  </td>
-                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:ouHitColor}}>{ouHitText}</td>
-                                  <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:projHitColor}}>{projHitText}</td>
+                      <div>
+                        {/* TOP 10 REGULAR PP O/U */}
+                        <div style={{marginBottom:28}}>
+                          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+                            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:2,color:C.blue}}>TOP 10 — PP LINE O/U</div>
+                            <div style={{padding:"2px 10px",borderRadius:10,background:C.blue+"20",border:"1px solid "+C.blue+"40",
+                              color:C.blue,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1}}>
+                              {resultsData.regularOUHit||0}/{resultsData.regularOUTotal||0}
+                            </div>
+                          </div>
+                          <div style={{overflowX:"auto"}}>
+                            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                              <thead>
+                                <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                                  <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>#</th>
+                                  <th style={{textAlign:"left",padding:"12px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>CONF</th>
+                                  <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
+                                  <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                                  <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
+                                  <th style={{textAlign:"center",padding:"12px 8px",color:"#e67e22",fontWeight:600,letterSpacing:1}}>PP LINE</th>
+                                  <th style={{textAlign:"center",padding:"12px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ</th>
+                                  <th style={{textAlign:"center",padding:"12px 8px",color:C.blue,fontWeight:600,letterSpacing:1}}>PICK</th>
+                                  <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ACTUAL</th>
+                                  <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HIT?</th>
                                 </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
+                              </thead>
+                              <tbody>
+                                {(resultsData.top10Regular||[]).map(function(pp,idx){
+                                  var pg=pitchGrade(pp.pitchScore);
+                                  var pickColor = pp.overUnder==="OVER" ? C.green : C.red;
+                                  var hitColor = pp.ouHit ? C.green : (pp.actualStats ? C.red : C.muted);
+                                  var hitText = pp.actualStats ? (pp.ouHit ? "✓" : "✗") : "—";
+                                  return(
+                                    <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
+                                      <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
+                                      <td style={{padding:"10px 8px"}}>
+                                        <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
+                                          background:pg.color+"18",border:"1px solid "+pg.color+"40",color:pg.color}}>
+                                          {pg.grade} <span style={{fontSize:9,color:C.muted}}>{pp.pitchScore}</span>
+                                        </span>
+                                      </td>
+                                      <td style={{padding:"10px 8px",color:C.text}}>{pp.pitcher.fullName||"Unknown"}</td>
+                                      <td style={{padding:"10px 8px",color:C.muted}}>{pp.team||"—"}</td>
+                                      <td style={{padding:"10px 8px",color:C.subtext}}>{pp.oppTeam||"—"}</td>
+                                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#e67e22"}}>{pp.ppLine!=null?pp.ppLine:"—"}</td>
+                                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.gold}}>{pp.line}</td>
+                                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,color:pickColor}}>{pp.overUnder}</td>
+                                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,
+                                        color:pp.actualStats?C.text:C.muted}}>
+                                        {pp.actualStats?pp.actualPitches:"DNP"}
+                                      </td>
+                                      <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:16,color:hitColor}}>{hitText}</td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        {/* TOP 10 GOBLIN OVERS */}
+                        <div style={{marginBottom:20}}>
+                          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+                            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:2,color:C.green}}>TOP 10 �� GOBLIN OVERS</div>
+                            <div style={{padding:"2px 10px",borderRadius:10,background:C.green+"20",border:"1px solid "+C.green+"40",
+                              color:C.green,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1}}>
+                              {resultsData.goblinHit||0}/{resultsData.goblinTotal||0}
+                            </div>
+                          </div>
+                          {(resultsData.goblinPicks||[]).length>0?(
+                            <div style={{overflowX:"auto"}}>
+                              <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                                <thead>
+                                  <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                                    <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>#</th>
+                                    <th style={{textAlign:"left",padding:"12px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>CONF</th>
+                                    <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHER</th>
+                                    <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                                    <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs</th>
+                                    <th style={{textAlign:"center",padding:"12px 8px",color:"#9b59b6",fontWeight:600,letterSpacing:1}}>GOBLIN</th>
+                                    <th style={{textAlign:"center",padding:"12px 8px",color:C.gold,fontWeight:600,letterSpacing:1}}>PROJ</th>
+                                    <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>GAP</th>
+                                    <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>ACTUAL</th>
+                                    <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HIT?</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {(resultsData.goblinPicks||[]).map(function(pp,idx){
+                                    var pg=pitchGrade(pp.pitchScore);
+                                    var gap = pp.goblinLine!=null ? (pp.line - pp.goblinLine).toFixed(1) : "—";
+                                    var hitColor = pp.goblinHit ? C.green : (pp.actualStats ? C.red : C.muted);
+                                    var hitText = pp.actualStats ? (pp.goblinHit ? "✓" : "✗") : "—";
+                                    return(
+                                      <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
+                                        <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
+                                        <td style={{padding:"10px 8px"}}>
+                                          <span style={{padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:700,
+                                            background:pg.color+"18",border:"1px solid "+pg.color+"40",color:pg.color}}>
+                                            {pg.grade} <span style={{fontSize:9,color:C.muted}}>{pp.pitchScore}</span>
+                                          </span>
+                                        </td>
+                                        <td style={{padding:"10px 8px",color:C.text}}>{pp.pitcher.fullName||"Unknown"}</td>
+                                        <td style={{padding:"10px 8px",color:C.muted}}>{pp.team||"—"}</td>
+                                        <td style={{padding:"10px 8px",color:C.subtext}}>{pp.oppTeam||"—"}</td>
+                                        <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:"#9b59b6"}}>{pp.goblinLine!=null?pp.goblinLine:"—"}</td>
+                                        <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.gold}}>{pp.line}</td>
+                                        <td style={{padding:"10px 8px",textAlign:"center",fontWeight:600,color:C.green}}>+{gap}</td>
+                                        <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,
+                                          color:pp.actualStats?C.text:C.muted}}>
+                                          {pp.actualStats?pp.actualPitches:"DNP"}
+                                        </td>
+                                        <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:16,color:hitColor}}>{hitText}</td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          ):(
+                            <div style={{textAlign:"center",padding:24,color:C.muted,fontSize:11}}>
+                              No goblin line data for this date. Inject goblin lines before scanning.
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ):(
                       <div style={{textAlign:"center",padding:32,color:C.muted}}>
@@ -4443,11 +4570,11 @@ function App(){
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <div style={{width:24,height:3,background:C.blue,borderRadius:2}}></div>
-                      <span style={{fontSize:11,color:C.muted}}>Pitches O/U Hit %</span>
+                      <span style={{fontSize:11,color:C.muted}}>PP O/U Hit %</span>
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <div style={{width:24,height:3,background:C.green,borderRadius:2}}></div>
-                      <span style={{fontSize:11,color:C.muted}}>Proj Accuracy %</span>
+                      <span style={{fontSize:11,color:C.muted}}>Goblin OVER Hit %</span>
                     </div>
                   </div>
 
@@ -4460,32 +4587,27 @@ function App(){
                     for(var i=0;i<data.length;i++){
                       if(data[i].batterHitRate>maxVal) maxVal=data[i].batterHitRate;
                       if(data[i].pitcherOverRate>maxVal) maxVal=data[i].pitcherOverRate;
-                      if((data[i].pitchesHitRate||0)>maxVal) maxVal=data[i].pitchesHitRate;
-                      if((data[i].pitchesProjHitRate||0)>maxVal) maxVal=data[i].pitchesProjHitRate;
+                      if((data[i].regularOURate||0)>maxVal) maxVal=data[i].regularOURate;
+                      if((data[i].goblinHitRate||0)>maxVal) maxVal=data[i].goblinHitRate;
                     }
-                    maxVal=Math.max(maxVal,50); // minimum 50% scale
-                    maxVal=Math.ceil(maxVal/10)*10; // round up to nearest 10
+                    maxVal=Math.max(maxVal,50);
+                    maxVal=Math.ceil(maxVal/10)*10;
                     var xStep=data.length>1?chartW/(data.length-1):chartW;
                     var yScale=function(v){return padT+chartH-(v/maxVal)*chartH;};
 
-                    // Build line paths
-                    var batterPath="";
-                    var pitcherPath="";
-                    var pitchesPath="";
-                    var projAccPath="";
+                    var batterPath="", pitcherPath="", ouPath="", goblinPath="";
                     for(var j=0;j<data.length;j++){
                       var x=padL+(data.length>1?j*xStep:chartW/2);
                       var yB=yScale(data[j].batterHitRate);
                       var yP=yScale(data[j].pitcherOverRate);
-                      var yPT=yScale(data[j].pitchesHitRate||0);
-                      var yPA=yScale(data[j].pitchesProjHitRate||0);
+                      var yOU=yScale(data[j].regularOURate||0);
+                      var yG=yScale(data[j].goblinHitRate||0);
                       batterPath+=(j===0?"M":"L")+x.toFixed(1)+","+yB.toFixed(1);
                       pitcherPath+=(j===0?"M":"L")+x.toFixed(1)+","+yP.toFixed(1);
-                      pitchesPath+=(j===0?"M":"L")+x.toFixed(1)+","+yPT.toFixed(1);
-                      projAccPath+=(j===0?"M":"L")+x.toFixed(1)+","+yPA.toFixed(1);
+                      ouPath+=(j===0?"M":"L")+x.toFixed(1)+","+yOU.toFixed(1);
+                      goblinPath+=(j===0?"M":"L")+x.toFixed(1)+","+yG.toFixed(1);
                     }
 
-                    // Grid lines
                     var gridLines=[];
                     var gridCount=5;
                     for(var g=0;g<=gridCount;g++){
@@ -4496,38 +4618,34 @@ function App(){
 
                     return(
                       <svg viewBox={"0 0 "+W+" "+H} style={{width:"100%",maxWidth:W,background:C.card,borderRadius:8,border:"1px solid "+C.border}}>
-                        {/* Grid */}
                         {gridLines.map(function(gl,idx){
                           return React.createElement("g",{key:"grid-"+idx},
                             React.createElement("line",{x1:padL,y1:gl.y,x2:W-padR,y2:gl.y,stroke:C.border,strokeWidth:1}),
                             React.createElement("text",{x:padL-8,y:gl.y+4,fill:C.muted,fontSize:10,textAnchor:"end",fontFamily:"'DM Mono',monospace"},gl.val+"%")
                           );
                         })}
-                        {/* Batter line */}
                         <path d={batterPath} fill="none" stroke={C.gold} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"/>
-                        {/* Pitcher line */}
                         <path d={pitcherPath} fill="none" stroke={C.purple} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"/>
-                        {/* Pitches O/U line */}
-                        <path d={pitchesPath} fill="none" stroke={C.blue} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" strokeDasharray="6,3"/>
-                        {/* Proj Accuracy line */}
-                        <path d={projAccPath} fill="none" stroke={C.green} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3,3"/>
-                        {/* Data points + labels */}
+                        <path d={ouPath} fill="none" stroke={C.blue} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" strokeDasharray="6,3"/>
+                        <path d={goblinPath} fill="none" stroke={C.green} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3,3"/>
                         {data.map(function(d,idx){
                           var x=padL+(data.length>1?idx*xStep:chartW/2);
                           var yB=yScale(d.batterHitRate);
                           var yP=yScale(d.pitcherOverRate);
-                          var labelDate=d.date.slice(5); // MM-DD
+                          var yOU=yScale(d.regularOURate||0);
+                          var yG=yScale(d.goblinHitRate||0);
+                          var labelDate=d.date.slice(5);
                           return React.createElement("g",{key:"pt-"+idx},
                             React.createElement("circle",{cx:x,cy:yB,r:4,fill:C.gold,stroke:"#0d1220",strokeWidth:2}),
                             React.createElement("circle",{cx:x,cy:yP,r:4,fill:C.purple,stroke:"#0d1220",strokeWidth:2}),
-                            React.createElement("circle",{cx:x,cy:yScale(d.pitchesHitRate||0),r:4,fill:C.blue,stroke:"#0d1220",strokeWidth:2}),
-                            React.createElement("circle",{cx:x,cy:yScale(d.pitchesProjHitRate||0),r:4,fill:C.green,stroke:"#0d1220",strokeWidth:2}),
+                            React.createElement("circle",{cx:x,cy:yOU,r:4,fill:C.blue,stroke:"#0d1220",strokeWidth:2}),
+                            React.createElement("circle",{cx:x,cy:yG,r:4,fill:C.green,stroke:"#0d1220",strokeWidth:2}),
                             React.createElement("text",{x:x,y:H-padB+16,fill:C.muted,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace",
                               transform:data.length>10?"rotate(-45,"+x+","+(H-padB+16)+")":""},labelDate),
                             React.createElement("text",{x:x,y:yB-10,fill:C.gold,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},d.batterHitRate.toFixed(0)+"%"),
                             React.createElement("text",{x:x,y:yP-10,fill:C.purple,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},d.pitcherOverRate.toFixed(0)+"%"),
-                            React.createElement("text",{x:x,y:yScale(d.pitchesHitRate||0)-10,fill:C.blue,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},(d.pitchesHitRate||0).toFixed(0)+"%"),
-                            React.createElement("text",{x:x,y:yScale(d.pitchesProjHitRate||0)+14,fill:C.green,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},(d.pitchesProjHitRate||0).toFixed(0)+"%")
+                            React.createElement("text",{x:x,y:yOU-10,fill:C.blue,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},(d.regularOURate||0).toFixed(0)+"%"),
+                            React.createElement("text",{x:x,y:yG+14,fill:C.green,fontSize:9,textAnchor:"middle",fontFamily:"'DM Mono',monospace"},(d.goblinHitRate||0).toFixed(0)+"%")
                           );
                         })}
                       </svg>
@@ -4549,15 +4667,15 @@ function App(){
                       </div>
                     </div>
                     <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG PITCHES O/U HIT</div>
+                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG PP O/U HIT</div>
                       <div style={{fontSize:24,fontWeight:600,color:C.blue}}>
-                        {(seasonHistory.reduce(function(s,d){return s+(d.pitchesHitRate||0);},0)/seasonHistory.length).toFixed(1)}%
+                        {(seasonHistory.reduce(function(s,d){return s+(d.regularOURate||0);},0)/seasonHistory.length).toFixed(1)}%
                       </div>
                     </div>
                     <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
-                      <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>AVG PROJ ACCURACY (±2.5)</div>
+                      <div style={{fontSize:10,color:C.green,letterSpacing:1,marginBottom:8}}>AVG GOBLIN OVER HIT</div>
                       <div style={{fontSize:24,fontWeight:600,color:C.green}}>
-                        {(seasonHistory.reduce(function(s,d){return s+(d.pitchesProjHitRate||0);},0)/seasonHistory.length).toFixed(1)}%
+                        {(seasonHistory.reduce(function(s,d){return s+(d.goblinHitRate||0);},0)/seasonHistory.length).toFixed(1)}%
                       </div>
                     </div>
                     <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:150}}>
@@ -4573,9 +4691,9 @@ function App(){
                         <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
                           <th style={{textAlign:"left",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>DATE</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.gold,fontWeight:500,letterSpacing:1}}>BATTER HIT %</th>
-                          <th style={{textAlign:"center",padding:"10px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>PITCHER HIT PROJ K %</th>
-                          <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>PITCHES O/U %</th>
-                          <th style={{textAlign:"center",padding:"10px 8px",color:C.green,fontWeight:500,letterSpacing:1}}>PROJ ACC %</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.purple,fontWeight:500,letterSpacing:1}}>PITCHER K %</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.blue,fontWeight:500,letterSpacing:1}}>PP O/U %</th>
+                          <th style={{textAlign:"center",padding:"10px 8px",color:C.green,fontWeight:500,letterSpacing:1}}>GOBLIN %</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTERS</th>
                           <th style={{textAlign:"center",padding:"10px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>PITCHERS</th>
                         </tr>
@@ -4587,8 +4705,8 @@ function App(){
                               <td style={{padding:"8px",color:C.text}}>{d.date}</td>
                               <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:d.batterHitRate>=60?C.green:d.batterHitRate>=40?C.gold:C.red}}>{d.batterHitRate.toFixed(1)}%</td>
                               <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:d.pitcherOverRate>=60?C.green:d.pitcherOverRate>=40?C.purple:C.red}}>{d.pitcherOverRate.toFixed(1)}%</td>
-                              <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:(d.pitchesHitRate||0)>=60?C.green:(d.pitchesHitRate||0)>=40?C.blue:C.red}}>{(d.pitchesHitRate||0).toFixed(1)}%</td>
-                              <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:(d.pitchesProjHitRate||0)>=60?C.green:(d.pitchesProjHitRate||0)>=40?"#2ecc71":C.red}}>{(d.pitchesProjHitRate||0).toFixed(1)}%</td>
+                              <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:(d.regularOURate||0)>=60?C.green:(d.regularOURate||0)>=40?C.blue:C.red}}>{(d.regularOURate||0).toFixed(1)}%</td>
+                              <td style={{padding:"8px",textAlign:"center",fontWeight:600,color:(d.goblinHitRate||0)>=60?C.green:(d.goblinHitRate||0)>=40?C.green+"99":C.red}}>{(d.goblinHitRate||0).toFixed(1)}%</td>
                               <td style={{padding:"8px",textAlign:"center",color:C.muted}}>{d.batterCount}</td>
                               <td style={{padding:"8px",textAlign:"center",color:C.muted}}>{d.pitcherCount}</td>
                             </tr>
