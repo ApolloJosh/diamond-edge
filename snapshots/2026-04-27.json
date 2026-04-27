@@ -1,6 +1,6 @@
 {
   "date": "2026-04-27",
-  "savedAt": "2026-04-27T20:00:37.030Z",
+  "savedAt": "2026-04-27T20:45:40.399Z",
   "scanType": "afternoon",
   "gamesScanned": 8,
   "totalGames": 8,
@@ -20,6 +20,22 @@
       "bvpHR": 4,
       "gamePk": 823961,
       "gameLabel": "MIA @ LAD"
+    },
+    {
+      "batterId": 650490,
+      "batterName": "Yandy Díaz",
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "batterTeam": "TB",
+      "pitcherTeam": "CLE",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "1.167",
+      "bvpPA": 12,
+      "bvpHR": 0,
+      "gamePk": 824446,
+      "gameLabel": "TB @ CLE"
     },
     {
       "batterId": 606192,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 823719,
       "gameLabel": "SEA @ MIN"
-    },
-    {
-      "batterId": 660271,
-      "batterName": "Shohei Ohtani",
-      "pitcherId": 663978,
-      "pitcherName": "Chris Paddack",
-      "batterTeam": "LAD",
-      "pitcherTeam": "MIA",
-      "edgeScore": 65,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.500",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 823961,
-      "gameLabel": "MIA @ LAD"
     }
   ],
   "pitchers": [
@@ -339,19 +339,6 @@
       "gameLabel": "NYY @ TEX"
     },
     {
-      "pitcherId": 800048,
-      "pitcherName": "Parker Messick",
-      "team": "CLE",
-      "oppTeam": "TB",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 8.5,
-      "projectedIP": 6,
-      "projectedK": 5,
-      "gamePk": 824446,
-      "gameLabel": "TB @ CLE"
-    },
-    {
       "pitcherId": 571927,
       "pitcherName": "Steven Matz",
       "team": "TB",
@@ -402,6 +389,19 @@
       "projectedK": 3,
       "gamePk": 824609,
       "gameLabel": "LAA @ CWS"
+    },
+    {
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "team": "CLE",
+      "oppTeam": "TB",
+      "whiffScore": 50,
+      "grade": "C",
+      "k9": 8.5,
+      "projectedIP": 6,
+      "projectedK": 5,
+      "gamePk": 824446,
+      "gameLabel": "TB @ CLE"
     }
   ],
   "pitches": [
@@ -460,6 +460,24 @@
       "gameLabel": "MIA @ LAD"
     },
     {
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "team": "CLE",
+      "oppTeam": "TB",
+      "line": 85.5,
+      "overUnder": "UNDER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 89.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.4,
+      "twoYrStarts": 12,
+      "bvpAdj": -4,
+      "lineupPA": 44,
+      "gamePk": 824446,
+      "gameLabel": "TB @ CLE"
+    },
+    {
       "pitcherId": 656302,
       "pitcherName": "Dylan Cease",
       "team": "TOR",
@@ -476,24 +494,6 @@
       "lineupPA": 106,
       "gamePk": 822825,
       "gameLabel": "BOS @ TOR"
-    },
-    {
-      "pitcherId": 800048,
-      "pitcherName": "Parker Messick",
-      "team": "CLE",
-      "oppTeam": "TB",
-      "line": 89.5,
-      "overUnder": "OVER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 89.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 89.4,
-      "twoYrStarts": 12,
-      "bvpAdj": 0,
-      "lineupPA": 848,
-      "gamePk": 824446,
-      "gameLabel": "TB @ CLE"
     }
   ]
 }
