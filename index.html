@@ -3578,7 +3578,53 @@ function App(){
           if(ppRaw) ppLinesForDate = JSON.parse(ppRaw);
         }catch(e){}
 
-        var crPitches = (cloudResults.pitches||[]).map(function(p){
+        // If cloud results have fewer pitches than localStorage snapshot, use snapshot pitches instead
+        var pitchesSource = cloudResults.pitches||[];
+        var usedSnapshot = false;
+        try{
+          var snapRaw = localStorage.getItem("de_snapshot_"+dateStr);
+          if(snapRaw){
+            var snapData = JSON.parse(snapRaw);
+            if(snapData.pitches && snapData.pitches.length > pitchesSource.length){
+              pitchesSource = snapData.pitches;
+              usedSnapshot = true;
+            }
+          }
+        }catch(e){}
+
+        // If we used snapshot data, backfill actualPitches from boxscores
+        if(usedSnapshot){
+          setResultsProgress("Fetching boxscores for actual pitch counts...");
+          var bxCache2 = {};
+          for(var ps2=0;ps2<pitchesSource.length;ps2++){
+            var pick2 = pitchesSource[ps2];
+            if(pick2.actualPitches>0) continue; // already has actuals
+            try{
+              if(!bxCache2[pick2.gamePk]){
+                bxCache2[pick2.gamePk] = await fetchJSON(BASE+"/game/"+pick2.gamePk+"/boxscore");
+              }
+              var bx2 = bxCache2[pick2.gamePk];
+              if(bx2 && bx2.teams){
+                var sides2=["home","away"];
+                for(var s2=0;s2<sides2.length;s2++){
+                  var td2=bx2.teams[sides2[s2]];
+                  if(!td2||!td2.players) continue;
+                  var pKeys2=Object.keys(td2.players);
+                  for(var pk2=0;pk2<pKeys2.length;pk2++){
+                    var pl2=td2.players[pKeys2[pk2]];
+                    if(pl2.person && pl2.person.id===pick2.pitcherId && pl2.stats && pl2.stats.pitching){
+                      var pitchStats=pl2.stats.pitching;
+                      pick2.actualPitches=parseInt(pitchStats.numberOfPitches||pitchStats.pitchesThrown)||0;
+                      pick2.actualStats=pick2.actualPitches>0?true:null;
+                    }
+                  }
+                }
+              }
+            }catch(e){}
+          }
+        }
+
+        var crPitches = pitchesSource.map(function(p){
           var ap=p.actualPitches||0;
           var played=p.actualStats&&ap>0;
           var computedProjHit=played?Math.abs(ap-p.line)<=2.5:false;
