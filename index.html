@@ -2622,7 +2622,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
       }
       if(ppLine==null) continue; // skip if no PP line
       var gap=Math.abs(p.line-ppLine);
-      if(gap<=1.5) continue; // only show >1.5 discrepancy
+      if(gap<3) continue; // only show gap of 3+
       var overUnder=p.line>ppLine?"OVER":"UNDER";
       merged.push(Object.assign({},p,{ppLine:ppLine,gap:gap,overUnder:overUnder}));
     }
@@ -2650,7 +2650,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
       }
       if(gLine==null) continue;
       var gap=p.line-gLine; // positive = OVER
-      if(gap<=1.5) continue; // only show meaningful OVER gaps
+      if(gap<5.5) continue; // only show gaps of 5.5+
       // Also get standard PP line for reference
       var stdLine=null;
       if(ppLines&&ppLines[pName]!=null) stdLine=ppLines[pName];
@@ -2812,7 +2812,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         <div className="fade-in" style={{marginBottom:32}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
             <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.blue}}>🎯 PITCHES THROWN</div>
-            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>{hasPPLines?"RANKED BY LINE DISCREPANCY":"TOP 10 BY CONFIDENCE"}</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>{hasPPLines?"PP GAP 3+":"TOP 10 BY CONFIDENCE"}</div>
             <div style={{
               padding:"3px 10px",borderRadius:10,background:C.blue+"20",border:"1px solid "+C.blue+"40",
               color:C.blue,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
@@ -2890,7 +2890,7 @@ function HomePage({games, onSelectGame, onScanComplete, allEdges, allWhiffScores
         <div className="fade-in" style={{marginBottom:32}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
             <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,color:C.green}}>👹 GOBLIN OVERS</div>
-            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>PROJ ABOVE GOBLIN LINE</div>
+            <div style={{fontSize:10,color:C.muted,letterSpacing:1}}>GOBLIN GAP 5.5+</div>
             <div style={{
               padding:"3px 10px",borderRadius:10,background:C.green+"20",border:"1px solid "+C.green+"40",
               color:C.green,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1
@@ -3571,19 +3571,44 @@ function App(){
             }catch(e){}
           }
         }
+        // Backfill ppLine/goblinLine from localStorage if missing in cloud results
+        var ppLinesForDate = null;
+        try{
+          var ppRaw = localStorage.getItem("de_pp_lines_"+dateStr);
+          if(ppRaw) ppLinesForDate = JSON.parse(ppRaw);
+        }catch(e){}
+
         var crPitches = (cloudResults.pitches||[]).map(function(p){
           var ap=p.actualPitches||0;
           var played=p.actualStats&&ap>0;
           var computedProjHit=played?Math.abs(ap-p.line)<=2.5:false;
-          // Compute O/U hit vs regular PP line
+          // Backfill ppLine from localStorage if null
           var ppLine=p.ppLine||null;
+          if(ppLine==null && ppLinesForDate && ppLinesForDate.lines){
+            var pLast = (p.pitcherName||"").split(" ").pop().toLowerCase();
+            var lineKeys = Object.keys(ppLinesForDate.lines);
+            for(var lk=0;lk<lineKeys.length;lk++){
+              var keyLast = lineKeys[lk].split(" ").pop().toLowerCase();
+              if(keyLast===pLast && pLast.length>1){ ppLine=ppLinesForDate.lines[lineKeys[lk]]; break; }
+            }
+          }
+          // Backfill goblinLine from localStorage if missing
+          var gLine=p.goblinLine||null;
+          if(gLine==null && ppLinesForDate && ppLinesForDate.goblinLines){
+            var gLast = (p.pitcherName||"").split(" ").pop().toLowerCase();
+            var gKeys = Object.keys(ppLinesForDate.goblinLines);
+            for(var gk=0;gk<gKeys.length;gk++){
+              var gKeyLast = gKeys[gk].split(" ").pop().toLowerCase();
+              if(gKeyLast===gLast && gLast.length>1){ gLine=ppLinesForDate.goblinLines[gKeys[gk]]; break; }
+            }
+          }
+          // Compute O/U hit vs regular PP line
           var ouHit=false;
           if(played && ppLine!=null){
             if(p.overUnder==="OVER") ouHit = ap > ppLine;
             else ouHit = ap < ppLine;
           }
           // Compute goblin OVER hit
-          var gLine=p.goblinLine||null;
           var goblinHit=false;
           if(played && gLine!=null){
             goblinHit = ap > gLine;
@@ -3621,9 +3646,10 @@ function App(){
             if(crPitchers[cpi].hitOver) crPitcherOver++;
           }
         }
-        // Top 10 by pitchScore for regular PP O/U results
-        var crSortedByScore = crPitches.slice().sort(function(a,b){return (b.pitchScore||0)-(a.pitchScore||0);});
-        var crTop10Regular = crSortedByScore.filter(function(p){return p.ppLine!=null;}).slice(0,10);
+        // PP O/U picks: pitchers where |proj - ppLine| >= 3 (sorted by gap desc)
+        var crTop10Regular = crPitches.filter(function(p){
+          return p.ppLine!=null && Math.abs(p.line - p.ppLine) >= 3;
+        }).sort(function(a,b){return Math.abs(b.line-b.ppLine)-Math.abs(a.line-a.ppLine);});
         var crRegularOUHit=0, crRegularOUTotal=0;
         for(var ri=0;ri<crTop10Regular.length;ri++){
           if(crTop10Regular[ri].actualStats && crTop10Regular[ri].ppLine!=null){
@@ -3631,9 +3657,10 @@ function App(){
             if(crTop10Regular[ri].ouHit) crRegularOUHit++;
           }
         }
-        // Top 10 goblin OVER picks (projection above goblin line, sorted by gap)
-        var crGoblinPicks = crPitches.filter(function(p){return p.goblinLine!=null && p.line > p.goblinLine;})
-          .sort(function(a,b){return (b.line-b.goblinLine)-(a.line-a.goblinLine);}).slice(0,10);
+        // Goblin OVER picks: pitchers where proj - goblinLine >= 5.5 (sorted by gap desc)
+        var crGoblinPicks = crPitches.filter(function(p){
+          return p.goblinLine!=null && (p.line - p.goblinLine) >= 5.5;
+        }).sort(function(a,b){return (b.line-b.goblinLine)-(a.line-a.goblinLine);});
         var crGoblinHit=0, crGoblinTotal=0;
         for(var gi=0;gi<crGoblinPicks.length;gi++){
           if(crGoblinPicks[gi].actualStats){
@@ -4272,14 +4299,14 @@ function App(){
                   {resultsTab==="pitches"&&(
                     <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
                       <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:140}}>
-                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>TOP 10 PP O/U</div>
+                        <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:8}}>PP O/U (GAP 3+)</div>
                         <div style={{fontSize:24,fontWeight:600,color:C.blue}}>
                           {resultsData.regularOUHit||0}/{resultsData.regularOUTotal||0}
                           <span style={{fontSize:14,color:C.muted,marginLeft:6}}>({resultsData.regularOURate||"0"}%)</span>
                         </div>
                       </div>
                       <div style={{background:C.card,border:"1px solid "+C.border,borderRadius:6,padding:16,flex:"1",minWidth:140}}>
-                        <div style={{fontSize:10,color:C.green,letterSpacing:1,marginBottom:8}}>GOBLIN OVERS HIT</div>
+                        <div style={{fontSize:10,color:C.green,letterSpacing:1,marginBottom:8}}>GOBLIN OVERS (GAP 5.5+)</div>
                         <div style={{fontSize:24,fontWeight:600,color:C.green}}>
                           {resultsData.goblinHit||0}/{resultsData.goblinTotal||0}
                           <span style={{fontSize:14,color:C.muted,marginLeft:6}}>({resultsData.goblinHitRate||"0"}%)</span>
@@ -4410,10 +4437,10 @@ function App(){
                   {resultsTab==="pitches"&&resultsData.pitchPicks&&(
                     resultsData.pitchPicks.length>0?(
                       <div>
-                        {/* TOP 10 REGULAR PP O/U */}
+                        {/* PP O/U PICKS — GAP >= 3 */}
                         <div style={{marginBottom:28}}>
                           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-                            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:2,color:C.blue}}>TOP 10 — PP LINE O/U</div>
+                            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:2,color:C.blue}}>PP LINE O/U — GAP 3+</div>
                             <div style={{padding:"2px 10px",borderRadius:10,background:C.blue+"20",border:"1px solid "+C.blue+"40",
                               color:C.blue,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1}}>
                               {resultsData.regularOUHit||0}/{resultsData.regularOUTotal||0}
@@ -4469,10 +4496,10 @@ function App(){
                           </div>
                         </div>
 
-                        {/* TOP 10 GOBLIN OVERS */}
+                        {/* GOBLIN OVERS — GAP >= 5.5 */}
                         <div style={{marginBottom:20}}>
                           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-                            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:2,color:C.green}}>TOP 10 �� GOBLIN OVERS</div>
+                            <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:18,letterSpacing:2,color:C.green}}>GOBLIN OVERS — GAP 5.5+</div>
                             <div style={{padding:"2px 10px",borderRadius:10,background:C.green+"20",border:"1px solid "+C.green+"40",
                               color:C.green,fontSize:12,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1}}>
                               {resultsData.goblinHit||0}/{resultsData.goblinTotal||0}
