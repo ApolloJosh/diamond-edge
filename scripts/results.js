@@ -192,6 +192,7 @@ async function main() {
       oppTeam: pick.oppTeam,
       line: pick.line,
       ppLine: pick.ppLine || null,
+      goblinLine: pick.goblinLine || null,
       overUnder: pick.overUnder,
       pitchScore: pick.pitchScore,
       grade: pick.grade,
