@@ -1,8 +1,8 @@
 {
   "date": "2026-04-28",
-  "savedAt": "2026-04-28T21:37:18.244Z",
+  "savedAt": "2026-04-29T00:12:40.294Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 5,
   "totalGames": 15,
   "batters": [
     {
@@ -660,22 +660,22 @@
       "gameLabel": "SEA @ MIN"
     },
     {
-      "pitcherId": 594798,
-      "pitcherName": "Jacob deGrom",
-      "team": "TEX",
-      "oppTeam": "NYY",
-      "line": 88,
+      "pitcherId": 665795,
+      "pitcherName": "Edward Cabrera",
+      "team": "CHC",
+      "oppTeam": "SD",
+      "line": 89,
       "overUnder": "OVER",
       "pitchScore": 72,
       "grade": "A",
-      "recent5Avg": 85.4,
+      "recent5Avg": 89.8,
       "recent5Starts": 5,
-      "twoYrAvg": 86.9,
-      "twoYrStarts": 35,
-      "bvpAdj": 2,
-      "lineupPA": 152,
-      "gamePk": 822908,
-      "gameLabel": "NYY @ TEX"
+      "twoYrAvg": 87.1,
+      "twoYrStarts": 31,
+      "bvpAdj": 0,
+      "lineupPA": 116,
+      "gamePk": 823310,
+      "gameLabel": "CHC @ SD"
     }
   ]
 }
