@@ -1056,8 +1056,11 @@ function computeHandednessAdj(pitcherHand, oppRoster){
 // ── Core Projection Functions ──
 
 function computePitchLine(params){
-  // V5 model — balanced multi-signal with blowup detection
-  // When PP line available: 35% PP + 30% seasonAvgPC + 25% recent5 + 10% league mean
+  // V5.2 model — PP-anchored with OVER-lean correction
+  // Key insight: PP lines are set ~5 pitches above pitcher season averages.
+  // V5.1 blended too much season/recent data, dragging projections below PP.
+  // V5.2 raises PP weight so projections stay closer to the line.
+  // When PP line available: 45% PP + 22% seasonAvgPC + 23% recent5 + 10% league mean
   // + blowup risk penalty + deep starter bonus + trend adjustment
   // Fallback (no PP): 40% seasonAvgPC + 35% recent5 + 15% twoYr + 10% league mean
   var p=params;
@@ -1072,11 +1075,14 @@ function computePitchLine(params){
   var projected=null;
 
   if(ppLine&&recent5Avg>0&&seasonAvgPC>0){
-    // Full V5 mode: PP anchor reduced, season avg PC is a core signal
-    projected=ppLine*0.35+seasonAvgPC*0.30+recent5Avg*0.25+LEAGUE_MEAN*0.10;
+    // Full V5.2 mode: PP anchor strengthened to 45%
+    projected=ppLine*0.45+seasonAvgPC*0.22+recent5Avg*0.23+LEAGUE_MEAN*0.10;
   } else if(ppLine&&recent5Avg>0){
     // Have PP + recent5 but no season profile
-    projected=ppLine*0.45+recent5Avg*0.40+LEAGUE_MEAN*0.15;
+    projected=ppLine*0.55+recent5Avg*0.30+LEAGUE_MEAN*0.15;
+  } else if(ppLine&&seasonAvgPC>0){
+    // Have PP + season profile but no recent5
+    projected=ppLine*0.50+seasonAvgPC*0.35+LEAGUE_MEAN*0.15;
   } else {
     // Fallback: no PP line
     var parts=[];
@@ -1091,40 +1097,38 @@ function computePitchLine(params){
   }
   if(projected==null||isNaN(projected)) return null;
 
-  // ── V5.1 adjustments ──
+  // ── V5.2 adjustments (same structure, reduced penalties) ──
 
   // Short start / opener detection: pitchers who rarely go 5+ IP
-  // Flag: seasonAvgPC < 65 = likely bullpen opener or piggyback role
   if(profile&&profile.starts>=2&&seasonAvgPC<65){
-    // Probable opener — model can't predict these, mark unreliable
-    projected=Math.min(projected, 55); // cap low, they'll get flagged as low-confidence
+    projected=Math.min(projected, 55);
   }
-  // High short start rate: >40% of starts under 75 pitches = volatile pitcher
+  // High short start rate: volatile pitcher (reduced from -4/-2 to -3/-1.5)
   if(profile&&profile.shortStartRate>0.40&&profile.starts>=3){
-    projected-=4;
+    projected-=3;
   } else if(profile&&profile.shortStartRate>0.25&&profile.starts>=3){
-    projected-=2;
+    projected-=1.5;
   }
 
-  // Blowup risk penalty: ERA > 5.0 AND season avgPC < 85 = danger zone
+  // Blowup risk penalty: ERA > 5.0 AND season avgPC < 85
   if(profile&&profile.era>5.0&&seasonAvgPC<85){
-    var blowupPenalty=-4;
-    if(profile.shortStartRate>0.2) blowupPenalty=-6;
+    var blowupPenalty=-3;
+    if(profile.shortStartRate>0.2) blowupPenalty=-5;
     projected+=blowupPenalty;
   }
 
-  // Deep starter bonus: season avgPC >= 94 means this pitcher consistently goes deep
+  // Deep starter bonus: season avgPC >= 94
   if(seasonAvgPC>=94){
     projected+=2;
   } else if(seasonAvgPC>=90){
     projected+=1;
   }
 
-  // Trend adjustment: if last 3 starts avg is significantly below season avg, pitcher may be declining
+  // Trend adjustment: reduced magnitude
   if(last3Avg>0&&seasonAvgPC>0){
     var trendDiff=last3Avg-seasonAvgPC;
-    if(trendDiff<-5) projected-=2;       // declining trend
-    else if(trendDiff>5) projected+=1.5;  // hot streak / ramping up
+    if(trendDiff<-5) projected-=1.5;      // declining trend (was -2)
+    else if(trendDiff>5) projected+=1.5;   // hot streak
   }
 
   return Math.round(projected*2)/2;
@@ -1134,34 +1138,59 @@ function computeOverUnder(line, params){
   var projected=computePitchLine(params);
   if(projected==null||isNaN(projected)||isNaN(line)) return null;
 
-  // ── V5.1 UNDER confidence gate ──
-  // Before making an UNDER call, check if career/season profile disagrees.
-  // Data shows UNDER picks miss at ~55% because elite starters with a couple
-  // short recent outings get pulled down, but their career profile says 95+.
+  // ── V5.2 O/U Decision Engine ──
+  // Key insight from 4/28 data: PP lines are systematically inflated ~5 pitches
+  // above season averages. 61% of pitchers went OVER their PP line that day.
+  // V5.1 picked UNDER 22/23 times at 43% accuracy — catastrophic.
+  //
+  // V5.2 strategy:
+  //   - proj >= line → OVER (clear signal)
+  //   - proj within [line-4, line) → "PP inflation zone" → lean OVER unless
+  //     multiple strong UNDER signals converge
+  //   - proj < line-4 → genuine UNDER signal, but still check career overrides
+  //   - Default tiebreaker → OVER (since PP lines run high)
+
   var twoYrAvg=(params.twoYr&&params.twoYr.avg>0)?params.twoYr.avg:0;
   var profile=params.pitchProfile||null;
   var seasonAvgPC=(profile&&profile.seasonAvgPC>0)?profile.seasonAvgPC:0;
+  var recent5Avg=(params.recent5&&params.recent5.avg>0)?params.recent5.avg:0;
 
-  if(projected<line-0.25){
-    // Model says UNDER — but apply career override checks
-    // Gate 1: If twoYrAvg is 5+ pitches above the PP line, career says OVER
-    if(twoYrAvg>0&&twoYrAvg>line+5) return "OVER";
-    // Gate 2: If seasonAvgPC is 3+ above the line, this season says OVER
-    if(seasonAvgPC>0&&seasonAvgPC>line+3) return "OVER";
-    // Gate 3: If both recent5 AND twoYr are above the line, lean OVER
-    var recent5Avg=(params.recent5&&params.recent5.avg>0)?params.recent5.avg:0;
-    if(recent5Avg>line&&twoYrAvg>line) return "OVER";
-    return "UNDER";
+  // ── CLEAR OVER: projection at or above line ──
+  if(projected>=line) return "OVER";
+
+  // ── PP INFLATION ZONE: proj is 0-4 below line ──
+  // Default OVER — PP lines are set above true averages
+  // Only flip to UNDER if there are multiple converging UNDER signals
+  if(projected>=line-4){
+    var underSignals=0;
+    // Signal 1: season avgPC is well below the line
+    if(seasonAvgPC>0&&seasonAvgPC<line-3) underSignals++;
+    // Signal 2: recent 5 avg is below the line
+    if(recent5Avg>0&&recent5Avg<line-2) underSignals++;
+    // Signal 3: two-year avg is below the line
+    if(twoYrAvg>0&&twoYrAvg<line-3) underSignals++;
+    // Signal 4: declining trend (last 3 well below season)
+    var last3Avg=(profile&&profile.last3Avg>0)?profile.last3Avg:0;
+    if(last3Avg>0&&seasonAvgPC>0&&(last3Avg-seasonAvgPC)<-5) underSignals++;
+    // Signal 5: high short start rate
+    if(profile&&profile.shortStartRate>0.35&&profile.starts>=3) underSignals++;
+    // Signal 6: blowup risk pitcher
+    if(profile&&profile.era>5.0&&seasonAvgPC<85) underSignals++;
+
+    // Need 3+ converging signals to override the OVER lean
+    if(underSignals>=3) return "UNDER";
+    return "OVER";
   }
-  if(projected>line+0.25) return "OVER";
 
-  // tiebreakers for projections near the line
-  // Season avgPC above the line = lean OVER
-  if(profile&&profile.seasonAvgPC>line+1) return "OVER";
-  if(profile&&profile.seasonAvgPC<line-1) return "UNDER";
-  if((params.bvpAdj||0)>0) return "OVER";
-  if((params.bvpAdj||0)<0) return "UNDER";
-  if(params.recent5&&params.twoYr&&params.recent5.avg>params.twoYr.avg) return "OVER";
+  // ── GENUINE UNDER ZONE: proj is 4+ below line ──
+  // Likely a real UNDER, but check career/season overrides
+  // Gate 1: career avg says OVER
+  if(twoYrAvg>0&&twoYrAvg>line+3) return "OVER";
+  // Gate 2: season avgPC says OVER
+  if(seasonAvgPC>0&&seasonAvgPC>line+2) return "OVER";
+  // Gate 3: recent trend is above the line
+  if(recent5Avg>line&&twoYrAvg>line) return "OVER";
+
   return "UNDER";
 }
 
