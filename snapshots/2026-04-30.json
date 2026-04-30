@@ -1,8 +1,8 @@
 {
   "date": "2026-04-30",
-  "savedAt": "2026-04-30T18:53:55.876Z",
+  "savedAt": "2026-04-30T22:28:57.471Z",
   "scanType": "afternoon",
-  "gamesScanned": 3,
+  "gamesScanned": 2,
   "totalGames": 11,
   "batters": [
     {
@@ -198,6 +198,22 @@
       "gameLabel": "KC @ ATH"
     },
     {
+      "batterId": 702222,
+      "batterName": "Justin Crawford",
+      "pitcherId": 605288,
+      "pitcherName": "Adrian Houser",
+      "batterTeam": "PHI",
+      "pitcherTeam": "SF",
+      "edgeScore": 77,
+      "grade": "A",
+      "bvpAvg": "1.000",
+      "bvpOps": "2.500",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 823471,
+      "gameLabel": "SF @ PHI"
+    },
+    {
       "batterId": 656941,
       "batterName": "Kyle Schwarber",
       "pitcherId": 657277,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 823714,
       "gameLabel": "TOR @ MIN"
-    },
-    {
-      "batterId": 682928,
-      "batterName": "CJ Abrams",
-      "pitcherId": 642547,
-      "pitcherName": "Freddy Peralta",
-      "batterTeam": "WSH",
-      "pitcherTeam": "NYM",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.167",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 823634,
-      "gameLabel": "WSH @ NYM"
     }
   ],
   "pitchers": [
@@ -430,6 +430,19 @@
       "gameLabel": "TOR @ MIN"
     },
     {
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "team": "PHI",
+      "oppTeam": "SF",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 9,
+      "projectedIP": 18,
+      "projectedK": 15.5,
+      "gamePk": 823471,
+      "gameLabel": "SF @ PHI"
+    },
+    {
       "pitcherId": 571945,
       "pitcherName": "Miles Mikolas",
       "team": "WSH",
@@ -441,6 +454,19 @@
       "projectedK": 4.5,
       "gamePk": 823634,
       "gameLabel": "WSH @ NYM"
+    },
+    {
+      "pitcherId": 605288,
+      "pitcherName": "Adrian Houser",
+      "team": "SF",
+      "oppTeam": "PHI",
+      "whiffScore": 51,
+      "grade": "C",
+      "k9": 4.8,
+      "projectedIP": 4.7,
+      "projectedK": 2,
+      "gamePk": 823471,
+      "gameLabel": "SF @ PHI"
     },
     {
       "pitcherId": 605540,
