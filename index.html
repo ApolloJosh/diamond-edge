@@ -1388,6 +1388,143 @@ function starColor(stars){
   return "#ef4444";
 }
 
+/* ─── Batter K Predictor Model ─── */
+// Estimates probability that a batter will strike out 1+ or 2+ times in a game.
+// Uses: batter season K%, batter platoon K% vs pitcher hand, pitcher K/9,
+// BvP K history, batter recent form K%, opponent team K-rate.
+// Returns {conf1K, conf2K, factors} where conf values are 0-100 percentages.
+function computeBatterKConfidence(params){
+  var batterSeason = params.batterSeason;    // batter season hitting stats
+  var batterSplit = params.batterSplit;       // batter stats vs pitcher's hand (L or R)
+  var pitcherSeason = params.pitcherSeason;  // pitcher season pitching stats
+  var bvpStat = params.bvpStat;              // head-to-head BvP stats
+  var batterRecent = params.batterRecent;    // batter last 10 games
+  var pitcherHand = params.pitcherHand;      // "L" or "R"
+
+  var factors = {};
+
+  // ── 1. Batter Season K Rate (weight: 25%) ──
+  // League avg K rate ~22%. Higher = more K-prone.
+  var batterKRate = 0.22; // default
+  if(batterSeason){
+    var bAB = parseInt(batterSeason.atBats)||0;
+    var bK = parseInt(batterSeason.strikeOuts)||0;
+    if(bAB >= 20) batterKRate = bK / bAB;
+  }
+  // Normalize: 0.15 K rate = -35, 0.22 = 0, 0.30 = +40, 0.35 = +65
+  var batterKSignal = (batterKRate - 0.22) * 500;
+  batterKSignal = Math.max(-40, Math.min(65, batterKSignal));
+  factors.batterK = {rate: batterKRate, signal: Math.round(batterKSignal)};
+
+  // ── 2. Platoon K Rate vs Pitcher Hand (weight: 15%) ──
+  // Some batters K way more vs one hand. If split data exists, use it.
+  var platoonSignal = 0;
+  if(batterSplit){
+    var spAB = parseInt(batterSplit.atBats)||0;
+    var spK = parseInt(batterSplit.strikeOuts)||0;
+    if(spAB >= 10){
+      var splitKRate = spK / spAB;
+      platoonSignal = (splitKRate - batterKRate) * 400;
+      platoonSignal = Math.max(-25, Math.min(30, platoonSignal));
+      factors.platoon = {rate: splitKRate, signal: Math.round(platoonSignal)};
+    }
+  }
+
+  // ── 3. Pitcher K/9 (weight: 25%) ──
+  // League avg K/9 ~8.5. Higher = more Ks generated.
+  var pitcherK9 = 8.5;
+  if(pitcherSeason){
+    pitcherK9 = parseFloat(pitcherSeason.strikeoutsPer9Inn)||8.5;
+  }
+  // Normalize: 7.0 = -25, 8.5 = 0, 10.0 = +25, 12.0 = +58
+  var pitcherKSignal = (pitcherK9 - 8.5) * 16.5;
+  pitcherKSignal = Math.max(-30, Math.min(60, pitcherKSignal));
+  factors.pitcherK9 = {k9: pitcherK9, signal: Math.round(pitcherKSignal)};
+
+  // ── 4. BvP K History (weight: 15%) ──
+  // If batter has faced this pitcher before, their K rate in that matchup matters.
+  var bvpSignal = 0;
+  if(bvpStat){
+    var bvpAB = parseInt(bvpStat.atBats)||0;
+    var bvpK = parseInt(bvpStat.strikeOuts)||0;
+    if(bvpAB >= 3){
+      var bvpKRate = bvpK / bvpAB;
+      // Weight more heavily with more PA
+      var bvpWeight = Math.min(1.0, bvpAB / 15);
+      bvpSignal = (bvpKRate - batterKRate) * 300 * bvpWeight;
+      bvpSignal = Math.max(-25, Math.min(35, bvpSignal));
+      factors.bvp = {rate: bvpKRate, ab: bvpAB, signal: Math.round(bvpSignal)};
+    }
+  }
+
+  // ── 5. Batter Recent Form (weight: 10%) ──
+  // If batter is in a slump, they tend to K more (chasing, expanding zone)
+  var recentSignal = 0;
+  if(batterRecent && batterRecent.pa >= 15){
+    // Low recent avg = pressing = more Ks
+    var recentAvg = batterRecent.avg || 0;
+    if(recentAvg < 0.180) recentSignal = 12;
+    else if(recentAvg < 0.220) recentSignal = 6;
+    else if(recentAvg > 0.320) recentSignal = -8;
+    else if(recentAvg > 0.280) recentSignal = -4;
+    factors.recentForm = {avg: recentAvg, signal: recentSignal};
+  }
+
+  // ── 6. Opponent Team K-Rate (weight: 10%) ──
+  // Already computed in the main scan — how much this team Ks as a whole
+  var teamKSignal = 0;
+  var teamKRate = params.teamKRate || 0.22;
+  teamKSignal = (teamKRate - 0.22) * 350;
+  teamKSignal = Math.max(-20, Math.min(25, teamKSignal));
+  factors.teamK = {rate: teamKRate, signal: Math.round(teamKSignal)};
+
+  // ── Composite Score ──
+  // Weighted sum → base probability adjustment
+  var composite = batterKSignal * 0.25 +
+                  platoonSignal * 0.15 +
+                  pitcherKSignal * 0.25 +
+                  bvpSignal * 0.15 +
+                  recentSignal * 0.10 +
+                  teamKSignal * 0.10;
+
+  // ── Convert to probabilities ──
+  // Base rates from MLB data:
+  //   P(1+ K in a game) ≈ 62% for avg hitter (3.8 PA, 22% K rate)
+  //   P(2+ K in a game) ≈ 28% for avg hitter
+  // We adjust these base rates by the composite score
+  var base1K = 62;
+  var base2K = 28;
+
+  // Composite range is roughly -40 to +60. Scale to probability adjustment.
+  var conf1K = base1K + composite * 0.45;
+  var conf2K = base2K + composite * 0.55;
+
+  // Clamp
+  conf1K = Math.max(15, Math.min(95, conf1K));
+  conf2K = Math.max(5, Math.min(85, conf2K));
+
+  // Ensure 2K is always less than 1K
+  if(conf2K >= conf1K) conf2K = conf1K - 10;
+
+  return {
+    conf1K: Math.round(conf1K),
+    conf2K: Math.round(conf2K),
+    composite: Math.round(composite),
+    factors: factors
+  };
+}
+
+// Grade thresholds for K confidence
+function kConfGrade(conf){
+  if(conf >= 80) return {grade:"A+", color:"#22c55e"};
+  if(conf >= 72) return {grade:"A", color:"#4ade80"};
+  if(conf >= 65) return {grade:"B+", color:"#86efac"};
+  if(conf >= 58) return {grade:"B", color:C.gold};
+  if(conf >= 50) return {grade:"C+", color:C.orange};
+  if(conf >= 40) return {grade:"C", color:"#fca5a5"};
+  return {grade:"D", color:"#ef4444"};
+}
+
 /* ─── API Fetchers ─── */
 var _fetchCache={};
 // Global concurrency limiter: max 4 in-flight fetches at once
@@ -3110,6 +3247,12 @@ function App(){
   const [teamKRates,setTeamKRates]=_s({});
   const [gameWeather,setGameWeather]=_s(null);
 
+  // K Predictor state
+  const [kPredictions,setKPredictions]=_s([]);
+  const [kScanState,setKScanState]=_s("idle"); // "idle" | "scanning" | "done"
+  const [kScanProgress,setKScanProgress]=_s("");
+  const [kSortBy,setKSortBy]=_s("conf1K"); // "conf1K" | "conf2K"
+
   useEffect(function(){
     setGamesLoading(true);
     getTodayGames().then(function(g){setGames(g);setGamesLoading(false);})
@@ -3495,6 +3638,147 @@ function App(){
     setSelectedGame(null);
     setMatchups([]);
     setError(null);
+  }
+
+  // ── K Predictor Independent Scan ──
+  async function scanKPredictor(){
+    setKScanState("scanning");
+    setKPredictions([]);
+    setKScanProgress("Loading today's games...");
+    try{
+      var todayGames = games.length > 0 ? games : await getTodayGames();
+      var kResults = [];
+      for(var gi=0; gi<todayGames.length; gi++){
+        var game = todayGames[gi];
+        var gamePk = game.gamePk;
+        var awayTeam = game.teams.away.team;
+        var homeTeam = game.teams.home.team;
+        var awayP = game.teams.away.probablePitcher;
+        var homeP = game.teams.home.probablePitcher;
+        if(!awayP || !homeP) continue;
+        setKScanProgress("Game " + (gi+1) + "/" + todayGames.length + ": " + awayTeam.abbreviation + " @ " + homeTeam.abbreviation);
+
+        // Fetch pitcher season stats and hand
+        var awayPStat, homePStat, awayPHand, homePHand;
+        try{
+          var pFetches = await Promise.all([
+            getSeasonStats(awayP.id, "pitching"),
+            getSeasonStats(homeP.id, "pitching"),
+            getPitcherHand(awayP.id),
+            getPitcherHand(homeP.id)
+          ]);
+          awayPStat = pFetches[0];
+          homePStat = pFetches[1];
+          awayPHand = pFetches[2];
+          homePHand = pFetches[3];
+        }catch(e){ continue; }
+
+        // Fetch rosters
+        var awayRoster, homeRoster;
+        try{
+          var rFetches = await Promise.all([
+            getRoster(awayTeam.id),
+            getRoster(homeTeam.id)
+          ]);
+          awayRoster = rFetches[0] || [];
+          homeRoster = rFetches[1] || [];
+        }catch(e){ continue; }
+
+        // Get team K rates
+        var awayTeamKRate = 0.22, homeTeamKRate = 0.22;
+        try{
+          var tkFetches = await Promise.all([
+            getSeasonStats(awayTeam.id, "hitting"),
+            getSeasonStats(homeTeam.id, "hitting")
+          ]);
+          if(tkFetches[0]){
+            var tkAB = parseInt(tkFetches[0].atBats)||0;
+            var tkK = parseInt(tkFetches[0].strikeOuts)||0;
+            if(tkAB > 100) awayTeamKRate = tkK / tkAB;
+          }
+          if(tkFetches[1]){
+            var tkAB2 = parseInt(tkFetches[1].atBats)||0;
+            var tkK2 = parseInt(tkFetches[1].strikeOuts)||0;
+            if(tkAB2 > 100) homeTeamKRate = tkK2 / tkAB2;
+          }
+        }catch(e){}
+
+        // Process each side: away batters vs home pitcher, home batters vs away pitcher
+        var sides = [
+          {roster: awayRoster, pitcher: homeP, pitcherStat: homePStat, pitcherHand: homePHand, teamKRate: awayTeamKRate, batterTeamAbbr: awayTeam.abbreviation, pitcherTeamAbbr: homeTeam.abbreviation},
+          {roster: homeRoster, pitcher: awayP, pitcherStat: awayPStat, pitcherHand: awayPHand, teamKRate: homeTeamKRate, batterTeamAbbr: homeTeam.abbreviation, pitcherTeamAbbr: awayTeam.abbreviation}
+        ];
+
+        for(var si=0; si<sides.length; si++){
+          var side = sides[si];
+          // Process top ~9 batters (lineup positions)
+          var batterList = side.roster.filter(function(p){
+            return p.position && p.position.abbreviation !== "P";
+          }).slice(0, 13);
+
+          for(var bi=0; bi<batterList.length; bi++){
+            var batter = batterList[bi];
+            try{
+              // Fetch batter data in parallel
+              var bFetches = await Promise.all([
+                getSeasonStats(batter.person.id, "hitting"),
+                getBvPSplits(batter.person.id, side.pitcher.id),
+                getBatterRecentForm(batter.person.id),
+                getBatterPlatoonSplits(batter.person.id)
+              ]);
+              var batterSeason = bFetches[0];
+              var bvpStat = bFetches[1];
+              var batterRecent = bFetches[2];
+              var platoonData = bFetches[3];
+
+              // Skip batters with too few AB
+              if(!batterSeason || (parseInt(batterSeason.atBats)||0) < 20) continue;
+
+              // Get the right platoon split
+              var batterSplit = null;
+              if(platoonData){
+                batterSplit = side.pitcherHand === "L" ? platoonData.vsLeft : platoonData.vsRight;
+              }
+
+              var kResult = computeBatterKConfidence({
+                batterSeason: batterSeason,
+                batterSplit: batterSplit,
+                pitcherSeason: side.pitcherStat,
+                bvpStat: bvpStat,
+                batterRecent: batterRecent,
+                pitcherHand: side.pitcherHand,
+                teamKRate: side.teamKRate
+              });
+
+              kResults.push({
+                batter: {id: batter.person.id, fullName: batter.person.fullName},
+                pitcher: {id: side.pitcher.id, fullName: side.pitcher.fullName},
+                batterTeam: side.batterTeamAbbr,
+                pitcherTeam: side.pitcherTeamAbbr,
+                pitcherHand: side.pitcherHand,
+                gamePk: gamePk,
+                gameLabel: awayTeam.abbreviation + " @ " + homeTeam.abbreviation,
+                conf1K: kResult.conf1K,
+                conf2K: kResult.conf2K,
+                composite: kResult.composite,
+                factors: kResult.factors,
+                batterKRate: kResult.factors.batterK ? kResult.factors.batterK.rate : 0.22,
+                pitcherK9: kResult.factors.pitcherK9 ? kResult.factors.pitcherK9.k9 : 8.5
+              });
+            }catch(e){ /* skip batter on error */ }
+          }
+        }
+        // Update state incrementally
+        setKPredictions(kResults.slice());
+        await new Promise(function(r){setTimeout(r,50);});
+      }
+      setKPredictions(kResults.slice());
+      setKScanState("done");
+      setKScanProgress("");
+    }catch(e){
+      setKScanProgress("Error: " + e.message);
+      setKScanState("idle");
+    }
   }
 
   async function loadResults(dateStr){
@@ -3942,13 +4226,13 @@ function App(){
             {sidebarOpen?"\u2630":"\u2630"}
           </button>
           <div onClick={goHome} style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,color:C.gold,cursor:"pointer"}}>⚾ DIAMOND EDGE</div>
-          {(page==="game"||page==="results"||page==="season"||page==="totals")&&(
+          {(page==="game"||page==="results"||page==="season"||page==="totals"||page==="kpredictor")&&(
             <button onClick={goHome} style={{padding:"4px 12px",fontSize:10,background:"transparent",color:C.muted,
               border:"1px solid "+C.border,borderRadius:4,cursor:"pointer",fontFamily:"'DM Mono',monospace",letterSpacing:1}}>
               ← HOME
             </button>
           )}
-          {(page==="home"||page==="results"||page==="season"||page==="totals")&&(
+          {(page==="home"||page==="results"||page==="season"||page==="totals"||page==="kpredictor")&&(
             <div style={{color:C.muted,fontSize:10,letterSpacing:2,paddingTop:4}}>MLB MATCHUP INTELLIGENCE</div>
           )}
         </div>
@@ -4019,6 +4303,16 @@ function App(){
               fontFamily:"'DM Mono',monospace"}}>
             <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:C.orange}}>🎯 GAME TOTALS</div>
             <div style={{fontSize:10,color:C.muted,marginTop:2}}>O/U run projections</div>
+          </button>
+
+          <button className="game-btn" onClick={function(){setPage("kpredictor");}}
+            style={{display:"block",width:"calc(100% - 8px)",margin:"0 4px 8px",textAlign:"left",
+              background:page==="kpredictor"?"#1a2234":"transparent",
+              border:"1px solid "+(page==="kpredictor"?C.gold:"transparent"),
+              borderRadius:6,padding:"9px 14px",cursor:"pointer",color:C.text,
+              fontFamily:"'DM Mono',monospace"}}>
+            <div style={{fontSize:13,fontWeight:500,letterSpacing:1,color:"#f472b6"}}>K PREDICTOR</div>
+            <div style={{fontSize:10,color:C.muted,marginTop:2}}>Batter strikeout odds</div>
           </button>
 
           <div style={{padding:"0 14px 10px",fontSize:10,letterSpacing:2,color:C.muted}}>GAMES</div>
@@ -4637,6 +4931,156 @@ function App(){
 
           {page==="totals"&&(
             <GameTotalsPage games={games}/>
+          )}
+
+          {page==="kpredictor"&&(
+            <div style={{padding:"32px 24px",maxWidth:1100,margin:"0 auto"}}>
+              <div style={{marginBottom:24}}>
+                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:28,letterSpacing:3,color:"#f472b6",marginBottom:4}}>
+                  K PREDICTOR
+                </div>
+                <div style={{fontSize:11,color:C.muted,letterSpacing:1}}>
+                  Batter strikeout probability model — independent scan
+                </div>
+              </div>
+
+              {/* Scan Button */}
+              <div style={{marginBottom:24}}>
+                {kScanState==="idle"&&(
+                  <button onClick={scanKPredictor} style={{padding:"12px 32px",background:"linear-gradient(135deg,#f472b6,#ec4899)",
+                    border:"none",borderRadius:8,color:"#fff",fontSize:14,fontWeight:700,letterSpacing:2,cursor:"pointer",
+                    fontFamily:"'Bebas Neue',sans-serif"}}>
+                    SCAN ALL BATTERS
+                  </button>
+                )}
+                {kScanState==="scanning"&&(
+                  <div>
+                    <div style={{fontSize:13,letterSpacing:2,marginBottom:8,color:"#f472b6"}} className="loading-pulse">SCANNING...</div>
+                    <div style={{fontSize:11,color:C.muted}}>{kScanProgress}</div>
+                  </div>
+                )}
+                {kScanState==="done"&&(
+                  <div style={{display:"flex",alignItems:"center",gap:16}}>
+                    <div style={{color:"#f472b6",fontSize:12,letterSpacing:1}}>SCAN COMPLETE — {kPredictions.length} batters analyzed</div>
+                    <button onClick={function(){setKScanState("idle");setKPredictions([]);_fetchCache={};scanKPredictor();}}
+                      style={{padding:"6px 16px",background:"transparent",border:"1px solid "+C.border,borderRadius:6,
+                        color:C.muted,fontSize:11,cursor:"pointer",fontFamily:"'DM Mono',monospace"}}>
+                      RESCAN
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Sort Toggle */}
+              {kPredictions.length>0&&(
+                <div style={{display:"flex",gap:8,marginBottom:20}}>
+                  <button onClick={function(){setKSortBy("conf1K");}}
+                    style={{padding:"6px 16px",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer",
+                      fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1,
+                      background:kSortBy==="conf1K"?"#f472b6":"transparent",
+                      color:kSortBy==="conf1K"?"#fff":C.muted,
+                      border:"1px solid "+(kSortBy==="conf1K"?"#f472b6":C.border)}}>
+                    SORT BY 1+ K %
+                  </button>
+                  <button onClick={function(){setKSortBy("conf2K");}}
+                    style={{padding:"6px 16px",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer",
+                      fontFamily:"'Bebas Neue',sans-serif",letterSpacing:1,
+                      background:kSortBy==="conf2K"?"#f472b6":"transparent",
+                      color:kSortBy==="conf2K"?"#fff":C.muted,
+                      border:"1px solid "+(kSortBy==="conf2K"?"#f472b6":C.border)}}>
+                    SORT BY 2+ K %
+                  </button>
+                </div>
+              )}
+
+              {/* Results */}
+              {kPredictions.length>0&&(function(){
+                var sorted = kPredictions.slice().sort(function(a,b){
+                  return kSortBy==="conf2K" ? b.conf2K-a.conf2K : b.conf1K-a.conf1K;
+                });
+                // Only show batters with meaningful K confidence
+                var filtered = sorted.filter(function(k){return k.conf1K >= 55 || k.conf2K >= 25;});
+                return(
+                  <div>
+                    <div style={{fontSize:10,color:C.muted,letterSpacing:1,marginBottom:12}}>
+                      {filtered.length} HIGH-K MATCHUPS (of {kPredictions.length} total)
+                    </div>
+                    <div style={{overflowX:"auto"}}>
+                      <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
+                        <thead>
+                          <tr style={{borderBottom:"1px solid "+C.border,background:C.card}}>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>#</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>BATTER</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>TEAM</th>
+                            <th style={{textAlign:"left",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>vs PITCHER</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>HAND</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>K RATE</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:C.muted,fontWeight:500,letterSpacing:1}}>P K/9</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:"#f472b6",fontWeight:600,letterSpacing:1}}>1+ K %</th>
+                            <th style={{textAlign:"center",padding:"12px 6px",color:C.muted,fontWeight:500,letterSpacing:1,width:120}}>1K CONF</th>
+                            <th style={{textAlign:"center",padding:"12px 8px",color:"#ec4899",fontWeight:600,letterSpacing:1}}>2+ K %</th>
+                            <th style={{textAlign:"center",padding:"12px 6px",color:C.muted,fontWeight:500,letterSpacing:1,width:120}}>2K CONF</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filtered.map(function(k,idx){
+                            var g1 = kConfGrade(k.conf1K);
+                            var g2 = kConfGrade(k.conf2K);
+                            return(
+                              <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
+                                <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
+                                <td style={{padding:"10px 8px",color:C.text,fontWeight:500}}>{k.batter.fullName}</td>
+                                <td style={{padding:"10px 8px",color:C.muted}}>{k.batterTeam}</td>
+                                <td style={{padding:"10px 8px",color:C.subtext}}>{k.pitcher.fullName}</td>
+                                <td style={{padding:"10px 8px",textAlign:"center",color:k.pitcherHand==="L"?"#60a5fa":"#f97316",fontWeight:600}}>{k.pitcherHand||"?"}</td>
+                                <td style={{padding:"10px 8px",textAlign:"center",color:k.batterKRate>=0.28?"#ef4444":k.batterKRate>=0.24?C.orange:C.muted,fontWeight:600}}>
+                                  {(k.batterKRate*100).toFixed(0)}%
+                                </td>
+                                <td style={{padding:"10px 8px",textAlign:"center",color:k.pitcherK9>=10?"#22c55e":k.pitcherK9>=9?C.gold:C.muted,fontWeight:600}}>
+                                  {k.pitcherK9.toFixed(1)}
+                                </td>
+                                <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,color:g1.color}}>{k.conf1K}%</td>
+                                <td style={{padding:"10px 4px"}}>
+                                  <div style={{position:"relative",height:16,background:C.border,borderRadius:8,overflow:"hidden"}}>
+                                    <div style={{position:"absolute",left:0,top:0,height:"100%",width:k.conf1K+"%",
+                                      background:"linear-gradient(90deg,#f472b680,"+g1.color+")",borderRadius:8,transition:"width 0.5s"}}></div>
+                                    <div style={{position:"absolute",width:"100%",textAlign:"center",fontSize:8,lineHeight:"16px",color:"#fff",fontWeight:700}}>
+                                      {g1.grade}
+                                    </div>
+                                  </div>
+                                </td>
+                                <td style={{padding:"10px 8px",textAlign:"center",fontWeight:700,fontSize:14,color:g2.color}}>{k.conf2K}%</td>
+                                <td style={{padding:"10px 4px"}}>
+                                  <div style={{position:"relative",height:16,background:C.border,borderRadius:8,overflow:"hidden"}}>
+                                    <div style={{position:"absolute",left:0,top:0,height:"100%",width:k.conf2K+"%",
+                                      background:"linear-gradient(90deg,#ec489980,"+g2.color+")",borderRadius:8,transition:"width 0.5s"}}></div>
+                                    <div style={{position:"absolute",width:"100%",textAlign:"center",fontSize:8,lineHeight:"16px",color:"#fff",fontWeight:700}}>
+                                      {g2.grade}
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {kScanState==="idle"&&kPredictions.length===0&&(
+                <div style={{textAlign:"center",padding:48,color:C.muted}}>
+                  <div style={{fontSize:40,marginBottom:16}}>K</div>
+                  <div style={{fontSize:14,marginBottom:8}}>Batter Strikeout Predictor</div>
+                  <div style={{fontSize:11,color:C.subtext,maxWidth:450,margin:"0 auto",lineHeight:1.6}}>
+                    Analyzes every batter-pitcher matchup to estimate 1+ K and 2+ K probabilities.
+                    Uses batter K-rate, platoon splits, pitcher K/9, BvP history, recent form, and team K tendency.
+                    Hit "Scan All Batters" to start.
+                  </div>
+                </div>
+              )}
+            </div>
           )}
 
           {page==="season"&&(
