@@ -4016,11 +4016,13 @@ function App(){
           };
         });
 
-        // Compute summaries — only count players who actually played (have actualStats)
+        // Compute summaries — only count players who actually played (have actualStats AND at-bats > 0)
+        // Batters with 0 AB are DNP (defensive subs, pinch-runners, never batted)
         var crTotalFantasy=0, crHitCount=0, crBGradeBatters=0;
         for(var ci=0;ci<crPicks.length;ci++){
           crTotalFantasy+=crPicks[ci].fantasyScore;
-          if(crPicks[ci].edgeScore>=55&&crPicks[ci].actualStats){
+          var bAB=crPicks[ci].actualStats?(parseInt(crPicks[ci].actualStats.atBats)||0):0;
+          if(crPicks[ci].edgeScore>=55&&crPicks[ci].actualStats&&bAB>0){
             crBGradeBatters++;
             if((parseInt(crPicks[ci].actualStats.hits)||0)>0) crHitCount++;
           }
@@ -4738,7 +4740,8 @@ function App(){
                           <tbody>
                             {resultsData.picks.map(function(pick,idx){
                               var fantasyColor = pick.fantasyScore >= 15 ? C.green : pick.fantasyScore >= 8 ? C.gold : pick.fantasyScore < 3 ? C.red : C.text;
-                              var actualLine = pick.actualStats ? (parseInt(pick.actualStats.hits)||0)+"-"+(parseInt(pick.actualStats.atBats)||0) : "DNP";
+                              var pickAB = pick.actualStats ? (parseInt(pick.actualStats.atBats)||0) : 0;
+                              var actualLine = (pick.actualStats && pickAB > 0) ? (parseInt(pick.actualStats.hits)||0)+"-"+pickAB : "DNP";
                               return(
                                 <tr key={idx} style={{borderBottom:"1px solid "+C.border}}>
                                   <td style={{padding:"10px 8px",color:C.subtext}}>{idx+1}</td>
