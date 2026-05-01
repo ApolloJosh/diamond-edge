@@ -212,13 +212,14 @@ async function main() {
   }
 
   // --- SUMMARY (DNP excluded from all denominators) ---
+  // "Hit" = 5+ fantasy points (meaningful contribution)
   const qualifiedBatters = resultBatters.filter(b => b.edgeScore >= 55 && b.actualStats);
   const bGradeBatters = qualifiedBatters.length;
 
   let totalFantasy = 0, hitCount = 0;
   for (const b of qualifiedBatters) {
     totalFantasy += b.fantasyScore;
-    if (b.hits > 0) hitCount++;
+    if (b.fantasyScore >= 5) hitCount++;
   }
   const avgFantasy = bGradeBatters > 0 ? Math.round((totalFantasy / bGradeBatters) * 10) / 10 : 0;
   const hitRate = bGradeBatters > 0 ? Math.round((hitCount / bGradeBatters) * 100) : 0;
