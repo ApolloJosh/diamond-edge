@@ -1,10 +1,26 @@
 {
   "date": "2026-05-01",
-  "savedAt": "2026-05-01T18:41:17.682Z",
+  "savedAt": "2026-05-01T22:25:22.568Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
+    {
+      "batterId": 592450,
+      "batterName": "Aaron Judge",
+      "pitcherId": 700249,
+      "pitcherName": "Cade Povich",
+      "batterTeam": "NYY",
+      "pitcherTeam": "BAL",
+      "edgeScore": 99,
+      "grade": "A+",
+      "bvpAvg": ".667",
+      "bvpOps": "3.542",
+      "bvpPA": 16,
+      "bvpHR": 4,
+      "gamePk": 823557,
+      "gameLabel": "BAL @ NYY"
+    },
     {
       "batterId": 645277,
       "batterName": "Ozzie Albies",
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 823389,
       "gameLabel": "CIN @ PIT"
-    },
-    {
-      "batterId": 683737,
-      "batterName": "Michael Busch",
-      "pitcherId": 668678,
-      "pitcherName": "Zac Gallen",
-      "batterTeam": "CHC",
-      "pitcherTeam": "AZ",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".444",
-      "bvpOps": "1.434",
-      "bvpPA": 22,
-      "bvpHR": 2,
-      "gamePk": 824686,
-      "gameLabel": "AZ @ CHC"
     }
   ],
   "pitchers": [
@@ -493,6 +493,19 @@
       "projectedK": 2.5,
       "gamePk": 823389,
       "gameLabel": "CIN @ PIT"
+    },
+    {
+      "pitcherId": 700249,
+      "pitcherName": "Cade Povich",
+      "team": "BAL",
+      "oppTeam": "NYY",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 5.1,
+      "projectedIP": 12.1,
+      "projectedK": 6,
+      "gamePk": 823557,
+      "gameLabel": "BAL @ NYY"
     },
     {
       "pitcherId": 681035,
