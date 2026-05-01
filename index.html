@@ -659,8 +659,9 @@ async function getPitcherPitchProfile(pitcherId){
       era=parseFloat(ss.era)||null;
       whip=parseFloat(ss.whip)||null;
     }
-    // Game log for per-start pitch counts
+    // Game log for per-start pitch counts AND earned runs (for blowup rate)
     var starts=[];
+    var startERs=[]; // earned runs per start
     if(both[0].stats){
       for(var si=0;si<both[0].stats.length;si++){
         var sg=both[0].stats[si];
@@ -670,6 +671,8 @@ async function getPitcherPitchProfile(pitcherId){
             if(sp.stat&&(parseInt(sp.stat.gamesStarted)||0)>=1){
               var pc=parseInt(sp.stat.numberOfPitches)||parseInt(sp.stat.pitchesThrown)||0;
               if(pc>0) starts.push(pc);
+              var er=parseInt(sp.stat.earnedRuns)||0;
+              startERs.push(er);
             }
           }
         }
@@ -682,8 +685,12 @@ async function getPitcherPitchProfile(pitcherId){
     var last3Avg=last3.reduce(function(a,b){return a+b;},0)/last3.length;
     var sub75=starts.filter(function(c){return c<75;}).length;
     var shortStartRate=sub75/starts.length;
+    // Blowup rate: % of starts giving up 4+ earned runs
+    var blowupStarts=startERs.filter(function(er){return er>=4;}).length;
+    var blowupRate=starts.length>0?blowupStarts/starts.length:0;
     var result={seasonAvgPC:seasonAvgPC,last3Avg:last3Avg,era:era,whip:whip,
-      starts:starts.length,shortStartRate:shortStartRate,sub75:sub75};
+      starts:starts.length,shortStartRate:shortStartRate,sub75:sub75,
+      blowupRate:blowupRate,blowupStarts:blowupStarts};
     _pitchProfileCache[pitcherId]=result;
     return result;
   }catch(e){return null;}
@@ -1117,6 +1124,27 @@ function computePitchLine(params){
     projected+=blowupPenalty;
   }
 
+  // V5.3: Blowup rate penalty — pitchers with 40%+ starts giving up 4+ ER
+  // These guys get pulled early regardless of career pitch count averages
+  if(profile&&profile.blowupRate>=0.40&&profile.starts>=3){
+    // Compounded with short leash: blowup + short start = very likely under
+    if(profile.shortStartRate>=0.40) projected-=4;
+    else projected-=2.5;
+  } else if(profile&&profile.blowupRate>=0.30&&profile.starts>=4){
+    projected-=1.5; // moderate blowup tendency
+  }
+
+  // V5.3: Game O/U cross-reference — high-scoring games pull weaker starters early
+  // If projected game total is 9+ runs, the bad pitcher in that game gets yanked
+  var gameTotal=(p.gameTotal&&typeof p.gameTotal==="number")?p.gameTotal:null;
+  if(gameTotal&&gameTotal>=9.5&&profile&&profile.era>4.50){
+    // Weaker pitcher in a projected shootout → manager pulls early
+    projected-=2;
+    if(gameTotal>=11) projected-=1; // extreme blowout risk
+  } else if(gameTotal&&gameTotal>=9.5&&profile&&profile.era>4.00){
+    projected-=1; // decent pitcher but high-scoring game environment
+  }
+
   // Deep starter bonus: season avgPC >= 94
   if(seasonAvgPC>=94){
     projected+=2;
@@ -1174,8 +1202,13 @@ function computeOverUnder(line, params){
     if(last3Avg>0&&seasonAvgPC>0&&(last3Avg-seasonAvgPC)<-5) underSignals++;
     // Signal 5: high short start rate
     if(profile&&profile.shortStartRate>0.35&&profile.starts>=3) underSignals++;
-    // Signal 6: blowup risk pitcher
+    // Signal 6: blowup risk pitcher (ERA > 5.0 and low season avg)
     if(profile&&profile.era>5.0&&seasonAvgPC<85) underSignals++;
+    // Signal 7: high blowup rate (40%+ of starts with 4+ ER)
+    if(profile&&profile.blowupRate>=0.40&&profile.starts>=3) underSignals++;
+    // Signal 8: projected high-scoring game (pitcher likely to get pulled)
+    var gameTotal=(params.gameTotal&&typeof params.gameTotal==="number")?params.gameTotal:null;
+    if(gameTotal&&gameTotal>=9.5) underSignals++;
 
     // Need 3+ converging signals to override the OVER lean
     if(underSignals>=3) return "UNDER";
@@ -1184,12 +1217,19 @@ function computeOverUnder(line, params){
 
   // ── GENUINE UNDER ZONE: proj is 4+ below line ──
   // Likely a real UNDER, but check career/season overrides
-  // Gate 1: career avg says OVER
-  if(twoYrAvg>0&&twoYrAvg>line+3) return "OVER";
-  // Gate 2: season avgPC says OVER
-  if(seasonAvgPC>0&&seasonAvgPC>line+2) return "OVER";
-  // Gate 3: recent trend is above the line
-  if(recent5Avg>line&&twoYrAvg>line) return "OVER";
+  // EXCEPTION: skip career gates if pitcher has high blowup rate (40%+ starts with 4+ ER)
+  // Pitchers like Lauer/Bello have inflated career avgs but current-season blowups
+  // mean they're getting pulled early — career gates would wrongly flip to OVER
+  var hasBlowupPattern=profile&&profile.blowupRate>=0.40&&profile.starts>=3;
+  var hasShortLeash=profile&&profile.shortStartRate>=0.40&&profile.starts>=3;
+  if(!hasBlowupPattern&&!hasShortLeash){
+    // Gate 1: career avg says OVER
+    if(twoYrAvg>0&&twoYrAvg>line+3) return "OVER";
+    // Gate 2: season avgPC says OVER
+    if(seasonAvgPC>0&&seasonAvgPC>line+2) return "OVER";
+    // Gate 3: recent trend is above the line
+    if(recent5Avg>line&&twoYrAvg>line) return "OVER";
+  }
 
   return "UNDER";
 }
@@ -1251,6 +1291,11 @@ function computePitchScore(params){
 
   // Blowup risk flag lowers confidence
   if(profile&&profile.era>5.0&&profile.seasonAvgPC<85) score-=5;
+
+  // V5.3: High blowup rate actually INCREASES confidence for UNDER picks
+  // Because we know these pitchers are volatile and likely to get pulled
+  if(profile&&profile.blowupRate>=0.40&&profile.starts>=3) score+=3;
+  else if(profile&&profile.blowupRate>=0.30&&profile.starts>=4) score+=1;
 
   // Pitcher is in a predictable range
   if(profile&&profile.seasonAvgPC>=85&&profile.seasonAvgPC<=100) score+=3;
@@ -3460,7 +3505,19 @@ function App(){
             team:awayAbbr, oppTeam:homeAbbr, k9:aK9, projectedIP:aExpIP, projectedK:aProjK, seasonStat:awaySeasonStat});
         }
 
-        // Pitches-thrown scanning for this game (V4 PP-anchored model)
+        // V5.3: Quick game total estimate for pitch count cross-reference
+        // Uses already-fetched season stats to estimate if this is a high-scoring game
+        var quickGameTotal=null;
+        try{
+          var hERAq=homePitcherStat?parseFloat(homePitcherStat.era)||4.50:4.50;
+          var aERAq=awayPitcherStat?parseFloat(awayPitcherStat.era)||4.50:4.50;
+          // Quick estimate: league avg is 9.0 total, adjust by starter ERA differential
+          quickGameTotal=9.0+(hERAq-4.50)*0.45+(aERAq-4.50)*0.45;
+          // Clamp to reasonable range
+          quickGameTotal=Math.max(5.0,Math.min(14.0,quickGameTotal));
+        }catch(e){}
+
+        // Pitches-thrown scanning for this game (V5.3 PP-anchored model)
         try{
           var venueId=game.venue?game.venue.id:null;
           var parkFactor=getParkRunFactor(venueId);
@@ -3499,7 +3556,7 @@ function App(){
             var hParams={twoYr:hp2yr, recent5:hpRecent5, bvpAdj:hBvpAdj, pitcherEff:hpEff,
               teamPPA:hOppTeamPPA, bullpenFatigue:hBpFatigue, parkFactor:parkFactor,
               handednessAdj:hHandAdj, matchupsCount:homeMatchupsForWhiff.length,
-              ppLine:hPPLine, pitchProfile:hProfile};
+              ppLine:hPPLine, pitchProfile:hProfile, gameTotal:quickGameTotal};
             var hLine=computePitchLine(hParams);
             if(hLine!=null&&!isNaN(hLine)){
               var hOU=computeOverUnder(hLine, hParams);
@@ -3533,7 +3590,7 @@ function App(){
             var aParams={twoYr:ap2yr, recent5:apRecent5, bvpAdj:aBvpAdj, pitcherEff:apEff,
               teamPPA:aOppTeamPPA, bullpenFatigue:aBpFatigue, parkFactor:parkFactor,
               handednessAdj:aHandAdj, matchupsCount:awayMatchupsForWhiff.length,
-              ppLine:aPPLine, pitchProfile:aProfile};
+              ppLine:aPPLine, pitchProfile:aProfile, gameTotal:quickGameTotal};
             var aLine=computePitchLine(aParams);
             if(aLine!=null&&!isNaN(aLine)){
               var aOU=computeOverUnder(aLine, aParams);
