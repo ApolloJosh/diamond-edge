@@ -4018,13 +4018,15 @@ function App(){
 
         // Compute summaries — only count players who actually played (have actualStats AND at-bats > 0)
         // Batters with 0 AB are DNP (defensive subs, pinch-runners, never batted)
+        // "Hit" = 5+ fantasy points (meaningful contribution, not just a lucky single)
         var crTotalFantasy=0, crHitCount=0, crBGradeBatters=0;
         for(var ci=0;ci<crPicks.length;ci++){
-          crTotalFantasy+=crPicks[ci].fantasyScore;
           var bAB=crPicks[ci].actualStats?(parseInt(crPicks[ci].actualStats.atBats)||0):0;
-          if(crPicks[ci].edgeScore>=55&&crPicks[ci].actualStats&&bAB>0){
+          var bPlayed=crPicks[ci].actualStats&&bAB>0;
+          if(bPlayed) crTotalFantasy+=crPicks[ci].fantasyScore;
+          if(crPicks[ci].edgeScore>=55&&bPlayed){
             crBGradeBatters++;
-            if((parseInt(crPicks[ci].actualStats.hits)||0)>0) crHitCount++;
+            if(crPicks[ci].fantasyScore>=5) crHitCount++;
           }
         }
         var crPitcherOver=0, crPitchersWithStats=0, crTotalK=0;
@@ -4069,7 +4071,7 @@ function App(){
 
         setResultsData({
           picks:crPicks, pitcherPicks:crPitchers, date:dateStr, usedSnapshot:true, snapshotSource:"cloud-results",
-          avgFantasy:crPicks.length>0?(crTotalFantasy/crPicks.length).toFixed(1):"0",
+          avgFantasy:crBGradeBatters>0?(crTotalFantasy/crBGradeBatters).toFixed(1):"0",
           totalFantasy:crTotalFantasy,
           hitRate:crBGradeBatters>0?((crHitCount/crBGradeBatters)*100).toFixed(0):"0",
           pitcherOverRate:crPitchersWithStats>0?((crPitcherOver/crPitchersWithStats)*100).toFixed(0):"0",
