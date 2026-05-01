@@ -45,6 +45,25 @@ self.addEventListener('fetch', function(event) {
     return;
   }
 
+  // index.html — network-first so users always get the latest version
+  // Falls back to cache only when offline
+  if (url.indexOf('index.html') !== -1 || url.endsWith('/diamond-edge/') || url.endsWith('/diamond-edge')) {
+    event.respondWith(
+      fetch(event.request).then(function(response) {
+        if (response.status === 200) {
+          var clone = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, clone);
+          });
+        }
+        return response;
+      }).catch(function() {
+        return caches.match(event.request);
+      })
+    );
+    return;
+  }
+
   // Everything else — try cache first, fall back to network
   event.respondWith(
     caches.match(event.request).then(function(cached) {
