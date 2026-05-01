@@ -1,7 +1,7 @@
 {
   "date": "2026-05-01",
-  "savedAt": "2026-05-01T16:33:14.877Z",
-  "scanType": "morning",
+  "savedAt": "2026-05-01T18:41:17.682Z",
+  "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
@@ -456,28 +456,28 @@
       "gameLabel": "TEX @ DET"
     },
     {
+      "pitcherId": 607067,
+      "pitcherName": "Colin Rea",
+      "team": "CHC",
+      "oppTeam": "AZ",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 8.3,
+      "projectedIP": 7,
+      "projectedK": 5.5,
+      "gamePk": 824686,
+      "gameLabel": "AZ @ CHC"
+    },
+    {
       "pitcherId": 668678,
       "pitcherName": "Zac Gallen",
       "team": "AZ",
       "oppTeam": "CHC",
       "whiffScore": 54,
       "grade": "C",
-      "k9": 5.3,
-      "projectedIP": 4.7,
+      "k9": 5.5,
+      "projectedIP": 4.2,
       "projectedK": 2,
-      "gamePk": 824686,
-      "gameLabel": "AZ @ CHC"
-    },
-    {
-      "pitcherId": 607067,
-      "pitcherName": "Colin Rea",
-      "team": "CHC",
-      "oppTeam": "AZ",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 7.9,
-      "projectedIP": 9,
-      "projectedK": 6.5,
       "gamePk": 824686,
       "gameLabel": "AZ @ CHC"
     },
