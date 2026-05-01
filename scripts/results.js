@@ -81,7 +81,10 @@ async function main() {
 
     const hits = batterFound ? (parseInt(batterFound.hits) || 0) : 0;
     const ab = batterFound ? (parseInt(batterFound.atBats) || 0) : 0;
-    const fantasyScore = batterFound ? computeFantasyScore(batterFound) : 0;
+    // Treat 0-AB batters as DNP — they appeared in the boxscore (roster/lineup card)
+    // but never actually batted (defensive sub, pinch-runner, game ended before their PA)
+    const actuallyPlayed = batterFound && ab > 0;
+    const fantasyScore = actuallyPlayed ? computeFantasyScore(batterFound) : 0;
 
     resultBatters.push({
       batterId: batter.batterId,
@@ -96,11 +99,11 @@ async function main() {
       bvpOps: batter.bvpOps,
       gamePk: batter.gamePk,
       gameLabel: batter.gameLabel,
-      actualLine: batterFound ? `${hits}-${ab}` : "DNP",
+      actualLine: actuallyPlayed ? `${hits}-${ab}` : "DNP",
       hits: hits,
       ab: ab,
       fantasyScore: fantasyScore,
-      actualStats: batterFound
+      actualStats: actuallyPlayed ? batterFound : null
     });
   }
 
