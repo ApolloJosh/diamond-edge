@@ -1,8 +1,8 @@
 {
   "date": "2026-05-02",
-  "savedAt": "2026-05-02T16:12:19.381Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-05-02T18:30:02.483Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -134,6 +134,22 @@
       "gameLabel": "TEX @ DET"
     },
     {
+      "batterId": 592663,
+      "batterName": "J.T. Realmuto",
+      "pitcherId": 676974,
+      "pitcherName": "Max Meyer",
+      "batterTeam": "PHI",
+      "pitcherTeam": "MIA",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "2.667",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 823876,
+      "gameLabel": "PHI @ MIA"
+    },
+    {
       "batterId": 663538,
       "batterName": "Nico Hoerner",
       "pitcherId": 669194,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823067,
       "gameLabel": "LAD @ STL"
-    },
-    {
-      "batterId": 696100,
-      "batterName": "Hunter Goodman",
-      "pitcherId": 519242,
-      "pitcherName": "Chris Sale",
-      "batterTeam": "COL",
-      "pitcherTeam": "ATL",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.000",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824365,
-      "gameLabel": "ATL @ COL"
     }
   ],
   "pitchers": [
@@ -267,9 +267,9 @@
       "oppTeam": "MIN",
       "whiffScore": 82,
       "grade": "A+",
-      "k9": 14.1,
-      "projectedIP": 5.2,
-      "projectedK": 7,
+      "k9": 14.2,
+      "projectedIP": 4.6,
+      "projectedK": 6,
       "gamePk": 823715,
       "gameLabel": "TOR @ MIN"
     },
@@ -326,6 +326,19 @@
       "gameLabel": "ATL @ COL"
     },
     {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "AZ",
+      "whiffScore": 71,
+      "grade": "A",
+      "k9": 10,
+      "projectedIP": 5,
+      "projectedK": 4.5,
+      "gamePk": 824685,
+      "gameLabel": "AZ @ CHC"
+    },
+    {
       "pitcherId": 676974,
       "pitcherName": "Max Meyer",
       "team": "MIA",
@@ -350,19 +363,6 @@
       "projectedK": 4.5,
       "gamePk": 823308,
       "gameLabel": "CWS @ SD"
-    },
-    {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "AZ",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 10,
-      "projectedIP": 5.7,
-      "projectedK": 5.5,
-      "gamePk": 824685,
-      "gameLabel": "AZ @ CHC"
     },
     {
       "pitcherId": 677958,
@@ -480,6 +480,19 @@
       "projectedK": 4,
       "gamePk": 824284,
       "gameLabel": "TEX @ DET"
+    },
+    {
+      "pitcherId": 657514,
+      "pitcherName": "Brennan Bernardino",
+      "team": "COL",
+      "oppTeam": "ATL",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7.8,
+      "projectedIP": 12.2,
+      "projectedK": 9,
+      "gamePk": 824365,
+      "gameLabel": "ATL @ COL"
     },
     {
       "pitcherId": 677944,
@@ -634,22 +647,22 @@
       "gameLabel": "LAD @ STL"
     },
     {
-      "pitcherId": 656302,
-      "pitcherName": "Dylan Cease",
-      "team": "TOR",
-      "oppTeam": "MIN",
-      "line": 104,
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "SEA",
+      "line": 94,
       "overUnder": "OVER",
       "pitchScore": 67,
       "grade": "B+",
-      "recent5Avg": 102.4,
+      "recent5Avg": 95.4,
       "recent5Starts": 5,
-      "twoYrAvg": 95.9,
-      "twoYrStarts": 38,
-      "bvpAdj": 4,
-      "lineupPA": 142,
-      "gamePk": 823715,
-      "gameLabel": "TOR @ MIN"
+      "twoYrAvg": 91.7,
+      "twoYrStarts": 32,
+      "bvpAdj": 0,
+      "lineupPA": 80,
+      "gamePk": 823144,
+      "gameLabel": "KC @ SEA"
     }
   ]
 }
