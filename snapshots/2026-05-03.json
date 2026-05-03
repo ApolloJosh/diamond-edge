@@ -1,8 +1,8 @@
 {
   "date": "2026-05-03",
-  "savedAt": "2026-05-03T16:12:11.838Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-05-03T18:30:32.040Z",
+  "scanType": "afternoon",
+  "gamesScanned": 9,
   "totalGames": 15,
   "batters": [
     {
@@ -261,6 +261,19 @@
       "gameLabel": "CIN @ PIT"
     },
     {
+      "pitcherId": 701656,
+      "pitcherName": "Logan Henderson",
+      "team": "MIL",
+      "oppTeam": "WSH",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.5,
+      "projectedIP": 3,
+      "projectedK": 3,
+      "gamePk": 822742,
+      "gameLabel": "MIL @ WSH"
+    },
+    {
       "pitcherId": 675989,
       "pitcherName": "Cody Bolton",
       "team": "HOU",
@@ -294,8 +307,8 @@
       "whiffScore": 71,
       "grade": "A",
       "k9": 13,
-      "projectedIP": 4.5,
-      "projectedK": 5.5,
+      "projectedIP": 3.6,
+      "projectedK": 4.5,
       "gamePk": 824687,
       "gameLabel": "AZ @ CHC"
     },
@@ -501,9 +514,9 @@
       "oppTeam": "LAD",
       "whiffScore": 52,
       "grade": "C",
-      "k9": 6.5,
-      "projectedIP": 5,
-      "projectedK": 3,
+      "k9": 6.8,
+      "projectedIP": 4.5,
+      "projectedK": 2.5,
       "gamePk": 823065,
       "gameLabel": "LAD @ STL"
     },
@@ -514,9 +527,9 @@
       "oppTeam": "STL",
       "whiffScore": 51,
       "grade": "C",
-      "k9": 4.5,
-      "projectedIP": 7.5,
-      "projectedK": 3,
+      "k9": 4.4,
+      "projectedIP": 6.2,
+      "projectedK": 2.5,
       "gamePk": 823065,
       "gameLabel": "LAD @ STL"
     },
@@ -558,6 +571,19 @@
       "projectedK": 3.5,
       "gamePk": 824043,
       "gameLabel": "NYM @ LAA"
+    },
+    {
+      "pitcherId": 676571,
+      "pitcherName": "PJ Poulin",
+      "team": "WSH",
+      "oppTeam": "MIL",
+      "whiffScore": 41,
+      "grade": "D",
+      "k9": 6.2,
+      "projectedIP": 3.4,
+      "projectedK": 2,
+      "gamePk": 822742,
+      "gameLabel": "MIL @ WSH"
     }
   ],
   "pitches": [
