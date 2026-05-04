@@ -1,6 +1,6 @@
 {
   "date": "2026-05-04",
-  "savedAt": "2026-05-04T17:13:55.271Z",
+  "savedAt": "2026-05-04T19:06:01.364Z",
   "scanType": "afternoon",
   "gamesScanned": 12,
   "totalGames": 12,
@@ -287,19 +287,6 @@
       "gameLabel": "PHI @ MIA"
     },
     {
-      "pitcherId": 669373,
-      "pitcherName": "Tarik Skubal",
-      "team": "DET",
-      "oppTeam": "BOS",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 9.4,
-      "projectedIP": 6.2,
-      "projectedK": 5.5,
-      "gamePk": 824283,
-      "gameLabel": "BOS @ DET"
-    },
-    {
       "pitcherId": 665795,
       "pitcherName": "Edward Cabrera",
       "team": "CHC",
@@ -402,6 +389,19 @@
       "projectedK": 4.5,
       "gamePk": 824120,
       "gameLabel": "CLE @ KC"
+    },
+    {
+      "pitcherId": 663947,
+      "pitcherName": "Tyler Holton",
+      "team": "DET",
+      "oppTeam": "BOS",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 6.6,
+      "projectedIP": 13.2,
+      "projectedK": 8.5,
+      "gamePk": 824283,
+      "gameLabel": "BOS @ DET"
     },
     {
       "pitcherId": 676083,
@@ -515,24 +515,6 @@
       "gameLabel": "PHI @ MIA"
     },
     {
-      "pitcherId": 669373,
-      "pitcherName": "Tarik Skubal",
-      "team": "DET",
-      "oppTeam": "BOS",
-      "line": 92.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 93,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.4,
-      "twoYrStarts": 38,
-      "bvpAdj": 0,
-      "lineupPA": 140,
-      "gamePk": 824283,
-      "gameLabel": "BOS @ DET"
-    },
-    {
       "pitcherId": 693645,
       "pitcherName": "Cam Schlittler",
       "team": "NYY",
@@ -583,6 +565,24 @@
       "twoYrStarts": 31,
       "bvpAdj": 0,
       "lineupPA": 102,
+      "gamePk": 824039,
+      "gameLabel": "CWS @ LAA"
+    },
+    {
+      "pitcherId": 667755,
+      "pitcherName": "José Soriano",
+      "team": "LAA",
+      "oppTeam": "CWS",
+      "line": 102.5,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 96.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.7,
+      "twoYrStarts": 38,
+      "bvpAdj": 8,
+      "lineupPA": 50,
       "gamePk": 824039,
       "gameLabel": "CWS @ LAA"
     }
