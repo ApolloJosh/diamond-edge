@@ -1,8 +1,8 @@
 {
   "date": "2026-05-04",
-  "savedAt": "2026-05-04T19:06:01.364Z",
+  "savedAt": "2026-05-04T22:33:21.184Z",
   "scanType": "afternoon",
-  "gamesScanned": 12,
+  "gamesScanned": 11,
   "totalGames": 12,
   "batters": [
     {
@@ -326,19 +326,6 @@
       "gameLabel": "NYM @ COL"
     },
     {
-      "pitcherId": 669302,
-      "pitcherName": "Logan Gilbert",
-      "team": "SEA",
-      "oppTeam": "ATL",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 9.2,
-      "projectedIP": 5.4,
-      "projectedK": 4.5,
-      "gamePk": 823143,
-      "gameLabel": "ATL @ SEA"
-    },
-    {
       "pitcherId": 808967,
       "pitcherName": "Yoshinobu Yamamoto",
       "team": "LAD",
@@ -350,6 +337,19 @@
       "projectedK": 4.5,
       "gamePk": 824201,
       "gameLabel": "LAD @ HOU"
+    },
+    {
+      "pitcherId": 669302,
+      "pitcherName": "Logan Gilbert",
+      "team": "SEA",
+      "oppTeam": "ATL",
+      "whiffScore": 61,
+      "grade": "B",
+      "k9": 9.2,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
+      "gamePk": 823143,
+      "gameLabel": "ATL @ SEA"
     },
     {
       "pitcherId": 669358,
@@ -397,9 +397,9 @@
       "oppTeam": "BOS",
       "whiffScore": 55,
       "grade": "B",
-      "k9": 6.6,
-      "projectedIP": 13.2,
-      "projectedK": 8.5,
+      "k9": 6.8,
+      "projectedIP": 7.1,
+      "projectedK": 4.5,
       "gamePk": 824283,
       "gameLabel": "BOS @ DET"
     },
@@ -443,6 +443,19 @@
       "gameLabel": "MIL @ STL"
     },
     {
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "team": "STL",
+      "oppTeam": "MIL",
+      "whiffScore": 49,
+      "grade": "C",
+      "k9": 6.8,
+      "projectedIP": 4.9,
+      "projectedK": 3,
+      "gamePk": 823064,
+      "gameLabel": "MIL @ STL"
+    },
+    {
       "pitcherId": 595345,
       "pitcherName": "Steven Okert",
       "team": "HOU",
@@ -454,19 +467,6 @@
       "projectedK": 3,
       "gamePk": 824201,
       "gameLabel": "LAD @ HOU"
-    },
-    {
-      "pitcherId": 681517,
-      "pitcherName": "Kyle Leahy",
-      "team": "STL",
-      "oppTeam": "MIL",
-      "whiffScore": 45,
-      "grade": "C",
-      "k9": 6.8,
-      "projectedIP": 4.9,
-      "projectedK": 3,
-      "gamePk": 823064,
-      "gameLabel": "MIL @ STL"
     },
     {
       "pitcherId": 608372,
@@ -490,6 +490,19 @@
       "grade": "D",
       "k9": 5.8,
       "projectedIP": 6.2,
+      "projectedK": 3.5,
+      "gamePk": 822984,
+      "gameLabel": "TOR @ TB"
+    },
+    {
+      "pitcherId": 641778,
+      "pitcherName": "Eric Lauer",
+      "team": "TOR",
+      "oppTeam": "TB",
+      "whiffScore": 38,
+      "grade": "D",
+      "k9": 6.7,
+      "projectedIP": 5.4,
       "projectedK": 3.5,
       "gamePk": 822984,
       "gameLabel": "TOR @ TB"
@@ -573,16 +586,16 @@
       "pitcherName": "José Soriano",
       "team": "LAA",
       "oppTeam": "CWS",
-      "line": 102.5,
+      "line": 101.5,
       "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
+      "pitchScore": 68,
+      "grade": "B+",
       "recent5Avg": 96.6,
       "recent5Starts": 5,
       "twoYrAvg": 90.7,
       "twoYrStarts": 38,
-      "bvpAdj": 8,
-      "lineupPA": 50,
+      "bvpAdj": 7,
+      "lineupPA": 44,
       "gamePk": 824039,
       "gameLabel": "CWS @ LAA"
     }
