@@ -1433,36 +1433,40 @@ function starColor(stars){
   return "#ef4444";
 }
 
-/* ─── Batter K Predictor Model ─── */
-// Estimates probability that a batter will strike out 1+ or 2+ times in a game.
-// Uses: batter season K%, batter platoon K% vs pitcher hand, pitcher K/9,
-// BvP K history, batter recent form K%, opponent team K-rate.
+/* ─── Batter K Predictor Model v2 ─── */
+// V2: Reweighted from 7-day backtest (1,928 batters / 96 games).
+//   - Batter K-rate dominant (35%, was 25%). 12+ K/9 elite tier.
+//   - Interaction term: K-prone × high-K pitcher amplification.
+//   - Lineup position / expected AB signal for 2K probability.
+//   - Calibrated base rates: 58%/20% (observed, was 62%/28%).
 // Returns {conf1K, conf2K, factors} where conf values are 0-100 percentages.
 function computeBatterKConfidence(params){
-  var batterSeason = params.batterSeason;    // batter season hitting stats
-  var batterSplit = params.batterSplit;       // batter stats vs pitcher's hand (L or R)
-  var pitcherSeason = params.pitcherSeason;  // pitcher season pitching stats
-  var bvpStat = params.bvpStat;              // head-to-head BvP stats
-  var batterRecent = params.batterRecent;    // batter last 10 games
-  var pitcherHand = params.pitcherHand;      // "L" or "R"
+  var batterSeason = params.batterSeason;
+  var batterSplit = params.batterSplit;
+  var pitcherSeason = params.pitcherSeason;
+  var bvpStat = params.bvpStat;
+  var batterRecent = params.batterRecent;
+  var pitcherHand = params.pitcherHand;
+  var lineupIndex = params.lineupIndex;      // 0-based position in batting order
 
   var factors = {};
 
-  // ── 1. Batter Season K Rate (weight: 25%) ──
-  // League avg K rate ~22%. Higher = more K-prone.
-  var batterKRate = 0.22; // default
+  // ── 1. Batter Season K Rate (weight: 35%) ──
+  // Backtest: THE dominant signal. K-prone (.28+) vs high-K pitchers → 93% 1K.
+  var batterKRate = 0.22;
   if(batterSeason){
     var bAB = parseInt(batterSeason.atBats)||0;
     var bK = parseInt(batterSeason.strikeOuts)||0;
     if(bAB >= 20) batterKRate = bK / bAB;
   }
-  // Normalize: 0.15 K rate = -35, 0.22 = 0, 0.30 = +40, 0.35 = +65
   var batterKSignal = (batterKRate - 0.22) * 500;
-  batterKSignal = Math.max(-40, Math.min(65, batterKSignal));
+  // Non-linear boost for truly K-prone batters (28%+)
+  if(batterKRate >= 0.28) batterKSignal += (batterKRate - 0.28) * 200;
+  batterKSignal = Math.max(-40, Math.min(75, batterKSignal));
   factors.batterK = {rate: batterKRate, signal: Math.round(batterKSignal)};
 
-  // ── 2. Platoon K Rate vs Pitcher Hand (weight: 15%) ──
-  // Some batters K way more vs one hand. If split data exists, use it.
+  // ── 2. Platoon K Rate vs Pitcher Hand (weight: 10%) ──
+  // Reduced from 15% — less predictive than expected in backtest.
   var platoonSignal = 0;
   if(batterSplit){
     var spAB = parseInt(batterSplit.atBats)||0;
@@ -1475,26 +1479,30 @@ function computeBatterKConfidence(params){
     }
   }
 
-  // ── 3. Pitcher K/9 (weight: 25%) ──
-  // League avg K/9 ~8.5. Higher = more Ks generated.
+  // ── 3. Pitcher K/9 (weight: 20%) ──
+  // Backtest: 12+ K/9 is the real breakpoint (80% 1K vs 69-70% for 9-11).
   var pitcherK9 = 8.5;
   if(pitcherSeason){
     pitcherK9 = parseFloat(pitcherSeason.strikeoutsPer9Inn)||8.5;
   }
-  // Normalize: 7.0 = -25, 8.5 = 0, 10.0 = +25, 12.0 = +58
   var pitcherKSignal = (pitcherK9 - 8.5) * 16.5;
-  pitcherKSignal = Math.max(-30, Math.min(60, pitcherKSignal));
+  // V2: Elite tier — non-linear bonus above 12 K/9
+  if(pitcherK9 >= 12.0){
+    pitcherKSignal += (pitcherK9 - 12.0) * 12 + 8;
+  } else if(pitcherK9 >= 10.5){
+    pitcherKSignal += 3;
+  }
+  pitcherKSignal = Math.max(-30, Math.min(70, pitcherKSignal));
   factors.pitcherK9 = {k9: pitcherK9, signal: Math.round(pitcherKSignal)};
 
-  // ── 4. BvP K History (weight: 15%) ──
-  // If batter has faced this pitcher before, their K rate in that matchup matters.
+  // ── 4. BvP K History (weight: 10%) ──
+  // Reduced from 15% — useful but noisy with small samples.
   var bvpSignal = 0;
   if(bvpStat){
     var bvpAB = parseInt(bvpStat.atBats)||0;
     var bvpK = parseInt(bvpStat.strikeOuts)||0;
     if(bvpAB >= 3){
       var bvpKRate = bvpK / bvpAB;
-      // Weight more heavily with more PA
       var bvpWeight = Math.min(1.0, bvpAB / 15);
       bvpSignal = (bvpKRate - batterKRate) * 300 * bvpWeight;
       bvpSignal = Math.max(-25, Math.min(35, bvpSignal));
@@ -1502,51 +1510,77 @@ function computeBatterKConfidence(params){
     }
   }
 
-  // ── 5. Batter Recent Form (weight: 10%) ──
-  // If batter is in a slump, they tend to K more (chasing, expanding zone)
+  // ── 5. Batter Recent Form (weight: 8%) ──
+  // Slumping batters chase more. Slightly reduced weight.
   var recentSignal = 0;
   if(batterRecent && batterRecent.pa >= 15){
-    // Low recent avg = pressing = more Ks
     var recentAvg = batterRecent.avg || 0;
-    if(recentAvg < 0.180) recentSignal = 12;
-    else if(recentAvg < 0.220) recentSignal = 6;
+    if(recentAvg < 0.180) recentSignal = 15;
+    else if(recentAvg < 0.220) recentSignal = 8;
     else if(recentAvg > 0.320) recentSignal = -8;
     else if(recentAvg > 0.280) recentSignal = -4;
     factors.recentForm = {avg: recentAvg, signal: recentSignal};
   }
 
-  // ── 6. Opponent Team K-Rate (weight: 10%) ──
-  // Already computed in the main scan — how much this team Ks as a whole
+  // ── 6. Opponent Team K-Rate (weight: 7%) ──
   var teamKSignal = 0;
   var teamKRate = params.teamKRate || 0.22;
   teamKSignal = (teamKRate - 0.22) * 350;
   teamKSignal = Math.max(-20, Math.min(25, teamKSignal));
   factors.teamK = {rate: teamKRate, signal: Math.round(teamKSignal)};
 
+  // ── 7. V2: Interaction — K-prone × High-K Pitcher (weight: 10%) ──
+  // Backtest: K-prone (.28+) vs 10+ K/9 → 93%/61%. Synergy > sum of parts.
+  var interactionSignal = 0;
+  if(batterKRate >= 0.28 && pitcherK9 >= 10.0){
+    var kProneness = (batterKRate - 0.28) * 100;
+    var kPitching = (pitcherK9 - 10.0) * 5;
+    interactionSignal = Math.min(40, (kProneness + kPitching) * 2.5 + 10);
+  } else if(batterKRate >= 0.25 && pitcherK9 >= 9.5){
+    interactionSignal = 5;
+  } else if(batterKRate <= 0.17 && pitcherK9 <= 7.5){
+    interactionSignal = -10; // contact hitter vs low-K pitcher
+  }
+  factors.interaction = {signal: Math.round(interactionSignal)};
+
   // ── Composite Score ──
-  // Weighted sum → base probability adjustment
-  var composite = batterKSignal * 0.25 +
-                  platoonSignal * 0.15 +
-                  pitcherKSignal * 0.25 +
-                  bvpSignal * 0.15 +
-                  recentSignal * 0.10 +
-                  teamKSignal * 0.10;
+  // Weights: batterK 35%, pitcherK9 20%, interaction 10%, platoon 10%,
+  //          bvp 10%, recentForm 8%, teamK 7%  (= 100%)
+  var composite = batterKSignal * 0.35 +
+                  pitcherKSignal * 0.20 +
+                  interactionSignal * 0.10 +
+                  platoonSignal * 0.10 +
+                  bvpSignal * 0.10 +
+                  recentSignal * 0.08 +
+                  teamKSignal * 0.07;
 
   // ── Convert to probabilities ──
-  // Base rates from MLB data:
-  //   P(1+ K in a game) ≈ 62% for avg hitter (3.8 PA, 22% K rate)
-  //   P(2+ K in a game) ≈ 28% for avg hitter
-  // We adjust these base rates by the composite score
-  var base1K = 62;
-  var base2K = 28;
+  // V2 calibrated base rates from 7-day backtest:
+  //   P(1+ K in a game) ≈ 58% for avg hitter
+  //   P(2+ K in a game) ≈ 20% for avg hitter
+  var base1K = 58;
+  var base2K = 20;
 
-  // Composite range is roughly -40 to +60. Scale to probability adjustment.
   var conf1K = base1K + composite * 0.45;
-  var conf2K = base2K + composite * 0.55;
+
+  // ── 2K: lineup position / expected AB boost ──
+  // Backtest: 3 AB=24% 2K, 4 AB=33%, 5 AB=49%.
+  // Top-of-order gets more PA → much more likely to reach 2K.
+  var expectedAB = 3.8;
+  if(typeof lineupIndex === "number" && lineupIndex >= 0){
+    if(lineupIndex <= 2) expectedAB = 4.6;       // leadoff/2/3-hole
+    else if(lineupIndex <= 4) expectedAB = 4.2;   // cleanup/5-hole
+    else if(lineupIndex <= 6) expectedAB = 3.8;   // 6-7
+    else expectedAB = 3.4;                         // 8-9
+  }
+  var abAdj = (expectedAB - 3.8) * 7.5;
+  factors.expectedAB = {ab: expectedAB, adj: Math.round(abAdj)};
+
+  var conf2K = base2K + composite * 0.60 + abAdj;
 
   // Clamp
   conf1K = Math.max(15, Math.min(95, conf1K));
-  conf2K = Math.max(5, Math.min(85, conf2K));
+  conf2K = Math.max(5, Math.min(80, conf2K));
 
   // Ensure 2K is always less than 1K
   if(conf2K >= conf1K) conf2K = conf1K - 10;
@@ -3819,7 +3853,8 @@ function App(){
                 bvpStat: bvpStat,
                 batterRecent: batterRecent,
                 pitcherHand: side.pitcherHand,
-                teamKRate: side.teamKRate
+                teamKRate: side.teamKRate,
+                lineupIndex: bi
               });
 
               kResults.push({
@@ -3835,7 +3870,9 @@ function App(){
                 composite: kResult.composite,
                 factors: kResult.factors,
                 batterKRate: kResult.factors.batterK ? kResult.factors.batterK.rate : 0.22,
-                pitcherK9: kResult.factors.pitcherK9 ? kResult.factors.pitcherK9.k9 : 8.5
+                pitcherK9: kResult.factors.pitcherK9 ? kResult.factors.pitcherK9.k9 : 8.5,
+                lineupPos: bi + 1,
+                expectedAB: kResult.factors.expectedAB ? kResult.factors.expectedAB.ab : 3.8
               });
             }catch(e){ /* skip batter on error */ }
           }
