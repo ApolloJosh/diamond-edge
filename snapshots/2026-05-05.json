@@ -1,6 +1,6 @@
 {
   "date": "2026-05-05",
-  "savedAt": "2026-05-05T18:55:19.778Z",
+  "savedAt": "2026-05-05T22:31:26.987Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -22,22 +22,6 @@
       "gameLabel": "TOR @ TB"
     },
     {
-      "batterId": 694192,
-      "batterName": "Jackson Chourio",
-      "pitcherId": 669467,
-      "pitcherName": "Andre Pallante",
-      "batterTeam": "MIL",
-      "pitcherTeam": "STL",
-      "edgeScore": 99,
-      "grade": "A+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.727",
-      "bvpPA": 22,
-      "bvpHR": 0,
-      "gamePk": 823062,
-      "gameLabel": "MIL @ STL"
-    },
-    {
       "batterId": 701538,
       "batterName": "Jackson Merrill",
       "pitcherId": 657277,
@@ -52,6 +36,22 @@
       "bvpHR": 0,
       "gamePk": 823227,
       "gameLabel": "SD @ SF"
+    },
+    {
+      "batterId": 694192,
+      "batterName": "Jackson Chourio",
+      "pitcherId": 669467,
+      "pitcherName": "Andre Pallante",
+      "batterTeam": "MIL",
+      "pitcherTeam": "STL",
+      "edgeScore": 99,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.727",
+      "bvpPA": 22,
+      "bvpHR": 0,
+      "gamePk": 823062,
+      "gameLabel": "MIL @ STL"
     },
     {
       "batterId": 621020,
