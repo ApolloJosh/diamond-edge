@@ -1,8 +1,8 @@
 {
   "date": "2026-05-07",
-  "savedAt": "2026-05-07T19:16:17.920Z",
+  "savedAt": "2026-05-07T22:35:49.501Z",
   "scanType": "afternoon",
-  "gamesScanned": 7,
+  "gamesScanned": 4,
   "totalGames": 10,
   "batters": [
     {
@@ -38,22 +38,6 @@
       "gameLabel": "PIT @ AZ"
     },
     {
-      "batterId": 609280,
-      "batterName": "Miguel Andujar",
-      "pitcherId": 669461,
-      "pitcherName": "Matthew Liberatore",
-      "batterTeam": "SD",
-      "pitcherTeam": "STL",
-      "edgeScore": 94,
-      "grade": "A+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.556",
-      "bvpPA": 18,
-      "bvpHR": 0,
-      "gamePk": 823306,
-      "gameLabel": "STL @ SD"
-    },
-    {
       "batterId": 592450,
       "batterName": "Aaron Judge",
       "pitcherId": 669022,
@@ -68,6 +52,22 @@
       "bvpHR": 4,
       "gamePk": 823551,
       "gameLabel": "TEX @ NYY"
+    },
+    {
+      "batterId": 609280,
+      "batterName": "Miguel Andujar",
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "batterTeam": "SD",
+      "pitcherTeam": "STL",
+      "edgeScore": 94,
+      "grade": "A+",
+      "bvpAvg": ".667",
+      "bvpOps": "1.556",
+      "bvpPA": 18,
+      "bvpHR": 0,
+      "gamePk": 823306,
+      "gameLabel": "STL @ SD"
     },
     {
       "batterId": 608369,
@@ -166,38 +166,6 @@
       "gameLabel": "PIT @ AZ"
     },
     {
-      "batterId": 677800,
-      "batterName": "Wilyer Abreu",
-      "pitcherId": 643377,
-      "pitcherName": "Griffin Jax",
-      "batterTeam": "BOS",
-      "pitcherTeam": "TB",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.400",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 824767,
-      "gameLabel": "TB @ BOS"
-    },
-    {
-      "batterId": 592518,
-      "batterName": "Manny Machado",
-      "pitcherId": 669461,
-      "pitcherName": "Matthew Liberatore",
-      "batterTeam": "SD",
-      "pitcherTeam": "STL",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.500",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 823306,
-      "gameLabel": "STL @ SD"
-    },
-    {
       "batterId": 677649,
       "batterName": "Ezequiel Duran",
       "pitcherId": 621112,
@@ -228,6 +196,38 @@
       "bvpHR": 0,
       "gamePk": 823551,
       "gameLabel": "TEX @ NYY"
+    },
+    {
+      "batterId": 677800,
+      "batterName": "Wilyer Abreu",
+      "pitcherId": 643377,
+      "pitcherName": "Griffin Jax",
+      "batterTeam": "BOS",
+      "pitcherTeam": "TB",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".400",
+      "bvpOps": "1.400",
+      "bvpPA": 10,
+      "bvpHR": 2,
+      "gamePk": 824767,
+      "gameLabel": "TB @ BOS"
+    },
+    {
+      "batterId": 592518,
+      "batterName": "Manny Machado",
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "batterTeam": "SD",
+      "pitcherTeam": "STL",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".400",
+      "bvpOps": "1.500",
+      "bvpPA": 12,
+      "bvpHR": 2,
+      "gamePk": 823306,
+      "gameLabel": "STL @ SD"
     },
     {
       "batterId": 664040,
