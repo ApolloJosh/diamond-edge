@@ -1,8 +1,8 @@
 {
   "date": "2026-05-07",
-  "savedAt": "2026-05-07T17:18:29.742Z",
+  "savedAt": "2026-05-07T19:16:17.920Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 7,
   "totalGames": 10,
   "batters": [
     {
@@ -52,6 +52,38 @@
       "bvpHR": 0,
       "gamePk": 823306,
       "gameLabel": "STL @ SD"
+    },
+    {
+      "batterId": 592450,
+      "batterName": "Aaron Judge",
+      "pitcherId": 669022,
+      "pitcherName": "MacKenzie Gore",
+      "batterTeam": "NYY",
+      "pitcherTeam": "TEX",
+      "edgeScore": 94,
+      "grade": "A+",
+      "bvpAvg": ".429",
+      "bvpOps": "1.841",
+      "bvpPA": 18,
+      "bvpHR": 4,
+      "gamePk": 823551,
+      "gameLabel": "TEX @ NYY"
+    },
+    {
+      "batterId": 608369,
+      "batterName": "Corey Seager",
+      "pitcherId": 621112,
+      "pitcherName": "Paul Blackburn",
+      "batterTeam": "TEX",
+      "pitcherTeam": "NYY",
+      "edgeScore": 82,
+      "grade": "A+",
+      "bvpAvg": ".429",
+      "bvpOps": "1.786",
+      "bvpPA": 16,
+      "bvpHR": 4,
+      "gamePk": 823551,
+      "gameLabel": "TEX @ NYY"
     },
     {
       "batterId": 668715,
@@ -166,6 +198,38 @@
       "gameLabel": "STL @ SD"
     },
     {
+      "batterId": 677649,
+      "batterName": "Ezequiel Duran",
+      "pitcherId": 621112,
+      "pitcherName": "Paul Blackburn",
+      "batterTeam": "TEX",
+      "pitcherTeam": "NYY",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".400",
+      "bvpOps": ".855",
+      "bvpPA": 11,
+      "bvpHR": 0,
+      "gamePk": 823551,
+      "gameLabel": "TEX @ NYY"
+    },
+    {
+      "batterId": 641355,
+      "batterName": "Cody Bellinger",
+      "pitcherId": 669022,
+      "pitcherName": "MacKenzie Gore",
+      "batterTeam": "NYY",
+      "pitcherTeam": "TEX",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".333",
+      "bvpOps": ".899",
+      "bvpPA": 22,
+      "bvpHR": 0,
+      "gamePk": 823551,
+      "gameLabel": "TEX @ NYY"
+    },
+    {
       "batterId": 664040,
       "batterName": "Brandon Lowe",
       "pitcherId": 668678,
@@ -180,70 +244,6 @@
       "bvpHR": 0,
       "gamePk": 825090,
       "gameLabel": "PIT @ AZ"
-    },
-    {
-      "batterId": 701538,
-      "batterName": "Jackson Merrill",
-      "pitcherId": 669461,
-      "pitcherName": "Matthew Liberatore",
-      "batterTeam": "SD",
-      "pitcherTeam": "STL",
-      "edgeScore": 63,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.000",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 823306,
-      "gameLabel": "STL @ SD"
-    },
-    {
-      "batterId": 680757,
-      "batterName": "Steven Kwan",
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "batterTeam": "CLE",
-      "pitcherTeam": "KC",
-      "edgeScore": 62,
-      "grade": "B+",
-      "bvpAvg": ".300",
-      "bvpOps": "1.117",
-      "bvpPA": 24,
-      "bvpHR": 2,
-      "gamePk": 824117,
-      "gameLabel": "CLE @ KC"
-    },
-    {
-      "batterId": 663616,
-      "batterName": "Trevor Larnach",
-      "pitcherId": 663623,
-      "pitcherName": "Jake Irvin",
-      "batterTeam": "MIN",
-      "pitcherTeam": "WSH",
-      "edgeScore": 59,
-      "grade": "B",
-      "bvpAvg": ".400",
-      "bvpOps": ".733",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 822741,
-      "gameLabel": "MIN @ WSH"
-    },
-    {
-      "batterId": 596103,
-      "batterName": "Austin Slater",
-      "pitcherId": 500779,
-      "pitcherName": "Jose Quintana",
-      "batterTeam": "NYM",
-      "pitcherTeam": "COL",
-      "edgeScore": 59,
-      "grade": "B",
-      "bvpAvg": ".300",
-      "bvpOps": ".933",
-      "bvpPA": 24,
-      "bvpHR": 2,
-      "gamePk": 824362,
-      "gameLabel": "NYM @ COL"
     }
   ],
   "pitchers": [
@@ -272,6 +272,19 @@
       "projectedK": 5,
       "gamePk": 824681,
       "gameLabel": "CIN @ CHC"
+    },
+    {
+      "pitcherId": 669022,
+      "pitcherName": "MacKenzie Gore",
+      "team": "TEX",
+      "oppTeam": "NYY",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.8,
+      "projectedIP": 5,
+      "projectedK": 5,
+      "gamePk": 823551,
+      "gameLabel": "TEX @ NYY"
     },
     {
       "pitcherId": 676974,
@@ -324,6 +337,19 @@
       "projectedK": 4.5,
       "gamePk": 824117,
       "gameLabel": "CLE @ KC"
+    },
+    {
+      "pitcherId": 621112,
+      "pitcherName": "Paul Blackburn",
+      "team": "NYY",
+      "oppTeam": "TEX",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 5.4,
+      "projectedIP": 15,
+      "projectedK": 7.5,
+      "gamePk": 823551,
+      "gameLabel": "TEX @ NYY"
     },
     {
       "pitcherId": 650633,
@@ -424,8 +450,8 @@
       "whiffScore": 48,
       "grade": "C",
       "k9": 4.4,
-      "projectedIP": 4.8,
-      "projectedK": 2,
+      "projectedIP": 4,
+      "projectedK": 1.5,
       "gamePk": 824362,
       "gameLabel": "NYM @ COL"
     },
@@ -474,6 +500,24 @@
       "lineupPA": 176,
       "gamePk": 825090,
       "gameLabel": "PIT @ AZ"
+    },
+    {
+      "pitcherId": 669022,
+      "pitcherName": "MacKenzie Gore",
+      "team": "TEX",
+      "oppTeam": "NYY",
+      "line": 97,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 96,
+      "recent5Starts": 5,
+      "twoYrAvg": 93.6,
+      "twoYrStarts": 38,
+      "bvpAdj": 2,
+      "lineupPA": 144,
+      "gamePk": 823551,
+      "gameLabel": "TEX @ NYY"
     },
     {
       "pitcherId": 607625,
@@ -528,24 +572,6 @@
       "lineupPA": 104,
       "gamePk": 823306,
       "gameLabel": "STL @ SD"
-    },
-    {
-      "pitcherId": 695076,
-      "pitcherName": "Rhett Lowder",
-      "team": "CIN",
-      "oppTeam": "CHC",
-      "line": 83.5,
-      "overUnder": "UNDER",
-      "pitchScore": 66,
-      "grade": "B+",
-      "recent5Avg": 84.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 84.6,
-      "twoYrStarts": 7,
-      "bvpAdj": -1,
-      "lineupPA": 18,
-      "gamePk": 824681,
-      "gameLabel": "CIN @ CHC"
     }
   ]
 }
