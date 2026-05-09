@@ -1,7 +1,7 @@
 {
   "date": "2026-05-09",
-  "savedAt": "2026-05-09T16:30:03.811Z",
-  "scanType": "morning",
+  "savedAt": "2026-05-09T18:32:57.329Z",
+  "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
@@ -543,19 +543,6 @@
       "k9": 6.3,
       "projectedIP": 5.4,
       "projectedK": 3,
-      "gamePk": 823869,
-      "gameLabel": "WSH @ MIA"
-    },
-    {
-      "pitcherId": 641793,
-      "pitcherName": "Zack Littell",
-      "team": "WSH",
-      "oppTeam": "MIA",
-      "whiffScore": 48,
-      "grade": "C",
-      "k9": 4.7,
-      "projectedIP": 6.4,
-      "projectedK": 2.5,
       "gamePk": 823869,
       "gameLabel": "WSH @ MIA"
     },
