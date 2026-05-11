@@ -1,6 +1,6 @@
 {
   "date": "2026-05-11",
-  "savedAt": "2026-05-11T19:16:53.319Z",
+  "savedAt": "2026-05-11T22:33:13.831Z",
   "scanType": "afternoon",
   "gamesScanned": 6,
   "totalGames": 6,
@@ -54,38 +54,6 @@
       "gameLabel": "TB @ TOR"
     },
     {
-      "batterId": 666971,
-      "batterName": "Lourdes Gurriel Jr.",
-      "pitcherId": 543135,
-      "pitcherName": "Nathan Eovaldi",
-      "batterTeam": "AZ",
-      "pitcherTeam": "TEX",
-      "edgeScore": 78,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": "1.010",
-      "bvpPA": 46,
-      "bvpHR": 4,
-      "gamePk": 822901,
-      "gameLabel": "AZ @ TEX"
-    },
-    {
-      "batterId": 672695,
-      "batterName": "Geraldo Perdomo",
-      "pitcherId": 543135,
-      "pitcherName": "Nathan Eovaldi",
-      "batterTeam": "AZ",
-      "pitcherTeam": "TEX",
-      "edgeScore": 75,
-      "grade": "A",
-      "bvpAvg": ".600",
-      "bvpOps": "1.800",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 822901,
-      "gameLabel": "AZ @ TEX"
-    },
-    {
       "batterId": 592626,
       "batterName": "Joc Pederson",
       "pitcherId": 647336,
@@ -98,6 +66,22 @@
       "bvpOps": "1.800",
       "bvpPA": 10,
       "bvpHR": 2,
+      "gamePk": 822901,
+      "gameLabel": "AZ @ TEX"
+    },
+    {
+      "batterId": 666971,
+      "batterName": "Lourdes Gurriel Jr.",
+      "pitcherId": 596001,
+      "pitcherName": "Jakob Junis",
+      "batterTeam": "AZ",
+      "pitcherTeam": "TEX",
+      "edgeScore": 66,
+      "grade": "B+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.267",
+      "bvpPA": 12,
+      "bvpHR": 0,
       "gamePk": 822901,
       "gameLabel": "AZ @ TEX"
     },
@@ -198,6 +182,22 @@
       "gameLabel": "TB @ TOR"
     },
     {
+      "batterId": 682998,
+      "batterName": "Corbin Carroll",
+      "pitcherId": 596001,
+      "pitcherName": "Jakob Junis",
+      "batterTeam": "AZ",
+      "pitcherTeam": "TEX",
+      "edgeScore": 62,
+      "grade": "B+",
+      "bvpAvg": ".400",
+      "bvpOps": "1.300",
+      "bvpPA": 12,
+      "bvpHR": 0,
+      "gamePk": 822901,
+      "gameLabel": "AZ @ TEX"
+    },
+    {
       "batterId": 681624,
       "batterName": "Andy Pages",
       "pitcherId": 686790,
@@ -287,19 +287,6 @@
       "gameLabel": "AZ @ TEX"
     },
     {
-      "pitcherId": 543135,
-      "pitcherName": "Nathan Eovaldi",
-      "team": "TEX",
-      "oppTeam": "AZ",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 8.9,
-      "projectedIP": 5.9,
-      "projectedK": 5,
-      "gamePk": 822901,
-      "gameLabel": "AZ @ TEX"
-    },
-    {
       "pitcherId": 592332,
       "pitcherName": "Kevin Gausman",
       "team": "TOR",
@@ -345,9 +332,9 @@
       "oppTeam": "CLE",
       "whiffScore": 53,
       "grade": "C",
-      "k9": 8.9,
-      "projectedIP": 22.1,
-      "projectedK": 19,
+      "k9": 8.5,
+      "projectedIP": 11.6,
+      "projectedK": 9.5,
       "gamePk": 824441,
       "gameLabel": "LAA @ CLE"
     },
@@ -363,6 +350,19 @@
       "projectedK": 4,
       "gamePk": 824199,
       "gameLabel": "SEA @ HOU"
+    },
+    {
+      "pitcherId": 596001,
+      "pitcherName": "Jakob Junis",
+      "team": "TEX",
+      "oppTeam": "AZ",
+      "whiffScore": 44,
+      "grade": "D",
+      "k9": 3.9,
+      "projectedIP": 5.5,
+      "projectedK": 2,
+      "gamePk": 822901,
+      "gameLabel": "AZ @ TEX"
     }
   ],
   "pitches": [
@@ -421,24 +421,6 @@
       "gameLabel": "AZ @ TEX"
     },
     {
-      "pitcherId": 543135,
-      "pitcherName": "Nathan Eovaldi",
-      "team": "TEX",
-      "oppTeam": "AZ",
-      "line": 92,
-      "overUnder": "OVER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 93.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 88.3,
-      "twoYrStarts": 30,
-      "bvpAdj": 0,
-      "lineupPA": 114,
-      "gamePk": 822901,
-      "gameLabel": "AZ @ TEX"
-    },
-    {
       "pitcherId": 663567,
       "pitcherName": "Peter Lambert",
       "team": "HOU",
@@ -455,6 +437,24 @@
       "lineupPA": 22,
       "gamePk": 824199,
       "gameLabel": "SEA @ HOU"
+    },
+    {
+      "pitcherId": 677960,
+      "pitcherName": "Ryan Weathers",
+      "team": "NYY",
+      "oppTeam": "BAL",
+      "line": 94.5,
+      "overUnder": "OVER",
+      "pitchScore": 64,
+      "grade": "B+",
+      "recent5Avg": 93.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 84.9,
+      "twoYrStarts": 15,
+      "bvpAdj": 4,
+      "lineupPA": 60,
+      "gamePk": 824844,
+      "gameLabel": "NYY @ BAL"
     }
   ]
 }
