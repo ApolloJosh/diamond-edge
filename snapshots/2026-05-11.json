@@ -1,6 +1,6 @@
 {
   "date": "2026-05-11",
-  "savedAt": "2026-05-11T17:34:19.305Z",
+  "savedAt": "2026-05-11T19:16:53.319Z",
   "scanType": "afternoon",
   "gamesScanned": 6,
   "totalGames": 6,
@@ -150,6 +150,22 @@
       "gameLabel": "AZ @ TEX"
     },
     {
+      "batterId": 608070,
+      "batterName": "José Ramírez",
+      "pitcherId": 608718,
+      "pitcherName": "Brent Suter",
+      "batterTeam": "CLE",
+      "pitcherTeam": "LAA",
+      "edgeScore": 62,
+      "grade": "B+",
+      "bvpAvg": ".333",
+      "bvpOps": "1.167",
+      "bvpPA": 12,
+      "bvpHR": 2,
+      "gamePk": 824441,
+      "gameLabel": "LAA @ CLE"
+    },
+    {
       "batterId": 665926,
       "batterName": "Andrés Giménez",
       "pitcherId": 656876,
@@ -160,6 +176,22 @@
       "grade": "B+",
       "bvpAvg": ".667",
       "bvpOps": "1.333",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 822818,
+      "gameLabel": "TB @ TOR"
+    },
+    {
+      "batterId": 682818,
+      "batterName": "Yohendrick Piñango",
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "batterTeam": "TOR",
+      "pitcherTeam": "TB",
+      "edgeScore": 62,
+      "grade": "B+",
+      "bvpAvg": ".333",
+      "bvpOps": ".667",
       "bvpPA": 6,
       "bvpHR": 0,
       "gamePk": 822818,
@@ -212,38 +244,6 @@
       "bvpHR": 2,
       "gamePk": 824844,
       "gameLabel": "NYY @ BAL"
-    },
-    {
-      "batterId": 682998,
-      "batterName": "Corbin Carroll",
-      "pitcherId": 543135,
-      "pitcherName": "Nathan Eovaldi",
-      "batterTeam": "AZ",
-      "pitcherTeam": "TEX",
-      "edgeScore": 60,
-      "grade": "B",
-      "bvpAvg": ".375",
-      "bvpOps": "1.250",
-      "bvpPA": 16,
-      "bvpHR": 2,
-      "gamePk": 822901,
-      "gameLabel": "AZ @ TEX"
-    },
-    {
-      "batterId": 676391,
-      "batterName": "Ernie Clement",
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "batterTeam": "TOR",
-      "pitcherTeam": "TB",
-      "edgeScore": 59,
-      "grade": "B",
-      "bvpAvg": ".400",
-      "bvpOps": ".800",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 822818,
-      "gameLabel": "TB @ TOR"
     }
   ],
   "pitchers": [
@@ -337,6 +337,19 @@
       "projectedK": 4.5,
       "gamePk": 822818,
       "gameLabel": "TB @ TOR"
+    },
+    {
+      "pitcherId": 608718,
+      "pitcherName": "Brent Suter",
+      "team": "LAA",
+      "oppTeam": "CLE",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 8.9,
+      "projectedIP": 22.1,
+      "projectedK": 19,
+      "gamePk": 824441,
+      "gameLabel": "LAA @ CLE"
     },
     {
       "pitcherId": 669923,
