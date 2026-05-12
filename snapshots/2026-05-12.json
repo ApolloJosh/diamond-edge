@@ -1,8 +1,8 @@
 {
   "date": "2026-05-12",
-  "savedAt": "2026-05-12T19:19:25.003Z",
+  "savedAt": "2026-05-12T22:41:37.329Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -300,19 +300,6 @@
       "gameLabel": "MIA @ MIN"
     },
     {
-      "pitcherId": 669432,
-      "pitcherName": "Trevor Rogers",
-      "team": "BAL",
-      "oppTeam": "NYY",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8,
-      "projectedIP": 5,
-      "projectedK": 3.5,
-      "gamePk": 824843,
-      "gameLabel": "NYY @ BAL"
-    },
-    {
       "pitcherId": 669022,
       "pitcherName": "MacKenzie Gore",
       "team": "TEX",
@@ -350,6 +337,19 @@
       "projectedK": 2.5,
       "gamePk": 823385,
       "gameLabel": "COL @ PIT"
+    },
+    {
+      "pitcherId": 669432,
+      "pitcherName": "Trevor Rogers",
+      "team": "BAL",
+      "oppTeam": "NYY",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 7.9,
+      "projectedIP": 4.3,
+      "projectedK": 3,
+      "gamePk": 824843,
+      "gameLabel": "NYY @ BAL"
     },
     {
       "pitcherId": 642547,
@@ -566,16 +566,16 @@
       "pitcherName": "Trevor Rogers",
       "team": "BAL",
       "oppTeam": "NYY",
-      "line": 95,
+      "line": 91.5,
       "overUnder": "OVER",
-      "pitchScore": 76,
+      "pitchScore": 74,
       "grade": "A",
       "recent5Avg": 89.6,
       "recent5Starts": 5,
-      "twoYrAvg": 90.1,
-      "twoYrStarts": 24,
-      "bvpAdj": 5,
-      "lineupPA": 96,
+      "twoYrAvg": 86.8,
+      "twoYrStarts": 25,
+      "bvpAdj": 3,
+      "lineupPA": 92,
       "gamePk": 824843,
       "gameLabel": "NYY @ BAL"
     },
