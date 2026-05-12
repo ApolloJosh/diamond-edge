@@ -1,6 +1,6 @@
 {
   "date": "2026-05-12",
-  "savedAt": "2026-05-12T17:35:21.161Z",
+  "savedAt": "2026-05-12T19:19:25.003Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -365,19 +365,6 @@
       "gameLabel": "DET @ NYM"
     },
     {
-      "pitcherId": 607067,
-      "pitcherName": "Colin Rea",
-      "team": "CHC",
-      "oppTeam": "ATL",
-      "whiffScore": 63,
-      "grade": "B+",
-      "k9": 8.3,
-      "projectedIP": 7.6,
-      "projectedK": 6,
-      "gamePk": 824927,
-      "gameLabel": "CHC @ ATL"
-    },
-    {
       "pitcherId": 693433,
       "pitcherName": "Bryan Woo",
       "team": "SEA",
@@ -428,6 +415,19 @@
       "projectedK": 3.5,
       "gamePk": 823712,
       "gameLabel": "MIA @ MIN"
+    },
+    {
+      "pitcherId": 607067,
+      "pitcherName": "Colin Rea",
+      "team": "CHC",
+      "oppTeam": "ATL",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.3,
+      "projectedIP": 7.6,
+      "projectedK": 6,
+      "gamePk": 824927,
+      "gameLabel": "CHC @ ATL"
     },
     {
       "pitcherId": 605488,
