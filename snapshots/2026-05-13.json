@@ -1,8 +1,8 @@
 {
   "date": "2026-05-13",
-  "savedAt": "2026-05-13T19:19:44.219Z",
+  "savedAt": "2026-05-13T22:46:26.562Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 13,
   "totalGames": 15,
   "batters": [
     {
@@ -214,22 +214,6 @@
       "gameLabel": "PHI @ BOS"
     },
     {
-      "batterId": 669364,
-      "batterName": "Xavier Edwards",
-      "pitcherId": 680573,
-      "pitcherName": "Simeon Woods Richardson",
-      "batterTeam": "MIA",
-      "pitcherTeam": "MIN",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.100",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 823710,
-      "gameLabel": "MIA @ MIN"
-    },
-    {
       "batterId": 641355,
       "batterName": "Cody Bellinger",
       "pitcherId": 680694,
@@ -244,6 +228,22 @@
       "bvpHR": 2,
       "gamePk": 824841,
       "gameLabel": "NYY @ BAL"
+    },
+    {
+      "batterId": 669364,
+      "batterName": "Xavier Edwards",
+      "pitcherId": 680573,
+      "pitcherName": "Simeon Woods Richardson",
+      "batterTeam": "MIA",
+      "pitcherTeam": "MIN",
+      "edgeScore": 73,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "1.100",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 823710,
+      "gameLabel": "MIA @ MIN"
     }
   ],
   "pitchers": [
@@ -378,19 +378,6 @@
       "gameLabel": "CHC @ ATL"
     },
     {
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "team": "KC",
-      "oppTeam": "CWS",
-      "whiffScore": 63,
-      "grade": "B+",
-      "k9": 7.9,
-      "projectedIP": 5.9,
-      "projectedK": 4.5,
-      "gamePk": 824603,
-      "gameLabel": "KC @ CWS"
-    },
-    {
       "pitcherId": 656605,
       "pitcherName": "Mitch Keller",
       "team": "PIT",
@@ -402,6 +389,19 @@
       "projectedK": 3.5,
       "gamePk": 823386,
       "gameLabel": "COL @ PIT"
+    },
+    {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "CWS",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 7.9,
+      "projectedIP": 5.9,
+      "projectedK": 4.5,
+      "gamePk": 824603,
+      "gameLabel": "KC @ CWS"
     },
     {
       "pitcherId": 669194,
