@@ -1,6 +1,6 @@
 {
   "date": "2026-05-13",
-  "savedAt": "2026-05-13T17:36:09.035Z",
+  "savedAt": "2026-05-13T19:19:44.219Z",
   "scanType": "afternoon",
   "gamesScanned": 14,
   "totalGames": 15,
@@ -68,6 +68,22 @@
       "bvpHR": 0,
       "gamePk": 822900,
       "gameLabel": "AZ @ TEX"
+    },
+    {
+      "batterId": 700250,
+      "batterName": "Ben Rice",
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "batterTeam": "NYY",
+      "pitcherTeam": "BAL",
+      "edgeScore": 87,
+      "grade": "A+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.375",
+      "bvpPA": 16,
+      "bvpHR": 2,
+      "gamePk": 824841,
+      "gameLabel": "NYY @ BAL"
     },
     {
       "batterId": 542303,
@@ -214,36 +230,20 @@
       "gameLabel": "MIA @ MIN"
     },
     {
-      "batterId": 668930,
-      "batterName": "Brice Turang",
-      "pitcherId": 650633,
-      "pitcherName": "Michael King",
-      "batterTeam": "MIL",
-      "pitcherTeam": "SD",
-      "edgeScore": 72,
+      "batterId": 641355,
+      "batterName": "Cody Bellinger",
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "batterTeam": "NYY",
+      "pitcherTeam": "BAL",
+      "edgeScore": 73,
       "grade": "A",
-      "bvpAvg": ".375",
-      "bvpOps": "1.000",
-      "bvpPA": 16,
-      "bvpHR": 0,
-      "gamePk": 823791,
-      "gameLabel": "SD @ MIL"
-    },
-    {
-      "batterId": 663656,
-      "batterName": "Kyle Tucker",
-      "pitcherId": 592662,
-      "pitcherName": "Robbie Ray",
-      "batterTeam": "LAD",
-      "pitcherTeam": "SF",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".364",
-      "bvpOps": "1.326",
-      "bvpPA": 24,
-      "bvpHR": 4,
-      "gamePk": 823952,
-      "gameLabel": "SF @ LAD"
+      "bvpAvg": ".333",
+      "bvpOps": "1.111",
+      "bvpPA": 18,
+      "bvpHR": 2,
+      "gamePk": 824841,
+      "gameLabel": "NYY @ BAL"
     }
   ],
   "pitchers": [
@@ -259,6 +259,19 @@
       "projectedK": 5,
       "gamePk": 824438,
       "gameLabel": "LAA @ CLE"
+    },
+    {
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "team": "BAL",
+      "oppTeam": "NYY",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10,
+      "projectedIP": 5.2,
+      "projectedK": 5,
+      "gamePk": 824841,
+      "gameLabel": "NYY @ BAL"
     },
     {
       "pitcherId": 660271,
@@ -339,6 +352,19 @@
       "gameLabel": "SF @ LAD"
     },
     {
+      "pitcherId": 608331,
+      "pitcherName": "Max Fried",
+      "team": "NYY",
+      "oppTeam": "BAL",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.3,
+      "projectedIP": 6.1,
+      "projectedK": 4,
+      "gamePk": 824841,
+      "gameLabel": "NYY @ BAL"
+    },
+    {
       "pitcherId": 684007,
       "pitcherName": "Shota Imanaga",
       "team": "CHC",
@@ -352,6 +378,19 @@
       "gameLabel": "CHC @ ATL"
     },
     {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "CWS",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 7.9,
+      "projectedIP": 5.9,
+      "projectedK": 4.5,
+      "gamePk": 824603,
+      "gameLabel": "KC @ CWS"
+    },
+    {
       "pitcherId": 656605,
       "pitcherName": "Mitch Keller",
       "team": "PIT",
@@ -363,19 +402,6 @@
       "projectedK": 3.5,
       "gamePk": 823386,
       "gameLabel": "COL @ PIT"
-    },
-    {
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "team": "KC",
-      "oppTeam": "CWS",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 7.9,
-      "projectedIP": 5.9,
-      "projectedK": 4.5,
-      "gamePk": 824603,
-      "gameLabel": "KC @ CWS"
     },
     {
       "pitcherId": 669194,
