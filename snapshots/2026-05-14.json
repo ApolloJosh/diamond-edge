@@ -1,8 +1,8 @@
 {
   "date": "2026-05-14",
-  "savedAt": "2026-05-14T19:21:16.625Z",
+  "savedAt": "2026-05-14T22:37:14.127Z",
   "scanType": "afternoon",
-  "gamesScanned": 7,
+  "gamesScanned": 5,
   "totalGames": 11,
   "batters": [
     {
@@ -248,19 +248,6 @@
   ],
   "pitchers": [
     {
-      "pitcherId": 663460,
-      "pitcherName": "Kris Bubic",
-      "team": "KC",
-      "oppTeam": "CWS",
-      "whiffScore": 78,
-      "grade": "A",
-      "k9": 9.1,
-      "projectedIP": 5.8,
-      "projectedK": 5,
-      "gamePk": 824602,
-      "gameLabel": "KC @ CWS"
-    },
-    {
       "pitcherId": 682254,
       "pitcherName": "Mason Montgomery",
       "team": "PIT",
@@ -272,6 +259,19 @@
       "projectedK": 7,
       "gamePk": 823383,
       "gameLabel": "COL @ PIT"
+    },
+    {
+      "pitcherId": 663460,
+      "pitcherName": "Kris Bubic",
+      "team": "KC",
+      "oppTeam": "CWS",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 9.1,
+      "projectedIP": 5.8,
+      "projectedK": 5,
+      "gamePk": 824602,
+      "gameLabel": "KC @ CWS"
     },
     {
       "pitcherId": 690986,
@@ -378,19 +378,6 @@
       "gameLabel": "PHI @ BOS"
     },
     {
-      "pitcherId": 676962,
-      "pitcherName": "Ben Brown",
-      "team": "CHC",
-      "oppTeam": "ATL",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 8.2,
-      "projectedIP": 29.2,
-      "projectedK": 23,
-      "gamePk": 824926,
-      "gameLabel": "CHC @ ATL"
-    },
-    {
       "pitcherId": 656492,
       "pitcherName": "Foster Griffin",
       "team": "WSH",
@@ -402,6 +389,19 @@
       "projectedK": 4.5,
       "gamePk": 824517,
       "gameLabel": "WSH @ CIN"
+    },
+    {
+      "pitcherId": 676962,
+      "pitcherName": "Ben Brown",
+      "team": "CHC",
+      "oppTeam": "ATL",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 8.2,
+      "projectedIP": 29.2,
+      "projectedK": 23,
+      "gamePk": 824926,
+      "gameLabel": "CHC @ ATL"
     },
     {
       "pitcherId": 681347,
@@ -428,6 +428,19 @@
       "projectedK": 4,
       "gamePk": 824196,
       "gameLabel": "SEA @ HOU"
+    },
+    {
+      "pitcherId": 682052,
+      "pitcherName": "Jacob Lopez",
+      "team": "ATH",
+      "oppTeam": "STL",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 6.7,
+      "projectedIP": 5,
+      "projectedK": 3,
+      "gamePk": 825008,
+      "gameLabel": "STL @ ATH"
     },
     {
       "pitcherId": 641743,
@@ -493,6 +506,19 @@
       "projectedK": 0,
       "gamePk": 823709,
       "gameLabel": "MIA @ MIN"
+    },
+    {
+      "pitcherId": 700241,
+      "pitcherName": "Michael McGreevy",
+      "team": "STL",
+      "oppTeam": "ATH",
+      "whiffScore": 44,
+      "grade": "D",
+      "k9": 6.3,
+      "projectedIP": 5.7,
+      "projectedK": 3.5,
+      "gamePk": 825008,
+      "gameLabel": "STL @ ATH"
     }
   ],
   "pitches": [
