@@ -1,6 +1,6 @@
 {
   "date": "2026-05-15",
-  "savedAt": "2026-05-15T19:07:37.965Z",
+  "savedAt": "2026-05-15T22:30:45.696Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -182,22 +182,6 @@
       "gameLabel": "KC @ STL"
     },
     {
-      "batterId": 671289,
-      "batterName": "Tyler Freeman",
-      "pitcherId": 518876,
-      "pitcherName": "Merrill Kelly",
-      "batterTeam": "COL",
-      "pitcherTeam": "AZ",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.000",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 824360,
-      "gameLabel": "AZ @ COL"
-    },
-    {
       "batterId": 683002,
       "batterName": "Gunnar Henderson",
       "pitcherId": 641793,
@@ -244,22 +228,25 @@
       "bvpHR": 2,
       "gamePk": 823061,
       "gameLabel": "KC @ STL"
+    },
+    {
+      "batterId": 666181,
+      "batterName": "Will Benson",
+      "pitcherId": 676440,
+      "pitcherName": "Tanner Bibee",
+      "batterTeam": "CIN",
+      "pitcherTeam": "CLE",
+      "edgeScore": 70,
+      "grade": "A",
+      "bvpAvg": ".600",
+      "bvpOps": "1.800",
+      "bvpPA": 10,
+      "bvpHR": 2,
+      "gamePk": 824439,
+      "gameLabel": "CIN @ CLE"
     }
   ],
   "pitchers": [
-    {
-      "pitcherId": 605483,
-      "pitcherName": "Blake Snell",
-      "team": "LAD",
-      "oppTeam": "LAA",
-      "whiffScore": 82,
-      "grade": "A+",
-      "k9": 15,
-      "projectedIP": 3,
-      "projectedK": 4,
-      "gamePk": 824037,
-      "gameLabel": "LAD @ LAA"
-    },
     {
       "pitcherId": 605400,
       "pitcherName": "Aaron Nola",
