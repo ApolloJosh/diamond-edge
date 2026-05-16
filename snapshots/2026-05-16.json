@@ -1,8 +1,8 @@
 {
   "date": "2026-05-16",
-  "savedAt": "2026-05-16T18:33:16.991Z",
+  "savedAt": "2026-05-16T22:12:11.173Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 9,
   "totalGames": 15,
   "batters": [
     {
@@ -150,22 +150,6 @@
       "gameLabel": "SD @ SEA"
     },
     {
-      "batterId": 596115,
-      "batterName": "Trevor Story",
-      "pitcherId": 693821,
-      "pitcherName": "Bryce Elder",
-      "batterTeam": "BOS",
-      "pitcherTeam": "ATL",
-      "edgeScore": 70,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.500",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 824924,
-      "gameLabel": "BOS @ ATL"
-    },
-    {
       "batterId": 669707,
       "batterName": "Jared Triolo",
       "pitcherId": 650911,
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 822981,
       "gameLabel": "MIA @ TB"
+    },
+    {
+      "batterId": 592206,
+      "batterName": "Nick Castellanos",
+      "pitcherId": 669302,
+      "pitcherName": "Logan Gilbert",
+      "batterTeam": "SD",
+      "pitcherTeam": "SEA",
+      "edgeScore": 62,
+      "grade": "B+",
+      "bvpAvg": ".375",
+      "bvpOps": "1.125",
+      "bvpPA": 16,
+      "bvpHR": 2,
+      "gamePk": 823139,
+      "gameLabel": "SD @ SEA"
     }
   ],
   "pitchers": [
@@ -554,7 +554,7 @@
       "twoYrAvg": 89.1,
       "twoYrStarts": 37,
       "bvpAdj": -2,
-      "lineupPA": 60,
+      "lineupPA": 54,
       "gamePk": 824924,
       "gameLabel": "BOS @ ATL"
     },
