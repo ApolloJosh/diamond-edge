@@ -1,8 +1,8 @@
 {
   "date": "2026-05-17",
-  "savedAt": "2026-05-17T16:32:07.473Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-05-17T18:36:36.611Z",
+  "scanType": "afternoon",
+  "gamesScanned": 8,
   "totalGames": 15,
   "batters": [
     {
@@ -70,6 +70,22 @@
       "gameLabel": "TEX @ HOU"
     },
     {
+      "batterId": 683737,
+      "batterName": "Michael Busch",
+      "pitcherId": 607200,
+      "pitcherName": "Erick Fedde",
+      "batterTeam": "CHC",
+      "pitcherTeam": "CWS",
+      "edgeScore": 94,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.847",
+      "bvpPA": 17,
+      "bvpHR": 3,
+      "gamePk": 824599,
+      "gameLabel": "CHC @ CWS"
+    },
+    {
       "batterId": 516782,
       "batterName": "Starling Marte",
       "pitcherId": 669467,
@@ -100,22 +116,6 @@
       "bvpHR": 0,
       "gamePk": 824436,
       "gameLabel": "CIN @ CLE"
-    },
-    {
-      "batterId": 683737,
-      "batterName": "Michael Busch",
-      "pitcherId": 607200,
-      "pitcherName": "Erick Fedde",
-      "batterTeam": "CHC",
-      "pitcherTeam": "CWS",
-      "edgeScore": 83,
-      "grade": "A+",
-      "bvpAvg": ".571",
-      "bvpOps": "1.625",
-      "bvpPA": 16,
-      "bvpHR": 2,
-      "gamePk": 824599,
-      "gameLabel": "CHC @ CWS"
     },
     {
       "batterId": 660271,
@@ -198,22 +198,6 @@
       "gameLabel": "NYY @ NYM"
     },
     {
-      "batterId": 678246,
-      "batterName": "Miguel Vargas",
-      "pitcherId": 607067,
-      "pitcherName": "Colin Rea",
-      "batterTeam": "CWS",
-      "pitcherTeam": "CHC",
-      "edgeScore": 76,
-      "grade": "A",
-      "bvpAvg": ".667",
-      "bvpOps": "2.333",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 824599,
-      "gameLabel": "CHC @ CWS"
-    },
-    {
       "batterId": 663586,
       "batterName": "Austin Riley",
       "pitcherId": 678394,
@@ -244,6 +228,22 @@
       "bvpHR": 4,
       "gamePk": 823628,
       "gameLabel": "NYY @ NYM"
+    },
+    {
+      "batterId": 678246,
+      "batterName": "Miguel Vargas",
+      "pitcherId": 607067,
+      "pitcherName": "Colin Rea",
+      "batterTeam": "CWS",
+      "pitcherTeam": "CHC",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".571",
+      "bvpOps": "2.000",
+      "bvpPA": 7,
+      "bvpHR": 2,
+      "gamePk": 824599,
+      "gameLabel": "CHC @ CWS"
     }
   ],
   "pitchers": [
@@ -365,30 +365,43 @@
       "gameLabel": "BOS @ ATL"
     },
     {
-      "pitcherId": 607067,
-      "pitcherName": "Colin Rea",
-      "team": "CHC",
-      "oppTeam": "CWS",
-      "whiffScore": 63,
+      "pitcherId": 663567,
+      "pitcherName": "Peter Lambert",
+      "team": "HOU",
+      "oppTeam": "TEX",
+      "whiffScore": 64,
       "grade": "B+",
-      "k9": 7.7,
-      "projectedIP": 7,
-      "projectedK": 5,
-      "gamePk": 824599,
-      "gameLabel": "CHC @ CWS"
+      "k9": 8.9,
+      "projectedIP": 5.2,
+      "projectedK": 4.5,
+      "gamePk": 824192,
+      "gameLabel": "TEX @ HOU"
     },
     {
       "pitcherId": 543135,
       "pitcherName": "Nathan Eovaldi",
       "team": "TEX",
       "oppTeam": "HOU",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 8.9,
-      "projectedIP": 5.9,
-      "projectedK": 5,
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 9.1,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
       "gamePk": 824192,
       "gameLabel": "TEX @ HOU"
+    },
+    {
+      "pitcherId": 607067,
+      "pitcherName": "Colin Rea",
+      "team": "CHC",
+      "oppTeam": "CWS",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 7.5,
+      "projectedIP": 6.2,
+      "projectedK": 4.5,
+      "gamePk": 824599,
+      "gameLabel": "CHC @ CWS"
     },
     {
       "pitcherId": 605488,
@@ -410,9 +423,9 @@
       "oppTeam": "MIL",
       "whiffScore": 59,
       "grade": "B",
-      "k9": 6.8,
-      "projectedIP": 5.8,
-      "projectedK": 3.5,
+      "k9": 6.6,
+      "projectedIP": 5.3,
+      "projectedK": 3,
       "gamePk": 823708,
       "gameLabel": "MIL @ MIN"
     },
@@ -423,9 +436,9 @@
       "oppTeam": "STL",
       "whiffScore": 59,
       "grade": "B",
-      "k9": 7.6,
-      "projectedIP": 5.1,
-      "projectedK": 3.5,
+      "k9": 7.2,
+      "projectedIP": 3.7,
+      "projectedK": 2.5,
       "gamePk": 823058,
       "gameLabel": "KC @ STL"
     },
@@ -441,32 +454,6 @@
       "projectedK": 0,
       "gamePk": 823138,
       "gameLabel": "SD @ SEA"
-    },
-    {
-      "pitcherId": 663567,
-      "pitcherName": "Peter Lambert",
-      "team": "HOU",
-      "oppTeam": "TEX",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 8.9,
-      "projectedIP": 5.8,
-      "projectedK": 5,
-      "gamePk": 824192,
-      "gameLabel": "TEX @ HOU"
-    },
-    {
-      "pitcherId": 669467,
-      "pitcherName": "Andre Pallante",
-      "team": "STL",
-      "oppTeam": "KC",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 7,
-      "projectedIP": 5.3,
-      "projectedK": 3.5,
-      "gamePk": 823058,
-      "gameLabel": "KC @ STL"
     },
     {
       "pitcherId": 669923,
@@ -508,17 +495,17 @@
       "gameLabel": "MIA @ TB"
     },
     {
-      "pitcherId": 607200,
-      "pitcherName": "Erick Fedde",
-      "team": "CWS",
-      "oppTeam": "CHC",
-      "whiffScore": 51,
+      "pitcherId": 669467,
+      "pitcherName": "Andre Pallante",
+      "team": "STL",
+      "oppTeam": "KC",
+      "whiffScore": 52,
       "grade": "C",
-      "k9": 5.4,
-      "projectedIP": 7.2,
-      "projectedK": 3.5,
-      "gamePk": 824599,
-      "gameLabel": "CHC @ CWS"
+      "k9": 6.9,
+      "projectedIP": 4.8,
+      "projectedK": 3,
+      "gamePk": 823058,
+      "gameLabel": "KC @ STL"
     },
     {
       "pitcherId": 605288,
@@ -560,6 +547,19 @@
       "gameLabel": "CIN @ CLE"
     },
     {
+      "pitcherId": 607200,
+      "pitcherName": "Erick Fedde",
+      "team": "CWS",
+      "oppTeam": "CHC",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 5.5,
+      "projectedIP": 6.3,
+      "projectedK": 3,
+      "gamePk": 824599,
+      "gameLabel": "CHC @ CWS"
+    },
+    {
       "pitcherId": 688107,
       "pitcherName": "Robert Gasser",
       "team": "MIL",
@@ -567,7 +567,7 @@
       "whiffScore": 44,
       "grade": "D",
       "k9": 0,
-      "projectedIP": 5.5,
+      "projectedIP": 0.2,
       "projectedK": 0,
       "gamePk": 823708,
       "gameLabel": "MIL @ MIN"
