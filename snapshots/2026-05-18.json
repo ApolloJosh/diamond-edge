@@ -1,6 +1,6 @@
 {
   "date": "2026-05-18",
-  "savedAt": "2026-05-18T19:13:28.864Z",
+  "savedAt": "2026-05-18T22:32:31.393Z",
   "scanType": "afternoon",
   "gamesScanned": 14,
   "totalGames": 14,
@@ -391,19 +391,6 @@
       "gameLabel": "CLE @ DET"
     },
     {
-      "pitcherId": 500779,
-      "pitcherName": "Jose Quintana",
-      "team": "COL",
-      "oppTeam": "TEX",
-      "whiffScore": 62,
-      "grade": "B+",
-      "k9": 4.2,
-      "projectedIP": 4.9,
-      "projectedK": 2,
-      "gamePk": 824357,
-      "gameLabel": "TEX @ COL"
-    },
-    {
       "pitcherId": 681035,
       "pitcherName": "Christian Scott",
       "team": "NYM",
@@ -441,6 +428,19 @@
       "projectedK": 4.5,
       "gamePk": 823301,
       "gameLabel": "LAD @ SD"
+    },
+    {
+      "pitcherId": 500779,
+      "pitcherName": "Jose Quintana",
+      "team": "COL",
+      "oppTeam": "TEX",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 4.2,
+      "projectedIP": 4.9,
+      "projectedK": 2,
+      "gamePk": 824357,
+      "gameLabel": "TEX @ COL"
     },
     {
       "pitcherId": 607625,
@@ -577,6 +577,24 @@
       "gameLabel": "CLE @ DET"
     },
     {
+      "pitcherId": 676974,
+      "pitcherName": "Max Meyer",
+      "team": "MIA",
+      "oppTeam": "ATL",
+      "line": 87.5,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 88.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 86.6,
+      "twoYrStarts": 21,
+      "bvpAdj": 0,
+      "lineupPA": 106,
+      "gamePk": 823867,
+      "gameLabel": "ATL @ MIA"
+    },
+    {
       "pitcherId": 663623,
       "pitcherName": "Jake Irvin",
       "team": "WSH",
@@ -593,24 +611,6 @@
       "lineupPA": 134,
       "gamePk": 822734,
       "gameLabel": "NYM @ WSH"
-    },
-    {
-      "pitcherId": 808967,
-      "pitcherName": "Yoshinobu Yamamoto",
-      "team": "LAD",
-      "oppTeam": "SD",
-      "line": 97,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 96,
-      "recent5Starts": 5,
-      "twoYrAvg": 93.4,
-      "twoYrStarts": 38,
-      "bvpAdj": 2,
-      "lineupPA": 86,
-      "gamePk": 823301,
-      "gameLabel": "LAD @ SD"
     }
   ]
 }
