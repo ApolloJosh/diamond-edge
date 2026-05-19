@@ -1,8 +1,8 @@
 {
   "date": "2026-05-19",
-  "savedAt": "2026-05-19T19:27:30.145Z",
+  "savedAt": "2026-05-19T22:45:12.939Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -36,22 +36,6 @@
       "bvpHR": 0,
       "gamePk": 823865,
       "gameLabel": "ATL @ MIA"
-    },
-    {
-      "batterId": 621439,
-      "batterName": "Byron Buxton",
-      "pitcherId": 621121,
-      "pitcherName": "Lance McCullers Jr.",
-      "batterTeam": "MIN",
-      "pitcherTeam": "HOU",
-      "edgeScore": 81,
-      "grade": "A+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.867",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 823704,
-      "gameLabel": "HOU @ MIN"
     },
     {
       "batterId": 701762,
@@ -116,22 +100,6 @@
       "bvpHR": 0,
       "gamePk": 823548,
       "gameLabel": "TOR @ NYY"
-    },
-    {
-      "batterId": 663616,
-      "batterName": "Trevor Larnach",
-      "pitcherId": 621121,
-      "pitcherName": "Lance McCullers Jr.",
-      "batterTeam": "MIN",
-      "pitcherTeam": "HOU",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.000",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 823704,
-      "gameLabel": "HOU @ MIN"
     },
     {
       "batterId": 682848,
@@ -244,6 +212,38 @@
       "bvpHR": 0,
       "gamePk": 823548,
       "gameLabel": "TOR @ NYY"
+    },
+    {
+      "batterId": 668804,
+      "batterName": "Bryan Reynolds",
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "batterTeam": "PIT",
+      "pitcherTeam": "STL",
+      "edgeScore": 67,
+      "grade": "B+",
+      "bvpAvg": ".333",
+      "bvpOps": "1.000",
+      "bvpPA": 24,
+      "bvpHR": 2,
+      "gamePk": 823059,
+      "gameLabel": "PIT @ STL"
+    },
+    {
+      "batterId": 681624,
+      "batterName": "Andy Pages",
+      "pitcherId": 656288,
+      "pitcherName": "Griffin Canning",
+      "batterTeam": "LAD",
+      "pitcherTeam": "SD",
+      "edgeScore": 67,
+      "grade": "B+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.000",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 823302,
+      "gameLabel": "LAD @ SD"
     }
   ],
   "pitchers": [
@@ -254,9 +254,9 @@
       "oppTeam": "CIN",
       "whiffScore": 82,
       "grade": "A+",
-      "k9": 11.1,
-      "projectedIP": 5.5,
-      "projectedK": 5.5,
+      "k9": 11.2,
+      "projectedIP": 5,
+      "projectedK": 5,
       "gamePk": 823464,
       "gameLabel": "CIN @ PHI"
     },
@@ -313,6 +313,19 @@
       "gameLabel": "NYM @ WSH"
     },
     {
+      "pitcherId": 669920,
+      "pitcherName": "Jason Alexander",
+      "team": "HOU",
+      "oppTeam": "MIN",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8.5,
+      "projectedIP": 5.5,
+      "projectedK": 4.5,
+      "gamePk": 823704,
+      "gameLabel": "HOU @ MIN"
+    },
+    {
       "pitcherId": 672282,
       "pitcherName": "Reid Detmers",
       "team": "LAA",
@@ -363,19 +376,6 @@
       "projectedK": 4,
       "gamePk": 823302,
       "gameLabel": "LAD @ SD"
-    },
-    {
-      "pitcherId": 621121,
-      "pitcherName": "Lance McCullers Jr.",
-      "team": "HOU",
-      "oppTeam": "MIN",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 9.8,
-      "projectedIP": 4.9,
-      "projectedK": 4.5,
-      "gamePk": 823704,
-      "gameLabel": "HOU @ MIN"
     },
     {
       "pitcherId": 701542,
@@ -488,9 +488,9 @@
       "oppTeam": "BAL",
       "whiffScore": 56,
       "grade": "B",
-      "k9": 7,
-      "projectedIP": 5.8,
-      "projectedK": 3.5,
+      "k9": 7.3,
+      "projectedIP": 4.6,
+      "projectedK": 3,
       "gamePk": 822979,
       "gameLabel": "BAL @ TB"
     },
@@ -528,7 +528,7 @@
       "whiffScore": 52,
       "grade": "C",
       "k9": 6.3,
-      "projectedIP": 5.5,
+      "projectedIP": 4.9,
       "projectedK": 3,
       "gamePk": 824276,
       "gameLabel": "CLE @ DET"
@@ -647,22 +647,22 @@
       "gameLabel": "CLE @ DET"
     },
     {
-      "pitcherId": 666200,
-      "pitcherName": "Jesús Luzardo",
-      "team": "PHI",
-      "oppTeam": "CIN",
-      "line": 96,
-      "overUnder": "OVER",
+      "pitcherId": 663559,
+      "pitcherName": "Bailey Falter",
+      "team": "KC",
+      "oppTeam": "BOS",
+      "line": 78.5,
+      "overUnder": "UNDER",
       "pitchScore": 69,
       "grade": "B+",
-      "recent5Avg": 95.4,
+      "recent5Avg": 79.8,
       "recent5Starts": 5,
-      "twoYrAvg": 94.4,
-      "twoYrStarts": 41,
-      "bvpAdj": 1,
-      "lineupPA": 36,
-      "gamePk": 823464,
-      "gameLabel": "CIN @ PHI"
+      "twoYrAvg": 81.3,
+      "twoYrStarts": 24,
+      "bvpAdj": -2,
+      "lineupPA": 32,
+      "gamePk": 824112,
+      "gameLabel": "BOS @ KC"
     }
   ]
 }
