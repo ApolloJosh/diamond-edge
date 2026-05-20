@@ -1,6 +1,6 @@
 {
   "date": "2026-05-20",
-  "savedAt": "2026-05-20T18:03:44.180Z",
+  "savedAt": "2026-05-20T19:41:21.014Z",
   "scanType": "afternoon",
   "gamesScanned": 13,
   "totalGames": 15,
@@ -86,6 +86,22 @@
       "gameLabel": "LAD @ SD"
     },
     {
+      "batterId": 664761,
+      "batterName": "Alec Bohm",
+      "pitcherId": 671096,
+      "pitcherName": "Andrew Abbott",
+      "batterTeam": "PHI",
+      "pitcherTeam": "CIN",
+      "edgeScore": 82,
+      "grade": "A+",
+      "bvpAvg": ".750",
+      "bvpOps": "1.917",
+      "bvpPA": 12,
+      "bvpHR": 0,
+      "gamePk": 823462,
+      "gameLabel": "CIN @ PHI"
+    },
+    {
       "batterId": 670541,
       "batterName": "Yordan Alvarez",
       "pitcherId": 657746,
@@ -116,6 +132,22 @@
       "bvpHR": 0,
       "gamePk": 823547,
       "gameLabel": "TOR @ NYY"
+    },
+    {
+      "batterId": 663993,
+      "batterName": "Nathaniel Lowe",
+      "pitcherId": 605400,
+      "pitcherName": "Aaron Nola",
+      "batterTeam": "CIN",
+      "pitcherTeam": "PHI",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".571",
+      "bvpOps": "1.571",
+      "bvpPA": 14,
+      "bvpHR": 2,
+      "gamePk": 823462,
+      "gameLabel": "CIN @ PHI"
     },
     {
       "batterId": 673962,
@@ -212,38 +244,6 @@
       "bvpHR": 2,
       "gamePk": 824678,
       "gameLabel": "MIL @ CHC"
-    },
-    {
-      "batterId": 607043,
-      "batterName": "Brandon Nimmo",
-      "pitcherId": 607536,
-      "pitcherName": "Kyle Freeland",
-      "batterTeam": "TEX",
-      "pitcherTeam": "COL",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".357",
-      "bvpOps": "1.000",
-      "bvpPA": 28,
-      "bvpHR": 2,
-      "gamePk": 824355,
-      "gameLabel": "TEX @ COL"
-    },
-    {
-      "batterId": 690993,
-      "batterName": "Colt Keith",
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "batterTeam": "DET",
-      "pitcherTeam": "CLE",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".385",
-      "bvpOps": "1.044",
-      "bvpPA": 28,
-      "bvpHR": 0,
-      "gamePk": 824273,
-      "gameLabel": "CLE @ DET"
     }
   ],
   "pitchers": [
@@ -326,6 +326,19 @@
       "gameLabel": "CWS @ SEA"
     },
     {
+      "pitcherId": 605400,
+      "pitcherName": "Aaron Nola",
+      "team": "PHI",
+      "oppTeam": "CIN",
+      "whiffScore": 68,
+      "grade": "B+",
+      "k9": 9.1,
+      "projectedIP": 5,
+      "projectedK": 4,
+      "gamePk": 823462,
+      "gameLabel": "CIN @ PHI"
+    },
+    {
       "pitcherId": 607536,
       "pitcherName": "Kyle Freeland",
       "team": "COL",
@@ -350,6 +363,19 @@
       "projectedK": 3.5,
       "gamePk": 823057,
       "gameLabel": "PIT @ STL"
+    },
+    {
+      "pitcherId": 571927,
+      "pitcherName": "Steven Matz",
+      "team": "TB",
+      "oppTeam": "BAL",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.2,
+      "projectedIP": 5.1,
+      "projectedK": 3.5,
+      "gamePk": 822977,
+      "gameLabel": "BAL @ TB"
     },
     {
       "pitcherId": 676440,
@@ -402,6 +428,19 @@
       "projectedK": 4,
       "gamePk": 823299,
       "gameLabel": "LAD @ SD"
+    },
+    {
+      "pitcherId": 669358,
+      "pitcherName": "Shane Baz",
+      "team": "BAL",
+      "oppTeam": "TB",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 7.5,
+      "projectedIP": 5.7,
+      "projectedK": 4,
+      "gamePk": 822977,
+      "gameLabel": "BAL @ TB"
     },
     {
       "pitcherId": 676083,
@@ -482,6 +521,19 @@
       "gameLabel": "CWS @ SEA"
     },
     {
+      "pitcherId": 671096,
+      "pitcherName": "Andrew Abbott",
+      "team": "CIN",
+      "oppTeam": "PHI",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 6,
+      "projectedIP": 5.1,
+      "projectedK": 3,
+      "gamePk": 823462,
+      "gameLabel": "CIN @ PHI"
+    },
+    {
       "pitcherId": 686799,
       "pitcherName": "Jack Kochanowicz",
       "team": "LAA",
@@ -559,6 +611,42 @@
       "gameLabel": "CLE @ DET"
     },
     {
+      "pitcherId": 605400,
+      "pitcherName": "Aaron Nola",
+      "team": "PHI",
+      "oppTeam": "CIN",
+      "line": 90,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 89.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 91.1,
+      "twoYrStarts": 27,
+      "bvpAdj": 0,
+      "lineupPA": 77,
+      "gamePk": 823462,
+      "gameLabel": "CIN @ PHI"
+    },
+    {
+      "pitcherId": 671096,
+      "pitcherName": "Andrew Abbott",
+      "team": "CIN",
+      "oppTeam": "PHI",
+      "line": 91,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 91,
+      "recent5Starts": 5,
+      "twoYrAvg": 91.3,
+      "twoYrStarts": 40,
+      "bvpAdj": 0,
+      "lineupPA": 142,
+      "gamePk": 823462,
+      "gameLabel": "CIN @ PHI"
+    },
+    {
       "pitcherId": 607536,
       "pitcherName": "Kyle Freeland",
       "team": "COL",
@@ -575,42 +663,6 @@
       "lineupPA": 152,
       "gamePk": 824355,
       "gameLabel": "TEX @ COL"
-    },
-    {
-      "pitcherId": 641816,
-      "pitcherName": "Tyler Mahle",
-      "team": "SF",
-      "oppTeam": "AZ",
-      "line": 92.5,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 90.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 87.5,
-      "twoYrStarts": 25,
-      "bvpAdj": 3,
-      "lineupPA": 82,
-      "gamePk": 825084,
-      "gameLabel": "SF @ AZ"
-    },
-    {
-      "pitcherId": 676106,
-      "pitcherName": "Emerson Hancock",
-      "team": "SEA",
-      "oppTeam": "CWS",
-      "line": 97.5,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 93.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.2,
-      "twoYrStarts": 25,
-      "bvpAdj": 5,
-      "lineupPA": 54,
-      "gamePk": 823134,
-      "gameLabel": "CWS @ SEA"
     }
   ]
 }
