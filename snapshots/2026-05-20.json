@@ -1,8 +1,8 @@
 {
   "date": "2026-05-20",
-  "savedAt": "2026-05-20T19:41:21.014Z",
+  "savedAt": "2026-05-20T22:53:56.557Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 9,
   "totalGames": 15,
   "batters": [
     {
@@ -118,22 +118,6 @@
       "gameLabel": "HOU @ MIN"
     },
     {
-      "batterId": 665489,
-      "batterName": "Vladimir Guerrero Jr.",
-      "pitcherId": 693645,
-      "pitcherName": "Cam Schlittler",
-      "batterTeam": "TOR",
-      "pitcherTeam": "NYY",
-      "edgeScore": 79,
-      "grade": "A",
-      "bvpAvg": ".800",
-      "bvpOps": "1.600",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 823547,
-      "gameLabel": "TOR @ NYY"
-    },
-    {
       "batterId": 663993,
       "batterName": "Nathaniel Lowe",
       "pitcherId": 605400,
@@ -148,6 +132,22 @@
       "bvpHR": 2,
       "gamePk": 823462,
       "gameLabel": "CIN @ PHI"
+    },
+    {
+      "batterId": 665489,
+      "batterName": "Vladimir Guerrero Jr.",
+      "pitcherId": 693645,
+      "pitcherName": "Cam Schlittler",
+      "batterTeam": "TOR",
+      "pitcherTeam": "NYY",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".800",
+      "bvpOps": "1.600",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 823547,
+      "gameLabel": "TOR @ NYY"
     },
     {
       "batterId": 673962,
@@ -352,19 +352,6 @@
       "gameLabel": "TEX @ COL"
     },
     {
-      "pitcherId": 700241,
-      "pitcherName": "Michael McGreevy",
-      "team": "STL",
-      "oppTeam": "PIT",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 6.3,
-      "projectedIP": 5.7,
-      "projectedK": 3.5,
-      "gamePk": 823057,
-      "gameLabel": "PIT @ STL"
-    },
-    {
       "pitcherId": 571927,
       "pitcherName": "Steven Matz",
       "team": "TB",
@@ -378,15 +365,28 @@
       "gameLabel": "BAL @ TB"
     },
     {
+      "pitcherId": 700241,
+      "pitcherName": "Michael McGreevy",
+      "team": "STL",
+      "oppTeam": "PIT",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 6.3,
+      "projectedIP": 5.7,
+      "projectedK": 3.5,
+      "gamePk": 823057,
+      "gameLabel": "PIT @ STL"
+    },
+    {
       "pitcherId": 676440,
       "pitcherName": "Tanner Bibee",
       "team": "CLE",
       "oppTeam": "DET",
       "whiffScore": 63,
       "grade": "B+",
-      "k9": 8.1,
-      "projectedIP": 5.2,
-      "projectedK": 4,
+      "k9": 8,
+      "projectedIP": 4.7,
+      "projectedK": 3.5,
       "gamePk": 824273,
       "gameLabel": "CLE @ DET"
     },
@@ -402,6 +402,19 @@
       "projectedK": 4.5,
       "gamePk": 825084,
       "gameLabel": "SF @ AZ"
+    },
+    {
+      "pitcherId": 669358,
+      "pitcherName": "Shane Baz",
+      "team": "BAL",
+      "oppTeam": "TB",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 7.5,
+      "projectedIP": 5.7,
+      "projectedK": 4,
+      "gamePk": 822977,
+      "gameLabel": "BAL @ TB"
     },
     {
       "pitcherId": 690986,
@@ -428,32 +441,6 @@
       "projectedK": 4,
       "gamePk": 823299,
       "gameLabel": "LAD @ SD"
-    },
-    {
-      "pitcherId": 669358,
-      "pitcherName": "Shane Baz",
-      "team": "BAL",
-      "oppTeam": "TB",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 7.5,
-      "projectedIP": 5.7,
-      "projectedK": 4,
-      "gamePk": 822977,
-      "gameLabel": "BAL @ TB"
-    },
-    {
-      "pitcherId": 676083,
-      "pitcherName": "Janson Junk",
-      "team": "MIA",
-      "oppTeam": "ATL",
-      "whiffScore": 59,
-      "grade": "B",
-      "k9": 6.7,
-      "projectedIP": 5.6,
-      "projectedK": 3.5,
-      "gamePk": 823866,
-      "gameLabel": "ATL @ MIA"
     },
     {
       "pitcherId": 608379,
@@ -493,6 +480,19 @@
       "projectedK": 5.5,
       "gamePk": 823547,
       "gameLabel": "TOR @ NYY"
+    },
+    {
+      "pitcherId": 676083,
+      "pitcherName": "Janson Junk",
+      "team": "MIA",
+      "oppTeam": "ATL",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 6.5,
+      "projectedIP": 5.1,
+      "projectedK": 3,
+      "gamePk": 823866,
+      "gameLabel": "ATL @ MIA"
     },
     {
       "pitcherId": 665795,
@@ -566,8 +566,8 @@
       "oppTeam": "NYM",
       "whiffScore": 45,
       "grade": "C",
-      "k9": 4.4,
-      "projectedIP": 6.9,
+      "k9": 4.5,
+      "projectedIP": 6,
       "projectedK": 2.5,
       "gamePk": 822735,
       "gameLabel": "NYM @ WSH"
@@ -591,24 +591,6 @@
       "lineupPA": 82,
       "gamePk": 824678,
       "gameLabel": "MIL @ CHC"
-    },
-    {
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "team": "CLE",
-      "oppTeam": "DET",
-      "line": 94.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 91.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 94.1,
-      "twoYrStarts": 41,
-      "bvpAdj": 2,
-      "lineupPA": 228,
-      "gamePk": 824273,
-      "gameLabel": "CLE @ DET"
     },
     {
       "pitcherId": 605400,
@@ -663,6 +645,24 @@
       "lineupPA": 152,
       "gamePk": 824355,
       "gameLabel": "TEX @ COL"
+    },
+    {
+      "pitcherId": 608379,
+      "pitcherName": "Michael Wacha",
+      "team": "KC",
+      "oppTeam": "BOS",
+      "line": 92,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 89.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 87.1,
+      "twoYrStarts": 40,
+      "bvpAdj": 3,
+      "lineupPA": 98,
+      "gamePk": 824111,
+      "gameLabel": "BOS @ KC"
     }
   ]
 }
