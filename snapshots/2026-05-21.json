@@ -1,8 +1,8 @@
 {
   "date": "2026-05-21",
-  "savedAt": "2026-05-21T19:27:24.823Z",
+  "savedAt": "2026-05-21T22:49:45.271Z",
   "scanType": "afternoon",
-  "gamesScanned": 5,
+  "gamesScanned": 4,
   "totalGames": 7,
   "batters": [
     {
@@ -86,6 +86,22 @@
       "gameLabel": "CLE @ DET"
     },
     {
+      "batterId": 671739,
+      "batterName": "Michael Harris II",
+      "pitcherId": 645261,
+      "pitcherName": "Sandy Alcantara",
+      "batterTeam": "ATL",
+      "pitcherTeam": "MIA",
+      "edgeScore": 90,
+      "grade": "A+",
+      "bvpAvg": ".368",
+      "bvpOps": "1.084",
+      "bvpPA": 40,
+      "bvpHR": 4,
+      "gamePk": 823864,
+      "gameLabel": "ATL @ MIA"
+    },
+    {
       "batterId": 624428,
       "batterName": "Adam Frazier",
       "pitcherId": 622663,
@@ -148,22 +164,6 @@
       "bvpHR": 2,
       "gamePk": 824031,
       "gameLabel": "ATH @ LAA"
-    },
-    {
-      "batterId": 671739,
-      "batterName": "Michael Harris II",
-      "pitcherId": 645261,
-      "pitcherName": "Sandy Alcantara",
-      "batterTeam": "ATL",
-      "pitcherTeam": "MIA",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": ".868",
-      "bvpPA": 38,
-      "bvpHR": 2,
-      "gamePk": 823864,
-      "gameLabel": "ATL @ MIA"
     },
     {
       "batterId": 660162,
@@ -410,8 +410,8 @@
       "oppTeam": "ATL",
       "whiffScore": 52,
       "grade": "C",
-      "k9": 6.4,
-      "projectedIP": 6.3,
+      "k9": 6.5,
+      "projectedIP": 5.8,
       "projectedK": 3.5,
       "gamePk": 823864,
       "gameLabel": "ATL @ MIA"
@@ -508,16 +508,16 @@
       "pitcherName": "Sandy Alcantara",
       "team": "MIA",
       "oppTeam": "ATL",
-      "line": 101,
+      "line": 88,
       "overUnder": "OVER",
-      "pitchScore": 65,
+      "pitchScore": 62,
       "grade": "B+",
-      "recent5Avg": 101.6,
+      "recent5Avg": 82.8,
       "recent5Starts": 5,
-      "twoYrAvg": 94.1,
-      "twoYrStarts": 41,
+      "twoYrAvg": 92.2,
+      "twoYrStarts": 42,
       "bvpAdj": 2,
-      "lineupPA": 472,
+      "lineupPA": 474,
       "gamePk": 823864,
       "gameLabel": "ATL @ MIA"
     }
