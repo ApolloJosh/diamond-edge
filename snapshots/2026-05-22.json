@@ -1,8 +1,8 @@
 {
   "date": "2026-05-22",
-  "savedAt": "2026-05-22T17:25:41.336Z",
+  "savedAt": "2026-05-22T19:14:10.857Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -150,22 +150,6 @@
       "gameLabel": "TB @ NYY"
     },
     {
-      "batterId": 682985,
-      "batterName": "Riley Greene",
-      "pitcherId": 605135,
-      "pitcherName": "Chris Bassitt",
-      "batterTeam": "DET",
-      "pitcherTeam": "BAL",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": "1.000",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 824842,
-      "gameLabel": "DET @ BAL"
-    },
-    {
       "batterId": 671739,
       "batterName": "Michael Harris II",
       "pitcherId": 571945,
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 824029,
       "gameLabel": "TEX @ LAA"
+    },
+    {
+      "batterId": 624428,
+      "batterName": "Adam Frazier",
+      "pitcherId": 594798,
+      "pitcherName": "Jacob deGrom",
+      "batterTeam": "LAA",
+      "pitcherTeam": "TEX",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".417",
+      "bvpOps": ".917",
+      "bvpPA": 24,
+      "bvpHR": 0,
+      "gamePk": 824029,
+      "gameLabel": "TEX @ LAA"
     }
   ],
   "pitchers": [
@@ -313,6 +313,19 @@
       "gameLabel": "DET @ BAL"
     },
     {
+      "pitcherId": 669211,
+      "pitcherName": "Keegan Akin",
+      "team": "BAL",
+      "oppTeam": "DET",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 8.3,
+      "projectedIP": 8.2,
+      "projectedK": 6.5,
+      "gamePk": 824842,
+      "gameLabel": "DET @ BAL"
+    },
+    {
       "pitcherId": 669302,
       "pitcherName": "Logan Gilbert",
       "team": "SEA",
@@ -378,32 +391,6 @@
       "gameLabel": "NYM @ MIA"
     },
     {
-      "pitcherId": 663978,
-      "pitcherName": "Chris Paddack",
-      "team": "CIN",
-      "oppTeam": "STL",
-      "whiffScore": 62,
-      "grade": "B+",
-      "k9": 7.6,
-      "projectedIP": 5,
-      "projectedK": 3.5,
-      "gamePk": 824518,
-      "gameLabel": "STL @ CIN"
-    },
-    {
-      "pitcherId": 605135,
-      "pitcherName": "Chris Bassitt",
-      "team": "BAL",
-      "oppTeam": "DET",
-      "whiffScore": 62,
-      "grade": "B+",
-      "k9": 6.3,
-      "projectedIP": 5.4,
-      "projectedK": 3,
-      "gamePk": 824842,
-      "gameLabel": "DET @ BAL"
-    },
-    {
       "pitcherId": 605488,
       "pitcherName": "Jeffrey Springs",
       "team": "ATH",
@@ -415,6 +402,19 @@
       "projectedK": 4,
       "gamePk": 823298,
       "gameLabel": "ATH @ SD"
+    },
+    {
+      "pitcherId": 663978,
+      "pitcherName": "Chris Paddack",
+      "team": "CIN",
+      "oppTeam": "STL",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 7.6,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 824518,
+      "gameLabel": "STL @ CIN"
     },
     {
       "pitcherId": 650911,
