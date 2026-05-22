@@ -1,6 +1,6 @@
 {
   "date": "2026-05-22",
-  "savedAt": "2026-05-22T19:14:10.857Z",
+  "savedAt": "2026-05-22T22:34:55.518Z",
   "scanType": "afternoon",
   "gamesScanned": 14,
   "totalGames": 15,
@@ -54,6 +54,22 @@
       "gameLabel": "TB @ NYY"
     },
     {
+      "batterId": 682928,
+      "batterName": "CJ Abrams",
+      "pitcherId": 693821,
+      "pitcherName": "Bryce Elder",
+      "batterTeam": "WSH",
+      "pitcherTeam": "ATL",
+      "edgeScore": 82,
+      "grade": "A+",
+      "bvpAvg": ".375",
+      "bvpOps": ".911",
+      "bvpPA": 40,
+      "bvpHR": 0,
+      "gamePk": 824922,
+      "gameLabel": "WSH @ ATL"
+    },
+    {
       "batterId": 670541,
       "batterName": "Yordan Alvarez",
       "pitcherId": 592791,
@@ -68,6 +84,22 @@
       "bvpHR": 2,
       "gamePk": 824679,
       "gameLabel": "HOU @ CHC"
+    },
+    {
+      "batterId": 695734,
+      "batterName": "Daylen Lile",
+      "pitcherId": 693821,
+      "pitcherName": "Bryce Elder",
+      "batterTeam": "WSH",
+      "pitcherTeam": "ATL",
+      "edgeScore": 80,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.867",
+      "bvpPA": 12,
+      "bvpHR": 2,
+      "gamePk": 824922,
+      "gameLabel": "WSH @ ATL"
     },
     {
       "batterId": 664761,
@@ -102,22 +134,6 @@
       "gameLabel": "HOU @ CHC"
     },
     {
-      "batterId": 621566,
-      "batterName": "Matt Olson",
-      "pitcherId": 571945,
-      "pitcherName": "Miles Mikolas",
-      "batterTeam": "ATL",
-      "pitcherTeam": "WSH",
-      "edgeScore": 77,
-      "grade": "A",
-      "bvpAvg": ".267",
-      "bvpOps": "1.067",
-      "bvpPA": 30,
-      "bvpHR": 4,
-      "gamePk": 824922,
-      "gameLabel": "WSH @ ATL"
-    },
-    {
       "batterId": 687263,
       "batterName": "Zach Neto",
       "pitcherId": 594798,
@@ -148,22 +164,6 @@
       "bvpHR": 0,
       "gamePk": 823546,
       "gameLabel": "TB @ NYY"
-    },
-    {
-      "batterId": 671739,
-      "batterName": "Michael Harris II",
-      "pitcherId": 571945,
-      "pitcherName": "Miles Mikolas",
-      "batterTeam": "ATL",
-      "pitcherTeam": "WSH",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".455",
-      "bvpOps": "1.000",
-      "bvpPA": 22,
-      "bvpHR": 0,
-      "gamePk": 824922,
-      "gameLabel": "WSH @ ATL"
     },
     {
       "batterId": 681807,
@@ -447,13 +447,26 @@
       "pitcherName": "Kyle Leahy",
       "team": "STL",
       "oppTeam": "CIN",
-      "whiffScore": 56,
+      "whiffScore": 59,
       "grade": "B",
       "k9": 6.7,
       "projectedIP": 5,
       "projectedK": 3,
       "gamePk": 824518,
       "gameLabel": "STL @ CIN"
+    },
+    {
+      "pitcherId": 693821,
+      "pitcherName": "Bryce Elder",
+      "team": "ATL",
+      "oppTeam": "WSH",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 8,
+      "projectedIP": 6.2,
+      "projectedK": 4.5,
+      "gamePk": 824922,
+      "gameLabel": "WSH @ ATL"
     },
     {
       "pitcherId": 607259,
@@ -521,19 +534,6 @@
       "gameLabel": "TB @ NYY"
     },
     {
-      "pitcherId": 571945,
-      "pitcherName": "Miles Mikolas",
-      "team": "WSH",
-      "oppTeam": "ATL",
-      "whiffScore": 45,
-      "grade": "C",
-      "k9": 6.1,
-      "projectedIP": 6.9,
-      "projectedK": 4,
-      "gamePk": 824922,
-      "gameLabel": "WSH @ ATL"
-    },
-    {
       "pitcherId": 680736,
       "pitcherName": "Justin Wrobleski",
       "team": "LAD",
@@ -580,6 +580,24 @@
       "gameLabel": "CLE @ PHI"
     },
     {
+      "pitcherId": 693821,
+      "pitcherName": "Bryce Elder",
+      "team": "ATL",
+      "oppTeam": "WSH",
+      "line": 89.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 92.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.5,
+      "twoYrStarts": 38,
+      "bvpAdj": -2,
+      "lineupPA": 148,
+      "gamePk": 824922,
+      "gameLabel": "WSH @ ATL"
+    },
+    {
       "pitcherId": 647336,
       "pitcherName": "Michael Soroka",
       "team": "AZ",
@@ -616,40 +634,22 @@
       "gameLabel": "PIT @ TOR"
     },
     {
-      "pitcherId": 592791,
-      "pitcherName": "Jameson Taillon",
-      "team": "CHC",
-      "oppTeam": "HOU",
-      "line": 86.5,
-      "overUnder": "UNDER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 92,
+      "pitcherId": 594798,
+      "pitcherName": "Jacob deGrom",
+      "team": "TEX",
+      "oppTeam": "LAA",
+      "line": 98,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 92.8,
       "recent5Starts": 5,
-      "twoYrAvg": 87.8,
-      "twoYrStarts": 32,
-      "bvpAdj": -4,
-      "lineupPA": 100,
-      "gamePk": 824679,
-      "gameLabel": "HOU @ CHC"
-    },
-    {
-      "pitcherId": 656427,
-      "pitcherName": "Jack Flaherty",
-      "team": "DET",
-      "oppTeam": "BAL",
-      "line": 89,
-      "overUnder": "UNDER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 88.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.4,
-      "twoYrStarts": 41,
-      "bvpAdj": 0,
-      "lineupPA": 40,
-      "gamePk": 824842,
-      "gameLabel": "DET @ BAL"
+      "twoYrAvg": 87.6,
+      "twoYrStarts": 39,
+      "bvpAdj": 7,
+      "lineupPA": 118,
+      "gamePk": 824029,
+      "gameLabel": "TEX @ LAA"
     }
   ]
 }
