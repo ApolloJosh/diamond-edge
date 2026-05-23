@@ -1,8 +1,8 @@
 {
   "date": "2026-05-23",
-  "savedAt": "2026-05-23T16:32:03.910Z",
-  "scanType": "morning",
-  "gamesScanned": 16,
+  "savedAt": "2026-05-23T18:35:31.740Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 16,
   "batters": [
     {
@@ -118,6 +118,22 @@
       "gameLabel": "WSH @ ATL"
     },
     {
+      "batterId": 670541,
+      "batterName": "Yordan Alvarez",
+      "pitcherId": 607067,
+      "pitcherName": "Colin Rea",
+      "batterTeam": "HOU",
+      "pitcherTeam": "CHC",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".333",
+      "bvpOps": "1.359",
+      "bvpPA": 13,
+      "bvpHR": 0,
+      "gamePk": 824674,
+      "gameLabel": "HOU @ CHC"
+    },
+    {
       "batterId": 677951,
       "batterName": "Bobby Witt Jr.",
       "pitcherId": 669923,
@@ -164,22 +180,6 @@
       "bvpHR": 0,
       "gamePk": 825080,
       "gameLabel": "COL @ AZ"
-    },
-    {
-      "batterId": 670541,
-      "batterName": "Yordan Alvarez",
-      "pitcherId": 607067,
-      "pitcherName": "Colin Rea",
-      "batterTeam": "HOU",
-      "pitcherTeam": "CHC",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": "1.333",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824674,
-      "gameLabel": "HOU @ CHC"
     },
     {
       "batterId": 693304,
@@ -230,23 +230,36 @@
       "gameLabel": "WSH @ ATL"
     },
     {
-      "batterId": 665750,
-      "batterName": "Leody Taveras",
-      "pitcherId": 664285,
-      "pitcherName": "Framber Valdez",
-      "batterTeam": "BAL",
-      "pitcherTeam": "DET",
+      "batterId": 575929,
+      "batterName": "Willson Contreras",
+      "pitcherId": 671737,
+      "pitcherName": "Taj Bradley",
+      "batterTeam": "BOS",
+      "pitcherTeam": "MIN",
       "edgeScore": 67,
       "grade": "B+",
-      "bvpAvg": ".348",
-      "bvpOps": ".766",
-      "bvpPA": 48,
+      "bvpAvg": ".667",
+      "bvpOps": "1.333",
+      "bvpPA": 6,
       "bvpHR": 0,
-      "gamePk": 824840,
-      "gameLabel": "DET @ BAL"
+      "gamePk": 824760,
+      "gameLabel": "MIN @ BOS"
     }
   ],
   "pitchers": [
+    {
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "team": "TB",
+      "oppTeam": "NYY",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8.4,
+      "projectedIP": 5.3,
+      "projectedK": 4,
+      "gamePk": 823543,
+      "gameLabel": "TB @ NYY"
+    },
     {
       "pitcherId": 671737,
       "pitcherName": "Taj Bradley",
@@ -272,19 +285,6 @@
       "projectedK": 5,
       "gamePk": 824030,
       "gameLabel": "TEX @ LAA"
-    },
-    {
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "team": "TB",
-      "oppTeam": "NYY",
-      "whiffScore": 74,
-      "grade": "A",
-      "k9": 8.4,
-      "projectedIP": 5.3,
-      "projectedK": 4,
-      "gamePk": 823543,
-      "gameLabel": "TB @ NYY"
     },
     {
       "pitcherId": 694973,
@@ -339,19 +339,6 @@
       "gameLabel": "STL @ CIN"
     },
     {
-      "pitcherId": 664285,
-      "pitcherName": "Framber Valdez",
-      "team": "DET",
-      "oppTeam": "BAL",
-      "whiffScore": 63,
-      "grade": "B+",
-      "k9": 7.4,
-      "projectedIP": 5.5,
-      "projectedK": 3.5,
-      "gamePk": 824840,
-      "gameLabel": "DET @ BAL"
-    },
-    {
       "pitcherId": 554430,
       "pitcherName": "Zack Wheeler",
       "team": "PHI",
@@ -363,6 +350,19 @@
       "projectedK": 5,
       "gamePk": 823458,
       "gameLabel": "CLE @ PHI"
+    },
+    {
+      "pitcherId": 664285,
+      "pitcherName": "Framber Valdez",
+      "team": "DET",
+      "oppTeam": "BAL",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 7.4,
+      "projectedIP": 5.5,
+      "projectedK": 3.5,
+      "gamePk": 824840,
+      "gameLabel": "DET @ BAL"
     },
     {
       "pitcherId": 663978,
@@ -462,9 +462,9 @@
       "oppTeam": "HOU",
       "whiffScore": 56,
       "grade": "B",
-      "k9": 7.7,
-      "projectedIP": 6.7,
-      "projectedK": 5,
+      "k9": 7.5,
+      "projectedIP": 6,
+      "projectedK": 4,
       "gamePk": 824674,
       "gameLabel": "HOU @ CHC"
     },
