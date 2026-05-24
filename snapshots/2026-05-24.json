@@ -1,8 +1,8 @@
 {
   "date": "2026-05-24",
-  "savedAt": "2026-05-24T18:41:18.464Z",
+  "savedAt": "2026-05-24T22:30:23.392Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 3,
   "totalGames": 16,
   "batters": [
     {
@@ -313,6 +313,19 @@
       "gameLabel": "TEX @ LAA"
     },
     {
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "team": "CLE",
+      "oppTeam": "PHI",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9.8,
+      "projectedIP": 5.8,
+      "projectedK": 5.5,
+      "gamePk": 823459,
+      "gameLabel": "CLE @ PHI"
+    },
+    {
       "pitcherId": 656876,
       "pitcherName": "Drew Rasmussen",
       "team": "TB",
@@ -384,9 +397,9 @@
       "oppTeam": "DET",
       "whiffScore": 66,
       "grade": "B+",
-      "k9": 7.8,
-      "projectedIP": 4.8,
-      "projectedK": 3.5,
+      "k9": 7.7,
+      "projectedIP": 4.4,
+      "projectedK": 3,
       "gamePk": 824840,
       "gameLabel": "DET @ BAL"
     },
@@ -571,6 +584,19 @@
       "projectedK": 2,
       "gamePk": 825081,
       "gameLabel": "COL @ AZ"
+    },
+    {
+      "pitcherId": 691725,
+      "pitcherName": "Andrew Painter",
+      "team": "PHI",
+      "oppTeam": "CLE",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 7.2,
+      "projectedIP": 5.6,
+      "projectedK": 3.5,
+      "gamePk": 823459,
+      "gameLabel": "CLE @ PHI"
     }
   ],
   "pitches": [
