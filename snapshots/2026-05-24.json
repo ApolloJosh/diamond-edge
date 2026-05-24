@@ -1,8 +1,8 @@
 {
   "date": "2026-05-24",
-  "savedAt": "2026-05-24T16:34:45.574Z",
-  "scanType": "morning",
-  "gamesScanned": 16,
+  "savedAt": "2026-05-24T18:41:18.464Z",
+  "scanType": "afternoon",
+  "gamesScanned": 8,
   "totalGames": 16,
   "batters": [
     {
@@ -44,7 +44,7 @@
       "pitcherName": "Peter Lambert",
       "batterTeam": "CHC",
       "pitcherTeam": "HOU",
-      "edgeScore": 88,
+      "edgeScore": 85,
       "grade": "A+",
       "bvpAvg": ".667",
       "bvpOps": "2.417",
@@ -287,6 +287,19 @@
       "gameLabel": "NYM @ MIA"
     },
     {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "HOU",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9.5,
+      "projectedIP": 5.5,
+      "projectedK": 5,
+      "gamePk": 824676,
+      "gameLabel": "HOU @ CHC"
+    },
+    {
       "pitcherId": 672282,
       "pitcherName": "Reid Detmers",
       "team": "LAA",
@@ -298,19 +311,6 @@
       "projectedK": 5,
       "gamePk": 824028,
       "gameLabel": "TEX @ LAA"
-    },
-    {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "HOU",
-      "whiffScore": 71,
-      "grade": "A",
-      "k9": 9.4,
-      "projectedIP": 5.8,
-      "projectedK": 5,
-      "gamePk": 824676,
-      "gameLabel": "HOU @ CHC"
     },
     {
       "pitcherId": 656876,
@@ -365,19 +365,6 @@
       "gameLabel": "CWS @ SF"
     },
     {
-      "pitcherId": 669432,
-      "pitcherName": "Trevor Rogers",
-      "team": "BAL",
-      "oppTeam": "DET",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 7.8,
-      "projectedIP": 4.8,
-      "projectedK": 3.5,
-      "gamePk": 824840,
-      "gameLabel": "DET @ BAL"
-    },
-    {
       "pitcherId": 607625,
       "pitcherName": "Seth Lugo",
       "team": "KC",
@@ -389,6 +376,19 @@
       "projectedK": 4,
       "gamePk": 824108,
       "gameLabel": "SEA @ KC"
+    },
+    {
+      "pitcherId": 669432,
+      "pitcherName": "Trevor Rogers",
+      "team": "BAL",
+      "oppTeam": "DET",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.8,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 824840,
+      "gameLabel": "DET @ BAL"
     },
     {
       "pitcherId": 664285,
@@ -436,9 +436,9 @@
       "oppTeam": "CHC",
       "whiffScore": 60,
       "grade": "B",
-      "k9": 8.9,
-      "projectedIP": 5.9,
-      "projectedK": 5,
+      "k9": 8.7,
+      "projectedIP": 5.2,
+      "projectedK": 4,
       "gamePk": 824676,
       "gameLabel": "HOU @ CHC"
     },
