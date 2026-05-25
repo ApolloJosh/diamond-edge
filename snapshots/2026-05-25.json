@@ -1,8 +1,8 @@
 {
   "date": "2026-05-25",
-  "savedAt": "2026-05-25T19:05:49.822Z",
+  "savedAt": "2026-05-25T22:35:33.571Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 6,
   "totalGames": 13,
   "batters": [
     {
@@ -437,8 +437,8 @@
       "whiffScore": 59,
       "grade": "B",
       "k9": 7.8,
-      "projectedIP": 5.5,
-      "projectedK": 4,
+      "projectedIP": 5.1,
+      "projectedK": 3.5,
       "gamePk": 824437,
       "gameLabel": "WSH @ CLE"
     },
@@ -493,19 +493,6 @@
       "projectedK": 3,
       "gamePk": 823219,
       "gameLabel": "AZ @ SF"
-    },
-    {
-      "pitcherId": 641793,
-      "pitcherName": "Zack Littell",
-      "team": "WSH",
-      "oppTeam": "CLE",
-      "whiffScore": 48,
-      "grade": "C",
-      "k9": 4.5,
-      "projectedIP": 6.6,
-      "projectedK": 2.5,
-      "gamePk": 824437,
-      "gameLabel": "WSH @ CLE"
     },
     {
       "pitcherId": 676083,
@@ -572,7 +559,7 @@
       "twoYrAvg": 82.9,
       "twoYrStarts": 15,
       "bvpAdj": 3,
-      "lineupPA": 88,
+      "lineupPA": 82,
       "gamePk": 823948,
       "gameLabel": "COL @ LAD"
     },
