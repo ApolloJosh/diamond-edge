@@ -1,8 +1,8 @@
 {
   "date": "2026-05-25",
-  "savedAt": "2026-05-25T17:19:42.930Z",
+  "savedAt": "2026-05-25T19:05:49.822Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 9,
   "totalGames": 13,
   "batters": [
     {
@@ -150,6 +150,22 @@
       "gameLabel": "SEA @ ATH"
     },
     {
+      "batterId": 666969,
+      "batterName": "Adolis García",
+      "pitcherId": 656288,
+      "pitcherName": "Griffin Canning",
+      "batterTeam": "PHI",
+      "pitcherTeam": "SD",
+      "edgeScore": 75,
+      "grade": "A",
+      "bvpAvg": ".385",
+      "bvpOps": "1.308",
+      "bvpPA": 26,
+      "bvpHR": 4,
+      "gamePk": 823296,
+      "gameLabel": "PHI @ SD"
+    },
+    {
       "batterId": 624413,
       "batterName": "Pete Alonso",
       "pitcherId": 663556,
@@ -166,18 +182,18 @@
       "gameLabel": "TB @ BAL"
     },
     {
-      "batterId": 656941,
-      "batterName": "Kyle Schwarber",
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
+      "batterId": 664761,
+      "batterName": "Alec Bohm",
+      "pitcherId": 656288,
+      "pitcherName": "Griffin Canning",
       "batterTeam": "PHI",
       "pitcherTeam": "SD",
       "edgeScore": 74,
       "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "2.667",
-      "bvpPA": 6,
-      "bvpHR": 2,
+      "bvpAvg": ".571",
+      "bvpOps": "1.196",
+      "bvpPA": 16,
+      "bvpHR": 0,
       "gamePk": 823296,
       "gameLabel": "PHI @ SD"
     },
@@ -214,33 +230,17 @@
       "gameLabel": "NYY @ KC"
     },
     {
-      "batterId": 664761,
-      "batterName": "Alec Bohm",
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "batterTeam": "PHI",
-      "pitcherTeam": "SD",
-      "edgeScore": 71,
+      "batterId": 665487,
+      "batterName": "Fernando Tatis Jr.",
+      "pitcherId": 666200,
+      "pitcherName": "Jesús Luzardo",
+      "batterTeam": "SD",
+      "pitcherTeam": "PHI",
+      "edgeScore": 70,
       "grade": "A",
-      "bvpAvg": ".667",
-      "bvpOps": "2.333",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 823296,
-      "gameLabel": "PHI @ SD"
-    },
-    {
-      "batterId": 547180,
-      "batterName": "Bryce Harper",
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "batterTeam": "PHI",
-      "pitcherTeam": "SD",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".667",
-      "bvpOps": "1.667",
-      "bvpPA": 6,
+      "bvpAvg": ".400",
+      "bvpOps": "1.100",
+      "bvpPA": 24,
       "bvpHR": 0,
       "gamePk": 823296,
       "gameLabel": "PHI @ SD"
@@ -324,6 +324,19 @@
       "projectedK": 7.5,
       "gamePk": 823784,
       "gameLabel": "STL @ MIL"
+    },
+    {
+      "pitcherId": 656288,
+      "pitcherName": "Griffin Canning",
+      "team": "SD",
+      "oppTeam": "PHI",
+      "whiffScore": 71,
+      "grade": "A",
+      "k9": 10.7,
+      "projectedIP": 4,
+      "projectedK": 4,
+      "gamePk": 823296,
+      "gameLabel": "PHI @ SD"
     },
     {
       "pitcherId": 608379,
@@ -493,19 +506,6 @@
       "projectedK": 2.5,
       "gamePk": 824437,
       "gameLabel": "WSH @ CLE"
-    },
-    {
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "team": "SD",
-      "oppTeam": "PHI",
-      "whiffScore": 48,
-      "grade": "C",
-      "k9": 7.4,
-      "projectedIP": 5.4,
-      "projectedK": 3.5,
-      "gamePk": 823296,
-      "gameLabel": "PHI @ SD"
     },
     {
       "pitcherId": 676083,
