@@ -1,6 +1,6 @@
 {
   "date": "2026-05-26",
-  "savedAt": "2026-05-26T18:09:49.761Z",
+  "savedAt": "2026-05-26T19:34:15.956Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -298,6 +298,19 @@
       "projectedK": 5.5,
       "gamePk": 824758,
       "gameLabel": "ATL @ BOS"
+    },
+    {
+      "pitcherId": 656849,
+      "pitcherName": "David Peterson",
+      "team": "NYM",
+      "oppTeam": "CIN",
+      "whiffScore": 71,
+      "grade": "A",
+      "k9": 9.1,
+      "projectedIP": 8,
+      "projectedK": 7,
+      "gamePk": 823624,
+      "gameLabel": "CIN @ NYM"
     },
     {
       "pitcherId": 677952,
