@@ -1,8 +1,8 @@
 {
   "date": "2026-05-26",
-  "savedAt": "2026-05-26T19:34:15.956Z",
+  "savedAt": "2026-05-26T22:49:45.639Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -261,19 +261,6 @@
       "gameLabel": "NYY @ KC"
     },
     {
-      "pitcherId": 622663,
-      "pitcherName": "Luis Severino",
-      "team": "ATH",
-      "oppTeam": "SEA",
-      "whiffScore": 78,
-      "grade": "A",
-      "k9": 9.3,
-      "projectedIP": 5.6,
-      "projectedK": 5,
-      "gamePk": 825004,
-      "gameLabel": "SEA @ ATH"
-    },
-    {
       "pitcherId": 605400,
       "pitcherName": "Aaron Nola",
       "team": "PHI",
@@ -319,9 +306,9 @@
       "oppTeam": "CHC",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 9.4,
-      "projectedIP": 6.2,
-      "projectedK": 5.5,
+      "k9": 9.3,
+      "projectedIP": 5.7,
+      "projectedK": 5,
       "gamePk": 823379,
       "gameLabel": "CHC @ PIT"
     },
@@ -423,9 +410,9 @@
       "oppTeam": "TB",
       "whiffScore": 56,
       "grade": "B",
-      "k9": 7.5,
-      "projectedIP": 5.7,
-      "projectedK": 4,
+      "k9": 7.4,
+      "projectedIP": 5.3,
+      "projectedK": 3.5,
       "gamePk": 824837,
       "gameLabel": "TB @ BAL"
     },
@@ -476,8 +463,8 @@
       "whiffScore": 52,
       "grade": "C",
       "k9": 5.8,
-      "projectedIP": 5.5,
-      "projectedK": 3,
+      "projectedIP": 5,
+      "projectedK": 2.5,
       "gamePk": 824275,
       "gameLabel": "LAA @ DET"
     },
@@ -580,6 +567,24 @@
       "gameLabel": "PHI @ SD"
     },
     {
+      "pitcherId": 683004,
+      "pitcherName": "Jack Leiter",
+      "team": "TEX",
+      "oppTeam": "HOU",
+      "line": 98,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 94.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.1,
+      "twoYrStarts": 39,
+      "bvpAdj": 5,
+      "lineupPA": 126,
+      "gamePk": 822898,
+      "gameLabel": "HOU @ TEX"
+    },
+    {
       "pitcherId": 641816,
       "pitcherName": "Tyler Mahle",
       "team": "SF",
@@ -614,24 +619,6 @@
       "lineupPA": 162,
       "gamePk": 823216,
       "gameLabel": "AZ @ SF"
-    },
-    {
-      "pitcherId": 622663,
-      "pitcherName": "Luis Severino",
-      "team": "ATH",
-      "oppTeam": "SEA",
-      "line": 100.5,
-      "overUnder": "OVER",
-      "pitchScore": 70,
-      "grade": "A",
-      "recent5Avg": 100,
-      "recent5Starts": 5,
-      "twoYrAvg": 94.9,
-      "twoYrStarts": 40,
-      "bvpAdj": 2,
-      "lineupPA": 110,
-      "gamePk": 825004,
-      "gameLabel": "SEA @ ATH"
     },
     {
       "pitcherId": 675911,
