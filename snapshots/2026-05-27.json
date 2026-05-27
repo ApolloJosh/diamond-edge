@@ -1,8 +1,8 @@
 {
   "date": "2026-05-27",
-  "savedAt": "2026-05-27T19:37:38.897Z",
+  "savedAt": "2026-05-27T22:57:01.390Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 9,
   "totalGames": 15,
   "batters": [
     {
@@ -255,8 +255,8 @@
       "whiffScore": 78,
       "grade": "A",
       "k9": 10,
-      "projectedIP": 6,
-      "projectedK": 5.5,
+      "projectedIP": 5.5,
+      "projectedK": 5,
       "gamePk": 824270,
       "gameLabel": "LAA @ DET"
     },
@@ -339,17 +339,17 @@
       "gameLabel": "MIA @ TOR"
     },
     {
-      "pitcherId": 663436,
-      "pitcherName": "Davis Martin",
-      "team": "CWS",
-      "oppTeam": "MIN",
-      "whiffScore": 71,
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "team": "TOR",
+      "oppTeam": "MIA",
+      "whiffScore": 70,
       "grade": "A",
-      "k9": 9.6,
-      "projectedIP": 6.1,
-      "projectedK": 5.5,
-      "gamePk": 824596,
-      "gameLabel": "MIN @ CWS"
+      "k9": 8.6,
+      "projectedIP": 5.8,
+      "projectedK": 4.5,
+      "gamePk": 822809,
+      "gameLabel": "MIA @ TOR"
     },
     {
       "pitcherId": 702070,
@@ -365,17 +365,17 @@
       "gameLabel": "NYY @ KC"
     },
     {
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "team": "TOR",
-      "oppTeam": "MIA",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.6,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
-      "gamePk": 822809,
-      "gameLabel": "MIA @ TOR"
+      "pitcherId": 663554,
+      "pitcherName": "Casey Mize",
+      "team": "DET",
+      "oppTeam": "LAA",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 8.9,
+      "projectedIP": 4.9,
+      "projectedK": 4,
+      "gamePk": 824270,
+      "gameLabel": "LAA @ DET"
     },
     {
       "pitcherId": 813349,
@@ -384,9 +384,9 @@
       "oppTeam": "ATL",
       "whiffScore": 67,
       "grade": "B+",
-      "k9": 8.3,
-      "projectedIP": 5.4,
-      "projectedK": 4,
+      "k9": 8.2,
+      "projectedIP": 5,
+      "projectedK": 3.5,
       "gamePk": 824756,
       "gameLabel": "ATL @ BOS"
     },
@@ -398,8 +398,8 @@
       "whiffScore": 66,
       "grade": "B+",
       "k9": 7.2,
-      "projectedIP": 5.1,
-      "projectedK": 3.5,
+      "projectedIP": 4.6,
+      "projectedK": 3,
       "gamePk": 824836,
       "gameLabel": "TB @ BAL"
     },
@@ -417,19 +417,6 @@
       "gameLabel": "CIN @ NYM"
     },
     {
-      "pitcherId": 663554,
-      "pitcherName": "Casey Mize",
-      "team": "DET",
-      "oppTeam": "LAA",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 8.9,
-      "projectedIP": 5.4,
-      "projectedK": 4.5,
-      "gamePk": 824270,
-      "gameLabel": "LAA @ DET"
-    },
-    {
       "pitcherId": 696149,
       "pitcherName": "Bubba Chandler",
       "team": "PIT",
@@ -437,8 +424,8 @@
       "whiffScore": 64,
       "grade": "B+",
       "k9": 9,
-      "projectedIP": 4.7,
-      "projectedK": 4,
+      "projectedIP": 4.3,
+      "projectedK": 3.5,
       "gamePk": 823376,
       "gameLabel": "CHC @ PIT"
     },
@@ -482,19 +469,6 @@
       "gameLabel": "CHC @ PIT"
     },
     {
-      "pitcherId": 543037,
-      "pitcherName": "Gerrit Cole",
-      "team": "NYY",
-      "oppTeam": "KC",
-      "whiffScore": 58,
-      "grade": "B",
-      "k9": 3,
-      "projectedIP": 6,
-      "projectedK": 1.5,
-      "gamePk": 824104,
-      "gameLabel": "NYY @ KC"
-    },
-    {
       "pitcherId": 694477,
       "pitcherName": "Chad Patrick",
       "team": "MIL",
@@ -506,6 +480,19 @@
       "projectedK": 4.5,
       "gamePk": 823783,
       "gameLabel": "STL @ MIL"
+    },
+    {
+      "pitcherId": 543037,
+      "pitcherName": "Gerrit Cole",
+      "team": "NYY",
+      "oppTeam": "KC",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 3,
+      "projectedIP": 6,
+      "projectedK": 1.5,
+      "gamePk": 824104,
+      "gameLabel": "NYY @ KC"
     },
     {
       "pitcherId": 621111,
@@ -547,6 +534,19 @@
       "gameLabel": "CIN @ NYM"
     },
     {
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "team": "STL",
+      "oppTeam": "MIL",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 7.5,
+      "projectedIP": 5.5,
+      "projectedK": 4,
+      "gamePk": 823783,
+      "gameLabel": "STL @ MIL"
+    },
+    {
       "pitcherId": 681347,
       "pitcherName": "Mike Burrows",
       "team": "HOU",
@@ -571,19 +571,6 @@
       "projectedK": 2,
       "gamePk": 823947,
       "gameLabel": "COL @ LAD"
-    },
-    {
-      "pitcherId": 669160,
-      "pitcherName": "Dustin May",
-      "team": "STL",
-      "oppTeam": "MIL",
-      "whiffScore": 48,
-      "grade": "C",
-      "k9": 7.5,
-      "projectedIP": 5.5,
-      "projectedK": 4,
-      "gamePk": 823783,
-      "gameLabel": "STL @ MIL"
     },
     {
       "pitcherId": 676571,
