@@ -1,8 +1,8 @@
 {
   "date": "2026-05-27",
-  "savedAt": "2026-05-27T18:10:40.954Z",
+  "savedAt": "2026-05-27T19:37:38.897Z",
   "scanType": "afternoon",
-  "gamesScanned": 12,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -118,6 +118,22 @@
       "gameLabel": "ATL @ BOS"
     },
     {
+      "batterId": 683953,
+      "batterName": "Travis Bazzana",
+      "pitcherId": 676571,
+      "pitcherName": "PJ Poulin",
+      "batterTeam": "CLE",
+      "pitcherTeam": "WSH",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".293",
+      "bvpOps": ".800",
+      "bvpPA": 162,
+      "bvpHR": 4,
+      "gamePk": 824432,
+      "gameLabel": "WSH @ CLE"
+    },
+    {
       "batterId": 609280,
       "batterName": "Miguel Andujar",
       "pitcherId": 650911,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823295,
       "gameLabel": "PHI @ SD"
-    },
-    {
-      "batterId": 641355,
-      "batterName": "Cody Bellinger",
-      "pitcherId": 702070,
-      "pitcherName": "Noah Cameron",
-      "batterTeam": "NYY",
-      "pitcherTeam": "KC",
-      "edgeScore": 70,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": "1.167",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 824104,
-      "gameLabel": "NYY @ KC"
     }
   ],
   "pitchers": [
@@ -313,6 +313,32 @@
       "gameLabel": "SEA @ ATH"
     },
     {
+      "pitcherId": 668909,
+      "pitcherName": "Gavin Williams",
+      "team": "CLE",
+      "oppTeam": "WSH",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 10.4,
+      "projectedIP": 6.3,
+      "projectedK": 6,
+      "gamePk": 824432,
+      "gameLabel": "WSH @ CLE"
+    },
+    {
+      "pitcherId": 691587,
+      "pitcherName": "Eury Pérez",
+      "team": "MIA",
+      "oppTeam": "TOR",
+      "whiffScore": 72,
+      "grade": "A",
+      "k9": 10.3,
+      "projectedIP": 5.2,
+      "projectedK": 5,
+      "gamePk": 822809,
+      "gameLabel": "MIA @ TOR"
+    },
+    {
       "pitcherId": 663436,
       "pitcherName": "Davis Martin",
       "team": "CWS",
@@ -337,6 +363,19 @@
       "projectedK": 4,
       "gamePk": 824104,
       "gameLabel": "NYY @ KC"
+    },
+    {
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "team": "TOR",
+      "oppTeam": "MIA",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.6,
+      "projectedIP": 5.8,
+      "projectedK": 4.5,
+      "gamePk": 822809,
+      "gameLabel": "MIA @ TOR"
     },
     {
       "pitcherId": 813349,
@@ -456,6 +495,19 @@
       "gameLabel": "NYY @ KC"
     },
     {
+      "pitcherId": 694477,
+      "pitcherName": "Chad Patrick",
+      "team": "MIL",
+      "oppTeam": "STL",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 6.6,
+      "projectedIP": 7.5,
+      "projectedK": 4.5,
+      "gamePk": 823783,
+      "gameLabel": "STL @ MIL"
+    },
+    {
       "pitcherId": 621111,
       "pitcherName": "Walker Buehler",
       "team": "SD",
@@ -519,6 +571,32 @@
       "projectedK": 2,
       "gamePk": 823947,
       "gameLabel": "COL @ LAD"
+    },
+    {
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "team": "STL",
+      "oppTeam": "MIL",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 7.5,
+      "projectedIP": 5.5,
+      "projectedK": 4,
+      "gamePk": 823783,
+      "gameLabel": "STL @ MIL"
+    },
+    {
+      "pitcherId": 676571,
+      "pitcherName": "PJ Poulin",
+      "team": "WSH",
+      "oppTeam": "CLE",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 6.2,
+      "projectedIP": 3.5,
+      "projectedK": 2,
+      "gamePk": 824432,
+      "gameLabel": "WSH @ CLE"
     }
   ],
   "pitches": [
