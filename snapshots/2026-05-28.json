@@ -1,8 +1,8 @@
 {
   "date": "2026-05-28",
-  "savedAt": "2026-05-28T19:54:16.546Z",
+  "savedAt": "2026-05-28T22:56:03.743Z",
   "scanType": "afternoon",
-  "gamesScanned": 5,
+  "gamesScanned": 3,
   "totalGames": 6,
   "batters": [
     {
@@ -198,22 +198,6 @@
       "gameLabel": "ATL @ BOS"
     },
     {
-      "batterId": 668939,
-      "batterName": "Adley Rutschman",
-      "pitcherId": 571578,
-      "pitcherName": "Patrick Corbin",
-      "batterTeam": "BAL",
-      "pitcherTeam": "TOR",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".375",
-      "bvpOps": "1.250",
-      "bvpPA": 16,
-      "bvpHR": 2,
-      "gamePk": 824834,
-      "gameLabel": "TOR @ BAL"
-    },
-    {
       "batterId": 664702,
       "batterName": "Myles Straw",
       "pitcherId": 605135,
@@ -226,6 +210,22 @@
       "bvpOps": ".813",
       "bvpPA": 32,
       "bvpHR": 0,
+      "gamePk": 824834,
+      "gameLabel": "TOR @ BAL"
+    },
+    {
+      "batterId": 668939,
+      "batterName": "Adley Rutschman",
+      "pitcherId": 571578,
+      "pitcherName": "Patrick Corbin",
+      "batterTeam": "BAL",
+      "pitcherTeam": "TOR",
+      "edgeScore": 67,
+      "grade": "B+",
+      "bvpAvg": ".353",
+      "bvpOps": "1.176",
+      "bvpPA": 17,
+      "bvpHR": 2,
       "gamePk": 824834,
       "gameLabel": "TOR @ BAL"
     },
@@ -280,9 +280,9 @@
       "oppTeam": "CHC",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 9.8,
-      "projectedIP": 5.5,
-      "projectedK": 5,
+      "k9": 9.9,
+      "projectedIP": 5.1,
+      "projectedK": 4.5,
       "gamePk": 823378,
       "gameLabel": "CHC @ PIT"
     },
@@ -346,8 +346,8 @@
       "whiffScore": 63,
       "grade": "B+",
       "k9": 7.3,
-      "projectedIP": 6.8,
-      "projectedK": 4.5,
+      "projectedIP": 6,
+      "projectedK": 4,
       "gamePk": 823378,
       "gameLabel": "CHC @ PIT"
     },
@@ -359,8 +359,8 @@
       "whiffScore": 62,
       "grade": "B+",
       "k9": 6.5,
-      "projectedIP": 4.9,
-      "projectedK": 3,
+      "projectedIP": 4.4,
+      "projectedK": 2.5,
       "gamePk": 824834,
       "gameLabel": "TOR @ BAL"
     },
@@ -384,9 +384,9 @@
       "oppTeam": "TOR",
       "whiffScore": 49,
       "grade": "C",
-      "k9": 6.5,
-      "projectedIP": 5.9,
-      "projectedK": 3.5,
+      "k9": 6.3,
+      "projectedIP": 5.3,
+      "projectedK": 3,
       "gamePk": 824834,
       "gameLabel": "TOR @ BAL"
     },
