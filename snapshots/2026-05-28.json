@@ -1,6 +1,6 @@
 {
   "date": "2026-05-28",
-  "savedAt": "2026-05-28T18:23:31.248Z",
+  "savedAt": "2026-05-28T19:54:16.546Z",
   "scanType": "afternoon",
   "gamesScanned": 5,
   "totalGames": 6,
@@ -84,6 +84,22 @@
       "bvpHR": 2,
       "gamePk": 823378,
       "gameLabel": "CHC @ PIT"
+    },
+    {
+      "batterId": 663611,
+      "batterName": "Nick Madrigal",
+      "pitcherId": 656427,
+      "pitcherName": "Jack Flaherty",
+      "batterTeam": "LAA",
+      "pitcherTeam": "DET",
+      "edgeScore": 78,
+      "grade": "A",
+      "bvpAvg": ".800",
+      "bvpOps": "1.800",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 824272,
+      "gameLabel": "LAA @ DET"
     },
     {
       "batterId": 621493,
@@ -228,25 +244,22 @@
       "bvpHR": 2,
       "gamePk": 823378,
       "gameLabel": "CHC @ PIT"
-    },
-    {
-      "batterId": 680776,
-      "batterName": "Jarren Duran",
-      "pitcherId": 519242,
-      "pitcherName": "Chris Sale",
-      "batterTeam": "BOS",
-      "pitcherTeam": "ATL",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.667",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824757,
-      "gameLabel": "ATL @ BOS"
     }
   ],
   "pitchers": [
+    {
+      "pitcherId": 656427,
+      "pitcherName": "Jack Flaherty",
+      "team": "DET",
+      "oppTeam": "LAA",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 10.9,
+      "projectedIP": 4.4,
+      "projectedK": 4.5,
+      "gamePk": 824272,
+      "gameLabel": "LAA @ DET"
+    },
     {
       "pitcherId": 519242,
       "pitcherName": "Chris Sale",
@@ -285,6 +298,19 @@
       "projectedK": 5,
       "gamePk": 824595,
       "gameLabel": "MIN @ CWS"
+    },
+    {
+      "pitcherId": 680570,
+      "pitcherName": "Grayson Rodriguez",
+      "team": "LAA",
+      "oppTeam": "DET",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.8,
+      "projectedIP": 4.7,
+      "projectedK": 4,
+      "gamePk": 824272,
+      "gameLabel": "LAA @ DET"
     },
     {
       "pitcherId": 543135,
@@ -398,6 +424,42 @@
       "gameLabel": "ATL @ BOS"
     },
     {
+      "pitcherId": 656427,
+      "pitcherName": "Jack Flaherty",
+      "team": "DET",
+      "oppTeam": "LAA",
+      "line": 94.5,
+      "overUnder": "OVER",
+      "pitchScore": 74,
+      "grade": "A",
+      "recent5Avg": 90.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.1,
+      "twoYrStarts": 43,
+      "bvpAdj": 4,
+      "lineupPA": 1978,
+      "gamePk": 824272,
+      "gameLabel": "LAA @ DET"
+    },
+    {
+      "pitcherId": 680570,
+      "pitcherName": "Grayson Rodriguez",
+      "team": "LAA",
+      "oppTeam": "DET",
+      "line": 95,
+      "overUnder": "OVER",
+      "pitchScore": 73,
+      "grade": "A",
+      "recent5Avg": 88,
+      "recent5Starts": 3,
+      "twoYrAvg": 88,
+      "twoYrStarts": 3,
+      "bvpAdj": 7,
+      "lineupPA": 1206,
+      "gamePk": 824272,
+      "gameLabel": "LAA @ DET"
+    },
+    {
       "pitcherId": 681293,
       "pitcherName": "Spencer Arrighetti",
       "team": "HOU",
@@ -432,42 +494,6 @@
       "lineupPA": 120,
       "gamePk": 824595,
       "gameLabel": "MIN @ CWS"
-    },
-    {
-      "pitcherId": 571578,
-      "pitcherName": "Patrick Corbin",
-      "team": "TOR",
-      "oppTeam": "BAL",
-      "line": 85,
-      "overUnder": "OVER",
-      "pitchScore": 66,
-      "grade": "B+",
-      "recent5Avg": 77.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 84.4,
-      "twoYrStarts": 39,
-      "bvpAdj": 5,
-      "lineupPA": 270,
-      "gamePk": 824834,
-      "gameLabel": "TOR @ BAL"
-    },
-    {
-      "pitcherId": 694973,
-      "pitcherName": "Paul Skenes",
-      "team": "PIT",
-      "oppTeam": "CHC",
-      "line": 102.5,
-      "overUnder": "OVER",
-      "pitchScore": 66,
-      "grade": "B+",
-      "recent5Avg": 97.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.4,
-      "twoYrStarts": 43,
-      "bvpAdj": 7,
-      "lineupPA": 208,
-      "gamePk": 823378,
-      "gameLabel": "CHC @ PIT"
     }
   ]
 }
