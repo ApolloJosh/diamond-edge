@@ -1,6 +1,6 @@
 {
   "date": "2026-05-29",
-  "savedAt": "2026-05-29T19:54:23.856Z",
+  "savedAt": "2026-05-29T22:51:44.691Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -248,6 +248,19 @@
   ],
   "pitchers": [
     {
+      "pitcherId": 683003,
+      "pitcherName": "Jared Jones",
+      "team": "PIT",
+      "oppTeam": "MIN",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 27,
+      "projectedIP": 0.1,
+      "projectedK": 0,
+      "gamePk": 823377,
+      "gameLabel": "MIN @ PIT"
+    },
+    {
       "pitcherId": 669022,
       "pitcherName": "MacKenzie Gore",
       "team": "TEX",
@@ -417,19 +430,6 @@
       "gameLabel": "SF @ COL"
     },
     {
-      "pitcherId": 683003,
-      "pitcherName": "Jared Jones",
-      "team": "PIT",
-      "oppTeam": "MIN",
-      "whiffScore": 58,
-      "grade": "B",
-      "k9": 0,
-      "projectedIP": 5.5,
-      "projectedK": 0,
-      "gamePk": 823377,
-      "gameLabel": "MIN @ PIT"
-    },
-    {
       "pitcherId": 675512,
       "pitcherName": "Troy Melton",
       "team": "DET",
@@ -488,9 +488,9 @@
       "oppTeam": "ATL",
       "whiffScore": 53,
       "grade": "C",
-      "k9": 7.8,
-      "projectedIP": 5,
-      "projectedK": 3.5,
+      "k9": 7.6,
+      "projectedIP": 4.6,
+      "projectedK": 3,
       "gamePk": 824515,
       "gameLabel": "ATL @ CIN"
     },
@@ -499,7 +499,7 @@
       "pitcherName": "Michael Lorenzen",
       "team": "COL",
       "oppTeam": "SF",
-      "whiffScore": 52,
+      "whiffScore": 49,
       "grade": "C",
       "k9": 6.9,
       "projectedIP": 4.8,
@@ -616,7 +616,7 @@
       "twoYrAvg": 89.2,
       "twoYrStarts": 37,
       "bvpAdj": 0,
-      "lineupPA": 84,
+      "lineupPA": 90,
       "gamePk": 824353,
       "gameLabel": "SF @ COL"
     },
