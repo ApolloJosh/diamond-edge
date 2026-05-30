@@ -1,8 +1,8 @@
 {
   "date": "2026-05-30",
-  "savedAt": "2026-05-30T18:42:01.033Z",
+  "savedAt": "2026-05-30T22:30:49.550Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 7,
   "totalGames": 15,
   "batters": [
     {
@@ -428,6 +428,19 @@
       "projectedK": 4,
       "gamePk": 822975,
       "gameLabel": "LAA @ TB"
+    },
+    {
+      "pitcherId": 650633,
+      "pitcherName": "Michael King",
+      "team": "SD",
+      "oppTeam": "WSH",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.6,
+      "projectedIP": 5.7,
+      "projectedK": 4.5,
+      "gamePk": 822731,
+      "gameLabel": "SD @ WSH"
     },
     {
       "pitcherId": 663903,
