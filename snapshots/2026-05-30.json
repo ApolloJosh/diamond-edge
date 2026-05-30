@@ -1,8 +1,8 @@
 {
   "date": "2026-05-30",
-  "savedAt": "2026-05-30T16:35:26.681Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-05-30T18:42:01.033Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -36,6 +36,22 @@
       "bvpHR": 2,
       "gamePk": 823375,
       "gameLabel": "MIN @ PIT"
+    },
+    {
+      "batterId": 669364,
+      "batterName": "Xavier Edwards",
+      "pitcherId": 681035,
+      "pitcherName": "Christian Scott",
+      "batterTeam": "MIA",
+      "pitcherTeam": "NYM",
+      "edgeScore": 87,
+      "grade": "A+",
+      "bvpAvg": ".750",
+      "bvpOps": "1.800",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 823622,
+      "gameLabel": "MIA @ NYM"
     },
     {
       "batterId": 668930,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 824593,
       "gameLabel": "DET @ CWS"
-    },
-    {
-      "batterId": 660821,
-      "batterName": "Jesús Sánchez",
-      "pitcherId": 687064,
-      "pitcherName": "Brandon Young",
-      "batterTeam": "TOR",
-      "pitcherTeam": "BAL",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".444",
-      "bvpOps": "1.000",
-      "bvpPA": 18,
-      "bvpHR": 0,
-      "gamePk": 824833,
-      "gameLabel": "TOR @ BAL"
     }
   ],
   "pitchers": [
