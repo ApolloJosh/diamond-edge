@@ -1,8 +1,8 @@
 {
   "date": "2026-05-31",
-  "savedAt": "2026-05-31T18:46:58.946Z",
+  "savedAt": "2026-05-31T22:33:14.774Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 2,
   "totalGames": 15,
   "batters": [
     {
@@ -287,6 +287,19 @@
       "gameLabel": "NYY @ ATH"
     },
     {
+      "pitcherId": 694819,
+      "pitcherName": "Jacob Misiorowski",
+      "team": "MIL",
+      "oppTeam": "HOU",
+      "whiffScore": 75,
+      "grade": "A",
+      "k9": 13.7,
+      "projectedIP": 5.9,
+      "projectedK": 7.5,
+      "gamePk": 824187,
+      "gameLabel": "MIL @ HOU"
+    },
+    {
       "pitcherId": 592662,
       "pitcherName": "Robbie Ray",
       "team": "SF",
@@ -389,6 +402,19 @@
       "projectedK": 6,
       "gamePk": 823133,
       "gameLabel": "AZ @ SEA"
+    },
+    {
+      "pitcherId": 837227,
+      "pitcherName": "Tatsuya Imai",
+      "team": "HOU",
+      "oppTeam": "MIL",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.6,
+      "projectedIP": 4.2,
+      "projectedK": 3,
+      "gamePk": 824187,
+      "gameLabel": "MIL @ HOU"
     },
     {
       "pitcherId": 808967,
@@ -567,6 +593,42 @@
       "gameLabel": "KC @ TEX"
     },
     {
+      "pitcherId": 837227,
+      "pitcherName": "Tatsuya Imai",
+      "team": "HOU",
+      "oppTeam": "MIL",
+      "line": 80,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 79.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 80.9,
+      "twoYrStarts": 7,
+      "bvpAdj": 0,
+      "lineupPA": 774,
+      "gamePk": 824187,
+      "gameLabel": "MIL @ HOU"
+    },
+    {
+      "pitcherId": 694819,
+      "pitcherName": "Jacob Misiorowski",
+      "team": "MIL",
+      "oppTeam": "HOU",
+      "line": 88.5,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 89.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 86.5,
+      "twoYrStarts": 26,
+      "bvpAdj": 0,
+      "lineupPA": 1098,
+      "gamePk": 824187,
+      "gameLabel": "MIL @ HOU"
+    },
+    {
       "pitcherId": 675911,
       "pitcherName": "Spencer Strider",
       "team": "ATL",
@@ -601,42 +663,6 @@
       "lineupPA": 46,
       "gamePk": 824354,
       "gameLabel": "SF @ COL"
-    },
-    {
-      "pitcherId": 701542,
-      "pitcherName": "Will Warren",
-      "team": "NYY",
-      "oppTeam": "ATH",
-      "line": 95.5,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 90.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 85.8,
-      "twoYrStarts": 44,
-      "bvpAdj": 7,
-      "lineupPA": 86,
-      "gamePk": 825001,
-      "gameLabel": "NYY @ ATH"
-    },
-    {
-      "pitcherId": 669461,
-      "pitcherName": "Matthew Liberatore",
-      "team": "STL",
-      "oppTeam": "CHC",
-      "line": 95,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 88.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 83.2,
-      "twoYrStarts": 40,
-      "bvpAdj": 8,
-      "lineupPA": 126,
-      "gamePk": 823053,
-      "gameLabel": "CHC @ STL"
     }
   ]
 }
