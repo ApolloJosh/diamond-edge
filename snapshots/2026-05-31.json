@@ -1,8 +1,8 @@
 {
   "date": "2026-05-31",
-  "savedAt": "2026-05-31T16:42:10.322Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-05-31T18:46:58.946Z",
+  "scanType": "afternoon",
+  "gamesScanned": 8,
   "totalGames": 15,
   "batters": [
     {
@@ -134,6 +134,22 @@
       "gameLabel": "AZ @ SEA"
     },
     {
+      "batterId": 687462,
+      "batterName": "Spencer Horwitz",
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "batterTeam": "PIT",
+      "pitcherTeam": "MIN",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "2.333",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 823373,
+      "gameLabel": "MIN @ PIT"
+    },
+    {
       "batterId": 696100,
       "batterName": "Hunter Goodman",
       "pitcherId": 592662,
@@ -214,36 +230,20 @@
       "gameLabel": "KC @ TEX"
     },
     {
-      "batterId": 657656,
-      "batterName": "Ramón Laureano",
-      "pitcherId": 641793,
-      "pitcherName": "Zack Littell",
-      "batterTeam": "SD",
-      "pitcherTeam": "WSH",
-      "edgeScore": 70,
+      "batterId": 656811,
+      "batterName": "Ryan O'Hearn",
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "batterTeam": "PIT",
+      "pitcherTeam": "MIN",
+      "edgeScore": 71,
       "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": ".945",
-      "bvpPA": 34,
-      "bvpHR": 2,
-      "gamePk": 822729,
-      "gameLabel": "SD @ WSH"
-    },
-    {
-      "batterId": 665742,
-      "batterName": "Juan Soto",
-      "pitcherId": 667463,
-      "pitcherName": "John King",
-      "batterTeam": "NYM",
-      "pitcherTeam": "MIA",
-      "edgeScore": 67,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": ".833",
-      "bvpPA": 16,
-      "bvpHR": 0,
-      "gamePk": 823621,
-      "gameLabel": "MIA @ NYM"
+      "bvpAvg": ".286",
+      "bvpOps": "1.429",
+      "bvpPA": 14,
+      "bvpHR": 4,
+      "gamePk": 823373,
+      "gameLabel": "MIN @ PIT"
     }
   ],
   "pitchers": [
@@ -333,8 +333,8 @@
       "whiffScore": 64,
       "grade": "B+",
       "k9": 9.5,
-      "projectedIP": 5.5,
-      "projectedK": 5,
+      "projectedIP": 5.1,
+      "projectedK": 4.5,
       "gamePk": 822895,
       "gameLabel": "KC @ TEX"
     },
@@ -402,6 +402,19 @@
       "projectedK": 5,
       "gamePk": 823944,
       "gameLabel": "PHI @ LAD"
+    },
+    {
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "team": "MIN",
+      "oppTeam": "PIT",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 9,
+      "projectedIP": 5.8,
+      "projectedK": 5,
+      "gamePk": 823373,
+      "gameLabel": "MIN @ PIT"
     },
     {
       "pitcherId": 608379,
@@ -572,24 +585,6 @@
       "gameLabel": "ATL @ CIN"
     },
     {
-      "pitcherId": 683004,
-      "pitcherName": "Jack Leiter",
-      "team": "TEX",
-      "oppTeam": "KC",
-      "line": 98,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 94.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.2,
-      "twoYrStarts": 40,
-      "bvpAdj": 5,
-      "lineupPA": 54,
-      "gamePk": 822895,
-      "gameLabel": "KC @ TEX"
-    },
-    {
       "pitcherId": 592662,
       "pitcherName": "Robbie Ray",
       "team": "SF",
@@ -624,6 +619,24 @@
       "lineupPA": 86,
       "gamePk": 825001,
       "gameLabel": "NYY @ ATH"
+    },
+    {
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "team": "STL",
+      "oppTeam": "CHC",
+      "line": 95,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 88.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 83.2,
+      "twoYrStarts": 40,
+      "bvpAdj": 8,
+      "lineupPA": 126,
+      "gamePk": 823053,
+      "gameLabel": "CHC @ STL"
     }
   ]
 }
