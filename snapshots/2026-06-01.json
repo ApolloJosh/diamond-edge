@@ -1,8 +1,8 @@
 {
   "date": "2026-06-01",
-  "savedAt": "2026-06-01T21:08:20.102Z",
+  "savedAt": "2026-06-01T23:13:17.162Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 8,
   "totalGames": 9,
   "batters": [
     {
@@ -306,8 +306,8 @@
       "oppTeam": "MIA",
       "whiffScore": 68,
       "grade": "B+",
-      "k9": 10.3,
-      "projectedIP": 4.9,
+      "k9": 10.2,
+      "projectedIP": 4.6,
       "projectedK": 4.5,
       "gamePk": 822730,
       "gameLabel": "MIA @ WSH"
@@ -410,8 +410,8 @@
       "oppTeam": "WSH",
       "whiffScore": 44,
       "grade": "D",
-      "k9": 6.2,
-      "projectedIP": 6.3,
+      "k9": 6.3,
+      "projectedIP": 5.9,
       "projectedK": 3.5,
       "gamePk": 822730,
       "gameLabel": "MIA @ WSH"
@@ -432,38 +432,20 @@
   ],
   "pitches": [
     {
-      "pitcherId": 645261,
-      "pitcherName": "Sandy Alcantara",
-      "team": "MIA",
-      "oppTeam": "WSH",
-      "line": 90,
-      "overUnder": "UNDER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 97,
-      "recent5Starts": 5,
-      "twoYrAvg": 94.1,
-      "twoYrStarts": 43,
-      "bvpAdj": -6,
-      "lineupPA": 170,
-      "gamePk": 822730,
-      "gameLabel": "MIA @ WSH"
-    },
-    {
       "pitcherId": 676917,
       "pitcherName": "Cade Cavalli",
       "team": "WSH",
       "oppTeam": "MIA",
-      "line": 81.5,
+      "line": 73.5,
       "overUnder": "UNDER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 87.2,
+      "pitchScore": 74,
+      "grade": "A",
+      "recent5Avg": 76.8,
       "recent5Starts": 5,
-      "twoYrAvg": 81.8,
-      "twoYrStarts": 22,
+      "twoYrAvg": 79.3,
+      "twoYrStarts": 23,
       "bvpAdj": -4,
-      "lineupPA": 90,
+      "lineupPA": 91,
       "gamePk": 822730,
       "gameLabel": "MIA @ WSH"
     },
@@ -520,6 +502,24 @@
       "lineupPA": 12,
       "gamePk": 823050,
       "gameLabel": "TEX @ STL"
+    },
+    {
+      "pitcherId": 593958,
+      "pitcherName": "Eduardo Rodriguez",
+      "team": "AZ",
+      "oppTeam": "LAD",
+      "line": 103,
+      "overUnder": "OVER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 97.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.7,
+      "twoYrStarts": 40,
+      "bvpAdj": 8,
+      "lineupPA": 274,
+      "gamePk": 825078,
+      "gameLabel": "LAD @ AZ"
     }
   ]
 }
