@@ -1,6 +1,6 @@
 {
   "date": "2026-06-01",
-  "savedAt": "2026-06-01T20:02:39.353Z",
+  "savedAt": "2026-06-01T21:08:20.102Z",
   "scanType": "afternoon",
   "gamesScanned": 9,
   "totalGames": 9,
@@ -134,6 +134,22 @@
       "gameLabel": "MIA @ WSH"
     },
     {
+      "batterId": 621439,
+      "batterName": "Byron Buxton",
+      "pitcherId": 689818,
+      "pitcherName": "David Sandlin",
+      "batterTeam": "MIN",
+      "pitcherTeam": "CWS",
+      "edgeScore": 65,
+      "grade": "B+",
+      "bvpAvg": ".333",
+      "bvpOps": "1.667",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 823702,
+      "gameLabel": "CWS @ MIN"
+    },
+    {
       "batterId": 641343,
       "batterName": "Jake Bauers",
       "pitcherId": 694738,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 822974,
       "gameLabel": "DET @ TB"
-    },
-    {
-      "batterId": 689414,
-      "batterName": "Liam Hicks",
-      "pitcherId": 676917,
-      "pitcherName": "Cade Cavalli",
-      "batterTeam": "MIA",
-      "pitcherTeam": "WSH",
-      "edgeScore": 60,
-      "grade": "B",
-      "bvpAvg": ".400",
-      "bvpOps": ".971",
-      "bvpPA": 14,
-      "bvpHR": 0,
-      "gamePk": 822730,
-      "gameLabel": "MIA @ WSH"
     }
   ],
   "pitchers": [
@@ -389,6 +389,19 @@
       "projectedK": 5,
       "gamePk": 822974,
       "gameLabel": "DET @ TB"
+    },
+    {
+      "pitcherId": 689818,
+      "pitcherName": "David Sandlin",
+      "team": "CWS",
+      "oppTeam": "MIN",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 6,
+      "projectedIP": 6,
+      "projectedK": 3.5,
+      "gamePk": 823702,
+      "gameLabel": "CWS @ MIN"
     },
     {
       "pitcherId": 645261,
