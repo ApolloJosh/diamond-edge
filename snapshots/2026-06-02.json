@@ -1,8 +1,8 @@
 {
   "date": "2026-06-02",
-  "savedAt": "2026-06-02T20:27:58.692Z",
+  "savedAt": "2026-06-02T23:16:19.658Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 11,
   "totalGames": 15,
   "batters": [
     {
@@ -489,8 +489,8 @@
       "whiffScore": 52,
       "grade": "C",
       "k9": 6,
-      "projectedIP": 5.2,
-      "projectedK": 3,
+      "projectedIP": 4.8,
+      "projectedK": 2.5,
       "gamePk": 824511,
       "gameLabel": "KC @ CIN"
     },
@@ -548,24 +548,6 @@
     }
   ],
   "pitches": [
-    {
-      "pitcherId": 671096,
-      "pitcherName": "Andrew Abbott",
-      "team": "CIN",
-      "oppTeam": "KC",
-      "line": 98,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 94,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.5,
-      "twoYrStarts": 41,
-      "bvpAdj": 5,
-      "lineupPA": 50,
-      "gamePk": 824511,
-      "gameLabel": "KC @ CIN"
-    },
     {
       "pitcherId": 663436,
       "pitcherName": "Davis Martin",
@@ -637,6 +619,24 @@
       "lineupPA": 74,
       "gamePk": 822971,
       "gameLabel": "DET @ TB"
+    },
+    {
+      "pitcherId": 592791,
+      "pitcherName": "Jameson Taillon",
+      "team": "CHC",
+      "oppTeam": "ATH",
+      "line": 90.5,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 89,
+      "recent5Starts": 5,
+      "twoYrAvg": 87.5,
+      "twoYrStarts": 34,
+      "bvpAdj": 2,
+      "lineupPA": 64,
+      "gamePk": 824675,
+      "gameLabel": "ATH @ CHC"
     }
   ]
 }
