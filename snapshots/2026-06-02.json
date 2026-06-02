@@ -1,6 +1,6 @@
 {
   "date": "2026-06-02",
-  "savedAt": "2026-06-02T19:01:19.759Z",
+  "savedAt": "2026-06-02T20:27:58.692Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -430,6 +430,19 @@
       "gameLabel": "TOR @ ATL"
     },
     {
+      "pitcherId": 571927,
+      "pitcherName": "Steven Matz",
+      "team": "TB",
+      "oppTeam": "DET",
+      "whiffScore": 59,
+      "grade": "B",
+      "k9": 7.1,
+      "projectedIP": 4.9,
+      "projectedK": 3,
+      "gamePk": 822971,
+      "gameLabel": "DET @ TB"
+    },
+    {
       "pitcherId": 669358,
       "pitcherName": "Shane Baz",
       "team": "BAL",
@@ -454,19 +467,6 @@
       "projectedK": 2,
       "gamePk": 824026,
       "gameLabel": "COL @ LAA"
-    },
-    {
-      "pitcherId": 571927,
-      "pitcherName": "Steven Matz",
-      "team": "TB",
-      "oppTeam": "DET",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 7.1,
-      "projectedIP": 4.9,
-      "projectedK": 3,
-      "gamePk": 822971,
-      "gameLabel": "DET @ TB"
     },
     {
       "pitcherId": 702070,
