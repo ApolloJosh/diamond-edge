@@ -1,10 +1,26 @@
 {
   "date": "2026-06-03",
-  "savedAt": "2026-06-03T20:39:25.301Z",
+  "savedAt": "2026-06-03T23:17:51.991Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 9,
   "totalGames": 15,
   "batters": [
+    {
+      "batterId": 682985,
+      "batterName": "Riley Greene",
+      "pitcherId": 607259,
+      "pitcherName": "Nick Martinez",
+      "batterTeam": "DET",
+      "pitcherTeam": "TB",
+      "edgeScore": 99,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "2.467",
+      "bvpPA": 12,
+      "bvpHR": 4,
+      "gamePk": 822973,
+      "gameLabel": "DET @ TB"
+    },
     {
       "batterId": 608070,
       "batterName": "José Ramírez",
@@ -52,22 +68,6 @@
       "bvpHR": 4,
       "gamePk": 824024,
       "gameLabel": "COL @ LAA"
-    },
-    {
-      "batterId": 682985,
-      "batterName": "Riley Greene",
-      "pitcherId": 607259,
-      "pitcherName": "Nick Martinez",
-      "batterTeam": "DET",
-      "pitcherTeam": "TB",
-      "edgeScore": 99,
-      "grade": "A+",
-      "bvpAvg": ".600",
-      "bvpOps": "2.467",
-      "bvpPA": 12,
-      "bvpHR": 4,
-      "gamePk": 822973,
-      "gameLabel": "DET @ TB"
     },
     {
       "batterId": 663837,
@@ -404,19 +404,6 @@
       "gameLabel": "COL @ LAA"
     },
     {
-      "pitcherId": 543037,
-      "pitcherName": "Gerrit Cole",
-      "team": "NYY",
-      "oppTeam": "CLE",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 8.5,
-      "projectedIP": 6.1,
-      "projectedK": 5,
-      "gamePk": 823540,
-      "gameLabel": "CLE @ NYY"
-    },
-    {
       "pitcherId": 657277,
       "pitcherName": "Logan Webb",
       "team": "SF",
@@ -467,6 +454,19 @@
       "projectedK": 3.5,
       "gamePk": 823701,
       "gameLabel": "CWS @ MIN"
+    },
+    {
+      "pitcherId": 543037,
+      "pitcherName": "Gerrit Cole",
+      "team": "NYY",
+      "oppTeam": "CLE",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7.9,
+      "projectedIP": 4.4,
+      "projectedK": 3,
+      "gamePk": 823540,
+      "gameLabel": "CLE @ NYY"
     },
     {
       "pitcherId": 607067,
@@ -521,6 +521,19 @@
       "gameLabel": "NYM @ SEA"
     },
     {
+      "pitcherId": 675512,
+      "pitcherName": "Troy Melton",
+      "team": "DET",
+      "oppTeam": "TB",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 3.9,
+      "projectedIP": 6.7,
+      "projectedK": 2.5,
+      "gamePk": 822973,
+      "gameLabel": "DET @ TB"
+    },
+    {
       "pitcherId": 571578,
       "pitcherName": "Patrick Corbin",
       "team": "TOR",
@@ -545,19 +558,6 @@
       "projectedK": 3.5,
       "gamePk": 823051,
       "gameLabel": "TEX @ STL"
-    },
-    {
-      "pitcherId": 675512,
-      "pitcherName": "Troy Melton",
-      "team": "DET",
-      "oppTeam": "TB",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 3.9,
-      "projectedIP": 6.7,
-      "projectedK": 2.5,
-      "gamePk": 822973,
-      "gameLabel": "DET @ TB"
     },
     {
       "pitcherId": 607259,
