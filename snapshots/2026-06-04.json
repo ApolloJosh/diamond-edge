@@ -1,8 +1,8 @@
 {
   "date": "2026-06-04",
-  "savedAt": "2026-06-04T19:38:05.395Z",
+  "savedAt": "2026-06-04T22:53:29.468Z",
   "scanType": "afternoon",
-  "gamesScanned": 6,
+  "gamesScanned": 5,
   "totalGames": 9,
   "batters": [
     {
@@ -102,6 +102,22 @@
       "gameLabel": "LAD @ AZ"
     },
     {
+      "batterId": 664774,
+      "batterName": "LaMonte Wade Jr.",
+      "pitcherId": 683003,
+      "pitcherName": "Jared Jones",
+      "batterTeam": "HOU",
+      "pitcherTeam": "PIT",
+      "edgeScore": 73,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "1.333",
+      "bvpPA": 12,
+      "bvpHR": 0,
+      "gamePk": 824185,
+      "gameLabel": "PIT @ HOU"
+    },
+    {
       "batterId": 665019,
       "batterName": "Kody Clemens",
       "pitcherId": 607625,
@@ -198,22 +214,6 @@
       "gameLabel": "BAL @ BOS"
     },
     {
-      "batterId": 656811,
-      "batterName": "Ryan O'Hearn",
-      "pitcherId": 678906,
-      "pitcherName": "Kai-Wei Teng",
-      "batterTeam": "PIT",
-      "pitcherTeam": "HOU",
-      "edgeScore": 65,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.333",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 824185,
-      "gameLabel": "PIT @ HOU"
-    },
-    {
       "batterId": 681082,
       "batterName": "Bryson Stott",
       "pitcherId": 608337,
@@ -230,20 +230,20 @@
       "gameLabel": "SD @ PHI"
     },
     {
-      "batterId": 621493,
-      "batterName": "Taylor Ward",
-      "pitcherId": 678394,
-      "pitcherName": "Brayan Bello",
-      "batterTeam": "BAL",
-      "pitcherTeam": "BOS",
-      "edgeScore": 64,
+      "batterId": 656811,
+      "batterName": "Ryan O'Hearn",
+      "pitcherId": 678906,
+      "pitcherName": "Kai-Wei Teng",
+      "batterTeam": "PIT",
+      "pitcherTeam": "HOU",
+      "edgeScore": 65,
       "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": ".855",
-      "bvpPA": 22,
+      "bvpAvg": ".667",
+      "bvpOps": "1.333",
+      "bvpPA": 6,
       "bvpHR": 0,
-      "gamePk": 824753,
-      "gameLabel": "BAL @ BOS"
+      "gamePk": 824185,
+      "gameLabel": "PIT @ HOU"
     }
   ],
   "pitchers": [
@@ -287,19 +287,6 @@
       "gameLabel": "TOR @ ATL"
     },
     {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "ATH",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.9,
-      "projectedIP": 5.8,
-      "projectedK": 5,
-      "gamePk": 824672,
-      "gameLabel": "ATH @ CHC"
-    },
-    {
       "pitcherId": 554430,
       "pitcherName": "Zack Wheeler",
       "team": "PHI",
@@ -311,6 +298,19 @@
       "projectedK": 5,
       "gamePk": 823457,
       "gameLabel": "SD @ PHI"
+    },
+    {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "ATH",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.9,
+      "projectedIP": 5.8,
+      "projectedK": 5,
+      "gamePk": 824672,
+      "gameLabel": "ATH @ CHC"
     },
     {
       "pitcherId": 607074,
@@ -445,24 +445,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "team": "KC",
-      "oppTeam": "MIN",
-      "line": 90.5,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 92.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 92.1,
-      "twoYrStarts": 38,
-      "bvpAdj": -2,
-      "lineupPA": 128,
-      "gamePk": 823698,
-      "gameLabel": "KC @ MIN"
-    },
-    {
       "pitcherId": 554430,
       "pitcherName": "Zack Wheeler",
       "team": "PHI",
@@ -479,6 +461,24 @@
       "lineupPA": 155,
       "gamePk": 823457,
       "gameLabel": "SD @ PHI"
+    },
+    {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "MIN",
+      "line": 90.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 92.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 92.1,
+      "twoYrStarts": 38,
+      "bvpAdj": -2,
+      "lineupPA": 128,
+      "gamePk": 823698,
+      "gameLabel": "KC @ MIN"
     },
     {
       "pitcherId": 519242,
