@@ -1,8 +1,8 @@
 {
   "date": "2026-06-05",
-  "savedAt": "2026-06-05T17:28:55.121Z",
+  "savedAt": "2026-06-05T19:20:20.183Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -68,22 +68,6 @@
       "bvpHR": 0,
       "gamePk": 824673,
       "gameLabel": "SF @ CHC"
-    },
-    {
-      "batterId": 592450,
-      "batterName": "Aaron Judge",
-      "pitcherId": 543243,
-      "pitcherName": "Sonny Gray",
-      "batterTeam": "NYY",
-      "pitcherTeam": "BOS",
-      "edgeScore": 83,
-      "grade": "A+",
-      "bvpAvg": ".417",
-      "bvpOps": "1.250",
-      "bvpPA": 24,
-      "bvpHR": 2,
-      "gamePk": 823538,
-      "gameLabel": "BOS @ NYY"
     },
     {
       "batterId": 676391,
@@ -244,6 +228,22 @@
       "bvpHR": 2,
       "gamePk": 823538,
       "gameLabel": "BOS @ NYY"
+    },
+    {
+      "batterId": 660821,
+      "batterName": "Jesús Sánchez",
+      "pitcherId": 687064,
+      "pitcherName": "Brandon Young",
+      "batterTeam": "TOR",
+      "pitcherTeam": "BAL",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".417",
+      "bvpOps": "1.000",
+      "bvpPA": 24,
+      "bvpHR": 0,
+      "gamePk": 822810,
+      "gameLabel": "BAL @ TOR"
     }
   ],
   "pitchers": [
@@ -590,7 +590,7 @@
       "twoYrAvg": 83.4,
       "twoYrStarts": 42,
       "bvpAdj": 4,
-      "lineupPA": 230,
+      "lineupPA": 206,
       "gamePk": 823538,
       "gameLabel": "BOS @ NYY"
     },
