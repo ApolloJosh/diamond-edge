@@ -1,8 +1,8 @@
 {
   "date": "2026-06-06",
-  "savedAt": "2026-06-06T16:41:15.693Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-06-06T18:49:54.287Z",
+  "scanType": "afternoon",
+  "gamesScanned": 12,
   "totalGames": 15,
   "batters": [
     {
@@ -306,9 +306,9 @@
       "oppTeam": "SF",
       "whiffScore": 71,
       "grade": "A",
-      "k9": 9.2,
-      "projectedIP": 10.2,
-      "projectedK": 9,
+      "k9": 9.1,
+      "projectedIP": 8.9,
+      "projectedK": 7.5,
       "gamePk": 824669,
       "gameLabel": "SF @ CHC"
     },
@@ -346,8 +346,8 @@
       "whiffScore": 68,
       "grade": "B+",
       "k9": 10.1,
-      "projectedIP": 5.3,
-      "projectedK": 5,
+      "projectedIP": 5,
+      "projectedK": 4.5,
       "gamePk": 824669,
       "gameLabel": "SF @ CHC"
     },
