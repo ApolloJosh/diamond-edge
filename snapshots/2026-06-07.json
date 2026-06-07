@@ -1,8 +1,8 @@
 {
   "date": "2026-06-07",
-  "savedAt": "2026-06-07T16:53:40.339Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-06-07T18:51:06.342Z",
+  "scanType": "afternoon",
+  "gamesScanned": 7,
   "totalGames": 15,
   "batters": [
     {
@@ -267,9 +267,9 @@
       "oppTeam": "CLE",
       "whiffScore": 75,
       "grade": "A",
-      "k9": 10.9,
-      "projectedIP": 5.4,
-      "projectedK": 5.5,
+      "k9": 10.8,
+      "projectedIP": 5,
+      "projectedK": 5,
       "gamePk": 822890,
       "gameLabel": "CLE @ TEX"
     },
@@ -436,8 +436,8 @@
       "oppTeam": "TEX",
       "whiffScore": 60,
       "grade": "B",
-      "k9": 8.1,
-      "projectedIP": 4.8,
+      "k9": 8.3,
+      "projectedIP": 4.5,
       "projectedK": 3.5,
       "gamePk": 822890,
       "gameLabel": "CLE @ TEX"
@@ -493,6 +493,19 @@
       "projectedK": 4,
       "gamePk": 824670,
       "gameLabel": "SF @ CHC"
+    },
+    {
+      "pitcherId": 681347,
+      "pitcherName": "Mike Burrows",
+      "team": "HOU",
+      "oppTeam": "ATH",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 7.4,
+      "projectedIP": 5.4,
+      "projectedK": 3.5,
+      "gamePk": 824183,
+      "gameLabel": "ATH @ HOU"
     },
     {
       "pitcherId": 656457,
