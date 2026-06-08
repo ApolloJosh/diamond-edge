@@ -1,6 +1,6 @@
 {
   "date": "2026-06-08",
-  "savedAt": "2026-06-08T19:40:12.353Z",
+  "savedAt": "2026-06-08T22:57:16.599Z",
   "scanType": "afternoon",
   "gamesScanned": 8,
   "totalGames": 8,
@@ -20,22 +20,6 @@
       "bvpHR": 4,
       "gamePk": 822806,
       "gameLabel": "PHI @ TOR"
-    },
-    {
-      "batterId": 646240,
-      "batterName": "Rafael Devers",
-      "pitcherId": 571945,
-      "pitcherName": "Miles Mikolas",
-      "batterTeam": "SF",
-      "pitcherTeam": "WSH",
-      "edgeScore": 91,
-      "grade": "A+",
-      "bvpAvg": ".625",
-      "bvpOps": "1.667",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 823218,
-      "gameLabel": "WSH @ SF"
     },
     {
       "batterId": 676609,
@@ -118,17 +102,17 @@
       "gameLabel": "PHI @ TOR"
     },
     {
-      "batterId": 656305,
-      "batterName": "Matt Chapman",
-      "pitcherId": 571945,
-      "pitcherName": "Miles Mikolas",
+      "batterId": 650333,
+      "batterName": "Luis Arraez",
+      "pitcherId": 663992,
+      "pitcherName": "Richard Lovelady",
       "batterTeam": "SF",
       "pitcherTeam": "WSH",
       "edgeScore": 76,
       "grade": "A",
-      "bvpAvg": ".455",
-      "bvpOps": "1.084",
-      "bvpPA": 26,
+      "bvpAvg": ".429",
+      "bvpOps": "1.171",
+      "bvpPA": 20,
       "bvpHR": 0,
       "gamePk": 823218,
       "gameLabel": "WSH @ SF"
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 824427,
       "gameLabel": "NYY @ CLE"
+    },
+    {
+      "batterId": 666181,
+      "batterName": "Will Benson",
+      "pitcherId": 621111,
+      "pitcherName": "Walker Buehler",
+      "batterTeam": "CIN",
+      "pitcherTeam": "SD",
+      "edgeScore": 67,
+      "grade": "B+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.850",
+      "bvpPA": 10,
+      "bvpHR": 2,
+      "gamePk": 823289,
+      "gameLabel": "CIN @ SD"
     }
   ],
   "pitchers": [
@@ -254,11 +254,24 @@
       "oppTeam": "NYY",
       "whiffScore": 78,
       "grade": "A",
-      "k9": 10.4,
-      "projectedIP": 6.2,
-      "projectedK": 6,
+      "k9": 10.5,
+      "projectedIP": 5.9,
+      "projectedK": 5.5,
       "gamePk": 824427,
       "gameLabel": "NYY @ CLE"
+    },
+    {
+      "pitcherId": 676106,
+      "pitcherName": "Emerson Hancock",
+      "team": "SEA",
+      "oppTeam": "BAL",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8.8,
+      "projectedIP": 5.5,
+      "projectedK": 4.5,
+      "gamePk": 824829,
+      "gameLabel": "SEA @ BAL"
     },
     {
       "pitcherId": 693855,
@@ -267,9 +280,9 @@
       "oppTeam": "BOS",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 9.6,
-      "projectedIP": 31,
-      "projectedK": 29,
+      "k9": 9.8,
+      "projectedIP": 16,
+      "projectedK": 15,
       "gamePk": 822972,
       "gameLabel": "BOS @ TB"
     },
@@ -285,19 +298,6 @@
       "projectedK": 4,
       "gamePk": 824025,
       "gameLabel": "HOU @ LAA"
-    },
-    {
-      "pitcherId": 676106,
-      "pitcherName": "Emerson Hancock",
-      "team": "SEA",
-      "oppTeam": "BAL",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 8.9,
-      "projectedIP": 5.9,
-      "projectedK": 5,
-      "gamePk": 824829,
-      "gameLabel": "SEA @ BAL"
     },
     {
       "pitcherId": 621111,
@@ -346,8 +346,8 @@
       "whiffScore": 57,
       "grade": "B",
       "k9": 8.6,
-      "projectedIP": 5.5,
-      "projectedK": 4.5,
+      "projectedIP": 5.2,
+      "projectedK": 4,
       "gamePk": 822972,
       "gameLabel": "BOS @ TB"
     },
@@ -397,11 +397,24 @@
       "oppTeam": "CLE",
       "whiffScore": 53,
       "grade": "C",
-      "k9": 9.8,
-      "projectedIP": 5.3,
-      "projectedK": 5,
+      "k9": 10,
+      "projectedIP": 5,
+      "projectedK": 4.5,
       "gamePk": 824427,
       "gameLabel": "NYY @ CLE"
+    },
+    {
+      "pitcherId": 663992,
+      "pitcherName": "Richard Lovelady",
+      "team": "WSH",
+      "oppTeam": "SF",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 8,
+      "projectedIP": 6.5,
+      "projectedK": 5,
+      "gamePk": 823218,
+      "gameLabel": "WSH @ SF"
     },
     {
       "pitcherId": 571578,
@@ -415,40 +428,9 @@
       "projectedK": 2.5,
       "gamePk": 822806,
       "gameLabel": "PHI @ TOR"
-    },
-    {
-      "pitcherId": 571945,
-      "pitcherName": "Miles Mikolas",
-      "team": "WSH",
-      "oppTeam": "SF",
-      "whiffScore": 45,
-      "grade": "C",
-      "k9": 5.8,
-      "projectedIP": 9.4,
-      "projectedK": 5,
-      "gamePk": 823218,
-      "gameLabel": "WSH @ SF"
     }
   ],
   "pitches": [
-    {
-      "pitcherId": 668909,
-      "pitcherName": "Gavin Williams",
-      "team": "CLE",
-      "oppTeam": "NYY",
-      "line": 106,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 96.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 94.7,
-      "twoYrStarts": 44,
-      "bvpAdj": 10,
-      "lineupPA": 88,
-      "gamePk": 824427,
-      "gameLabel": "NYY @ CLE"
-    },
     {
       "pitcherId": 571578,
       "pitcherName": "Patrick Corbin",
@@ -486,24 +468,6 @@
       "gameLabel": "HOU @ LAA"
     },
     {
-      "pitcherId": 813349,
-      "pitcherName": "Connelly Early",
-      "team": "BOS",
-      "oppTeam": "TB",
-      "line": 91.5,
-      "overUnder": "OVER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 93.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 87.9,
-      "twoYrStarts": 16,
-      "bvpAdj": 0,
-      "lineupPA": 58,
-      "gamePk": 822972,
-      "gameLabel": "BOS @ TB"
-    },
-    {
       "pitcherId": 671096,
       "pitcherName": "Andrew Abbott",
       "team": "CIN",
@@ -520,6 +484,42 @@
       "lineupPA": 106,
       "gamePk": 823289,
       "gameLabel": "CIN @ SD"
+    },
+    {
+      "pitcherId": 680570,
+      "pitcherName": "Grayson Rodriguez",
+      "team": "LAA",
+      "oppTeam": "HOU",
+      "line": 87,
+      "overUnder": "UNDER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 88.8,
+      "recent5Starts": 4,
+      "twoYrAvg": 88.8,
+      "twoYrStarts": 4,
+      "bvpAdj": -2,
+      "lineupPA": 52,
+      "gamePk": 824025,
+      "gameLabel": "HOU @ LAA"
+    },
+    {
+      "pitcherId": 605488,
+      "pitcherName": "Jeffrey Springs",
+      "team": "ATH",
+      "oppTeam": "MIL",
+      "line": 90.5,
+      "overUnder": "UNDER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 91,
+      "recent5Starts": 5,
+      "twoYrAvg": 92.8,
+      "twoYrStarts": 43,
+      "bvpAdj": -1,
+      "lineupPA": 32,
+      "gamePk": 824998,
+      "gameLabel": "MIL @ ATH"
     }
   ]
 }
