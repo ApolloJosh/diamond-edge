@@ -1,8 +1,8 @@
 {
   "date": "2026-06-10",
-  "savedAt": "2026-06-10T18:15:14.928Z",
+  "savedAt": "2026-06-10T19:55:01.850Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
     {
@@ -102,6 +102,22 @@
       "gameLabel": "CHC @ COL"
     },
     {
+      "batterId": 650490,
+      "batterName": "Yandy Díaz",
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "batterTeam": "TB",
+      "pitcherTeam": "BOS",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".302",
+      "bvpOps": ".766",
+      "bvpPA": 238,
+      "bvpHR": 4,
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
+    },
+    {
       "batterId": 670541,
       "batterName": "Yordan Alvarez",
       "pitcherId": 672282,
@@ -116,6 +132,38 @@
       "bvpHR": 0,
       "gamePk": 824022,
       "gameLabel": "HOU @ LAA"
+    },
+    {
+      "batterId": 691406,
+      "batterName": "Junior Caminero",
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "batterTeam": "TB",
+      "pitcherTeam": "BOS",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".302",
+      "bvpOps": ".766",
+      "bvpPA": 238,
+      "bvpHR": 4,
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
+    },
+    {
+      "batterId": 668723,
+      "batterName": "Ryan Vilade",
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "batterTeam": "TB",
+      "pitcherTeam": "BOS",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".302",
+      "bvpOps": ".766",
+      "bvpPA": 238,
+      "bvpHR": 4,
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
     },
     {
       "batterId": 665161,
@@ -166,6 +214,22 @@
       "gameLabel": "TEX @ KC"
     },
     {
+      "batterId": 666018,
+      "batterName": "Jonathan Aranda",
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "batterTeam": "TB",
+      "pitcherTeam": "BOS",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".302",
+      "bvpOps": ".766",
+      "bvpPA": 238,
+      "bvpHR": 4,
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
+    },
+    {
       "batterId": 516782,
       "batterName": "Starling Marte",
       "pitcherId": 669022,
@@ -180,70 +244,6 @@
       "bvpHR": 2,
       "gamePk": 824103,
       "gameLabel": "TEX @ KC"
-    },
-    {
-      "batterId": 518692,
-      "batterName": "Freddie Freeman",
-      "pitcherId": 683003,
-      "pitcherName": "Jared Jones",
-      "batterTeam": "LAD",
-      "pitcherTeam": "PIT",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.667",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 823372,
-      "gameLabel": "LAD @ PIT"
-    },
-    {
-      "batterId": 621439,
-      "batterName": "Byron Buxton",
-      "pitcherId": 664285,
-      "pitcherName": "Framber Valdez",
-      "batterTeam": "MIN",
-      "pitcherTeam": "DET",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".375",
-      "bvpOps": ".944",
-      "bvpPA": 18,
-      "bvpHR": 0,
-      "gamePk": 824266,
-      "gameLabel": "MIN @ DET"
-    },
-    {
-      "batterId": 682626,
-      "batterName": "Francisco Alvarez",
-      "pitcherId": 669467,
-      "pitcherName": "Andre Pallante",
-      "batterTeam": "NYM",
-      "pitcherTeam": "STL",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.417",
-      "bvpPA": 8,
-      "bvpHR": 0,
-      "gamePk": 823618,
-      "gameLabel": "STL @ NYM"
-    },
-    {
-      "batterId": 668901,
-      "batterName": "Mark Vientos",
-      "pitcherId": 669467,
-      "pitcherName": "Andre Pallante",
-      "batterTeam": "NYM",
-      "pitcherTeam": "STL",
-      "edgeScore": 64,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": "1.262",
-      "bvpPA": 14,
-      "bvpHR": 2,
-      "gamePk": 823618,
-      "gameLabel": "STL @ NYM"
     }
   ],
   "pitchers": [
@@ -285,6 +285,19 @@
       "projectedK": 4.5,
       "gamePk": 823287,
       "gameLabel": "CIN @ SD"
+    },
+    {
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "team": "TB",
+      "oppTeam": "BOS",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9.5,
+      "projectedIP": 5.6,
+      "projectedK": 5,
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
     },
     {
       "pitcherId": 683003,
@@ -333,8 +346,8 @@
       "whiffScore": 66,
       "grade": "B+",
       "k9": 8.4,
-      "projectedIP": 5.2,
-      "projectedK": 4,
+      "projectedIP": 4.9,
+      "projectedK": 3.5,
       "gamePk": 823215,
       "gameLabel": "WSH @ SF"
     },
@@ -378,6 +391,19 @@
       "gameLabel": "PHI @ TOR"
     },
     {
+      "pitcherId": 607074,
+      "pitcherName": "Carlos Rodón",
+      "team": "NYY",
+      "oppTeam": "CLE",
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 9.9,
+      "projectedIP": 5.2,
+      "projectedK": 4.5,
+      "gamePk": 824428,
+      "gameLabel": "NYY @ CLE"
+    },
+    {
       "pitcherId": 669194,
       "pitcherName": "Ryne Nelson",
       "team": "AZ",
@@ -389,6 +415,32 @@
       "projectedK": 3.5,
       "gamePk": 823856,
       "gameLabel": "AZ @ MIA"
+    },
+    {
+      "pitcherId": 663436,
+      "pitcherName": "Davis Martin",
+      "team": "CWS",
+      "oppTeam": "ATL",
+      "whiffScore": 61,
+      "grade": "B",
+      "k9": 9.1,
+      "projectedIP": 6,
+      "projectedK": 5,
+      "gamePk": 824590,
+      "gameLabel": "ATL @ CWS"
+    },
+    {
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "team": "CLE",
+      "oppTeam": "NYY",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 9.2,
+      "projectedIP": 5.7,
+      "projectedK": 5,
+      "gamePk": 824428,
+      "gameLabel": "NYY @ CLE"
     },
     {
       "pitcherId": 664285,
@@ -467,6 +519,19 @@
       "projectedK": 3.5,
       "gamePk": 823618,
       "gameLabel": "STL @ NYM"
+    },
+    {
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "team": "BOS",
+      "oppTeam": "TB",
+      "whiffScore": 42,
+      "grade": "D",
+      "k9": 4.7,
+      "projectedIP": 5,
+      "projectedK": 2,
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
     }
   ],
   "pitches": [
@@ -487,24 +552,6 @@
       "lineupPA": 80,
       "gamePk": 824348,
       "gameLabel": "CHC @ COL"
-    },
-    {
-      "pitcherId": 592662,
-      "pitcherName": "Robbie Ray",
-      "team": "SF",
-      "oppTeam": "WSH",
-      "line": 92,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 92.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 95.7,
-      "twoYrStarts": 45,
-      "bvpAdj": -2,
-      "lineupPA": 56,
-      "gamePk": 823215,
-      "gameLabel": "WSH @ SF"
     },
     {
       "pitcherId": 669923,
@@ -559,6 +606,24 @@
       "lineupPA": 182,
       "gamePk": 824103,
       "gameLabel": "TEX @ KC"
+    },
+    {
+      "pitcherId": 672282,
+      "pitcherName": "Reid Detmers",
+      "team": "LAA",
+      "oppTeam": "HOU",
+      "line": 95,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 94.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 95.4,
+      "twoYrStarts": 13,
+      "bvpAdj": 0,
+      "lineupPA": 206,
+      "gamePk": 824022,
+      "gameLabel": "HOU @ LAA"
     }
   ]
 }
