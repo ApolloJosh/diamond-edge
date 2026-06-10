@@ -1,8 +1,8 @@
 {
   "date": "2026-06-10",
-  "savedAt": "2026-06-10T19:55:01.850Z",
+  "savedAt": "2026-06-10T23:08:38.029Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -70,20 +70,20 @@
       "gameLabel": "HOU @ LAA"
     },
     {
-      "batterId": 680779,
-      "batterName": "Henry Davis",
-      "pitcherId": 660271,
-      "pitcherName": "Shohei Ohtani",
-      "batterTeam": "PIT",
-      "pitcherTeam": "LAD",
-      "edgeScore": 81,
-      "grade": "A+",
-      "bvpAvg": "1.000",
-      "bvpOps": "4.000",
-      "bvpPA": 6,
+      "batterId": 650490,
+      "batterName": "Yandy Díaz",
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "batterTeam": "TB",
+      "pitcherTeam": "BOS",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".302",
+      "bvpOps": ".766",
+      "bvpPA": 238,
       "bvpHR": 4,
-      "gamePk": 823372,
-      "gameLabel": "LAD @ PIT"
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
     },
     {
       "batterId": 664023,
@@ -102,13 +102,13 @@
       "gameLabel": "CHC @ COL"
     },
     {
-      "batterId": 650490,
-      "batterName": "Yandy Díaz",
+      "batterId": 691406,
+      "batterName": "Junior Caminero",
       "pitcherId": 687562,
       "pitcherName": "Jake Bennett",
       "batterTeam": "TB",
       "pitcherTeam": "BOS",
-      "edgeScore": 79,
+      "edgeScore": 76,
       "grade": "A",
       "bvpAvg": ".302",
       "bvpOps": ".766",
@@ -132,22 +132,6 @@
       "bvpHR": 0,
       "gamePk": 824022,
       "gameLabel": "HOU @ LAA"
-    },
-    {
-      "batterId": 691406,
-      "batterName": "Junior Caminero",
-      "pitcherId": 687562,
-      "pitcherName": "Jake Bennett",
-      "batterTeam": "TB",
-      "pitcherTeam": "BOS",
-      "edgeScore": 76,
-      "grade": "A",
-      "bvpAvg": ".302",
-      "bvpOps": ".766",
-      "bvpPA": 238,
-      "bvpHR": 4,
-      "gamePk": 822970,
-      "gameLabel": "BOS @ TB"
     },
     {
       "batterId": 668723,
@@ -182,6 +166,22 @@
       "gameLabel": "HOU @ LAA"
     },
     {
+      "batterId": 666018,
+      "batterName": "Jonathan Aranda",
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "batterTeam": "TB",
+      "pitcherTeam": "BOS",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".302",
+      "bvpOps": ".766",
+      "bvpPA": 238,
+      "bvpHR": 4,
+      "gamePk": 822970,
+      "gameLabel": "BOS @ TB"
+    },
+    {
       "batterId": 547180,
       "batterName": "Bryce Harper",
       "pitcherId": 453286,
@@ -214,22 +214,6 @@
       "gameLabel": "TEX @ KC"
     },
     {
-      "batterId": 666018,
-      "batterName": "Jonathan Aranda",
-      "pitcherId": 687562,
-      "pitcherName": "Jake Bennett",
-      "batterTeam": "TB",
-      "pitcherTeam": "BOS",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".302",
-      "bvpOps": ".766",
-      "bvpPA": 238,
-      "bvpHR": 4,
-      "gamePk": 822970,
-      "gameLabel": "BOS @ TB"
-    },
-    {
       "batterId": 516782,
       "batterName": "Starling Marte",
       "pitcherId": 669022,
@@ -244,6 +228,22 @@
       "bvpHR": 2,
       "gamePk": 824103,
       "gameLabel": "TEX @ KC"
+    },
+    {
+      "batterId": 518692,
+      "batterName": "Freddie Freeman",
+      "pitcherId": 683003,
+      "pitcherName": "Jared Jones",
+      "batterTeam": "LAD",
+      "pitcherTeam": "PIT",
+      "edgeScore": 66,
+      "grade": "B+",
+      "bvpAvg": ".667",
+      "bvpOps": "1.667",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 823372,
+      "gameLabel": "LAD @ PIT"
     }
   ],
   "pitchers": [
@@ -267,9 +267,9 @@
       "oppTeam": "PIT",
       "whiffScore": 78,
       "grade": "A",
-      "k9": 9.9,
-      "projectedIP": 6.1,
-      "projectedK": 5.5,
+      "k9": 10,
+      "projectedIP": 5.6,
+      "projectedK": 5,
       "gamePk": 823372,
       "gameLabel": "LAD @ PIT"
     },
@@ -306,9 +306,9 @@
       "oppTeam": "LAD",
       "whiffScore": 71,
       "grade": "A",
-      "k9": 9.6,
-      "projectedIP": 4.6,
-      "projectedK": 4,
+      "k9": 9.5,
+      "projectedIP": 3.7,
+      "projectedK": 3,
       "gamePk": 823372,
       "gameLabel": "LAD @ PIT"
     },
@@ -378,19 +378,6 @@
       "gameLabel": "TEX @ KC"
     },
     {
-      "pitcherId": 666200,
-      "pitcherName": "Jesús Luzardo",
-      "team": "PHI",
-      "oppTeam": "TOR",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 9.9,
-      "projectedIP": 5.6,
-      "projectedK": 5,
-      "gamePk": 822804,
-      "gameLabel": "PHI @ TOR"
-    },
-    {
       "pitcherId": 607074,
       "pitcherName": "Carlos Rodón",
       "team": "NYY",
@@ -404,6 +391,19 @@
       "gameLabel": "NYY @ CLE"
     },
     {
+      "pitcherId": 666200,
+      "pitcherName": "Jesús Luzardo",
+      "team": "PHI",
+      "oppTeam": "TOR",
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 9.9,
+      "projectedIP": 5.6,
+      "projectedK": 5,
+      "gamePk": 822804,
+      "gameLabel": "PHI @ TOR"
+    },
+    {
       "pitcherId": 669194,
       "pitcherName": "Ryne Nelson",
       "team": "AZ",
@@ -411,8 +411,8 @@
       "whiffScore": 62,
       "grade": "B+",
       "k9": 6.8,
-      "projectedIP": 5.5,
-      "projectedK": 3.5,
+      "projectedIP": 5.2,
+      "projectedK": 3,
       "gamePk": 823856,
       "gameLabel": "AZ @ MIA"
     },
@@ -450,7 +450,7 @@
       "whiffScore": 59,
       "grade": "B",
       "k9": 7.3,
-      "projectedIP": 5.6,
+      "projectedIP": 5.2,
       "projectedK": 3.5,
       "gamePk": 824266,
       "gameLabel": "MIN @ DET"
