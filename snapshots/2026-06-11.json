@@ -1,8 +1,8 @@
 {
   "date": "2026-06-11",
-  "savedAt": "2026-06-11T19:59:33.882Z",
+  "savedAt": "2026-06-11T23:06:33.710Z",
   "scanType": "afternoon",
-  "gamesScanned": 6,
+  "gamesScanned": 3,
   "totalGames": 8,
   "batters": [
     {
@@ -214,22 +214,6 @@
       "gameLabel": "TEX @ KC"
     },
     {
-      "batterId": 670042,
-      "batterName": "Luke Raley",
-      "pitcherId": 680694,
-      "pitcherName": "Kyle Bradish",
-      "batterTeam": "SEA",
-      "pitcherTeam": "BAL",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".444",
-      "bvpOps": "1.222",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 824827,
-      "gameLabel": "SEA @ BAL"
-    },
-    {
       "batterId": 669364,
       "batterName": "Xavier Edwards",
       "pitcherId": 518876,
@@ -244,6 +228,22 @@
       "bvpHR": 2,
       "gamePk": 823855,
       "gameLabel": "AZ @ MIA"
+    },
+    {
+      "batterId": 670042,
+      "batterName": "Luke Raley",
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "batterTeam": "SEA",
+      "pitcherTeam": "BAL",
+      "edgeScore": 73,
+      "grade": "A",
+      "bvpAvg": ".444",
+      "bvpOps": "1.222",
+      "bvpPA": 18,
+      "bvpHR": 2,
+      "gamePk": 824827,
+      "gameLabel": "SEA @ BAL"
     }
   ],
   "pitchers": [
@@ -313,19 +313,6 @@
       "gameLabel": "STL @ NYM"
     },
     {
-      "pitcherId": 527048,
-      "pitcherName": "Martín Pérez",
-      "team": "ATL",
-      "oppTeam": "CWS",
-      "whiffScore": 63,
-      "grade": "B+",
-      "k9": 7.5,
-      "projectedIP": 6.2,
-      "projectedK": 4.5,
-      "gamePk": 824589,
-      "gameLabel": "ATL @ CWS"
-    },
-    {
       "pitcherId": 663969,
       "pitcherName": "Tyler Phillips",
       "team": "MIA",
@@ -350,6 +337,19 @@
       "projectedK": 4,
       "gamePk": 824265,
       "gameLabel": "MIN @ DET"
+    },
+    {
+      "pitcherId": 527048,
+      "pitcherName": "Martín Pérez",
+      "team": "ATL",
+      "oppTeam": "CWS",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 7.5,
+      "projectedIP": 6.2,
+      "projectedK": 4.5,
+      "gamePk": 824589,
+      "gameLabel": "ATL @ CWS"
     },
     {
       "pitcherId": 608379,
@@ -397,11 +397,24 @@
       "oppTeam": "LAD",
       "whiffScore": 52,
       "grade": "C",
+      "k9": 6.7,
+      "projectedIP": 5.3,
+      "projectedK": 3,
+      "gamePk": 823371,
+      "gameLabel": "LAD @ PIT"
+    },
+    {
+      "pitcherId": 641743,
+      "pitcherName": "Anthony Kay",
+      "team": "CWS",
+      "oppTeam": "ATL",
+      "whiffScore": 52,
+      "grade": "C",
       "k9": 6.8,
       "projectedIP": 5.6,
       "projectedK": 3.5,
-      "gamePk": 823371,
-      "gameLabel": "LAD @ PIT"
+      "gamePk": 824589,
+      "gameLabel": "ATL @ CWS"
     },
     {
       "pitcherId": 672456,
@@ -432,24 +445,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 656605,
-      "pitcherName": "Mitch Keller",
-      "team": "PIT",
-      "oppTeam": "LAD",
-      "line": 96.5,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 88,
-      "recent5Starts": 5,
-      "twoYrAvg": 89.1,
-      "twoYrStarts": 45,
-      "bvpAdj": 8,
-      "lineupPA": 160,
-      "gamePk": 823371,
-      "gameLabel": "LAD @ PIT"
-    },
-    {
       "pitcherId": 608379,
       "pitcherName": "Michael Wacha",
       "team": "KC",
@@ -466,24 +461,6 @@
       "lineupPA": 280,
       "gamePk": 824101,
       "gameLabel": "TEX @ KC"
-    },
-    {
-      "pitcherId": 693433,
-      "pitcherName": "Bryan Woo",
-      "team": "SEA",
-      "oppTeam": "BAL",
-      "line": 93,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 92.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 89.3,
-      "twoYrStarts": 43,
-      "bvpAdj": 2,
-      "lineupPA": 74,
-      "gamePk": 824827,
-      "gameLabel": "SEA @ BAL"
     },
     {
       "pitcherId": 518876,
@@ -504,6 +481,24 @@
       "gameLabel": "AZ @ MIA"
     },
     {
+      "pitcherId": 693433,
+      "pitcherName": "Bryan Woo",
+      "team": "SEA",
+      "oppTeam": "BAL",
+      "line": 93,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 92.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.3,
+      "twoYrStarts": 43,
+      "bvpAdj": 2,
+      "lineupPA": 74,
+      "gamePk": 824827,
+      "gameLabel": "SEA @ BAL"
+    },
+    {
       "pitcherId": 680694,
       "pitcherName": "Kyle Bradish",
       "team": "BAL",
@@ -520,6 +515,24 @@
       "lineupPA": 92,
       "gamePk": 824827,
       "gameLabel": "SEA @ BAL"
+    },
+    {
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "team": "PIT",
+      "oppTeam": "LAD",
+      "line": 87,
+      "overUnder": "OVER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 77.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 87.7,
+      "twoYrStarts": 46,
+      "bvpAdj": 6,
+      "lineupPA": 162,
+      "gamePk": 823371,
+      "gameLabel": "LAD @ PIT"
     }
   ]
 }
