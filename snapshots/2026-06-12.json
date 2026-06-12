@@ -1,6 +1,6 @@
 {
   "date": "2026-06-12",
-  "savedAt": "2026-06-12T17:50:44.541Z",
+  "savedAt": "2026-06-12T19:32:08.707Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -287,6 +287,19 @@
       "gameLabel": "TB @ LAA"
     },
     {
+      "pitcherId": 677960,
+      "pitcherName": "Ryan Weathers",
+      "team": "NYY",
+      "oppTeam": "TOR",
+      "whiffScore": 72,
+      "grade": "A",
+      "k9": 10.2,
+      "projectedIP": 5.8,
+      "projectedK": 5.5,
+      "gamePk": 822803,
+      "gameLabel": "NYY @ TOR"
+    },
+    {
       "pitcherId": 656427,
       "pitcherName": "Jack Flaherty",
       "team": "DET",
@@ -352,15 +365,15 @@
       "gameLabel": "SD @ BAL"
     },
     {
-      "pitcherId": 677960,
-      "pitcherName": "Ryan Weathers",
-      "team": "NYY",
-      "oppTeam": "TOR",
-      "whiffScore": 62,
-      "grade": "B+",
-      "k9": 10.2,
-      "projectedIP": 5.8,
-      "projectedK": 5.5,
+      "pitcherId": 702056,
+      "pitcherName": "Trey Yesavage",
+      "team": "TOR",
+      "oppTeam": "NYY",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 9.3,
+      "projectedIP": 5.3,
+      "projectedK": 4.5,
       "gamePk": 822803,
       "gameLabel": "NYY @ TOR"
     },
@@ -447,7 +460,7 @@
       "pitcherName": "Shane Baz",
       "team": "BAL",
       "oppTeam": "SD",
-      "whiffScore": 48,
+      "whiffScore": 52,
       "grade": "C",
       "k9": 7.7,
       "projectedIP": 5.9,
