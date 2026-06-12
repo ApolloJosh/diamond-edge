@@ -1,6 +1,6 @@
 {
   "date": "2026-06-12",
-  "savedAt": "2026-06-12T19:32:08.707Z",
+  "savedAt": "2026-06-12T22:57:45.422Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -118,6 +118,22 @@
       "gameLabel": "MIA @ PIT"
     },
     {
+      "batterId": 592885,
+      "batterName": "Christian Yelich",
+      "pitcherId": 621383,
+      "pitcherName": "Tanner Banks",
+      "batterTeam": "MIL",
+      "pitcherTeam": "PHI",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "2.333",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 823778,
+      "gameLabel": "PHI @ MIL"
+    },
+    {
       "batterId": 543807,
       "batterName": "George Springer",
       "pitcherId": 677960,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823211,
       "gameLabel": "CHC @ SF"
-    },
-    {
-      "batterId": 608070,
-      "batterName": "José Ramírez",
-      "pitcherId": 656427,
-      "pitcherName": "Jack Flaherty",
-      "batterTeam": "CLE",
-      "pitcherTeam": "DET",
-      "edgeScore": 63,
-      "grade": "B+",
-      "bvpAvg": ".259",
-      "bvpOps": ".804",
-      "bvpPA": 56,
-      "bvpHR": 4,
-      "gamePk": 824425,
-      "gameLabel": "DET @ CLE"
     }
   ],
   "pitchers": [
@@ -365,6 +365,19 @@
       "gameLabel": "SD @ BAL"
     },
     {
+      "pitcherId": 621383,
+      "pitcherName": "Tanner Banks",
+      "team": "PHI",
+      "oppTeam": "MIL",
+      "whiffScore": 61,
+      "grade": "B",
+      "k9": 10.3,
+      "projectedIP": 5.5,
+      "projectedK": 5.5,
+      "gamePk": 823778,
+      "gameLabel": "PHI @ MIL"
+    },
+    {
       "pitcherId": 702056,
       "pitcherName": "Trey Yesavage",
       "team": "TOR",
@@ -398,8 +411,8 @@
       "whiffScore": 59,
       "grade": "B",
       "k9": 6.5,
-      "projectedIP": 6.4,
-      "projectedK": 4,
+      "projectedIP": 6,
+      "projectedK": 3.5,
       "gamePk": 823370,
       "gameLabel": "MIA @ PIT"
     },
@@ -415,19 +428,6 @@
       "projectedK": 3.5,
       "gamePk": 824425,
       "gameLabel": "DET @ CLE"
-    },
-    {
-      "pitcherId": 657746,
-      "pitcherName": "Joe Ryan",
-      "team": "MIN",
-      "oppTeam": "STL",
-      "whiffScore": 57,
-      "grade": "B",
-      "k9": 9.9,
-      "projectedIP": 5.4,
-      "projectedK": 5,
-      "gamePk": 823695,
-      "gameLabel": "STL @ MIN"
     },
     {
       "pitcherId": 683004,
@@ -454,6 +454,19 @@
       "projectedK": 3.5,
       "gamePk": 822726,
       "gameLabel": "SEA @ WSH"
+    },
+    {
+      "pitcherId": 657746,
+      "pitcherName": "Joe Ryan",
+      "team": "MIN",
+      "oppTeam": "STL",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 9.9,
+      "projectedIP": 5.4,
+      "projectedK": 5,
+      "gamePk": 823695,
+      "gameLabel": "STL @ MIN"
     },
     {
       "pitcherId": 669358,
@@ -496,24 +509,6 @@
     }
   ],
   "pitches": [
-    {
-      "pitcherId": 645261,
-      "pitcherName": "Sandy Alcantara",
-      "team": "MIA",
-      "oppTeam": "PIT",
-      "line": 100.5,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 95,
-      "recent5Starts": 5,
-      "twoYrAvg": 94,
-      "twoYrStarts": 45,
-      "bvpAdj": 6,
-      "lineupPA": 160,
-      "gamePk": 823370,
-      "gameLabel": "MIA @ PIT"
-    },
     {
       "pitcherId": 675911,
       "pitcherName": "Spencer Strider",
@@ -585,6 +580,24 @@
       "lineupPA": 78,
       "gamePk": 824507,
       "gameLabel": "AZ @ CIN"
+    },
+    {
+      "pitcherId": 690997,
+      "pitcherName": "Nolan McLean",
+      "team": "NYM",
+      "oppTeam": "ATL",
+      "line": 93,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 93.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 92.6,
+      "twoYrStarts": 21,
+      "bvpAdj": 0,
+      "lineupPA": 24,
+      "gamePk": 823617,
+      "gameLabel": "ATL @ NYM"
     }
   ]
 }
