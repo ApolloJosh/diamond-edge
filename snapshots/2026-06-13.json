@@ -1,8 +1,8 @@
 {
   "date": "2026-06-13",
-  "savedAt": "2026-06-13T16:58:27.959Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-06-13T18:54:08.886Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -20,6 +20,22 @@
       "bvpHR": 2,
       "gamePk": 822802,
       "gameLabel": "NYY @ TOR"
+    },
+    {
+      "batterId": 663586,
+      "batterName": "Austin Riley",
+      "pitcherId": 640455,
+      "pitcherName": "Sean Manaea",
+      "batterTeam": "ATL",
+      "pitcherTeam": "NYM",
+      "edgeScore": 84,
+      "grade": "A+",
+      "bvpAvg": ".750",
+      "bvpOps": "2.300",
+      "bvpPA": 10,
+      "bvpHR": 2,
+      "gamePk": 823616,
+      "gameLabel": "ATL @ NYM"
     },
     {
       "batterId": 665489,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 824019,
       "gameLabel": "TB @ LAA"
-    },
-    {
-      "batterId": 691406,
-      "batterName": "Junior Caminero",
-      "pitcherId": 667755,
-      "pitcherName": "José Soriano",
-      "batterTeam": "TB",
-      "pitcherTeam": "LAA",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.400",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 824019,
-      "gameLabel": "TB @ LAA"
     }
   ],
   "pitchers": [
@@ -415,6 +415,19 @@
       "projectedK": 3.5,
       "gamePk": 824995,
       "gameLabel": "COL @ ATH"
+    },
+    {
+      "pitcherId": 640455,
+      "pitcherName": "Sean Manaea",
+      "team": "NYM",
+      "oppTeam": "ATL",
+      "whiffScore": 61,
+      "grade": "B",
+      "k9": 9.4,
+      "projectedIP": 5.5,
+      "projectedK": 5,
+      "gamePk": 823616,
+      "gameLabel": "ATL @ NYM"
     },
     {
       "pitcherId": 693645,
