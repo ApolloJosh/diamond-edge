@@ -1,8 +1,8 @@
 {
   "date": "2026-06-15",
-  "savedAt": "2026-06-15T20:38:10.633Z",
+  "savedAt": "2026-06-15T23:17:18.660Z",
   "scanType": "afternoon",
-  "gamesScanned": 10,
+  "gamesScanned": 9,
   "totalGames": 10,
   "batters": [
     {
@@ -255,7 +255,7 @@
       "whiffScore": 78,
       "grade": "A",
       "k9": 10.5,
-      "projectedIP": 5.8,
+      "projectedIP": 5.4,
       "projectedK": 5.5,
       "gamePk": 824505,
       "gameLabel": "NYM @ CIN"
@@ -447,24 +447,6 @@
       "gameLabel": "SD @ STL"
     },
     {
-      "pitcherId": 695505,
-      "pitcherName": "Chase Burns",
-      "team": "CIN",
-      "oppTeam": "NYM",
-      "line": 94.5,
-      "overUnder": "OVER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 94.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 93.2,
-      "twoYrStarts": 21,
-      "bvpAdj": 0,
-      "lineupPA": 24,
-      "gamePk": 824505,
-      "gameLabel": "NYM @ CIN"
-    },
-    {
       "pitcherId": 700712,
       "pitcherName": "Walbert Ureña",
       "team": "LAA",
@@ -481,6 +463,24 @@
       "lineupPA": 0,
       "gamePk": 825071,
       "gameLabel": "LAA @ AZ"
+    },
+    {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "COL",
+      "line": 82.5,
+      "overUnder": "UNDER",
+      "pitchScore": 63,
+      "grade": "B+",
+      "recent5Avg": 84.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 88.2,
+      "twoYrStarts": 39,
+      "bvpAdj": -3,
+      "lineupPA": 38,
+      "gamePk": 824666,
+      "gameLabel": "COL @ CHC"
     }
   ]
 }
