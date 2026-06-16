@@ -1,6 +1,6 @@
 {
   "date": "2026-06-16",
-  "savedAt": "2026-06-16T20:26:28.768Z",
+  "savedAt": "2026-06-16T23:04:52.774Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -230,20 +230,20 @@
       "gameLabel": "KC @ WSH"
     },
     {
-      "batterId": 666971,
-      "batterName": "Lourdes Gurriel Jr.",
-      "pitcherId": 672282,
-      "pitcherName": "Reid Detmers",
-      "batterTeam": "AZ",
-      "pitcherTeam": "LAA",
+      "batterId": 670097,
+      "batterName": "Zack Short",
+      "pitcherId": 663903,
+      "pitcherName": "Brady Singer",
+      "batterTeam": "NYM",
+      "pitcherTeam": "CIN",
       "edgeScore": 66,
       "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.667",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 825070,
-      "gameLabel": "LAA @ AZ"
+      "bvpAvg": ".600",
+      "bvpOps": "1.800",
+      "bvpPA": 10,
+      "bvpHR": 2,
+      "gamePk": 824504,
+      "gameLabel": "NYM @ CIN"
     }
   ],
   "pitchers": [
@@ -281,7 +281,7 @@
       "whiffScore": 74,
       "grade": "A",
       "k9": 10.1,
-      "projectedIP": 5.6,
+      "projectedIP": 5.3,
       "projectedK": 5,
       "gamePk": 823451,
       "gameLabel": "MIA @ PHI"
@@ -307,8 +307,8 @@
       "whiffScore": 71,
       "grade": "A",
       "k9": 13.6,
-      "projectedIP": 5.7,
-      "projectedK": 7.5,
+      "projectedIP": 5.2,
+      "projectedK": 6.5,
       "gamePk": 824750,
       "gameLabel": "TOR @ BOS"
     },
@@ -339,6 +339,19 @@
       "gameLabel": "CWS @ NYY"
     },
     {
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "team": "TB",
+      "oppTeam": "LAD",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 9.5,
+      "projectedIP": 5.6,
+      "projectedK": 5,
+      "gamePk": 823939,
+      "gameLabel": "TB @ LAD"
+    },
+    {
       "pitcherId": 672282,
       "pitcherName": "Reid Detmers",
       "team": "LAA",
@@ -359,8 +372,8 @@
       "whiffScore": 64,
       "grade": "B+",
       "k9": 9.1,
-      "projectedIP": 5.9,
-      "projectedK": 5,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
       "gamePk": 824750,
       "gameLabel": "TOR @ BOS"
     },
@@ -376,19 +389,6 @@
       "projectedK": 4,
       "gamePk": 824667,
       "gameLabel": "COL @ CHC"
-    },
-    {
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "team": "TB",
-      "oppTeam": "LAD",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 9.5,
-      "projectedIP": 5.6,
-      "projectedK": 5,
-      "gamePk": 823939,
-      "gameLabel": "TB @ LAD"
     },
     {
       "pitcherId": 656550,
@@ -436,9 +436,9 @@
       "oppTeam": "PHI",
       "whiffScore": 59,
       "grade": "B",
-      "k9": 7.6,
-      "projectedIP": 16,
-      "projectedK": 11.5,
+      "k9": 7.8,
+      "projectedIP": 12.1,
+      "projectedK": 9,
       "gamePk": 823451,
       "gameLabel": "MIA @ PHI"
     },
@@ -554,23 +554,10 @@
       "whiffScore": 45,
       "grade": "C",
       "k9": 7.1,
-      "projectedIP": 6.3,
+      "projectedIP": 5.9,
       "projectedK": 4,
       "gamePk": 822723,
       "gameLabel": "KC @ WSH"
-    },
-    {
-      "pitcherId": 677944,
-      "pitcherName": "Slade Cecconi",
-      "team": "CLE",
-      "oppTeam": "MIL",
-      "whiffScore": 45,
-      "grade": "C",
-      "k9": 7.6,
-      "projectedIP": 5.2,
-      "projectedK": 3.5,
-      "gamePk": 823775,
-      "gameLabel": "CLE @ MIL"
     },
     {
       "pitcherId": 687064,
@@ -587,24 +574,6 @@
     }
   ],
   "pitches": [
-    {
-      "pitcherId": 656302,
-      "pitcherName": "Dylan Cease",
-      "team": "TOR",
-      "oppTeam": "BOS",
-      "line": 99,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 93,
-      "recent5Starts": 5,
-      "twoYrAvg": 95.8,
-      "twoYrStarts": 44,
-      "bvpAdj": 5,
-      "lineupPA": 128,
-      "gamePk": 824750,
-      "gameLabel": "TOR @ BOS"
-    },
     {
       "pitcherId": 663436,
       "pitcherName": "Davis Martin",
@@ -637,7 +606,7 @@
       "twoYrAvg": 87.7,
       "twoYrStarts": 45,
       "bvpAdj": 4,
-      "lineupPA": 120,
+      "lineupPA": 130,
       "gamePk": 824504,
       "gameLabel": "NYM @ CIN"
     },
@@ -676,6 +645,24 @@
       "lineupPA": 76,
       "gamePk": 823045,
       "gameLabel": "SD @ STL"
+    },
+    {
+      "pitcherId": 605288,
+      "pitcherName": "Adrian Houser",
+      "team": "SF",
+      "oppTeam": "ATL",
+      "line": 85.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 84.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 87.5,
+      "twoYrStarts": 34,
+      "bvpAdj": 0,
+      "lineupPA": 186,
+      "gamePk": 824912,
+      "gameLabel": "SF @ ATL"
     }
   ]
 }
