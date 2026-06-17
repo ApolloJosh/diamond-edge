@@ -1,8 +1,8 @@
 {
   "date": "2026-06-17",
-  "savedAt": "2026-06-17T19:37:56.809Z",
+  "savedAt": "2026-06-17T22:58:55.271Z",
   "scanType": "afternoon",
-  "gamesScanned": 12,
+  "gamesScanned": 7,
   "totalGames": 15,
   "batters": [
     {
@@ -182,22 +182,6 @@
       "gameLabel": "NYM @ CIN"
     },
     {
-      "batterId": 670042,
-      "batterName": "Luke Raley",
-      "pitcherId": 680694,
-      "pitcherName": "Kyle Bradish",
-      "batterTeam": "SEA",
-      "pitcherTeam": "BAL",
-      "edgeScore": 87,
-      "grade": "A+",
-      "bvpAvg": ".455",
-      "bvpOps": "1.455",
-      "bvpPA": 22,
-      "bvpHR": 4,
-      "gamePk": 823127,
-      "gameLabel": "BAL @ SEA"
-    },
-    {
       "batterId": 607208,
       "batterName": "Trea Turner",
       "pitcherId": 645261,
@@ -212,6 +196,22 @@
       "bvpHR": 4,
       "gamePk": 823450,
       "gameLabel": "MIA @ PHI"
+    },
+    {
+      "batterId": 670042,
+      "batterName": "Luke Raley",
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "batterTeam": "SEA",
+      "pitcherTeam": "BAL",
+      "edgeScore": 87,
+      "grade": "A+",
+      "bvpAvg": ".455",
+      "bvpOps": "1.455",
+      "bvpPA": 22,
+      "bvpHR": 4,
+      "gamePk": 823127,
+      "gameLabel": "BAL @ SEA"
     },
     {
       "batterId": 624413,
@@ -248,6 +248,19 @@
   ],
   "pitchers": [
     {
+      "pitcherId": 690997,
+      "pitcherName": "Nolan McLean",
+      "team": "NYM",
+      "oppTeam": "CIN",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.5,
+      "projectedIP": 5.5,
+      "projectedK": 5.5,
+      "gamePk": 824503,
+      "gameLabel": "NYM @ CIN"
+    },
+    {
       "pitcherId": 607074,
       "pitcherName": "Carlos Rodón",
       "team": "NYY",
@@ -261,17 +274,17 @@
       "gameLabel": "CWS @ NYY"
     },
     {
-      "pitcherId": 690997,
-      "pitcherName": "Nolan McLean",
-      "team": "NYM",
-      "oppTeam": "CIN",
-      "whiffScore": 78,
+      "pitcherId": 680755,
+      "pitcherName": "Braydon Fisher",
+      "team": "TOR",
+      "oppTeam": "BOS",
+      "whiffScore": 74,
       "grade": "A",
-      "k9": 10.5,
-      "projectedIP": 5.5,
-      "projectedK": 5.5,
-      "gamePk": 824503,
-      "gameLabel": "NYM @ CIN"
+      "k9": 9.6,
+      "projectedIP": 9.3,
+      "projectedK": 8.5,
+      "gamePk": 824746,
+      "gameLabel": "TOR @ BOS"
     },
     {
       "pitcherId": 668909,
@@ -313,19 +326,6 @@
       "gameLabel": "LAA @ AZ"
     },
     {
-      "pitcherId": 669923,
-      "pitcherName": "George Kirby",
-      "team": "SEA",
-      "oppTeam": "BAL",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 7.9,
-      "projectedIP": 6,
-      "projectedK": 4.5,
-      "gamePk": 823127,
-      "gameLabel": "BAL @ SEA"
-    },
-    {
       "pitcherId": 691725,
       "pitcherName": "Andrew Painter",
       "team": "PHI",
@@ -337,6 +337,19 @@
       "projectedK": 3.5,
       "gamePk": 823450,
       "gameLabel": "MIA @ PHI"
+    },
+    {
+      "pitcherId": 669923,
+      "pitcherName": "George Kirby",
+      "team": "SEA",
+      "oppTeam": "BAL",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.9,
+      "projectedIP": 6,
+      "projectedK": 4.5,
+      "gamePk": 823127,
+      "gameLabel": "BAL @ SEA"
     },
     {
       "pitcherId": 663554,
@@ -533,24 +546,6 @@
       "gameLabel": "CWS @ NYY"
     },
     {
-      "pitcherId": 669923,
-      "pitcherName": "George Kirby",
-      "team": "SEA",
-      "oppTeam": "BAL",
-      "line": 95,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 94,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.5,
-      "twoYrStarts": 37,
-      "bvpAdj": 2,
-      "lineupPA": 274,
-      "gamePk": 823127,
-      "gameLabel": "BAL @ SEA"
-    },
-    {
       "pitcherId": 690997,
       "pitcherName": "Nolan McLean",
       "team": "NYM",
@@ -585,6 +580,24 @@
       "lineupPA": 583,
       "gamePk": 823450,
       "gameLabel": "MIA @ PHI"
+    },
+    {
+      "pitcherId": 669923,
+      "pitcherName": "George Kirby",
+      "team": "SEA",
+      "oppTeam": "BAL",
+      "line": 95,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 94,
+      "recent5Starts": 5,
+      "twoYrAvg": 91.5,
+      "twoYrStarts": 37,
+      "bvpAdj": 2,
+      "lineupPA": 274,
+      "gamePk": 823127,
+      "gameLabel": "BAL @ SEA"
     }
   ]
 }
