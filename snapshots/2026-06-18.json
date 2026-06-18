@@ -1,8 +1,8 @@
 {
   "date": "2026-06-18",
-  "savedAt": "2026-06-18T19:39:55.133Z",
+  "savedAt": "2026-06-18T23:18:28.709Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 5,
   "totalGames": 9,
   "batters": [
     {
@@ -261,6 +261,19 @@
       "gameLabel": "MIN @ TEX"
     },
     {
+      "pitcherId": 677960,
+      "pitcherName": "Ryan Weathers",
+      "team": "NYY",
+      "oppTeam": "CWS",
+      "whiffScore": 75,
+      "grade": "A",
+      "k9": 10,
+      "projectedIP": 5.4,
+      "projectedK": 5,
+      "gamePk": 823533,
+      "gameLabel": "CWS @ NYY"
+    },
+    {
       "pitcherId": 693433,
       "pitcherName": "Bryan Woo",
       "team": "SEA",
@@ -272,19 +285,6 @@
       "projectedK": 4.5,
       "gamePk": 823125,
       "gameLabel": "BAL @ SEA"
-    },
-    {
-      "pitcherId": 677960,
-      "pitcherName": "Ryan Weathers",
-      "team": "NYY",
-      "oppTeam": "CWS",
-      "whiffScore": 71,
-      "grade": "A",
-      "k9": 9.8,
-      "projectedIP": 5.7,
-      "projectedK": 5,
-      "gamePk": 823533,
-      "gameLabel": "CWS @ NYY"
     },
     {
       "pitcherId": 605400,
@@ -389,6 +389,19 @@
       "projectedK": 5,
       "gamePk": 824911,
       "gameLabel": "SF @ ATL"
+    },
+    {
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "team": "CLE",
+      "oppTeam": "MIL",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 9.5,
+      "projectedIP": 5.7,
+      "projectedK": 5,
+      "gamePk": 823772,
+      "gameLabel": "CLE @ MIL"
     },
     {
       "pitcherId": 702056,
