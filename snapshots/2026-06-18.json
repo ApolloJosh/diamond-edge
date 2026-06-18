@@ -1,6 +1,6 @@
 {
   "date": "2026-06-18",
-  "savedAt": "2026-06-18T18:15:45.114Z",
+  "savedAt": "2026-06-18T19:39:55.133Z",
   "scanType": "afternoon",
   "gamesScanned": 8,
   "totalGames": 9,
@@ -20,6 +20,22 @@
       "bvpHR": 2,
       "gamePk": 822889,
       "gameLabel": "MIN @ TEX"
+    },
+    {
+      "batterId": 664702,
+      "batterName": "Myles Straw",
+      "pitcherId": 543243,
+      "pitcherName": "Sonny Gray",
+      "batterTeam": "TOR",
+      "pitcherTeam": "BOS",
+      "edgeScore": 92,
+      "grade": "A+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.172",
+      "bvpPA": 34,
+      "bvpHR": 0,
+      "gamePk": 824748,
+      "gameLabel": "TOR @ BOS"
     },
     {
       "batterId": 668939,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 824911,
       "gameLabel": "SF @ ATL"
-    },
-    {
-      "batterId": 671739,
-      "batterName": "Michael Harris II",
-      "pitcherId": 694738,
-      "pitcherName": "Landen Roupp",
-      "batterTeam": "ATL",
-      "pitcherTeam": "SF",
-      "edgeScore": 64,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": ".667",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824911,
-      "gameLabel": "SF @ ATL"
     }
   ],
   "pitchers": [
@@ -313,6 +313,19 @@
       "gameLabel": "NYM @ PHI"
     },
     {
+      "pitcherId": 663542,
+      "pitcherName": "Bryan Hudson",
+      "team": "CWS",
+      "oppTeam": "NYY",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.6,
+      "projectedIP": 8.3,
+      "projectedK": 6,
+      "gamePk": 823533,
+      "gameLabel": "CWS @ NYY"
+    },
+    {
       "pitcherId": 702070,
       "pitcherName": "Noah Cameron",
       "team": "KC",
@@ -376,6 +389,32 @@
       "projectedK": 5,
       "gamePk": 824911,
       "gameLabel": "SF @ ATL"
+    },
+    {
+      "pitcherId": 702056,
+      "pitcherName": "Trey Yesavage",
+      "team": "TOR",
+      "oppTeam": "BOS",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 8.7,
+      "projectedIP": 5.5,
+      "projectedK": 4.5,
+      "gamePk": 824748,
+      "gameLabel": "TOR @ BOS"
+    },
+    {
+      "pitcherId": 543243,
+      "pitcherName": "Sonny Gray",
+      "team": "BOS",
+      "oppTeam": "TOR",
+      "whiffScore": 50,
+      "grade": "C",
+      "k9": 7.1,
+      "projectedIP": 5.3,
+      "projectedK": 3.5,
+      "gamePk": 824748,
+      "gameLabel": "TOR @ BOS"
     },
     {
       "pitcherId": 669358,
@@ -447,6 +486,24 @@
       "gameLabel": "NYM @ PHI"
     },
     {
+      "pitcherId": 543243,
+      "pitcherName": "Sonny Gray",
+      "team": "BOS",
+      "oppTeam": "TOR",
+      "line": 87.5,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 84.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 83.6,
+      "twoYrStarts": 45,
+      "bvpAdj": 3,
+      "lineupPA": 157,
+      "gamePk": 824748,
+      "gameLabel": "TOR @ BOS"
+    },
+    {
       "pitcherId": 702070,
       "pitcherName": "Noah Cameron",
       "team": "KC",
@@ -463,24 +520,6 @@
       "lineupPA": 82,
       "gamePk": 824098,
       "gameLabel": "STL @ KC"
-    },
-    {
-      "pitcherId": 800048,
-      "pitcherName": "Parker Messick",
-      "team": "CLE",
-      "oppTeam": "MIL",
-      "line": 90,
-      "overUnder": "UNDER",
-      "pitchScore": 66,
-      "grade": "B+",
-      "recent5Avg": 90,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.2,
-      "twoYrStarts": 21,
-      "bvpAdj": 0,
-      "lineupPA": 0,
-      "gamePk": 823772,
-      "gameLabel": "CLE @ MIL"
     }
   ]
 }
