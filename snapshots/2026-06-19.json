@@ -1,6 +1,6 @@
 {
   "date": "2026-06-19",
-  "savedAt": "2026-06-19T19:15:16.048Z",
+  "savedAt": "2026-06-19T22:31:26.309Z",
   "scanType": "afternoon",
   "gamesScanned": 13,
   "totalGames": 14,
@@ -38,22 +38,6 @@
       "gameLabel": "CLE @ HOU"
     },
     {
-      "batterId": 682985,
-      "batterName": "Riley Greene",
-      "pitcherId": 607200,
-      "pitcherName": "Erick Fedde",
-      "batterTeam": "DET",
-      "pitcherTeam": "CWS",
-      "edgeScore": 87,
-      "grade": "A+",
-      "bvpAvg": ".556",
-      "bvpOps": "1.444",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 824264,
-      "gameLabel": "CWS @ DET"
-    },
-    {
       "batterId": 677594,
       "batterName": "Julio Rodríguez",
       "pitcherId": 624133,
@@ -68,22 +52,6 @@
       "bvpHR": 0,
       "gamePk": 823124,
       "gameLabel": "BOS @ SEA"
-    },
-    {
-      "batterId": 681481,
-      "batterName": "Kerry Carpenter",
-      "pitcherId": 607200,
-      "pitcherName": "Erick Fedde",
-      "batterTeam": "DET",
-      "pitcherTeam": "CWS",
-      "edgeScore": 84,
-      "grade": "A+",
-      "bvpAvg": ".600",
-      "bvpOps": "2.400",
-      "bvpPA": 10,
-      "bvpHR": 4,
-      "gamePk": 824264,
-      "gameLabel": "CWS @ DET"
     },
     {
       "batterId": 686217,
@@ -132,6 +100,22 @@
       "bvpHR": 2,
       "gamePk": 824910,
       "gameLabel": "MIL @ ATL"
+    },
+    {
+      "batterId": 679529,
+      "batterName": "Spencer Torkelson",
+      "pitcherId": 685126,
+      "pitcherName": "Brandon Eisert",
+      "batterTeam": "DET",
+      "pitcherTeam": "CWS",
+      "edgeScore": 78,
+      "grade": "A",
+      "bvpAvg": ".750",
+      "bvpOps": "2.250",
+      "bvpPA": 8,
+      "bvpHR": 2,
+      "gamePk": 824264,
+      "gameLabel": "CWS @ DET"
     },
     {
       "batterId": 694192,
@@ -242,6 +226,22 @@
       "bvpOps": "1.400",
       "bvpPA": 10,
       "bvpHR": 0,
+      "gamePk": 824990,
+      "gameLabel": "LAA @ ATH"
+    },
+    {
+      "batterId": 666176,
+      "batterName": "Jo Adell",
+      "pitcherId": 605488,
+      "pitcherName": "Jeffrey Springs",
+      "batterTeam": "LAA",
+      "pitcherTeam": "ATH",
+      "edgeScore": 66,
+      "grade": "B+",
+      "bvpAvg": ".333",
+      "bvpOps": "1.444",
+      "bvpPA": 18,
+      "bvpHR": 4,
       "gamePk": 824990,
       "gameLabel": "LAA @ ATH"
     }
@@ -378,6 +378,19 @@
       "gameLabel": "LAA @ ATH"
     },
     {
+      "pitcherId": 685126,
+      "pitcherName": "Brandon Eisert",
+      "team": "CWS",
+      "oppTeam": "DET",
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 10.3,
+      "projectedIP": 5.4,
+      "projectedK": 5,
+      "gamePk": 824264,
+      "gameLabel": "CWS @ DET"
+    },
+    {
       "pitcherId": 607625,
       "pitcherName": "Seth Lugo",
       "team": "KC",
@@ -428,19 +441,6 @@
       "projectedK": 7.5,
       "gamePk": 824663,
       "gameLabel": "TOR @ CHC"
-    },
-    {
-      "pitcherId": 607200,
-      "pitcherName": "Erick Fedde",
-      "team": "CWS",
-      "oppTeam": "DET",
-      "whiffScore": 59,
-      "grade": "B",
-      "k9": 6,
-      "projectedIP": 8.3,
-      "projectedK": 4.5,
-      "gamePk": 824264,
-      "gameLabel": "CWS @ DET"
     },
     {
       "pitcherId": 676440,
@@ -533,6 +533,24 @@
       "gameLabel": "BOS @ SEA"
     },
     {
+      "pitcherId": 681190,
+      "pitcherName": "Randy Vásquez",
+      "team": "SD",
+      "oppTeam": "TEX",
+      "line": 79,
+      "overUnder": "UNDER",
+      "pitchScore": 73,
+      "grade": "A",
+      "recent5Avg": 85.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 84.5,
+      "twoYrStarts": 40,
+      "bvpAdj": -6,
+      "lineupPA": 56,
+      "gamePk": 822886,
+      "gameLabel": "SD @ TEX"
+    },
+    {
       "pitcherId": 592332,
       "pitcherName": "Kevin Gausman",
       "team": "TOR",
@@ -549,24 +567,6 @@
       "lineupPA": 172,
       "gamePk": 824663,
       "gameLabel": "TOR @ CHC"
-    },
-    {
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "team": "SD",
-      "oppTeam": "TEX",
-      "line": 82,
-      "overUnder": "UNDER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 85.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 84.5,
-      "twoYrStarts": 40,
-      "bvpAdj": -3,
-      "lineupPA": 52,
-      "gamePk": 822886,
-      "gameLabel": "SD @ TEX"
     },
     {
       "pitcherId": 594798,
