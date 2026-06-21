@@ -1,8 +1,8 @@
 {
   "date": "2026-06-21",
-  "savedAt": "2026-06-21T17:07:34.591Z",
+  "savedAt": "2026-06-21T19:03:46.752Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 7,
   "totalGames": 15,
   "batters": [
     {
@@ -150,22 +150,6 @@
       "gameLabel": "CLE @ HOU"
     },
     {
-      "batterId": 607043,
-      "batterName": "Brandon Nimmo",
-      "pitcherId": 593974,
-      "pitcherName": "Wandy Peralta",
-      "batterTeam": "TEX",
-      "pitcherTeam": "SD",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".429",
-      "bvpOps": "1.357",
-      "bvpPA": 16,
-      "bvpHR": 2,
-      "gamePk": 822883,
-      "gameLabel": "SD @ TEX"
-    },
-    {
       "batterId": 691718,
       "batterName": "Pete Crow-Armstrong",
       "pitcherId": 656302,
@@ -180,6 +164,22 @@
       "bvpHR": 0,
       "gamePk": 824664,
       "gameLabel": "TOR @ CHC"
+    },
+    {
+      "batterId": 607043,
+      "batterName": "Brandon Nimmo",
+      "pitcherId": 593974,
+      "pitcherName": "Wandy Peralta",
+      "batterTeam": "TEX",
+      "pitcherTeam": "SD",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".429",
+      "bvpOps": "1.357",
+      "bvpPA": 16,
+      "bvpHR": 2,
+      "gamePk": 822883,
+      "gameLabel": "SD @ TEX"
     },
     {
       "batterId": 641857,
@@ -261,19 +261,6 @@
       "gameLabel": "CIN @ NYY"
     },
     {
-      "pitcherId": 672282,
-      "pitcherName": "Reid Detmers",
-      "team": "LAA",
-      "oppTeam": "ATH",
-      "whiffScore": 78,
-      "grade": "A",
-      "k9": 10.2,
-      "projectedIP": 5.9,
-      "projectedK": 5.5,
-      "gamePk": 824987,
-      "gameLabel": "LAA @ ATH"
-    },
-    {
       "pitcherId": 656302,
       "pitcherName": "Dylan Cease",
       "team": "TOR",
@@ -285,6 +272,19 @@
       "projectedK": 7,
       "gamePk": 824664,
       "gameLabel": "TOR @ CHC"
+    },
+    {
+      "pitcherId": 672282,
+      "pitcherName": "Reid Detmers",
+      "team": "LAA",
+      "oppTeam": "ATH",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.2,
+      "projectedIP": 5.9,
+      "projectedK": 5.5,
+      "gamePk": 824987,
+      "gameLabel": "LAA @ ATH"
     },
     {
       "pitcherId": 669302,
@@ -378,19 +378,6 @@
       "gameLabel": "NYM @ PHI"
     },
     {
-      "pitcherId": 683003,
-      "pitcherName": "Jared Jones",
-      "team": "PIT",
-      "oppTeam": "COL",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 9.4,
-      "projectedIP": 4.3,
-      "projectedK": 3.5,
-      "gamePk": 824343,
-      "gameLabel": "PIT @ COL"
-    },
-    {
       "pitcherId": 684007,
       "pitcherName": "Shota Imanaga",
       "team": "CHC",
@@ -404,14 +391,27 @@
       "gameLabel": "TOR @ CHC"
     },
     {
+      "pitcherId": 683003,
+      "pitcherName": "Jared Jones",
+      "team": "PIT",
+      "oppTeam": "COL",
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 9.4,
+      "projectedIP": 4.3,
+      "projectedK": 3.5,
+      "gamePk": 824343,
+      "gameLabel": "PIT @ COL"
+    },
+    {
       "pitcherId": 543135,
       "pitcherName": "Nathan Eovaldi",
       "team": "TEX",
       "oppTeam": "SD",
       "whiffScore": 63,
       "grade": "B+",
-      "k9": 8.6,
-      "projectedIP": 6.2,
+      "k9": 8.7,
+      "projectedIP": 5.9,
       "projectedK": 5,
       "gamePk": 822883,
       "gameLabel": "SD @ TEX"
@@ -501,9 +501,9 @@
       "oppTeam": "TEX",
       "whiffScore": 44,
       "grade": "D",
-      "k9": 5.9,
-      "projectedIP": 36.2,
-      "projectedK": 20.5,
+      "k9": 5.7,
+      "projectedIP": 18.6,
+      "projectedK": 10,
       "gamePk": 822883,
       "gameLabel": "SD @ TEX"
     },
