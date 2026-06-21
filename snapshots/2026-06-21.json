@@ -1,8 +1,8 @@
 {
   "date": "2026-06-21",
-  "savedAt": "2026-06-21T19:03:46.752Z",
+  "savedAt": "2026-06-21T22:43:53.216Z",
   "scanType": "afternoon",
-  "gamesScanned": 7,
+  "gamesScanned": 2,
   "totalGames": 15,
   "batters": [
     {
@@ -545,6 +545,19 @@
       "projectedK": 3,
       "gamePk": 822968,
       "gameLabel": "WSH @ TB"
+    },
+    {
+      "pitcherId": 702474,
+      "pitcherName": "Mike Paredes",
+      "team": "MIN",
+      "oppTeam": "AZ",
+      "whiffScore": 37,
+      "grade": "D",
+      "k9": 5,
+      "projectedIP": 6.7,
+      "projectedK": 3,
+      "gamePk": 825067,
+      "gameLabel": "MIN @ AZ"
     }
   ],
   "pitches": [
