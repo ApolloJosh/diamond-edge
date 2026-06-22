@@ -1,6 +1,6 @@
 {
   "date": "2026-06-22",
-  "savedAt": "2026-06-22T18:57:18.014Z",
+  "savedAt": "2026-06-22T20:20:48.341Z",
   "scanType": "afternoon",
   "gamesScanned": 13,
   "totalGames": 13,
@@ -326,17 +326,17 @@
       "gameLabel": "PHI @ WSH"
     },
     {
-      "pitcherId": 686613,
-      "pitcherName": "Hunter Brown",
-      "team": "HOU",
-      "oppTeam": "TOR",
-      "whiffScore": 68,
-      "grade": "B+",
-      "k9": 13.2,
-      "projectedIP": 5.4,
-      "projectedK": 6.5,
-      "gamePk": 822800,
-      "gameLabel": "HOU @ TOR"
+      "pitcherId": 605540,
+      "pitcherName": "Brandon Woodruff",
+      "team": "MIL",
+      "oppTeam": "CIN",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 7.5,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 824502,
+      "gameLabel": "MIL @ CIN"
     },
     {
       "pitcherId": 656876,
@@ -352,6 +352,19 @@
       "gameLabel": "KC @ TB"
     },
     {
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "team": "PHI",
+      "oppTeam": "WSH",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 8.9,
+      "projectedIP": 33.1,
+      "projectedK": 28.5,
+      "gamePk": 822720,
+      "gameLabel": "PHI @ WSH"
+    },
+    {
       "pitcherId": 664285,
       "pitcherName": "Framber Valdez",
       "team": "DET",
@@ -363,6 +376,19 @@
       "projectedK": 3.5,
       "gamePk": 824261,
       "gameLabel": "NYY @ DET"
+    },
+    {
+      "pitcherId": 686613,
+      "pitcherName": "Hunter Brown",
+      "team": "HOU",
+      "oppTeam": "TOR",
+      "whiffScore": 65,
+      "grade": "B+",
+      "k9": 13.2,
+      "projectedIP": 5.4,
+      "projectedK": 6.5,
+      "gamePk": 822800,
+      "gameLabel": "HOU @ TOR"
     },
     {
       "pitcherId": 656550,
