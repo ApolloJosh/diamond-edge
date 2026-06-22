@@ -1,8 +1,8 @@
 {
   "date": "2026-06-22",
-  "savedAt": "2026-06-22T20:20:48.341Z",
+  "savedAt": "2026-06-22T23:02:49.359Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 12,
   "totalGames": 13,
   "batters": [
     {
@@ -248,19 +248,6 @@
   ],
   "pitchers": [
     {
-      "pitcherId": 673540,
-      "pitcherName": "Kodai Senga",
-      "team": "NYM",
-      "oppTeam": "CHC",
-      "whiffScore": 78,
-      "grade": "A",
-      "k9": 10.5,
-      "projectedIP": 4,
-      "projectedK": 4,
-      "gamePk": 823613,
-      "gameLabel": "CHC @ NYM"
-    },
-    {
       "pitcherId": 680694,
       "pitcherName": "Kyle Bradish",
       "team": "BAL",
@@ -272,6 +259,19 @@
       "projectedK": 4.5,
       "gamePk": 824016,
       "gameLabel": "BAL @ LAA"
+    },
+    {
+      "pitcherId": 673540,
+      "pitcherName": "Kodai Senga",
+      "team": "NYM",
+      "oppTeam": "CHC",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.5,
+      "projectedIP": 4,
+      "projectedK": 4,
+      "gamePk": 823613,
+      "gameLabel": "CHC @ NYM"
     },
     {
       "pitcherId": 656302,
@@ -339,19 +339,6 @@
       "gameLabel": "MIL @ CIN"
     },
     {
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "team": "TB",
-      "oppTeam": "KC",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 9.5,
-      "projectedIP": 5.7,
-      "projectedK": 5,
-      "gamePk": 822964,
-      "gameLabel": "KC @ TB"
-    },
-    {
       "pitcherId": 641835,
       "pitcherName": "Tim Mayza",
       "team": "PHI",
@@ -391,6 +378,19 @@
       "gameLabel": "HOU @ TOR"
     },
     {
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "team": "TB",
+      "oppTeam": "KC",
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 9.3,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
+      "gamePk": 822964,
+      "gameLabel": "KC @ TB"
+    },
+    {
       "pitcherId": 656550,
       "pitcherName": "Grant Holmes",
       "team": "ATL",
@@ -410,9 +410,9 @@
       "oppTeam": "MIA",
       "whiffScore": 62,
       "grade": "B+",
-      "k9": 6.8,
-      "projectedIP": 30.1,
-      "projectedK": 20,
+      "k9": 6.9,
+      "projectedIP": 15.6,
+      "projectedK": 10,
       "gamePk": 823851,
       "gameLabel": "TEX @ MIA"
     },
@@ -462,24 +462,11 @@
       "oppTeam": "TB",
       "whiffScore": 52,
       "grade": "C",
-      "k9": 6.9,
-      "projectedIP": 6.3,
-      "projectedK": 4,
+      "k9": 6.8,
+      "projectedIP": 5.9,
+      "projectedK": 3.5,
       "gamePk": 822964,
       "gameLabel": "KC @ TB"
-    },
-    {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "NYM",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 8.7,
-      "projectedIP": 5.7,
-      "projectedK": 4.5,
-      "gamePk": 823613,
-      "gameLabel": "CHC @ NYM"
     },
     {
       "pitcherId": 641778,
@@ -495,6 +482,19 @@
       "gameLabel": "LAD @ MIN"
     },
     {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "NYM",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 8.7,
+      "projectedIP": 5.7,
+      "projectedK": 4.5,
+      "gamePk": 823613,
+      "gameLabel": "CHC @ NYM"
+    },
+    {
       "pitcherId": 663969,
       "pitcherName": "Tyler Phillips",
       "team": "MIA",
@@ -502,8 +502,8 @@
       "whiffScore": 48,
       "grade": "C",
       "k9": 7.7,
-      "projectedIP": 13,
-      "projectedK": 9.5,
+      "projectedIP": 10.6,
+      "projectedK": 8,
       "gamePk": 823851,
       "gameLabel": "TEX @ MIA"
     },
@@ -535,24 +535,6 @@
     }
   ],
   "pitches": [
-    {
-      "pitcherId": 608379,
-      "pitcherName": "Michael Wacha",
-      "team": "KC",
-      "oppTeam": "TB",
-      "line": 93.5,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 88.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 87.6,
-      "twoYrStarts": 46,
-      "bvpAdj": 5,
-      "lineupPA": 122,
-      "gamePk": 822964,
-      "gameLabel": "KC @ TB"
-    },
     {
       "pitcherId": 664285,
       "pitcherName": "Framber Valdez",
@@ -608,22 +590,40 @@
       "gameLabel": "HOU @ TOR"
     },
     {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "NYM",
-      "line": 83.5,
-      "overUnder": "UNDER",
+      "pitcherId": 669467,
+      "pitcherName": "Andre Pallante",
+      "team": "STL",
+      "oppTeam": "AZ",
+      "line": 91,
+      "overUnder": "OVER",
       "pitchScore": 71,
       "grade": "A",
-      "recent5Avg": 85.6,
+      "recent5Avg": 87.6,
       "recent5Starts": 5,
-      "twoYrAvg": 88.1,
-      "twoYrStarts": 40,
-      "bvpAdj": -3,
-      "lineupPA": 38,
-      "gamePk": 823613,
-      "gameLabel": "CHC @ NYM"
+      "twoYrAvg": 88.6,
+      "twoYrStarts": 45,
+      "bvpAdj": 3,
+      "lineupPA": 52,
+      "gamePk": 823040,
+      "gameLabel": "AZ @ STL"
+    },
+    {
+      "pitcherId": 518876,
+      "pitcherName": "Merrill Kelly",
+      "team": "AZ",
+      "oppTeam": "STL",
+      "line": 91.5,
+      "overUnder": "OVER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 88,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.5,
+      "twoYrStarts": 44,
+      "bvpAdj": 3,
+      "lineupPA": 82,
+      "gamePk": 823040,
+      "gameLabel": "AZ @ STL"
     }
   ]
 }
