@@ -1,6 +1,6 @@
 {
   "date": "2026-06-23",
-  "savedAt": "2026-06-23T17:27:49.220Z",
+  "savedAt": "2026-06-23T19:28:14.161Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -84,22 +84,6 @@
       "bvpHR": 2,
       "gamePk": 823365,
       "gameLabel": "SEA @ PIT"
-    },
-    {
-      "batterId": 656941,
-      "batterName": "Kyle Schwarber",
-      "pitcherId": 641793,
-      "pitcherName": "Zack Littell",
-      "batterTeam": "PHI",
-      "pitcherTeam": "WSH",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": "1.933",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 822718,
-      "gameLabel": "PHI @ WSH"
     },
     {
       "batterId": 668901,
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 822718,
       "gameLabel": "PHI @ WSH"
+    },
+    {
+      "batterId": 669004,
+      "batterName": "MJ Melendez",
+      "pitcherId": 665795,
+      "pitcherName": "Edward Cabrera",
+      "batterTeam": "NYM",
+      "pitcherTeam": "CHC",
+      "edgeScore": 65,
+      "grade": "B+",
+      "bvpAvg": ".667",
+      "bvpOps": "1.467",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 823614,
+      "gameLabel": "CHC @ NYM"
     }
   ],
   "pitchers": [
@@ -417,6 +417,19 @@
       "gameLabel": "CHC @ NYM"
     },
     {
+      "pitcherId": 676571,
+      "pitcherName": "PJ Poulin",
+      "team": "WSH",
+      "oppTeam": "PHI",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 5.8,
+      "projectedIP": 3.2,
+      "projectedK": 1.5,
+      "gamePk": 822718,
+      "gameLabel": "PHI @ WSH"
+    },
+    {
       "pitcherId": 645261,
       "pitcherName": "Sandy Alcantara",
       "team": "MIA",
@@ -506,19 +519,6 @@
       "projectedK": 4.5,
       "gamePk": 822799,
       "gameLabel": "HOU @ TOR"
-    },
-    {
-      "pitcherId": 641793,
-      "pitcherName": "Zack Littell",
-      "team": "WSH",
-      "oppTeam": "PHI",
-      "whiffScore": 40,
-      "grade": "D",
-      "k9": 5.2,
-      "projectedIP": 6.5,
-      "projectedK": 3,
-      "gamePk": 822718,
-      "gameLabel": "PHI @ WSH"
     },
     {
       "pitcherId": 680736,
