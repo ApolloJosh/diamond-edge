@@ -1,8 +1,8 @@
 {
   "date": "2026-06-23",
-  "savedAt": "2026-06-23T19:28:14.161Z",
+  "savedAt": "2026-06-23T22:47:16.935Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -38,6 +38,22 @@
       "gameLabel": "HOU @ TOR"
     },
     {
+      "batterId": 641487,
+      "batterName": "J.P. Crawford",
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "batterTeam": "SEA",
+      "pitcherTeam": "PIT",
+      "edgeScore": 80,
+      "grade": "A+",
+      "bvpAvg": ".538",
+      "bvpOps": "1.600",
+      "bvpPA": 15,
+      "bvpHR": 2,
+      "gamePk": 823365,
+      "gameLabel": "SEA @ PIT"
+    },
+    {
       "batterId": 669127,
       "batterName": "Shea Langeliers",
       "pitcherId": 592662,
@@ -70,22 +86,6 @@
       "gameLabel": "HOU @ TOR"
     },
     {
-      "batterId": 641487,
-      "batterName": "J.P. Crawford",
-      "pitcherId": 656605,
-      "pitcherName": "Mitch Keller",
-      "batterTeam": "SEA",
-      "pitcherTeam": "PIT",
-      "edgeScore": 76,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.571",
-      "bvpPA": 14,
-      "bvpHR": 2,
-      "gamePk": 823365,
-      "gameLabel": "SEA @ PIT"
-    },
-    {
       "batterId": 668901,
       "batterName": "Mark Vientos",
       "pitcherId": 665795,
@@ -116,6 +116,22 @@
       "bvpHR": 2,
       "gamePk": 823365,
       "gameLabel": "SEA @ PIT"
+    },
+    {
+      "batterId": 642086,
+      "batterName": "Dominic Smith",
+      "pitcherId": 593974,
+      "pitcherName": "Wandy Peralta",
+      "batterTeam": "ATL",
+      "pitcherTeam": "SD",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "1.750",
+      "bvpPA": 8,
+      "bvpHR": 2,
+      "gamePk": 823286,
+      "gameLabel": "ATL @ SD"
     },
     {
       "batterId": 514888,
@@ -228,25 +244,22 @@
       "bvpHR": 0,
       "gamePk": 822718,
       "gameLabel": "PHI @ WSH"
-    },
-    {
-      "batterId": 669004,
-      "batterName": "MJ Melendez",
-      "pitcherId": 665795,
-      "pitcherName": "Edward Cabrera",
-      "batterTeam": "NYM",
-      "pitcherTeam": "CHC",
-      "edgeScore": 65,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.467",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 823614,
-      "gameLabel": "CHC @ NYM"
     }
   ],
   "pitchers": [
+    {
+      "pitcherId": 663554,
+      "pitcherName": "Casey Mize",
+      "team": "DET",
+      "oppTeam": "NYY",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 9.1,
+      "projectedIP": 4.7,
+      "projectedK": 4,
+      "gamePk": 824262,
+      "gameLabel": "NYY @ DET"
+    },
     {
       "pitcherId": 607074,
       "pitcherName": "Carlos Rodón",
@@ -274,27 +287,14 @@
       "gameLabel": "CHC @ NYM"
     },
     {
-      "pitcherId": 663554,
-      "pitcherName": "Casey Mize",
-      "team": "DET",
-      "oppTeam": "NYY",
-      "whiffScore": 74,
-      "grade": "A",
-      "k9": 8.9,
-      "projectedIP": 5.2,
-      "projectedK": 4.5,
-      "gamePk": 824262,
-      "gameLabel": "NYY @ DET"
-    },
-    {
       "pitcherId": 663556,
       "pitcherName": "Shane McClanahan",
       "team": "TB",
       "oppTeam": "KC",
       "whiffScore": 71,
       "grade": "A",
-      "k9": 9.2,
-      "projectedIP": 4.8,
+      "k9": 9.1,
+      "projectedIP": 4.5,
       "projectedK": 4,
       "gamePk": 822963,
       "gameLabel": "KC @ TB"
@@ -437,10 +437,23 @@
       "whiffScore": 55,
       "grade": "B",
       "k9": 6.7,
-      "projectedIP": 6.4,
-      "projectedK": 4,
+      "projectedIP": 6.1,
+      "projectedK": 3.5,
       "gamePk": 823849,
       "gameLabel": "TEX @ MIA"
+    },
+    {
+      "pitcherId": 593974,
+      "pitcherName": "Wandy Peralta",
+      "team": "SD",
+      "oppTeam": "ATL",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 5.7,
+      "projectedIP": 18.6,
+      "projectedK": 10,
+      "gamePk": 823286,
+      "gameLabel": "ATL @ SD"
     },
     {
       "pitcherId": 615698,
@@ -502,7 +515,7 @@
       "whiffScore": 48,
       "grade": "C",
       "k9": 7.1,
-      "projectedIP": 5.5,
+      "projectedIP": 5.2,
       "projectedK": 3.5,
       "gamePk": 823365,
       "gameLabel": "SEA @ PIT"
@@ -590,24 +603,6 @@
       "gameLabel": "SEA @ PIT"
     },
     {
-      "pitcherId": 645261,
-      "pitcherName": "Sandy Alcantara",
-      "team": "MIA",
-      "oppTeam": "TEX",
-      "line": 96,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 96.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 94.4,
-      "twoYrStarts": 47,
-      "bvpAdj": 0,
-      "lineupPA": 146,
-      "gamePk": 823849,
-      "gameLabel": "TEX @ MIA"
-    },
-    {
       "pitcherId": 543243,
       "pitcherName": "Sonny Gray",
       "team": "BOS",
@@ -624,6 +619,24 @@
       "lineupPA": 38,
       "gamePk": 824340,
       "gameLabel": "BOS @ COL"
+    },
+    {
+      "pitcherId": 666200,
+      "pitcherName": "Jesús Luzardo",
+      "team": "PHI",
+      "oppTeam": "WSH",
+      "line": 101,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 98.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 94.9,
+      "twoYrStarts": 47,
+      "bvpAdj": 4,
+      "lineupPA": 122,
+      "gamePk": 822718,
+      "gameLabel": "PHI @ WSH"
     }
   ]
 }
