@@ -1,10 +1,26 @@
 {
   "date": "2026-06-25",
-  "savedAt": "2026-06-25T17:31:59.564Z",
+  "savedAt": "2026-06-25T19:26:21.241Z",
   "scanType": "afternoon",
-  "gamesScanned": 7,
+  "gamesScanned": 9,
   "totalGames": 9,
   "batters": [
+    {
+      "batterId": 668942,
+      "batterName": "Josh Rojas",
+      "pitcherId": 668984,
+      "pitcherName": "Casey Legumina",
+      "batterTeam": "KC",
+      "pitcherTeam": "TB",
+      "edgeScore": 96,
+      "grade": "A+",
+      "bvpAvg": "1.000",
+      "bvpOps": "3.000",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 822961,
+      "gameLabel": "KC @ TB"
+    },
     {
       "batterId": 691718,
       "batterName": "Pete Crow-Armstrong",
@@ -134,6 +150,22 @@
       "gameLabel": "TEX @ TOR"
     },
     {
+      "batterId": 650490,
+      "batterName": "Yandy Díaz",
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "batterTeam": "TB",
+      "pitcherTeam": "KC",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".235",
+      "bvpOps": ".941",
+      "bvpPA": 17,
+      "bvpHR": 2,
+      "gamePk": 822961,
+      "gameLabel": "KC @ TB"
+    },
+    {
       "batterId": 682928,
       "batterName": "CJ Abrams",
       "pitcherId": 650911,
@@ -198,22 +230,6 @@
       "gameLabel": "CHC @ NYM"
     },
     {
-      "batterId": 543760,
-      "batterName": "Marcus Semien",
-      "pitcherId": 571510,
-      "pitcherName": "Matthew Boyd",
-      "batterTeam": "NYM",
-      "pitcherTeam": "CHC",
-      "edgeScore": 63,
-      "grade": "B+",
-      "bvpAvg": ".273",
-      "bvpOps": ".974",
-      "bvpPA": 28,
-      "bvpHR": 2,
-      "gamePk": 823612,
-      "gameLabel": "CHC @ NYM"
-    },
-    {
       "batterId": 696030,
       "batterName": "Alejandro Osuna",
       "pitcherId": 592332,
@@ -228,25 +244,22 @@
       "bvpHR": 0,
       "gamePk": 822797,
       "gameLabel": "TEX @ TOR"
-    },
-    {
-      "batterId": 696285,
-      "batterName": "Jacob Young",
-      "pitcherId": 650911,
-      "pitcherName": "Cristopher Sánchez",
-      "batterTeam": "WSH",
-      "pitcherTeam": "PHI",
-      "edgeScore": 59,
-      "grade": "B",
-      "bvpAvg": ".333",
-      "bvpOps": ".833",
-      "bvpPA": 24,
-      "bvpHR": 0,
-      "gamePk": 822717,
-      "gameLabel": "PHI @ WSH"
     }
   ],
   "pitchers": [
+    {
+      "pitcherId": 682243,
+      "pitcherName": "Bryce Miller",
+      "team": "SEA",
+      "oppTeam": "PIT",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 10.6,
+      "projectedIP": 6.5,
+      "projectedK": 6.5,
+      "gamePk": 823366,
+      "gameLabel": "SEA @ PIT"
+    },
     {
       "pitcherId": 813349,
       "pitcherName": "Connelly Early",
@@ -300,6 +313,19 @@
       "gameLabel": "CHC @ NYM"
     },
     {
+      "pitcherId": 696149,
+      "pitcherName": "Bubba Chandler",
+      "team": "PIT",
+      "oppTeam": "SEA",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.3,
+      "projectedIP": 5.3,
+      "projectedK": 4,
+      "gamePk": 823366,
+      "gameLabel": "SEA @ PIT"
+    },
+    {
       "pitcherId": 650911,
       "pitcherName": "Cristopher Sánchez",
       "team": "PHI",
@@ -311,19 +337,6 @@
       "projectedK": 6.5,
       "gamePk": 822717,
       "gameLabel": "PHI @ WSH"
-    },
-    {
-      "pitcherId": 571510,
-      "pitcherName": "Matthew Boyd",
-      "team": "CHC",
-      "oppTeam": "NYM",
-      "whiffScore": 68,
-      "grade": "B+",
-      "k9": 11.6,
-      "projectedIP": 4.8,
-      "projectedK": 5,
-      "gamePk": 823612,
-      "gameLabel": "CHC @ NYM"
     },
     {
       "pitcherId": 694738,
@@ -350,6 +363,19 @@
       "projectedK": 4,
       "gamePk": 822717,
       "gameLabel": "PHI @ WSH"
+    },
+    {
+      "pitcherId": 571510,
+      "pitcherName": "Matthew Boyd",
+      "team": "CHC",
+      "oppTeam": "NYM",
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 11.6,
+      "projectedIP": 4.8,
+      "projectedK": 5,
+      "gamePk": 823612,
+      "gameLabel": "CHC @ NYM"
     },
     {
       "pitcherId": 669022,
@@ -389,6 +415,32 @@
       "projectedK": 2.5,
       "gamePk": 823042,
       "gameLabel": "AZ @ STL"
+    },
+    {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "TB",
+      "whiffScore": 46,
+      "grade": "C",
+      "k9": 6.9,
+      "projectedIP": 5.6,
+      "projectedK": 3.5,
+      "gamePk": 822961,
+      "gameLabel": "KC @ TB"
+    },
+    {
+      "pitcherId": 668984,
+      "pitcherName": "Casey Legumina",
+      "team": "TB",
+      "oppTeam": "KC",
+      "whiffScore": 41,
+      "grade": "D",
+      "k9": 6.3,
+      "projectedIP": 16.1,
+      "projectedK": 9.5,
+      "gamePk": 822961,
+      "gameLabel": "KC @ TB"
     }
   ],
   "pitches": [
@@ -469,16 +521,16 @@
       "pitcherName": "Matthew Boyd",
       "team": "CHC",
       "oppTeam": "NYM",
-      "line": 89.5,
+      "line": 87.5,
       "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
+      "pitchScore": 69,
+      "grade": "B+",
       "recent5Avg": 86,
       "recent5Starts": 5,
       "twoYrAvg": 88.2,
       "twoYrStarts": 36,
-      "bvpAdj": 3,
-      "lineupPA": 150,
+      "bvpAdj": 1,
+      "lineupPA": 122,
       "gamePk": 823612,
       "gameLabel": "CHC @ NYM"
     }
