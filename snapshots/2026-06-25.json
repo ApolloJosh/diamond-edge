@@ -1,10 +1,26 @@
 {
   "date": "2026-06-25",
-  "savedAt": "2026-06-25T19:26:21.241Z",
+  "savedAt": "2026-06-25T22:55:44.985Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 6,
   "totalGames": 9,
   "batters": [
+    {
+      "batterId": 608369,
+      "batterName": "Corey Seager",
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "batterTeam": "TEX",
+      "pitcherTeam": "TOR",
+      "edgeScore": 99,
+      "grade": "A+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.350",
+      "bvpPA": 52,
+      "bvpHR": 2,
+      "gamePk": 822797,
+      "gameLabel": "TEX @ TOR"
+    },
     {
       "batterId": 668942,
       "batterName": "Josh Rojas",
@@ -134,22 +150,6 @@
       "gameLabel": "ATH @ SF"
     },
     {
-      "batterId": 664702,
-      "batterName": "Myles Straw",
-      "pitcherId": 669022,
-      "pitcherName": "MacKenzie Gore",
-      "batterTeam": "TOR",
-      "pitcherTeam": "TEX",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.400",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 822797,
-      "gameLabel": "TEX @ TOR"
-    },
-    {
       "batterId": 650490,
       "batterName": "Yandy Díaz",
       "pitcherId": 607625,
@@ -164,6 +164,22 @@
       "bvpHR": 2,
       "gamePk": 822961,
       "gameLabel": "KC @ TB"
+    },
+    {
+      "batterId": 664702,
+      "batterName": "Myles Straw",
+      "pitcherId": 669022,
+      "pitcherName": "MacKenzie Gore",
+      "batterTeam": "TOR",
+      "pitcherTeam": "TEX",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.400",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 822797,
+      "gameLabel": "TEX @ TOR"
     },
     {
       "batterId": 682928,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 823612,
       "gameLabel": "CHC @ NYM"
-    },
-    {
-      "batterId": 696030,
-      "batterName": "Alejandro Osuna",
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "batterTeam": "TEX",
-      "pitcherTeam": "TOR",
-      "edgeScore": 62,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.333",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 822797,
-      "gameLabel": "TEX @ TOR"
     }
   ],
   "pitchers": [
@@ -287,6 +287,19 @@
       "gameLabel": "NYY @ BOS"
     },
     {
+      "pitcherId": 696149,
+      "pitcherName": "Bubba Chandler",
+      "team": "PIT",
+      "oppTeam": "SEA",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.3,
+      "projectedIP": 5.3,
+      "projectedK": 4,
+      "gamePk": 823366,
+      "gameLabel": "SEA @ PIT"
+    },
+    {
       "pitcherId": 592332,
       "pitcherName": "Kevin Gausman",
       "team": "TOR",
@@ -311,19 +324,6 @@
       "projectedK": 4.5,
       "gamePk": 823612,
       "gameLabel": "CHC @ NYM"
-    },
-    {
-      "pitcherId": 696149,
-      "pitcherName": "Bubba Chandler",
-      "team": "PIT",
-      "oppTeam": "SEA",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.3,
-      "projectedIP": 5.3,
-      "projectedK": 4,
-      "gamePk": 823366,
-      "gameLabel": "SEA @ PIT"
     },
     {
       "pitcherId": 650911,
@@ -358,8 +358,8 @@
       "oppTeam": "PHI",
       "whiffScore": 67,
       "grade": "B+",
-      "k9": 9.5,
-      "projectedIP": 4.8,
+      "k9": 9.6,
+      "projectedIP": 4.5,
       "projectedK": 4,
       "gamePk": 822717,
       "gameLabel": "PHI @ WSH"
@@ -463,38 +463,20 @@
       "gameLabel": "NYY @ BOS"
     },
     {
-      "pitcherId": 676917,
-      "pitcherName": "Cade Cavalli",
-      "team": "WSH",
-      "oppTeam": "PHI",
-      "line": 80.5,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 82.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 81.7,
-      "twoYrStarts": 26,
-      "bvpAdj": -2,
-      "lineupPA": 124,
-      "gamePk": 822717,
-      "gameLabel": "PHI @ WSH"
-    },
-    {
       "pitcherId": 592332,
       "pitcherName": "Kevin Gausman",
       "team": "TOR",
       "oppTeam": "TEX",
-      "line": 90,
-      "overUnder": "UNDER",
+      "line": 94,
+      "overUnder": "OVER",
       "pitchScore": 72,
       "grade": "A",
       "recent5Avg": 91.4,
       "recent5Starts": 5,
       "twoYrAvg": 93.7,
       "twoYrStarts": 48,
-      "bvpAdj": -2,
-      "lineupPA": 178,
+      "bvpAdj": 2,
+      "lineupPA": 230,
       "gamePk": 822797,
       "gameLabel": "TEX @ TOR"
     },
@@ -533,6 +515,24 @@
       "lineupPA": 122,
       "gamePk": 823612,
       "gameLabel": "CHC @ NYM"
+    },
+    {
+      "pitcherId": 668678,
+      "pitcherName": "Zac Gallen",
+      "team": "AZ",
+      "oppTeam": "STL",
+      "line": 93.5,
+      "overUnder": "OVER",
+      "pitchScore": 68,
+      "grade": "B+",
+      "recent5Avg": 86.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 91.9,
+      "twoYrStarts": 49,
+      "bvpAdj": 5,
+      "lineupPA": 44,
+      "gamePk": 823042,
+      "gameLabel": "AZ @ STL"
     }
   ]
 }
