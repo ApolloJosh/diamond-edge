@@ -1,6 +1,6 @@
 {
   "date": "2026-06-26",
-  "savedAt": "2026-06-26T19:20:52.389Z",
+  "savedAt": "2026-06-26T22:46:41.378Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -255,7 +255,7 @@
       "whiffScore": 82,
       "grade": "A+",
       "k9": 10.9,
-      "projectedIP": 5.5,
+      "projectedIP": 5.2,
       "projectedK": 5.5,
       "gamePk": 823363,
       "gameLabel": "CIN @ PIT"
@@ -540,8 +540,8 @@
       "oppTeam": "HOU",
       "whiffScore": 40,
       "grade": "D",
-      "k9": 5.9,
-      "projectedIP": 5.7,
+      "k9": 6,
+      "projectedIP": 5.4,
       "projectedK": 3,
       "gamePk": 824255,
       "gameLabel": "HOU @ DET"
