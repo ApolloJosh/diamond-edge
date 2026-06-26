@@ -1,6 +1,6 @@
 {
   "date": "2026-06-26",
-  "savedAt": "2026-06-26T17:17:14.259Z",
+  "savedAt": "2026-06-26T19:20:52.389Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -593,6 +593,24 @@
       "gameLabel": "WSH @ BAL"
     },
     {
+      "pitcherId": 554430,
+      "pitcherName": "Zack Wheeler",
+      "team": "PHI",
+      "oppTeam": "NYM",
+      "line": 102.5,
+      "overUnder": "OVER",
+      "pitchScore": 74,
+      "grade": "A",
+      "recent5Avg": 98.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 98.4,
+      "twoYrStarts": 35,
+      "bvpAdj": 4,
+      "lineupPA": 356,
+      "gamePk": 823610,
+      "gameLabel": "PHI @ NYM"
+    },
+    {
       "pitcherId": 681293,
       "pitcherName": "Spencer Arrighetti",
       "team": "HOU",
@@ -645,24 +663,6 @@
       "lineupPA": 248,
       "gamePk": 822796,
       "gameLabel": "TEX @ TOR"
-    },
-    {
-      "pitcherId": 554430,
-      "pitcherName": "Zack Wheeler",
-      "team": "PHI",
-      "oppTeam": "NYM",
-      "line": 100.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 98.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 98.4,
-      "twoYrStarts": 35,
-      "bvpAdj": 2,
-      "lineupPA": 334,
-      "gamePk": 823610,
-      "gameLabel": "PHI @ NYM"
     }
   ]
 }
