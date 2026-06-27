@@ -1,8 +1,8 @@
 {
   "date": "2026-06-27",
-  "savedAt": "2026-06-27T16:41:09.466Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-06-27T18:46:32.545Z",
+  "scanType": "afternoon",
+  "gamesScanned": 13,
   "totalGames": 15,
   "batters": [
     {
@@ -118,22 +118,6 @@
       "gameLabel": "TEX @ TOR"
     },
     {
-      "batterId": 660821,
-      "batterName": "Jesús Sánchez",
-      "pitcherId": 615698,
-      "pitcherName": "Cal Quantrill",
-      "batterTeam": "TOR",
-      "pitcherTeam": "TEX",
-      "edgeScore": 77,
-      "grade": "A",
-      "bvpAvg": ".600",
-      "bvpOps": "1.667",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 822794,
-      "gameLabel": "TEX @ TOR"
-    },
-    {
       "batterId": 682829,
       "batterName": "Elly De La Cruz",
       "pitcherId": 683003,
@@ -164,6 +148,22 @@
       "bvpHR": 4,
       "gamePk": 823283,
       "gameLabel": "LAD @ SD"
+    },
+    {
+      "batterId": 665742,
+      "batterName": "Juan Soto",
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "batterTeam": "NYM",
+      "pitcherTeam": "PHI",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "1.417",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 823609,
+      "gameLabel": "PHI @ NYM"
     },
     {
       "batterId": 518692,
@@ -352,6 +352,19 @@
       "gameLabel": "NYY @ BOS"
     },
     {
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "team": "PHI",
+      "oppTeam": "NYM",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.9,
+      "projectedIP": 17.6,
+      "projectedK": 15,
+      "gamePk": 823609,
+      "gameLabel": "PHI @ NYM"
+    },
+    {
       "pitcherId": 808967,
       "pitcherName": "Yoshinobu Yamamoto",
       "team": "LAD",
@@ -512,8 +525,8 @@
       "pitcherName": "Cal Quantrill",
       "team": "TEX",
       "oppTeam": "TOR",
-      "whiffScore": 42,
-      "grade": "D",
+      "whiffScore": 45,
+      "grade": "C",
       "k9": 5.7,
       "projectedIP": 31.1,
       "projectedK": 17,
