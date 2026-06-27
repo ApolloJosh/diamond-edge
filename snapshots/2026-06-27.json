@@ -1,8 +1,8 @@
 {
   "date": "2026-06-27",
-  "savedAt": "2026-06-27T18:46:32.545Z",
+  "savedAt": "2026-06-27T22:37:03.488Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 9,
   "totalGames": 15,
   "batters": [
     {
@@ -134,22 +134,6 @@
       "gameLabel": "CIN @ PIT"
     },
     {
-      "batterId": 681624,
-      "batterName": "Andy Pages",
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "batterTeam": "LAD",
-      "pitcherTeam": "SD",
-      "edgeScore": 75,
-      "grade": "A",
-      "bvpAvg": ".375",
-      "bvpOps": "1.500",
-      "bvpPA": 16,
-      "bvpHR": 4,
-      "gamePk": 823283,
-      "gameLabel": "LAD @ SD"
-    },
-    {
       "batterId": 665742,
       "batterName": "Juan Soto",
       "pitcherId": 641835,
@@ -164,22 +148,6 @@
       "bvpHR": 0,
       "gamePk": 823609,
       "gameLabel": "PHI @ NYM"
-    },
-    {
-      "batterId": 518692,
-      "batterName": "Freddie Freeman",
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "batterTeam": "LAD",
-      "pitcherTeam": "SD",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".429",
-      "bvpOps": "1.214",
-      "bvpPA": 16,
-      "bvpHR": 0,
-      "gamePk": 823283,
-      "gameLabel": "LAD @ SD"
     },
     {
       "batterId": 609280,
@@ -244,6 +212,38 @@
       "bvpHR": 2,
       "gamePk": 822794,
       "gameLabel": "TEX @ TOR"
+    },
+    {
+      "batterId": 642715,
+      "batterName": "Willy Adames",
+      "pitcherId": 693821,
+      "pitcherName": "Bryce Elder",
+      "batterTeam": "SF",
+      "pitcherTeam": "ATL",
+      "edgeScore": 70,
+      "grade": "A",
+      "bvpAvg": ".313",
+      "bvpOps": "1.165",
+      "bvpPA": 34,
+      "bvpHR": 4,
+      "gamePk": 823207,
+      "gameLabel": "ATL @ SF"
+    },
+    {
+      "batterId": 593428,
+      "batterName": "Xander Bogaerts",
+      "pitcherId": 808967,
+      "pitcherName": "Yoshinobu Yamamoto",
+      "batterTeam": "SD",
+      "pitcherTeam": "LAD",
+      "edgeScore": 66,
+      "grade": "B+",
+      "bvpAvg": ".385",
+      "bvpOps": "1.077",
+      "bvpPA": 26,
+      "bvpHR": 2,
+      "gamePk": 823283,
+      "gameLabel": "LAD @ SD"
     }
   ],
   "pitchers": [
@@ -521,6 +521,19 @@
       "gameLabel": "MIA @ STL"
     },
     {
+      "pitcherId": 642121,
+      "pitcherName": "Cole Sulser",
+      "team": "TB",
+      "oppTeam": "AZ",
+      "whiffScore": 46,
+      "grade": "C",
+      "k9": 8.9,
+      "projectedIP": 16.6,
+      "projectedK": 14,
+      "gamePk": 822960,
+      "gameLabel": "AZ @ TB"
+    },
+    {
       "pitcherId": 615698,
       "pitcherName": "Cal Quantrill",
       "team": "TEX",
@@ -532,19 +545,6 @@
       "projectedK": 17,
       "gamePk": 822794,
       "gameLabel": "TEX @ TOR"
-    },
-    {
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "team": "SD",
-      "oppTeam": "LAD",
-      "whiffScore": 41,
-      "grade": "D",
-      "k9": 6.8,
-      "projectedIP": 5.1,
-      "projectedK": 3,
-      "gamePk": 823283,
-      "gameLabel": "LAD @ SD"
     }
   ],
   "pitches": [
@@ -621,20 +621,20 @@
       "gameLabel": "NYY @ BOS"
     },
     {
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "team": "SD",
-      "oppTeam": "LAD",
-      "line": 86,
+      "pitcherId": 808967,
+      "pitcherName": "Yoshinobu Yamamoto",
+      "team": "LAD",
+      "oppTeam": "SD",
+      "line": 102,
       "overUnder": "OVER",
       "pitchScore": 72,
       "grade": "A",
-      "recent5Avg": 85.2,
+      "recent5Avg": 100,
       "recent5Starts": 5,
-      "twoYrAvg": 84.1,
-      "twoYrStarts": 41,
-      "bvpAdj": 1,
-      "lineupPA": 98,
+      "twoYrAvg": 94.4,
+      "twoYrStarts": 44,
+      "bvpAdj": 4,
+      "lineupPA": 114,
       "gamePk": 823283,
       "gameLabel": "LAD @ SD"
     }
