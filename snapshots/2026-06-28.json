@@ -1,8 +1,8 @@
 {
   "date": "2026-06-28",
-  "savedAt": "2026-06-28T16:44:16.271Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-06-28T18:46:32.369Z",
+  "scanType": "afternoon",
+  "gamesScanned": 4,
   "totalGames": 15,
   "batters": [
     {
@@ -575,6 +575,24 @@
   ],
   "pitches": [
     {
+      "pitcherId": 519242,
+      "pitcherName": "Chris Sale",
+      "team": "ATL",
+      "oppTeam": "SF",
+      "line": 100.5,
+      "overUnder": "OVER",
+      "pitchScore": 75,
+      "grade": "A",
+      "recent5Avg": 100.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 99.4,
+      "twoYrStarts": 34,
+      "bvpAdj": 0,
+      "lineupPA": 126,
+      "gamePk": 823204,
+      "gameLabel": "ATL @ SF"
+    },
+    {
       "pitcherId": 656605,
       "pitcherName": "Mitch Keller",
       "team": "PIT",
@@ -643,24 +661,6 @@
       "twoYrStarts": 47,
       "bvpAdj": 2,
       "lineupPA": 184,
-      "gamePk": 823204,
-      "gameLabel": "ATL @ SF"
-    },
-    {
-      "pitcherId": 519242,
-      "pitcherName": "Chris Sale",
-      "team": "ATL",
-      "oppTeam": "SF",
-      "line": 100.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 100.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 99.4,
-      "twoYrStarts": 34,
-      "bvpAdj": 0,
-      "lineupPA": 114,
       "gamePk": 823204,
       "gameLabel": "ATL @ SF"
     }
