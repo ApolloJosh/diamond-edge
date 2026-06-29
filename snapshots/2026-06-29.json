@@ -1,6 +1,6 @@
 {
   "date": "2026-06-29",
-  "savedAt": "2026-06-29T19:22:17.776Z",
+  "savedAt": "2026-06-29T22:37:36.430Z",
   "scanType": "afternoon",
   "gamesScanned": 13,
   "totalGames": 13,
@@ -313,19 +313,6 @@
       "gameLabel": "DET @ NYY"
     },
     {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "SD",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.6,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
-      "gamePk": 824662,
-      "gameLabel": "SD @ CHC"
-    },
-    {
       "pitcherId": 669923,
       "pitcherName": "George Kirby",
       "team": "SEA",
@@ -350,6 +337,19 @@
       "projectedK": 17.5,
       "gamePk": 822792,
       "gameLabel": "NYM @ TOR"
+    },
+    {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "SD",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 8.6,
+      "projectedIP": 5.8,
+      "projectedK": 4.5,
+      "gamePk": 824662,
+      "gameLabel": "SD @ CHC"
     },
     {
       "pitcherId": 677952,
