@@ -1,6 +1,6 @@
 {
   "date": "2026-06-30",
-  "savedAt": "2026-06-30T19:21:46.149Z",
+  "savedAt": "2026-06-30T22:50:42.444Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -52,6 +52,22 @@
       "bvpHR": 4,
       "gamePk": 823122,
       "gameLabel": "LAA @ SEA"
+    },
+    {
+      "batterId": 650333,
+      "batterName": "Luis Arraez",
+      "pitcherId": 694297,
+      "pitcherName": "Brandon Pfaadt",
+      "batterTeam": "SF",
+      "pitcherTeam": "AZ",
+      "edgeScore": 99,
+      "grade": "A+",
+      "bvpAvg": ".476",
+      "bvpOps": "1.071",
+      "bvpPA": 44,
+      "bvpHR": 0,
+      "gamePk": 825066,
+      "gameLabel": "SF @ AZ"
     },
     {
       "batterId": 666176,
@@ -182,6 +198,22 @@
       "gameLabel": "SD @ CHC"
     },
     {
+      "batterId": 642715,
+      "batterName": "Willy Adames",
+      "pitcherId": 694297,
+      "pitcherName": "Brandon Pfaadt",
+      "batterTeam": "SF",
+      "pitcherTeam": "AZ",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".375",
+      "bvpOps": "1.420",
+      "bvpPA": 22,
+      "bvpHR": 2,
+      "gamePk": 825066,
+      "gameLabel": "SF @ AZ"
+    },
+    {
       "batterId": 596019,
       "batterName": "Francisco Lindor",
       "pitcherId": 592332,
@@ -210,38 +242,6 @@
       "bvpOps": "1.667",
       "bvpPA": 12,
       "bvpHR": 2,
-      "gamePk": 824175,
-      "gameLabel": "MIN @ HOU"
-    },
-    {
-      "batterId": 624413,
-      "batterName": "Pete Alonso",
-      "pitcherId": 607200,
-      "pitcherName": "Erick Fedde",
-      "batterTeam": "BAL",
-      "pitcherTeam": "CWS",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": ".969",
-      "bvpPA": 64,
-      "bvpHR": 0,
-      "gamePk": 824819,
-      "gameLabel": "CWS @ BAL"
-    },
-    {
-      "batterId": 656484,
-      "batterName": "Tristan Gray",
-      "pitcherId": 681347,
-      "pitcherName": "Mike Burrows",
-      "batterTeam": "MIN",
-      "pitcherTeam": "HOU",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.000",
-      "bvpPA": 6,
-      "bvpHR": 0,
       "gamePk": 824175,
       "gameLabel": "MIN @ HOU"
     }
@@ -306,9 +306,9 @@
       "oppTeam": "PIT",
       "whiffScore": 75,
       "grade": "A",
-      "k9": 10.4,
-      "projectedIP": 6.5,
-      "projectedK": 6.5,
+      "k9": 10.5,
+      "projectedIP": 6.2,
+      "projectedK": 6,
       "gamePk": 823445,
       "gameLabel": "PIT @ PHI"
     },
@@ -352,19 +352,6 @@
       "gameLabel": "SD @ CHC"
     },
     {
-      "pitcherId": 685299,
-      "pitcherName": "Tanner Gordon",
-      "team": "COL",
-      "oppTeam": "MIA",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.9,
-      "projectedIP": 17.6,
-      "projectedK": 15,
-      "gamePk": 824338,
-      "gameLabel": "MIA @ COL"
-    },
-    {
       "pitcherId": 667755,
       "pitcherName": "José Soriano",
       "team": "LAA",
@@ -389,6 +376,19 @@
       "projectedK": 5,
       "gamePk": 823122,
       "gameLabel": "LAA @ SEA"
+    },
+    {
+      "pitcherId": 685299,
+      "pitcherName": "Tanner Gordon",
+      "team": "COL",
+      "oppTeam": "MIA",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.9,
+      "projectedIP": 17.6,
+      "projectedK": 15,
+      "gamePk": 824338,
+      "gameLabel": "MIA @ COL"
     },
     {
       "pitcherId": 695076,
@@ -449,9 +449,9 @@
       "oppTeam": "TEX",
       "whiffScore": 56,
       "grade": "B",
-      "k9": 7.7,
-      "projectedIP": 5.6,
-      "projectedK": 4,
+      "k9": 7.6,
+      "projectedIP": 5.3,
+      "projectedK": 3.5,
       "gamePk": 824418,
       "gameLabel": "TEX @ CLE"
     },
@@ -506,6 +506,19 @@
       "projectedK": 4,
       "gamePk": 824984,
       "gameLabel": "LAD @ ATH"
+    },
+    {
+      "pitcherId": 694297,
+      "pitcherName": "Brandon Pfaadt",
+      "team": "AZ",
+      "oppTeam": "SF",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 7.3,
+      "projectedIP": 12.7,
+      "projectedK": 9,
+      "gamePk": 825066,
+      "gameLabel": "SF @ AZ"
     },
     {
       "pitcherId": 607200,
@@ -567,42 +580,6 @@
       "gameLabel": "CIN @ MIL"
     },
     {
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "team": "CLE",
-      "oppTeam": "TEX",
-      "line": 89.5,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 90.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 93.2,
-      "twoYrStarts": 48,
-      "bvpAdj": -2,
-      "lineupPA": 120,
-      "gamePk": 824418,
-      "gameLabel": "TEX @ CLE"
-    },
-    {
-      "pitcherId": 650911,
-      "pitcherName": "Cristopher Sánchez",
-      "team": "PHI",
-      "oppTeam": "PIT",
-      "line": 95.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 94.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 92.3,
-      "twoYrStarts": 49,
-      "bvpAdj": 2,
-      "lineupPA": 150,
-      "gamePk": 823445,
-      "gameLabel": "PIT @ PHI"
-    },
-    {
       "pitcherId": 669373,
       "pitcherName": "Tarik Skubal",
       "team": "DET",
@@ -637,6 +614,42 @@
       "lineupPA": 152,
       "gamePk": 824661,
       "gameLabel": "SD @ CHC"
+    },
+    {
+      "pitcherId": 691587,
+      "pitcherName": "Eury Pérez",
+      "team": "MIA",
+      "oppTeam": "COL",
+      "line": 84,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 83.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 85,
+      "twoYrStarts": 33,
+      "bvpAdj": 0,
+      "lineupPA": 84,
+      "gamePk": 824338,
+      "gameLabel": "MIA @ COL"
+    },
+    {
+      "pitcherId": 693433,
+      "pitcherName": "Bryan Woo",
+      "team": "SEA",
+      "oppTeam": "LAA",
+      "line": 85.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 86.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.1,
+      "twoYrStarts": 46,
+      "bvpAdj": -2,
+      "lineupPA": 150,
+      "gamePk": 823122,
+      "gameLabel": "LAA @ SEA"
     }
   ]
 }
