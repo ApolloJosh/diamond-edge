@@ -1,8 +1,8 @@
 {
   "date": "2026-07-01",
-  "savedAt": "2026-07-01T17:30:25.342Z",
+  "savedAt": "2026-07-01T19:19:43.267Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 11,
   "totalGames": 14,
   "batters": [
     {
@@ -198,6 +198,22 @@
       "gameLabel": "TB @ KC"
     },
     {
+      "batterId": 691019,
+      "batterName": "Kyle Teel",
+      "pitcherId": 665152,
+      "pitcherName": "Dean Kremer",
+      "batterTeam": "CWS",
+      "pitcherTeam": "BAL",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "2.333",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 824818,
+      "gameLabel": "CWS @ BAL"
+    },
+    {
       "batterId": 547180,
       "batterName": "Bryce Harper",
       "pitcherId": 694973,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 824174,
       "gameLabel": "MIN @ HOU"
-    },
-    {
-      "batterId": 808982,
-      "batterName": "Jung Hoo Lee",
-      "pitcherId": 668678,
-      "pitcherName": "Zac Gallen",
-      "batterTeam": "SF",
-      "pitcherTeam": "AZ",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".300",
-      "bvpOps": ".964",
-      "bvpPA": 22,
-      "bvpHR": 2,
-      "gamePk": 825064,
-      "gameLabel": "SF @ AZ"
     }
   ],
   "pitchers": [
@@ -324,6 +324,45 @@
       "projectedK": 5,
       "gamePk": 824174,
       "gameLabel": "MIN @ HOU"
+    },
+    {
+      "pitcherId": 665152,
+      "pitcherName": "Dean Kremer",
+      "team": "BAL",
+      "oppTeam": "CWS",
+      "whiffScore": 72,
+      "grade": "A",
+      "k9": 10.6,
+      "projectedIP": 5.7,
+      "projectedK": 5.5,
+      "gamePk": 824818,
+      "gameLabel": "CWS @ BAL"
+    },
+    {
+      "pitcherId": 702273,
+      "pitcherName": "Noah Schultz",
+      "team": "CWS",
+      "oppTeam": "BAL",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.4,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 824818,
+      "gameLabel": "CWS @ BAL"
+    },
+    {
+      "pitcherId": 695418,
+      "pitcherName": "Brad Lord",
+      "team": "WSH",
+      "oppTeam": "BOS",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.3,
+      "projectedIP": 56.2,
+      "projectedK": 45,
+      "gamePk": 824740,
+      "gameLabel": "WSH @ BOS"
     },
     {
       "pitcherId": 676282,
@@ -497,6 +536,24 @@
   ],
   "pitches": [
     {
+      "pitcherId": 702273,
+      "pitcherName": "Noah Schultz",
+      "team": "CWS",
+      "oppTeam": "BAL",
+      "line": 85,
+      "overUnder": "OVER",
+      "pitchScore": 74,
+      "grade": "A",
+      "recent5Avg": 80.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 82.1,
+      "twoYrStarts": 9,
+      "bvpAdj": 4,
+      "lineupPA": 2070,
+      "gamePk": 824818,
+      "gameLabel": "CWS @ BAL"
+    },
+    {
       "pitcherId": 554430,
       "pitcherName": "Zack Wheeler",
       "team": "PHI",
@@ -567,24 +624,6 @@
       "lineupPA": 78,
       "gamePk": 824337,
       "gameLabel": "MIA @ COL"
-    },
-    {
-      "pitcherId": 668678,
-      "pitcherName": "Zac Gallen",
-      "team": "AZ",
-      "oppTeam": "SF",
-      "line": 86.5,
-      "overUnder": "UNDER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 87.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.8,
-      "twoYrStarts": 50,
-      "bvpAdj": -2,
-      "lineupPA": 266,
-      "gamePk": 825064,
-      "gameLabel": "SF @ AZ"
     }
   ]
 }
