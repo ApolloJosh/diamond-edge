@@ -1,8 +1,8 @@
 {
   "date": "2026-07-01",
-  "savedAt": "2026-07-01T19:19:43.267Z",
+  "savedAt": "2026-07-01T22:47:38.657Z",
   "scanType": "afternoon",
-  "gamesScanned": 11,
+  "gamesScanned": 8,
   "totalGames": 14,
   "batters": [
     {
@@ -182,22 +182,6 @@
       "gameLabel": "SD @ CHC"
     },
     {
-      "batterId": 679845,
-      "batterName": "Nick Loftin",
-      "pitcherId": 663556,
-      "pitcherName": "Shane McClanahan",
-      "batterTeam": "KC",
-      "pitcherTeam": "TB",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".667",
-      "bvpOps": "2.333",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 824094,
-      "gameLabel": "TB @ KC"
-    },
-    {
       "batterId": 691019,
       "batterName": "Kyle Teel",
       "pitcherId": 665152,
@@ -212,6 +196,22 @@
       "bvpHR": 2,
       "gamePk": 824818,
       "gameLabel": "CWS @ BAL"
+    },
+    {
+      "batterId": 679845,
+      "batterName": "Nick Loftin",
+      "pitcherId": 663556,
+      "pitcherName": "Shane McClanahan",
+      "batterTeam": "KC",
+      "pitcherTeam": "TB",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "2.333",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 824094,
+      "gameLabel": "TB @ KC"
     },
     {
       "batterId": 547180,
@@ -307,8 +307,8 @@
       "whiffScore": 74,
       "grade": "A",
       "k9": 8.8,
-      "projectedIP": 6.3,
-      "projectedK": 5,
+      "projectedIP": 5.8,
+      "projectedK": 4.5,
       "gamePk": 823446,
       "gameLabel": "PIT @ PHI"
     },
@@ -512,7 +512,7 @@
       "pitcherName": "Zac Gallen",
       "team": "AZ",
       "oppTeam": "SF",
-      "whiffScore": 48,
+      "whiffScore": 45,
       "grade": "C",
       "k9": 5.4,
       "projectedIP": 5.1,
@@ -552,24 +552,6 @@
       "lineupPA": 2070,
       "gamePk": 824818,
       "gameLabel": "CWS @ BAL"
-    },
-    {
-      "pitcherId": 554430,
-      "pitcherName": "Zack Wheeler",
-      "team": "PHI",
-      "oppTeam": "PIT",
-      "line": 101.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 99.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 98.4,
-      "twoYrStarts": 36,
-      "bvpAdj": 2,
-      "lineupPA": 264,
-      "gamePk": 823446,
-      "gameLabel": "PIT @ PHI"
     },
     {
       "pitcherId": 663556,
@@ -624,6 +606,24 @@
       "lineupPA": 78,
       "gamePk": 824337,
       "gameLabel": "MIA @ COL"
+    },
+    {
+      "pitcherId": 668678,
+      "pitcherName": "Zac Gallen",
+      "team": "AZ",
+      "oppTeam": "SF",
+      "line": 86.5,
+      "overUnder": "UNDER",
+      "pitchScore": 67,
+      "grade": "B+",
+      "recent5Avg": 87.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 91.8,
+      "twoYrStarts": 50,
+      "bvpAdj": -2,
+      "lineupPA": 232,
+      "gamePk": 825064,
+      "gameLabel": "SF @ AZ"
     }
   ]
 }
