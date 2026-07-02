@@ -1,6 +1,6 @@
 {
   "date": "2026-07-02",
-  "savedAt": "2026-07-02T17:12:06.150Z",
+  "savedAt": "2026-07-02T18:59:35.547Z",
   "scanType": "afternoon",
   "gamesScanned": 8,
   "totalGames": 9,
@@ -118,6 +118,22 @@
       "gameLabel": "STL @ ATL"
     },
     {
+      "batterId": 664761,
+      "batterName": "Alec Bohm",
+      "pitcherId": 683003,
+      "pitcherName": "Jared Jones",
+      "batterTeam": "PHI",
+      "pitcherTeam": "PIT",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".625",
+      "bvpOps": "2.125",
+      "bvpPA": 8,
+      "bvpHR": 2,
+      "gamePk": 823442,
+      "gameLabel": "PIT @ PHI"
+    },
+    {
       "batterId": 642086,
       "batterName": "Dominic Smith",
       "pitcherId": 669160,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 822884,
       "gameLabel": "DET @ TEX"
-    },
-    {
-      "batterId": 660271,
-      "batterName": "Shohei Ohtani",
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "batterTeam": "LAD",
-      "pitcherTeam": "SD",
-      "edgeScore": 61,
-      "grade": "B",
-      "bvpAvg": ".200",
-      "bvpOps": ".833",
-      "bvpPA": 24,
-      "bvpHR": 2,
-      "gamePk": 823935,
-      "gameLabel": "SD @ LAD"
     }
   ],
   "pitchers": [
@@ -285,6 +285,19 @@
       "projectedK": 4.5,
       "gamePk": 823935,
       "gameLabel": "SD @ LAD"
+    },
+    {
+      "pitcherId": 683003,
+      "pitcherName": "Jared Jones",
+      "team": "PIT",
+      "oppTeam": "PHI",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9.6,
+      "projectedIP": 4.1,
+      "projectedK": 3.5,
+      "gamePk": 823442,
+      "gameLabel": "PIT @ PHI"
     },
     {
       "pitcherId": 543135,
@@ -376,6 +389,19 @@
       "projectedK": 4.5,
       "gamePk": 824416,
       "gameLabel": "CWS @ CLE"
+    },
+    {
+      "pitcherId": 660604,
+      "pitcherName": "Alan Rangel",
+      "team": "PHI",
+      "oppTeam": "PIT",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 9.6,
+      "projectedIP": 16,
+      "projectedK": 14.5,
+      "gamePk": 823442,
+      "gameLabel": "PIT @ PHI"
     },
     {
       "pitcherId": 681190,
