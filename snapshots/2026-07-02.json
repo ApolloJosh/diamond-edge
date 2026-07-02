@@ -1,8 +1,8 @@
 {
   "date": "2026-07-02",
-  "savedAt": "2026-07-02T18:59:35.547Z",
+  "savedAt": "2026-07-02T22:37:29.153Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 6,
   "totalGames": 9,
   "batters": [
     {
@@ -102,22 +102,6 @@
       "gameLabel": "CWS @ CLE"
     },
     {
-      "batterId": 663586,
-      "batterName": "Austin Riley",
-      "pitcherId": 669160,
-      "pitcherName": "Dustin May",
-      "batterTeam": "ATL",
-      "pitcherTeam": "STL",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".400",
-      "bvpOps": "2.000",
-      "bvpPA": 10,
-      "bvpHR": 4,
-      "gamePk": 824906,
-      "gameLabel": "STL @ ATL"
-    },
-    {
       "batterId": 664761,
       "batterName": "Alec Bohm",
       "pitcherId": 683003,
@@ -132,6 +116,22 @@
       "bvpHR": 2,
       "gamePk": 823442,
       "gameLabel": "PIT @ PHI"
+    },
+    {
+      "batterId": 663586,
+      "batterName": "Austin Riley",
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "batterTeam": "ATL",
+      "pitcherTeam": "STL",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".400",
+      "bvpOps": "2.000",
+      "bvpPA": 10,
+      "bvpHR": 4,
+      "gamePk": 824906,
+      "gameLabel": "STL @ ATL"
     },
     {
       "batterId": 642086,
@@ -274,19 +274,6 @@
       "gameLabel": "LAA @ SEA"
     },
     {
-      "pitcherId": 808963,
-      "pitcherName": "Roki Sasaki",
-      "team": "LAD",
-      "oppTeam": "SD",
-      "whiffScore": 74,
-      "grade": "A",
-      "k9": 9,
-      "projectedIP": 5.1,
-      "projectedK": 4.5,
-      "gamePk": 823935,
-      "gameLabel": "SD @ LAD"
-    },
-    {
       "pitcherId": 683003,
       "pitcherName": "Jared Jones",
       "team": "PIT",
@@ -298,6 +285,19 @@
       "projectedK": 3.5,
       "gamePk": 823442,
       "gameLabel": "PIT @ PHI"
+    },
+    {
+      "pitcherId": 808963,
+      "pitcherName": "Roki Sasaki",
+      "team": "LAD",
+      "oppTeam": "SD",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9,
+      "projectedIP": 5.1,
+      "projectedK": 4.5,
+      "gamePk": 823935,
+      "gameLabel": "SD @ LAD"
     },
     {
       "pitcherId": 543135,
@@ -378,19 +378,6 @@
       "gameLabel": "MIA @ COL"
     },
     {
-      "pitcherId": 663436,
-      "pitcherName": "Davis Martin",
-      "team": "CWS",
-      "oppTeam": "CLE",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 8.7,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
-      "gamePk": 824416,
-      "gameLabel": "CWS @ CLE"
-    },
-    {
       "pitcherId": 660604,
       "pitcherName": "Alan Rangel",
       "team": "PHI",
@@ -402,6 +389,19 @@
       "projectedK": 14.5,
       "gamePk": 823442,
       "gameLabel": "PIT @ PHI"
+    },
+    {
+      "pitcherId": 663436,
+      "pitcherName": "Davis Martin",
+      "team": "CWS",
+      "oppTeam": "CLE",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.7,
+      "projectedIP": 5.8,
+      "projectedK": 4.5,
+      "gamePk": 824416,
+      "gameLabel": "CWS @ CLE"
     },
     {
       "pitcherId": 681190,
