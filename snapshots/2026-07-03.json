@@ -1,8 +1,8 @@
 {
   "date": "2026-07-03",
-  "savedAt": "2026-07-03T18:48:11.668Z",
+  "savedAt": "2026-07-03T22:34:46.888Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 12,
   "totalGames": 13,
   "batters": [
     {
@@ -100,6 +100,22 @@
       "bvpHR": 2,
       "gamePk": 824173,
       "gameLabel": "TB @ HOU"
+    },
+    {
+      "batterId": 671289,
+      "batterName": "Tyler Freeman",
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "batterTeam": "COL",
+      "pitcherTeam": "SF",
+      "edgeScore": 78,
+      "grade": "A",
+      "bvpAvg": ".667",
+      "bvpOps": "1.500",
+      "bvpPA": 12,
+      "bvpHR": 0,
+      "gamePk": 824336,
+      "gameLabel": "SF @ COL"
     },
     {
       "batterId": 691023,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 824498,
       "gameLabel": "BAL @ CIN"
-    },
-    {
-      "batterId": 606466,
-      "batterName": "Ketel Marte",
-      "pitcherId": 690986,
-      "pitcherName": "Kyle Harrison",
-      "batterTeam": "AZ",
-      "pitcherTeam": "MIL",
-      "edgeScore": 70,
-      "grade": "A",
-      "bvpAvg": ".600",
-      "bvpOps": "1.267",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 825062,
-      "gameLabel": "MIL @ AZ"
     }
   ],
   "pitchers": [
@@ -430,6 +430,19 @@
       "gameLabel": "TOR @ SEA"
     },
     {
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "team": "SF",
+      "oppTeam": "COL",
+      "whiffScore": 59,
+      "grade": "B",
+      "k9": 7.6,
+      "projectedIP": 6.4,
+      "projectedK": 4.5,
+      "gamePk": 824336,
+      "gameLabel": "SF @ COL"
+    },
+    {
       "pitcherId": 650633,
       "pitcherName": "Michael King",
       "team": "SD",
@@ -577,6 +590,24 @@
       "gameLabel": "PIT @ WSH"
     },
     {
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "team": "SF",
+      "oppTeam": "COL",
+      "line": 101,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 99,
+      "recent5Starts": 5,
+      "twoYrAvg": 95.7,
+      "twoYrStarts": 48,
+      "bvpAdj": 3,
+      "lineupPA": 200,
+      "gamePk": 824336,
+      "gameLabel": "SF @ COL"
+    },
+    {
       "pitcherId": 672282,
       "pitcherName": "Reid Detmers",
       "team": "LAA",
@@ -593,24 +624,6 @@
       "lineupPA": 48,
       "gamePk": 824013,
       "gameLabel": "BOS @ LAA"
-    },
-    {
-      "pitcherId": 656302,
-      "pitcherName": "Dylan Cease",
-      "team": "TOR",
-      "oppTeam": "SEA",
-      "line": 98,
-      "overUnder": "OVER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 98.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 96.6,
-      "twoYrStarts": 47,
-      "bvpAdj": 0,
-      "lineupPA": 92,
-      "gamePk": 823120,
-      "gameLabel": "TOR @ SEA"
     }
   ]
 }
