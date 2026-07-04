@@ -1,8 +1,8 @@
 {
   "date": "2026-07-04",
-  "savedAt": "2026-07-04T18:34:37.193Z",
+  "savedAt": "2026-07-04T22:28:31.833Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 11,
   "totalGames": 15,
   "batters": [
     {
@@ -443,19 +443,6 @@
       "gameLabel": "PIT @ WSH"
     },
     {
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "team": "TB",
-      "oppTeam": "HOU",
-      "whiffScore": 64,
-      "grade": "B+",
-      "k9": 9.2,
-      "projectedIP": 5.8,
-      "projectedK": 5,
-      "gamePk": 824171,
-      "gameLabel": "TB @ HOU"
-    },
-    {
       "pitcherId": 608379,
       "pitcherName": "Michael Wacha",
       "team": "KC",
@@ -480,6 +467,19 @@
       "projectedK": 5.5,
       "gamePk": 823118,
       "gameLabel": "TOR @ SEA"
+    },
+    {
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "team": "TB",
+      "oppTeam": "HOU",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 9.2,
+      "projectedIP": 5.8,
+      "projectedK": 5,
+      "gamePk": 824171,
+      "gameLabel": "TB @ HOU"
     },
     {
       "pitcherId": 684007,
@@ -573,19 +573,6 @@
       "gameLabel": "STL @ CHC"
     },
     {
-      "pitcherId": 645261,
-      "pitcherName": "Sandy Alcantara",
-      "team": "MIA",
-      "oppTeam": "ATH",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 6.5,
-      "projectedIP": 6.4,
-      "projectedK": 4,
-      "gamePk": 824983,
-      "gameLabel": "MIA @ ATH"
-    },
-    {
       "pitcherId": 593974,
       "pitcherName": "Wandy Peralta",
       "team": "SD",
@@ -597,6 +584,19 @@
       "projectedK": 8.5,
       "gamePk": 823932,
       "gameLabel": "SD @ LAD"
+    },
+    {
+      "pitcherId": 645261,
+      "pitcherName": "Sandy Alcantara",
+      "team": "MIA",
+      "oppTeam": "ATH",
+      "whiffScore": 44,
+      "grade": "D",
+      "k9": 6.5,
+      "projectedIP": 6.4,
+      "projectedK": 4,
+      "gamePk": 824983,
+      "gameLabel": "MIA @ ATH"
     }
   ],
   "pitches": [
