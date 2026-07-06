@@ -1,6 +1,6 @@
 {
   "date": "2026-07-06",
-  "savedAt": "2026-07-06T19:18:28.452Z",
+  "savedAt": "2026-07-06T22:45:33.149Z",
   "scanType": "afternoon",
   "gamesScanned": 7,
   "totalGames": 8,
@@ -268,8 +268,8 @@
       "whiffScore": 74,
       "grade": "A",
       "k9": 8.7,
-      "projectedIP": 5,
-      "projectedK": 4,
+      "projectedIP": 4.7,
+      "projectedK": 3.5,
       "gamePk": 822958,
       "gameLabel": "NYY @ TB"
     },
@@ -445,7 +445,7 @@
       "twoYrAvg": 93.8,
       "twoYrStarts": 51,
       "bvpAdj": 0,
-      "lineupPA": 210,
+      "lineupPA": 202,
       "gamePk": 824900,
       "gameLabel": "NYM @ ATL"
     },
