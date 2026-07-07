@@ -1,6 +1,6 @@
 {
   "date": "2026-07-07",
-  "savedAt": "2026-07-07T19:21:57.678Z",
+  "savedAt": "2026-07-07T22:38:05.167Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 16,
@@ -214,22 +214,6 @@
       "gameLabel": "COL @ LAD"
     },
     {
-      "batterId": 621439,
-      "batterName": "Byron Buxton",
-      "pitcherId": 676282,
-      "pitcherName": "Joey Cantillo",
-      "batterTeam": "MIN",
-      "pitcherTeam": "CLE",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": "1.167",
-      "bvpPA": 16,
-      "bvpHR": 0,
-      "gamePk": 823687,
-      "gameLabel": "CLE @ MIN"
-    },
-    {
       "batterId": 671056,
       "batterName": "Iván Herrera",
       "pitcherId": 694819,
@@ -244,6 +228,22 @@
       "bvpHR": 2,
       "gamePk": 823062,
       "gameLabel": "MIL @ STL"
+    },
+    {
+      "batterId": 668709,
+      "batterName": "JJ Bleday",
+      "pitcherId": 554430,
+      "pitcherName": "Zack Wheeler",
+      "batterTeam": "CIN",
+      "pitcherTeam": "PHI",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".400",
+      "bvpOps": "1.500",
+      "bvpPA": 12,
+      "bvpHR": 2,
+      "gamePk": 824495,
+      "gameLabel": "PHI @ CIN"
     }
   ],
   "pitchers": [
@@ -532,6 +532,19 @@
       "projectedK": 4.5,
       "gamePk": 824820,
       "gameLabel": "CHC @ BAL"
+    },
+    {
+      "pitcherId": 672335,
+      "pitcherName": "Cionel Pérez",
+      "team": "NYM",
+      "oppTeam": "KC",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 7.9,
+      "projectedIP": 34.1,
+      "projectedK": 26,
+      "gamePk": 823607,
+      "gameLabel": "KC @ NYM"
     },
     {
       "pitcherId": 608566,
