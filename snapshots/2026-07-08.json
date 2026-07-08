@@ -1,8 +1,8 @@
 {
   "date": "2026-07-08",
-  "savedAt": "2026-07-08T18:54:55.248Z",
+  "savedAt": "2026-07-08T22:33:22.454Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -562,7 +562,7 @@
       "twoYrAvg": 92.8,
       "twoYrStarts": 48,
       "bvpAdj": 7,
-      "lineupPA": 80,
+      "lineupPA": 90,
       "gamePk": 822880,
       "gameLabel": "LAA @ TEX"
     },
