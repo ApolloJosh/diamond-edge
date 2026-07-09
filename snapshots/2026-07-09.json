@@ -1,10 +1,42 @@
 {
   "date": "2026-07-09",
-  "savedAt": "2026-07-09T17:29:40.601Z",
+  "savedAt": "2026-07-09T19:08:37.895Z",
   "scanType": "afternoon",
-  "gamesScanned": 12,
+  "gamesScanned": 8,
   "totalGames": 13,
   "batters": [
+    {
+      "batterId": 621566,
+      "batterName": "Matt Olson",
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "batterTeam": "ATL",
+      "pitcherTeam": "PIT",
+      "edgeScore": 99,
+      "grade": "A+",
+      "bvpAvg": ".533",
+      "bvpOps": "1.363",
+      "bvpPA": 32,
+      "bvpHR": 2,
+      "gamePk": 823359,
+      "gameLabel": "ATL @ PIT"
+    },
+    {
+      "batterId": 571657,
+      "batterName": "Kyle Farmer",
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "batterTeam": "ATL",
+      "pitcherTeam": "PIT",
+      "edgeScore": 95,
+      "grade": "A+",
+      "bvpAvg": ".533",
+      "bvpOps": "1.211",
+      "bvpPA": 36,
+      "bvpHR": 0,
+      "gamePk": 823359,
+      "gameLabel": "ATL @ PIT"
+    },
     {
       "batterId": 694192,
       "batterName": "Jackson Chourio",
@@ -52,6 +84,22 @@
       "bvpHR": 2,
       "gamePk": 824251,
       "gameLabel": "ATH @ DET"
+    },
+    {
+      "batterId": 643289,
+      "batterName": "Mauricio Dubón",
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "batterTeam": "ATL",
+      "pitcherTeam": "PIT",
+      "edgeScore": 92,
+      "grade": "A+",
+      "bvpAvg": ".462",
+      "bvpOps": "1.346",
+      "bvpPA": 28,
+      "bvpHR": 2,
+      "gamePk": 823359,
+      "gameLabel": "ATL @ PIT"
     },
     {
       "batterId": 665487,
@@ -166,6 +214,22 @@
       "gameLabel": "ATH @ DET"
     },
     {
+      "batterId": 663586,
+      "batterName": "Austin Riley",
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "batterTeam": "ATL",
+      "pitcherTeam": "PIT",
+      "edgeScore": 75,
+      "grade": "A",
+      "bvpAvg": ".400",
+      "bvpOps": "1.123",
+      "bvpPA": 29,
+      "bvpHR": 0,
+      "gamePk": 823359,
+      "gameLabel": "ATL @ PIT"
+    },
+    {
       "batterId": 679845,
       "batterName": "Nick Loftin",
       "pitcherId": 640455,
@@ -180,70 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823606,
       "gameLabel": "KC @ NYM"
-    },
-    {
-      "batterId": 668885,
-      "batterName": "Austin Martin",
-      "pitcherId": 668909,
-      "pitcherName": "Gavin Williams",
-      "batterTeam": "MIN",
-      "pitcherTeam": "CLE",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".571",
-      "bvpOps": "1.196",
-      "bvpPA": 16,
-      "bvpHR": 0,
-      "gamePk": 823683,
-      "gameLabel": "CLE @ MIN"
-    },
-    {
-      "batterId": 663886,
-      "batterName": "Tyler Stephenson",
-      "pitcherId": 666200,
-      "pitcherName": "Jesús Luzardo",
-      "batterTeam": "CIN",
-      "pitcherTeam": "PHI",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".600",
-      "bvpOps": "1.314",
-      "bvpPA": 14,
-      "bvpHR": 0,
-      "gamePk": 824494,
-      "gameLabel": "PHI @ CIN"
-    },
-    {
-      "batterId": 592663,
-      "batterName": "J.T. Realmuto",
-      "pitcherId": 663903,
-      "pitcherName": "Brady Singer",
-      "batterTeam": "PHI",
-      "pitcherTeam": "CIN",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".667",
-      "bvpOps": "2.333",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 824494,
-      "gameLabel": "PHI @ CIN"
-    },
-    {
-      "batterId": 683734,
-      "batterName": "Andrew Vaughn",
-      "pitcherId": 669467,
-      "pitcherName": "Andre Pallante",
-      "batterTeam": "MIL",
-      "pitcherTeam": "STL",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".333",
-      "bvpOps": "1.667",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 823034,
-      "gameLabel": "MIL @ STL"
     }
   ],
   "pitchers": [
@@ -352,6 +352,19 @@
       "gameLabel": "PHI @ CIN"
     },
     {
+      "pitcherId": 693821,
+      "pitcherName": "Bryce Elder",
+      "team": "ATL",
+      "oppTeam": "PIT",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 7.5,
+      "projectedIP": 5.7,
+      "projectedK": 4,
+      "gamePk": 823359,
+      "gameLabel": "ATL @ PIT"
+    },
+    {
       "pitcherId": 669432,
       "pitcherName": "Trevor Rogers",
       "team": "BAL",
@@ -454,6 +467,19 @@
       "projectedK": 3,
       "gamePk": 823683,
       "gameLabel": "CLE @ MIN"
+    },
+    {
+      "pitcherId": 656605,
+      "pitcherName": "Mitch Keller",
+      "team": "PIT",
+      "oppTeam": "ATL",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 6.7,
+      "projectedIP": 5.4,
+      "projectedK": 3.5,
+      "gamePk": 823359,
+      "gameLabel": "ATL @ PIT"
     },
     {
       "pitcherId": 518876,
