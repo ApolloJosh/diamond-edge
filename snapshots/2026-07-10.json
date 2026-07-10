@@ -1,6 +1,6 @@
 {
   "date": "2026-07-10",
-  "savedAt": "2026-07-10T19:05:32.465Z",
+  "savedAt": "2026-07-10T22:32:32.002Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -326,6 +326,19 @@
       "gameLabel": "HOU @ TEX"
     },
     {
+      "pitcherId": 669165,
+      "pitcherName": "Kyle Hurt",
+      "team": "LAD",
+      "oppTeam": "AZ",
+      "whiffScore": 72,
+      "grade": "A",
+      "k9": 11.2,
+      "projectedIP": 5.5,
+      "projectedK": 6,
+      "gamePk": 823927,
+      "gameLabel": "AZ @ LAD"
+    },
+    {
       "pitcherId": 684007,
       "pitcherName": "Shota Imanaga",
       "team": "CHC",
@@ -350,19 +363,6 @@
       "projectedK": 3,
       "gamePk": 823685,
       "gameLabel": "LAA @ MIN"
-    },
-    {
-      "pitcherId": 660271,
-      "pitcherName": "Shohei Ohtani",
-      "team": "LAD",
-      "oppTeam": "AZ",
-      "whiffScore": 68,
-      "grade": "B+",
-      "k9": 10,
-      "projectedIP": 6.1,
-      "projectedK": 5.5,
-      "gamePk": 823927,
-      "gameLabel": "AZ @ LAD"
     },
     {
       "pitcherId": 805673,
