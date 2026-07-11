@@ -1,8 +1,8 @@
 {
   "date": "2026-07-11",
-  "savedAt": "2026-07-11T18:28:58.339Z",
+  "savedAt": "2026-07-11T22:23:28.556Z",
   "scanType": "afternoon",
-  "gamesScanned": 16,
+  "gamesScanned": 7,
   "totalGames": 16,
   "batters": [
     {
@@ -300,19 +300,6 @@
       "gameLabel": "SEA @ TB"
     },
     {
-      "pitcherId": 663554,
-      "pitcherName": "Casey Mize",
-      "team": "DET",
-      "oppTeam": "PHI",
-      "whiffScore": 74,
-      "grade": "A",
-      "k9": 9,
-      "projectedIP": 5.5,
-      "projectedK": 4.5,
-      "gamePk": 824249,
-      "gameLabel": "PHI @ DET"
-    },
-    {
       "pitcherId": 663542,
       "pitcherName": "Bryan Hudson",
       "team": "CWS",
@@ -350,6 +337,19 @@
       "projectedK": 4.5,
       "gamePk": 823603,
       "gameLabel": "BOS @ NYM"
+    },
+    {
+      "pitcherId": 663554,
+      "pitcherName": "Casey Mize",
+      "team": "DET",
+      "oppTeam": "PHI",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.9,
+      "projectedIP": 5.2,
+      "projectedK": 4,
+      "gamePk": 824249,
+      "gameLabel": "PHI @ DET"
     },
     {
       "pitcherId": 702070,
