@@ -1,7 +1,7 @@
 {
   "date": "2026-07-11",
-  "savedAt": "2026-07-11T16:27:55.293Z",
-  "scanType": "morning",
+  "savedAt": "2026-07-11T18:28:58.339Z",
+  "scanType": "afternoon",
   "gamesScanned": 16,
   "totalGames": 16,
   "batters": [
@@ -319,9 +319,9 @@
       "oppTeam": "ATH",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 8.8,
-      "projectedIP": 8,
-      "projectedK": 6.5,
+      "k9": 8.6,
+      "projectedIP": 6.8,
+      "projectedK": 5.5,
       "gamePk": 824576,
       "gameLabel": "ATH @ CWS"
     },
@@ -363,6 +363,19 @@
       "projectedK": 4,
       "gamePk": 824813,
       "gameLabel": "KC @ BAL"
+    },
+    {
+      "pitcherId": 677952,
+      "pitcherName": "Braxton Ashcraft",
+      "team": "PIT",
+      "oppTeam": "MIL",
+      "whiffScore": 68,
+      "grade": "B+",
+      "k9": 10.2,
+      "projectedIP": 6,
+      "projectedK": 5.5,
+      "gamePk": 823357,
+      "gameLabel": "MIL @ PIT"
     },
     {
       "pitcherId": 669461,
