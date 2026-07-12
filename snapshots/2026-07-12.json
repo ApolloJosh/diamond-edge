@@ -1,8 +1,8 @@
 {
   "date": "2026-07-12",
-  "savedAt": "2026-07-12T18:29:37.328Z",
+  "savedAt": "2026-07-12T22:25:02.916Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 2,
   "totalGames": 15,
   "batters": [
     {
@@ -326,6 +326,32 @@
       "gameLabel": "LAA @ MIN"
     },
     {
+      "pitcherId": 801139,
+      "pitcherName": "Payton Tolle",
+      "team": "BOS",
+      "oppTeam": "NYM",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9.3,
+      "projectedIP": 5.6,
+      "projectedK": 5,
+      "gamePk": 823602,
+      "gameLabel": "BOS @ NYM"
+    },
+    {
+      "pitcherId": 669372,
+      "pitcherName": "J.T. Ginn",
+      "team": "ATH",
+      "oppTeam": "CWS",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8.1,
+      "projectedIP": 5.7,
+      "projectedK": 4.5,
+      "gamePk": 824574,
+      "gameLabel": "ATH @ CWS"
+    },
+    {
       "pitcherId": 686218,
       "pitcherName": "Emmet Sheehan",
       "team": "LAD",
@@ -415,6 +441,19 @@
       "projectedK": 3.5,
       "gamePk": 823199,
       "gameLabel": "COL @ SF"
+    },
+    {
+      "pitcherId": 702273,
+      "pitcherName": "Noah Schultz",
+      "team": "CWS",
+      "oppTeam": "ATH",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 8,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 824574,
+      "gameLabel": "ATH @ CWS"
     },
     {
       "pitcherId": 664299,
