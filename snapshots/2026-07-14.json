@@ -1,0 +1,47 @@
+{
+  "date": "2026-07-14",
+  "savedAt": "2026-07-14T16:46:29.714Z",
+  "scanType": "morning",
+  "gamesScanned": 1,
+  "totalGames": 1,
+  "batters": [],
+  "pitchers": [],
+  "pitches": [
+    {
+      "pitcherId": 650911,
+      "pitcherName": "Cristopher Sánchez",
+      "team": "NL",
+      "oppTeam": "AL",
+      "line": 92,
+      "overUnder": "UNDER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 92.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 92.3,
+      "twoYrStarts": 52,
+      "bvpAdj": 0,
+      "lineupPA": 0,
+      "gamePk": 823443,
+      "gameLabel": "AL @ NL"
+    },
+    {
+      "pitcherId": 656302,
+      "pitcherName": "Dylan Cease",
+      "team": "AL",
+      "oppTeam": "NL",
+      "line": 105,
+      "overUnder": "OVER",
+      "pitchScore": 59,
+      "grade": "B",
+      "recent5Avg": 109,
+      "recent5Starts": 5,
+      "twoYrAvg": 97.2,
+      "twoYrStarts": 49,
+      "bvpAdj": 0,
+      "lineupPA": 0,
+      "gamePk": 823443,
+      "gameLabel": "AL @ NL"
+    }
+  ]
+}
