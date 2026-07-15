@@ -1,0 +1,61 @@
+{
+  "date": "2026-07-14",
+  "processedAt": "2026-07-15T07:58:57.078Z",
+  "summary": {
+    "avgFantasy": 0,
+    "totalFantasy": 0,
+    "hitRate": 0,
+    "pitcherHitProjRate": 0,
+    "bGradeBatters": 0,
+    "bGradePitchers": 0,
+    "pitchesHitRate": 50,
+    "pitchesProjHitRate": 0,
+    "bGradePitches": 2
+  },
+  "batters": [],
+  "pitchers": [],
+  "pitches": [
+    {
+      "pitcherId": 650911,
+      "pitcherName": "Cristopher Sánchez",
+      "team": "NL",
+      "oppTeam": "AL",
+      "line": 92,
+      "ppLine": null,
+      "goblinLine": null,
+      "overUnder": "UNDER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 92.2,
+      "twoYrAvg": 92.3,
+      "bvpAdj": 0,
+      "gamePk": 823443,
+      "gameLabel": "AL @ NL",
+      "actualPitches": 34,
+      "actualStats": true,
+      "hit": true,
+      "projHit": false
+    },
+    {
+      "pitcherId": 656302,
+      "pitcherName": "Dylan Cease",
+      "team": "AL",
+      "oppTeam": "NL",
+      "line": 105,
+      "ppLine": null,
+      "goblinLine": null,
+      "overUnder": "OVER",
+      "pitchScore": 59,
+      "grade": "B",
+      "recent5Avg": 109,
+      "twoYrAvg": 97.2,
+      "bvpAdj": 0,
+      "gamePk": 823443,
+      "gameLabel": "AL @ NL",
+      "actualPitches": 25,
+      "actualStats": true,
+      "hit": false,
+      "projHit": false
+    }
+  ]
+}
