@@ -1,7 +1,7 @@
 {
   "date": "2026-07-16",
-  "savedAt": "2026-07-16T16:49:50.740Z",
-  "scanType": "morning",
+  "savedAt": "2026-07-16T18:42:22.060Z",
+  "scanType": "afternoon",
   "gamesScanned": 1,
   "totalGames": 1,
   "batters": [
@@ -150,6 +150,22 @@
       "gameLabel": "NYM @ PHI"
     },
     {
+      "batterId": 543760,
+      "batterName": "Marcus Semien",
+      "pitcherId": 605400,
+      "pitcherName": "Aaron Nola",
+      "batterTeam": "NYM",
+      "pitcherTeam": "PHI",
+      "edgeScore": 34,
+      "grade": "F",
+      "bvpAvg": ".111",
+      "bvpOps": ".222",
+      "bvpPA": 18,
+      "bvpHR": 0,
+      "gamePk": 823440,
+      "gameLabel": "NYM @ PHI"
+    },
+    {
       "batterId": 683146,
       "batterName": "Brett Baty",
       "pitcherId": 605400,
@@ -187,7 +203,7 @@
       "pitcherName": "Aaron Nola",
       "team": "PHI",
       "oppTeam": "NYM",
-      "line": 98.5,
+      "line": 95.5,
       "overUnder": "OVER",
       "pitchScore": 76,
       "grade": "A",
@@ -195,8 +211,8 @@
       "recent5Starts": 5,
       "twoYrAvg": 90.8,
       "twoYrStarts": 36,
-      "bvpAdj": 8,
-      "lineupPA": 332,
+      "bvpAdj": 5,
+      "lineupPA": 350,
       "gamePk": 823440,
       "gameLabel": "NYM @ PHI"
     },
