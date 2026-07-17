@@ -1,6 +1,6 @@
 {
   "date": "2026-07-17",
-  "savedAt": "2026-07-17T18:36:12.986Z",
+  "savedAt": "2026-07-17T22:23:08.185Z",
   "scanType": "afternoon",
   "gamesScanned": 14,
   "totalGames": 15,
@@ -166,6 +166,22 @@
       "gameLabel": "TB @ BOS"
     },
     {
+      "batterId": 678882,
+      "batterName": "Ceddanne Rafaela",
+      "pitcherId": 669438,
+      "pitcherName": "Mason Englert",
+      "batterTeam": "BOS",
+      "pitcherTeam": "TB",
+      "edgeScore": 69,
+      "grade": "B+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.200",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 824737,
+      "gameLabel": "TB @ BOS"
+    },
+    {
       "batterId": 682985,
       "batterName": "Riley Greene",
       "pitcherId": 672282,
@@ -228,38 +244,9 @@
       "bvpHR": 0,
       "gamePk": 823766,
       "gameLabel": "MIA @ MIL"
-    },
-    {
-      "batterId": 691406,
-      "batterName": "Junior Caminero",
-      "pitcherId": 687562,
-      "pitcherName": "Jake Bennett",
-      "batterTeam": "TB",
-      "pitcherTeam": "BOS",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": ".900",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824766,
-      "gameLabel": "TB @ BOS"
     }
   ],
   "pitchers": [
-    {
-      "pitcherId": 668909,
-      "pitcherName": "Gavin Williams",
-      "team": "CLE",
-      "oppTeam": "PIT",
-      "whiffScore": 78,
-      "grade": "A",
-      "k9": 10.6,
-      "projectedIP": 6,
-      "projectedK": 6,
-      "gamePk": 824414,
-      "gameLabel": "PIT @ CLE"
-    },
     {
       "pitcherId": 519242,
       "pitcherName": "Chris Sale",
@@ -298,6 +285,19 @@
       "projectedK": 4.5,
       "gamePk": 824981,
       "gameLabel": "WSH @ ATH"
+    },
+    {
+      "pitcherId": 668909,
+      "pitcherName": "Gavin Williams",
+      "team": "CLE",
+      "oppTeam": "PIT",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.6,
+      "projectedIP": 6,
+      "projectedK": 6,
+      "gamePk": 824414,
+      "gameLabel": "PIT @ CLE"
     },
     {
       "pitcherId": 643377,
@@ -415,6 +415,19 @@
       "projectedK": 3,
       "gamePk": 824655,
       "gameLabel": "MIN @ CHC"
+    },
+    {
+      "pitcherId": 669438,
+      "pitcherName": "Mason Englert",
+      "team": "TB",
+      "oppTeam": "BOS",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 8.2,
+      "projectedIP": 15.1,
+      "projectedK": 12,
+      "gamePk": 824737,
+      "gameLabel": "TB @ BOS"
     },
     {
       "pitcherId": 650633,
