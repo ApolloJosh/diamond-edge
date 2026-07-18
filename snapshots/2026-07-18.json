@@ -1,8 +1,8 @@
 {
   "date": "2026-07-18",
-  "savedAt": "2026-07-18T18:30:52.917Z",
+  "savedAt": "2026-07-18T22:24:04.421Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 5,
   "totalGames": 16,
   "batters": [
     {
@@ -365,19 +365,6 @@
       "gameLabel": "MIN @ CHC"
     },
     {
-      "pitcherId": 657277,
-      "pitcherName": "Logan Webb",
-      "team": "SF",
-      "oppTeam": "SEA",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 7.2,
-      "projectedIP": 6.3,
-      "projectedK": 4,
-      "gamePk": 823116,
-      "gameLabel": "SF @ SEA"
-    },
-    {
       "pitcherId": 666200,
       "pitcherName": "Jesús Luzardo",
       "team": "PHI",
@@ -415,6 +402,19 @@
       "projectedK": 5,
       "gamePk": 824899,
       "gameLabel": "TEX @ ATL"
+    },
+    {
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "team": "SF",
+      "oppTeam": "SEA",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.2,
+      "projectedIP": 6.3,
+      "projectedK": 4,
+      "gamePk": 823116,
+      "gameLabel": "SF @ SEA"
     },
     {
       "pitcherId": 680570,
@@ -601,6 +601,24 @@
   ],
   "pitches": [
     {
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "team": "SF",
+      "oppTeam": "SEA",
+      "line": 101,
+      "overUnder": "OVER",
+      "pitchScore": 76,
+      "grade": "A",
+      "recent5Avg": 96.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 95.5,
+      "twoYrStarts": 50,
+      "bvpAdj": 5,
+      "lineupPA": 54,
+      "gamePk": 823116,
+      "gameLabel": "SF @ SEA"
+    },
+    {
       "pitcherId": 680570,
       "pitcherName": "Grayson Rodriguez",
       "team": "LAA",
@@ -617,24 +635,6 @@
       "lineupPA": 68,
       "gamePk": 824008,
       "gameLabel": "DET @ LAA"
-    },
-    {
-      "pitcherId": 657277,
-      "pitcherName": "Logan Webb",
-      "team": "SF",
-      "oppTeam": "SEA",
-      "line": 101,
-      "overUnder": "OVER",
-      "pitchScore": 73,
-      "grade": "A",
-      "recent5Avg": 96.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 95.5,
-      "twoYrStarts": 50,
-      "bvpAdj": 5,
-      "lineupPA": 46,
-      "gamePk": 823116,
-      "gameLabel": "SF @ SEA"
     },
     {
       "pitcherId": 669432,
