@@ -1,8 +1,8 @@
 {
   "date": "2026-07-18",
-  "savedAt": "2026-07-18T16:29:21.366Z",
-  "scanType": "morning",
-  "gamesScanned": 16,
+  "savedAt": "2026-07-18T18:30:52.917Z",
+  "scanType": "afternoon",
+  "gamesScanned": 15,
   "totalGames": 16,
   "batters": [
     {
@@ -281,8 +281,8 @@
       "whiffScore": 78,
       "grade": "A",
       "k9": 10.3,
-      "projectedIP": 5.7,
-      "projectedK": 5.5,
+      "projectedIP": 5.4,
+      "projectedK": 5,
       "gamePk": 824657,
       "gameLabel": "MIN @ CHC"
     },
@@ -358,9 +358,9 @@
       "oppTeam": "MIN",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 9.2,
-      "projectedIP": 5.1,
-      "projectedK": 4.5,
+      "k9": 9,
+      "projectedIP": 4.7,
+      "projectedK": 4,
       "gamePk": 824657,
       "gameLabel": "MIN @ CHC"
     },
