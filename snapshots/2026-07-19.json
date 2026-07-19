@@ -1,8 +1,8 @@
 {
   "date": "2026-07-19",
-  "savedAt": "2026-07-19T18:30:18.498Z",
+  "savedAt": "2026-07-19T22:26:50.635Z",
   "scanType": "afternoon",
-  "gamesScanned": 10,
+  "gamesScanned": 1,
   "totalGames": 16,
   "batters": [
     {
@@ -36,6 +36,22 @@
       "bvpHR": 2,
       "gamePk": 824168,
       "gameLabel": "BAL @ HOU"
+    },
+    {
+      "batterId": 606192,
+      "batterName": "Teoscar Hernández",
+      "pitcherId": 642232,
+      "pitcherName": "Ryan Yarbrough",
+      "batterTeam": "LAD",
+      "pitcherTeam": "NYY",
+      "edgeScore": 93,
+      "grade": "A+",
+      "bvpAvg": ".333",
+      "bvpOps": "1.289",
+      "bvpPA": 82,
+      "bvpHR": 14,
+      "gamePk": 823521,
+      "gameLabel": "LAD @ NYY"
     },
     {
       "batterId": 642715,
@@ -84,6 +100,22 @@
       "bvpHR": 2,
       "gamePk": 824086,
       "gameLabel": "SD @ KC"
+    },
+    {
+      "batterId": 660271,
+      "batterName": "Shohei Ohtani",
+      "pitcherId": 642232,
+      "pitcherName": "Ryan Yarbrough",
+      "batterTeam": "LAD",
+      "pitcherTeam": "NYY",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".308",
+      "bvpOps": "1.203",
+      "bvpPA": 28,
+      "bvpHR": 2,
+      "gamePk": 823521,
+      "gameLabel": "LAD @ NYY"
     },
     {
       "batterId": 682998,
@@ -212,38 +244,6 @@
       "bvpHR": 0,
       "gamePk": 824330,
       "gameLabel": "CIN @ COL"
-    },
-    {
-      "batterId": 802415,
-      "batterName": "Chandler Simpson",
-      "pitcherId": 543243,
-      "pitcherName": "Sonny Gray",
-      "batterTeam": "TB",
-      "pitcherTeam": "BOS",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.667",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 824739,
-      "gameLabel": "TB @ BOS"
-    },
-    {
-      "batterId": 649966,
-      "batterName": "Luis Urías",
-      "pitcherId": 680732,
-      "pitcherName": "Sean Burke",
-      "batterTeam": "TOR",
-      "pitcherTeam": "CWS",
-      "edgeScore": 65,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.167",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 822786,
-      "gameLabel": "CWS @ TOR"
     }
   ],
   "pitchers": [
@@ -532,6 +532,19 @@
       "projectedK": 3.5,
       "gamePk": 825057,
       "gameLabel": "STL @ AZ"
+    },
+    {
+      "pitcherId": 642232,
+      "pitcherName": "Ryan Yarbrough",
+      "team": "NYY",
+      "oppTeam": "LAD",
+      "whiffScore": 49,
+      "grade": "C",
+      "k9": 6.6,
+      "projectedIP": 5.5,
+      "projectedK": 3.5,
+      "gamePk": 823521,
+      "gameLabel": "LAD @ NYY"
     },
     {
       "pitcherId": 669467,
