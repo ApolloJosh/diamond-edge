@@ -1,6 +1,6 @@
 {
   "date": "2026-07-20",
-  "savedAt": "2026-07-20T19:14:30.724Z",
+  "savedAt": "2026-07-20T22:31:13.263Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -313,6 +313,19 @@
       "gameLabel": "MIN @ CLE"
     },
     {
+      "pitcherId": 801139,
+      "pitcherName": "Payton Tolle",
+      "team": "BOS",
+      "oppTeam": "BAL",
+      "whiffScore": 71,
+      "grade": "A",
+      "k9": 9.3,
+      "projectedIP": 5.6,
+      "projectedK": 5,
+      "gamePk": 824736,
+      "gameLabel": "BAL @ BOS"
+    },
+    {
       "pitcherId": 667755,
       "pitcherName": "José Soriano",
       "team": "LAA",
@@ -324,19 +337,6 @@
       "projectedK": 5,
       "gamePk": 824006,
       "gameLabel": "STL @ LAA"
-    },
-    {
-      "pitcherId": 801139,
-      "pitcherName": "Payton Tolle",
-      "team": "BOS",
-      "oppTeam": "BAL",
-      "whiffScore": 68,
-      "grade": "B+",
-      "k9": 9.3,
-      "projectedIP": 5.6,
-      "projectedK": 5,
-      "gamePk": 824736,
-      "gameLabel": "BAL @ BOS"
     },
     {
       "pitcherId": 650911,
@@ -378,19 +378,6 @@
       "gameLabel": "NYM @ MIL"
     },
     {
-      "pitcherId": 592791,
-      "pitcherName": "Jameson Taillon",
-      "team": "CHC",
-      "oppTeam": "DET",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 7.9,
-      "projectedIP": 5.2,
-      "projectedK": 3.5,
-      "gamePk": 824654,
-      "gameLabel": "DET @ CHC"
-    },
-    {
       "pitcherId": 607536,
       "pitcherName": "Kyle Freeland",
       "team": "COL",
@@ -415,6 +402,19 @@
       "projectedK": 7.5,
       "gamePk": 822788,
       "gameLabel": "TB @ TOR"
+    },
+    {
+      "pitcherId": 592791,
+      "pitcherName": "Jameson Taillon",
+      "team": "CHC",
+      "oppTeam": "DET",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 7.9,
+      "projectedIP": 5.2,
+      "projectedK": 3.5,
+      "gamePk": 824654,
+      "gameLabel": "DET @ CHC"
     },
     {
       "pitcherId": 676440,
