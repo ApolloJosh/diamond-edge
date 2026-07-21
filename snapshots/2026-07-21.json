@@ -1,6 +1,6 @@
 {
   "date": "2026-07-21",
-  "savedAt": "2026-07-21T18:51:14.123Z",
+  "savedAt": "2026-07-21T22:27:52.880Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -274,19 +274,6 @@
       "gameLabel": "LAD @ PHI"
     },
     {
-      "pitcherId": 680694,
-      "pitcherName": "Kyle Bradish",
-      "team": "BAL",
-      "oppTeam": "BOS",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.9,
-      "projectedIP": 5.6,
-      "projectedK": 4.5,
-      "gamePk": 824735,
-      "gameLabel": "BAL @ BOS"
-    },
-    {
       "pitcherId": 669461,
       "pitcherName": "Matthew Liberatore",
       "team": "STL",
@@ -311,6 +298,19 @@
       "projectedK": 4,
       "gamePk": 823519,
       "gameLabel": "PIT @ NYY"
+    },
+    {
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "team": "BAL",
+      "oppTeam": "BOS",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.9,
+      "projectedIP": 5.6,
+      "projectedK": 4.5,
+      "gamePk": 824735,
+      "gameLabel": "BAL @ BOS"
     },
     {
       "pitcherId": 622491,
@@ -408,7 +408,7 @@
       "pitcherName": "Walker Buehler",
       "team": "SD",
       "oppTeam": "ATL",
-      "whiffScore": 60,
+      "whiffScore": 57,
       "grade": "B",
       "k9": 8.2,
       "projectedIP": 4.7,
@@ -556,7 +556,7 @@
       "twoYrAvg": 86.7,
       "twoYrStarts": 43,
       "bvpAdj": 3,
-      "lineupPA": 132,
+      "lineupPA": 168,
       "gamePk": 824895,
       "gameLabel": "SD @ ATL"
     }
