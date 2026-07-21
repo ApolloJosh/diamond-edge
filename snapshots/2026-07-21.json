@@ -1,7 +1,7 @@
 {
   "date": "2026-07-21",
-  "savedAt": "2026-07-21T16:56:48.042Z",
-  "scanType": "morning",
+  "savedAt": "2026-07-21T18:51:14.123Z",
+  "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
@@ -274,19 +274,6 @@
       "gameLabel": "LAD @ PHI"
     },
     {
-      "pitcherId": 701542,
-      "pitcherName": "Will Warren",
-      "team": "NYY",
-      "oppTeam": "PIT",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.8,
-      "projectedIP": 5.2,
-      "projectedK": 4,
-      "gamePk": 823519,
-      "gameLabel": "PIT @ NYY"
-    },
-    {
       "pitcherId": 680694,
       "pitcherName": "Kyle Bradish",
       "team": "BAL",
@@ -311,6 +298,19 @@
       "projectedK": 4,
       "gamePk": 824005,
       "gameLabel": "STL @ LAA"
+    },
+    {
+      "pitcherId": 701542,
+      "pitcherName": "Will Warren",
+      "team": "NYY",
+      "oppTeam": "PIT",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.8,
+      "projectedIP": 5.2,
+      "projectedK": 4,
+      "gamePk": 823519,
+      "gameLabel": "PIT @ NYY"
     },
     {
       "pitcherId": 622491,
