@@ -1,8 +1,8 @@
 {
   "date": "2026-07-22",
-  "savedAt": "2026-07-22T16:57:24.769Z",
-  "scanType": "morning",
-  "gamesScanned": 17,
+  "savedAt": "2026-07-22T18:43:15.942Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 17,
   "batters": [
     {
@@ -150,6 +150,22 @@
       "gameLabel": "MIN @ CLE"
     },
     {
+      "batterId": 608070,
+      "batterName": "José Ramírez",
+      "pitcherId": 641927,
+      "pitcherName": "Bailey Ober",
+      "batterTeam": "CLE",
+      "pitcherTeam": "MIN",
+      "edgeScore": 80,
+      "grade": "A+",
+      "bvpAvg": ".321",
+      "bvpOps": "1.013",
+      "bvpPA": 64,
+      "bvpHR": 4,
+      "gamePk": 824408,
+      "gameLabel": "MIN @ CLE"
+    },
+    {
       "batterId": 592518,
       "batterName": "Manny Machado",
       "pitcherId": 527048,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 823110,
       "gameLabel": "CIN @ SEA"
-    },
-    {
-      "batterId": 650490,
-      "batterName": "Yandy Díaz",
-      "pitcherId": 680755,
-      "pitcherName": "Braydon Fisher",
-      "batterTeam": "TB",
-      "pitcherTeam": "TOR",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.100",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 822784,
-      "gameLabel": "TB @ TOR"
     }
   ],
   "pitchers": [
@@ -508,19 +508,6 @@
       "gameLabel": "SD @ ATL"
     },
     {
-      "pitcherId": 641927,
-      "pitcherName": "Bailey Ober",
-      "team": "MIN",
-      "oppTeam": "CLE",
-      "whiffScore": 55,
-      "grade": "B",
-      "k9": 6.8,
-      "projectedIP": 5.5,
-      "projectedK": 3.5,
-      "gamePk": 824408,
-      "gameLabel": "MIN @ CLE"
-    },
-    {
       "pitcherId": 672456,
       "pitcherName": "Keider Montero",
       "team": "DET",
@@ -532,6 +519,19 @@
       "projectedK": 4,
       "gamePk": 824650,
       "gameLabel": "DET @ CHC"
+    },
+    {
+      "pitcherId": 641927,
+      "pitcherName": "Bailey Ober",
+      "team": "MIN",
+      "oppTeam": "CLE",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 6.8,
+      "projectedIP": 5.5,
+      "projectedK": 3.5,
+      "gamePk": 824408,
+      "gameLabel": "MIN @ CLE"
     },
     {
       "pitcherId": 607067,
@@ -619,7 +619,7 @@
       "twoYrAvg": 86.6,
       "twoYrStarts": 41,
       "bvpAdj": -4,
-      "lineupPA": 192,
+      "lineupPA": 256,
       "gamePk": 824408,
       "gameLabel": "MIN @ CLE"
     },
