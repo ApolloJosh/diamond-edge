@@ -1,8 +1,8 @@
 {
   "date": "2026-07-22",
-  "savedAt": "2026-07-22T18:43:15.942Z",
+  "savedAt": "2026-07-22T22:33:40.409Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 10,
   "totalGames": 17,
   "batters": [
     {
@@ -300,19 +300,6 @@
       "gameLabel": "BAL @ BOS"
     },
     {
-      "pitcherId": 680694,
-      "pitcherName": "Kyle Bradish",
-      "team": "BAL",
-      "oppTeam": "BOS",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.9,
-      "projectedIP": 5.6,
-      "projectedK": 4.5,
-      "gamePk": 824732,
-      "gameLabel": "BAL @ BOS"
-    },
-    {
       "pitcherId": 676106,
       "pitcherName": "Emerson Hancock",
       "team": "SEA",
@@ -324,6 +311,19 @@
       "projectedK": 4.5,
       "gamePk": 823110,
       "gameLabel": "CIN @ SEA"
+    },
+    {
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "team": "BAL",
+      "oppTeam": "BOS",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.9,
+      "projectedIP": 5.6,
+      "projectedK": 4.5,
+      "gamePk": 824732,
+      "gameLabel": "BAL @ BOS"
     },
     {
       "pitcherId": 641302,
@@ -404,19 +404,6 @@
       "gameLabel": "LAD @ PHI"
     },
     {
-      "pitcherId": 608331,
-      "pitcherName": "Max Fried",
-      "team": "NYY",
-      "oppTeam": "PIT",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 7.3,
-      "projectedIP": 6.1,
-      "projectedK": 4,
-      "gamePk": 823519,
-      "gameLabel": "PIT @ NYY"
-    },
-    {
       "pitcherId": 676917,
       "pitcherName": "Cade Cavalli",
       "team": "WSH",
@@ -428,6 +415,19 @@
       "projectedK": 4.5,
       "gamePk": 824327,
       "gameLabel": "WSH @ COL"
+    },
+    {
+      "pitcherId": 608331,
+      "pitcherName": "Max Fried",
+      "team": "NYY",
+      "oppTeam": "PIT",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 7.3,
+      "projectedIP": 6.1,
+      "projectedK": 4,
+      "gamePk": 823519,
+      "gameLabel": "PIT @ NYY"
     },
     {
       "pitcherId": 641743,
