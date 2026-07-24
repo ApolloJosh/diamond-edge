@@ -1,6 +1,6 @@
 {
   "date": "2026-07-24",
-  "savedAt": "2026-07-24T17:07:14.830Z",
+  "savedAt": "2026-07-24T19:01:37.042Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -571,6 +571,19 @@
       "projectedK": 4,
       "gamePk": 823601,
       "gameLabel": "LAD @ NYM"
+    },
+    {
+      "pitcherId": 687473,
+      "pitcherName": "Ryan Gusto",
+      "team": "MIA",
+      "oppTeam": "SD",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 7.9,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 823843,
+      "gameLabel": "SD @ MIA"
     },
     {
       "pitcherId": 680570,
