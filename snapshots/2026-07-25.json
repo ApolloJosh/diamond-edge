@@ -1,8 +1,8 @@
 {
   "date": "2026-07-25",
-  "savedAt": "2026-07-25T18:29:14.725Z",
+  "savedAt": "2026-07-25T22:27:21.744Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 11,
   "totalGames": 15,
   "batters": [
     {
@@ -320,7 +320,7 @@
       "whiffScore": 72,
       "grade": "A",
       "k9": 10.1,
-      "projectedIP": 5.4,
+      "projectedIP": 5.2,
       "projectedK": 5,
       "gamePk": 823435,
       "gameLabel": "NYY @ PHI"
@@ -352,6 +352,19 @@
       "gameLabel": "LAA @ SF"
     },
     {
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "team": "PHI",
+      "oppTeam": "NYY",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.7,
+      "projectedIP": 11.6,
+      "projectedK": 9.5,
+      "gamePk": 823435,
+      "gameLabel": "NYY @ PHI"
+    },
+    {
       "pitcherId": 543135,
       "pitcherName": "Nathan Eovaldi",
       "team": "TEX",
@@ -361,32 +374,6 @@
       "k9": 9.5,
       "projectedIP": 6.1,
       "projectedK": 5.5,
-      "gamePk": 822869,
-      "gameLabel": "SEA @ TEX"
-    },
-    {
-      "pitcherId": 641835,
-      "pitcherName": "Tim Mayza",
-      "team": "PHI",
-      "oppTeam": "NYY",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 8.8,
-      "projectedIP": 15,
-      "projectedK": 12.5,
-      "gamePk": 823435,
-      "gameLabel": "NYY @ PHI"
-    },
-    {
-      "pitcherId": 693433,
-      "pitcherName": "Bryan Woo",
-      "team": "SEA",
-      "oppTeam": "TEX",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 8.9,
-      "projectedIP": 5.8,
-      "projectedK": 5,
       "gamePk": 822869,
       "gameLabel": "SEA @ TEX"
     },
@@ -456,6 +443,19 @@
       "gameLabel": "ATL @ BAL"
     },
     {
+      "pitcherId": 693433,
+      "pitcherName": "Bryan Woo",
+      "team": "SEA",
+      "oppTeam": "TEX",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.9,
+      "projectedIP": 5.8,
+      "projectedK": 5,
+      "gamePk": 822869,
+      "gameLabel": "SEA @ TEX"
+    },
+    {
       "pitcherId": 663372,
       "pitcherName": "Ryan Feltner",
       "team": "COL",
@@ -467,6 +467,32 @@
       "projectedK": 3,
       "gamePk": 823758,
       "gameLabel": "COL @ MIL"
+    },
+    {
+      "pitcherId": 683352,
+      "pitcherName": "Mitch Bratt",
+      "team": "AZ",
+      "oppTeam": "WSH",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 5.7,
+      "projectedIP": 3.8,
+      "projectedK": 2,
+      "gamePk": 822704,
+      "gameLabel": "AZ @ WSH"
+    },
+    {
+      "pitcherId": 656492,
+      "pitcherName": "Foster Griffin",
+      "team": "WSH",
+      "oppTeam": "AZ",
+      "whiffScore": 57,
+      "grade": "B",
+      "k9": 8.2,
+      "projectedIP": 5.9,
+      "projectedK": 4.5,
+      "gamePk": 822704,
+      "gameLabel": "AZ @ WSH"
     },
     {
       "pitcherId": 687064,
@@ -521,6 +547,19 @@
       "gameLabel": "TOR @ BOS"
     },
     {
+      "pitcherId": 676440,
+      "pitcherName": "Tanner Bibee",
+      "team": "CLE",
+      "oppTeam": "TB",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 7,
+      "projectedIP": 5.4,
+      "projectedK": 3.5,
+      "gamePk": 822948,
+      "gameLabel": "CLE @ TB"
+    },
+    {
       "pitcherId": 607259,
       "pitcherName": "Nick Martinez",
       "team": "TB",
@@ -528,21 +567,8 @@
       "whiffScore": 51,
       "grade": "C",
       "k9": 5,
-      "projectedIP": 5.8,
+      "projectedIP": 5.6,
       "projectedK": 2.5,
-      "gamePk": 822948,
-      "gameLabel": "CLE @ TB"
-    },
-    {
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "team": "CLE",
-      "oppTeam": "TB",
-      "whiffScore": 49,
-      "grade": "C",
-      "k9": 7,
-      "projectedIP": 5.7,
-      "projectedK": 3.5,
       "gamePk": 822948,
       "gameLabel": "CLE @ TB"
     },
@@ -578,24 +604,6 @@
       "lineupPA": 250,
       "gamePk": 823355,
       "gameLabel": "CHC @ PIT"
-    },
-    {
-      "pitcherId": 677960,
-      "pitcherName": "Ryan Weathers",
-      "team": "NYY",
-      "oppTeam": "PHI",
-      "line": 89.5,
-      "overUnder": "OVER",
-      "pitchScore": 74,
-      "grade": "A",
-      "recent5Avg": 86,
-      "recent5Starts": 5,
-      "twoYrAvg": 87.4,
-      "twoYrStarts": 27,
-      "bvpAdj": 3,
-      "lineupPA": 76,
-      "gamePk": 823435,
-      "gameLabel": "NYY @ PHI"
     },
     {
       "pitcherId": 690997,
@@ -650,6 +658,24 @@
       "lineupPA": 38,
       "gamePk": 823841,
       "gameLabel": "SD @ MIA"
+    },
+    {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "PIT",
+      "line": 90,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 90.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 88.4,
+      "twoYrStarts": 45,
+      "bvpAdj": 0,
+      "lineupPA": 98,
+      "gamePk": 823355,
+      "gameLabel": "CHC @ PIT"
     }
   ]
 }
