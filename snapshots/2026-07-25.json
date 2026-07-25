@@ -1,8 +1,8 @@
 {
   "date": "2026-07-25",
-  "savedAt": "2026-07-25T16:27:18.424Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-07-25T18:29:14.725Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -198,6 +198,22 @@
       "gameLabel": "SD @ MIA"
     },
     {
+      "batterId": 683011,
+      "batterName": "Anthony Volpe",
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "batterTeam": "NYY",
+      "pitcherTeam": "PHI",
+      "edgeScore": 73,
+      "grade": "A",
+      "bvpAvg": ".571",
+      "bvpOps": "1.429",
+      "bvpPA": 14,
+      "bvpHR": 0,
+      "gamePk": 823435,
+      "gameLabel": "NYY @ PHI"
+    },
+    {
       "batterId": 643217,
       "batterName": "Andrew Benintendi",
       "pitcherId": 686613,
@@ -226,22 +242,6 @@
       "bvpOps": "1.357",
       "bvpPA": 16,
       "bvpHR": 2,
-      "gamePk": 823027,
-      "gameLabel": "CIN @ STL"
-    },
-    {
-      "batterId": 665877,
-      "batterName": "José Fermín",
-      "pitcherId": 668881,
-      "pitcherName": "Hunter Greene",
-      "batterTeam": "STL",
-      "pitcherTeam": "CIN",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.000",
-      "bvpPA": 6,
-      "bvpHR": 0,
       "gamePk": 823027,
       "gameLabel": "CIN @ STL"
     }
@@ -363,6 +363,19 @@
       "projectedK": 5.5,
       "gamePk": 822869,
       "gameLabel": "SEA @ TEX"
+    },
+    {
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "team": "PHI",
+      "oppTeam": "NYY",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 8.8,
+      "projectedIP": 15,
+      "projectedK": 12.5,
+      "gamePk": 823435,
+      "gameLabel": "NYY @ PHI"
     },
     {
       "pitcherId": 693433,
