@@ -1,8 +1,8 @@
 {
   "date": "2026-07-27",
-  "savedAt": "2026-07-27T18:57:57.372Z",
+  "savedAt": "2026-07-27T22:33:56.516Z",
   "scanType": "afternoon",
-  "gamesScanned": 12,
+  "gamesScanned": 11,
   "totalGames": 12,
   "batters": [
     {
@@ -214,6 +214,22 @@
       "gameLabel": "PHI @ MIA"
     },
     {
+      "batterId": 691718,
+      "batterName": "Pete Crow-Armstrong",
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "batterTeam": "CHC",
+      "pitcherTeam": "STL",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".333",
+      "bvpOps": ".929",
+      "bvpPA": 28,
+      "bvpHR": 0,
+      "gamePk": 823025,
+      "gameLabel": "CHC @ STL"
+    },
+    {
       "batterId": 671056,
       "batterName": "Iván Herrera",
       "pitcherId": 656849,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823025,
       "gameLabel": "CHC @ STL"
-    },
-    {
-      "batterId": 686527,
-      "batterName": "Dominic Canzone",
-      "pitcherId": 677958,
-      "pitcherName": "Kumar Rocker",
-      "batterTeam": "SEA",
-      "pitcherTeam": "TEX",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.750",
-      "bvpPA": 8,
-      "bvpHR": 2,
-      "gamePk": 822868,
-      "gameLabel": "SEA @ TEX"
     }
   ],
   "pitchers": [
@@ -350,6 +350,19 @@
       "projectedK": 4.5,
       "gamePk": 824570,
       "gameLabel": "NYY @ CWS"
+    },
+    {
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "team": "STL",
+      "oppTeam": "CHC",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.6,
+      "projectedIP": 5,
+      "projectedK": 4,
+      "gamePk": 823025,
+      "gameLabel": "CHC @ STL"
     },
     {
       "pitcherId": 672456,
@@ -530,22 +543,22 @@
       "gameLabel": "AZ @ PIT"
     },
     {
-      "pitcherId": 680694,
-      "pitcherName": "Kyle Bradish",
-      "team": "BAL",
-      "oppTeam": "DET",
-      "line": 98,
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "team": "STL",
+      "oppTeam": "CHC",
+      "line": 88.5,
       "overUnder": "OVER",
-      "pitchScore": 66,
+      "pitchScore": 67,
       "grade": "B+",
-      "recent5Avg": 95.4,
+      "recent5Avg": 88,
       "recent5Starts": 5,
-      "twoYrAvg": 90.7,
-      "twoYrStarts": 26,
-      "bvpAdj": 4,
-      "lineupPA": 40,
-      "gamePk": 824245,
-      "gameLabel": "BAL @ DET"
+      "twoYrAvg": 82.8,
+      "twoYrStarts": 49,
+      "bvpAdj": 2,
+      "lineupPA": 204,
+      "gamePk": 823025,
+      "gameLabel": "CHC @ STL"
     }
   ]
 }
