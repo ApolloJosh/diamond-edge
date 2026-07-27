@@ -1,6 +1,6 @@
 {
   "date": "2026-07-27",
-  "savedAt": "2026-07-27T17:18:38.630Z",
+  "savedAt": "2026-07-27T18:57:57.372Z",
   "scanType": "afternoon",
   "gamesScanned": 12,
   "totalGames": 12,
@@ -307,7 +307,7 @@
       "whiffScore": 66,
       "grade": "B+",
       "k9": 8.1,
-      "projectedIP": 5.6,
+      "projectedIP": 5.4,
       "projectedK": 4,
       "gamePk": 822868,
       "gameLabel": "SEA @ TEX"
@@ -333,7 +333,7 @@
       "whiffScore": 63,
       "grade": "B+",
       "k9": 8.1,
-      "projectedIP": 6.1,
+      "projectedIP": 5.9,
       "projectedK": 4.5,
       "gamePk": 822868,
       "gameLabel": "SEA @ TEX"
@@ -458,24 +458,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 669923,
-      "pitcherName": "George Kirby",
-      "team": "SEA",
-      "oppTeam": "TEX",
-      "line": 88.5,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 89.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.3,
-      "twoYrStarts": 42,
-      "bvpAdj": -2,
-      "lineupPA": 208,
-      "gamePk": 822868,
-      "gameLabel": "SEA @ TEX"
-    },
-    {
       "pitcherId": 554430,
       "pitcherName": "Zack Wheeler",
       "team": "PHI",
@@ -546,6 +528,24 @@
       "lineupPA": 54,
       "gamePk": 823353,
       "gameLabel": "AZ @ PIT"
+    },
+    {
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "team": "BAL",
+      "oppTeam": "DET",
+      "line": 98,
+      "overUnder": "OVER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 95.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.7,
+      "twoYrStarts": 26,
+      "bvpAdj": 4,
+      "lineupPA": 40,
+      "gamePk": 824245,
+      "gameLabel": "BAL @ DET"
     }
   ]
 }
