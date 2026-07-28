@@ -1,8 +1,8 @@
 {
   "date": "2026-07-28",
-  "savedAt": "2026-07-28T17:01:12.426Z",
+  "savedAt": "2026-07-28T18:54:33.064Z",
   "scanType": "afternoon",
-  "gamesScanned": 16,
+  "gamesScanned": 15,
   "totalGames": 16,
   "batters": [
     {
@@ -326,19 +326,6 @@
       "gameLabel": "BAL @ DET"
     },
     {
-      "pitcherId": 519242,
-      "pitcherName": "Chris Sale",
-      "team": "ATL",
-      "oppTeam": "NYM",
-      "whiffScore": 71,
-      "grade": "A",
-      "k9": 10.9,
-      "projectedIP": 5.8,
-      "projectedK": 6,
-      "gamePk": 823598,
-      "gameLabel": "ATL @ NYM"
-    },
-    {
       "pitcherId": 672282,
       "pitcherName": "Reid Detmers",
       "team": "LAA",
@@ -350,6 +337,19 @@
       "projectedK": 5.5,
       "gamePk": 824003,
       "gameLabel": "HOU @ LAA"
+    },
+    {
+      "pitcherId": 519242,
+      "pitcherName": "Chris Sale",
+      "team": "ATL",
+      "oppTeam": "NYM",
+      "whiffScore": 71,
+      "grade": "A",
+      "k9": 10.9,
+      "projectedIP": 5.8,
+      "projectedK": 6,
+      "gamePk": 823598,
+      "gameLabel": "ATL @ NYM"
     },
     {
       "pitcherId": 671737,
