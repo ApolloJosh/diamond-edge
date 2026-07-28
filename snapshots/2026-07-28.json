@@ -1,6 +1,6 @@
 {
   "date": "2026-07-28",
-  "savedAt": "2026-07-28T18:54:33.064Z",
+  "savedAt": "2026-07-28T22:34:06.132Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 16,
@@ -391,6 +391,19 @@
       "gameLabel": "CLE @ CIN"
     },
     {
+      "pitcherId": 657571,
+      "pitcherName": "Caleb Ferguson",
+      "team": "CIN",
+      "oppTeam": "CLE",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 8.6,
+      "projectedIP": 5.5,
+      "projectedK": 4.5,
+      "gamePk": 824489,
+      "gameLabel": "CLE @ CIN"
+    },
+    {
       "pitcherId": 696149,
       "pitcherName": "Bubba Chandler",
       "team": "PIT",
@@ -415,6 +428,19 @@
       "projectedK": 4.5,
       "gamePk": 823838,
       "gameLabel": "PHI @ MIA"
+    },
+    {
+      "pitcherId": 680736,
+      "pitcherName": "Justin Wrobleski",
+      "team": "LAD",
+      "oppTeam": "SEA",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 6.8,
+      "projectedIP": 6.6,
+      "projectedK": 4,
+      "gamePk": 823923,
+      "gameLabel": "SEA @ LAD"
     },
     {
       "pitcherId": 643377,
@@ -534,6 +560,19 @@
       "gameLabel": "COL @ SD"
     },
     {
+      "pitcherId": 615698,
+      "pitcherName": "Cal Quantrill",
+      "team": "TEX",
+      "oppTeam": "TB",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 5.4,
+      "projectedIP": 10.6,
+      "projectedK": 5.5,
+      "gamePk": 822949,
+      "gameLabel": "TEX @ TB"
+    },
+    {
       "pitcherId": 669456,
       "pitcherName": "Shane Bieber",
       "team": "TOR",
@@ -545,6 +584,19 @@
       "projectedK": 3,
       "gamePk": 822703,
       "gameLabel": "TOR @ WSH"
+    },
+    {
+      "pitcherId": 700241,
+      "pitcherName": "Michael McGreevy",
+      "team": "STL",
+      "oppTeam": "CHC",
+      "whiffScore": 40,
+      "grade": "D",
+      "k9": 5.8,
+      "projectedIP": 5.7,
+      "projectedK": 3,
+      "gamePk": 823026,
+      "gameLabel": "CHC @ STL"
     }
   ],
   "pitches": [
@@ -621,22 +673,22 @@
       "gameLabel": "KC @ MIN"
     },
     {
-      "pitcherId": 672282,
-      "pitcherName": "Reid Detmers",
-      "team": "LAA",
-      "oppTeam": "HOU",
-      "line": 94,
+      "pitcherId": 700241,
+      "pitcherName": "Michael McGreevy",
+      "team": "STL",
+      "oppTeam": "CHC",
+      "line": 92.5,
       "overUnder": "OVER",
       "pitchScore": 72,
       "grade": "A",
-      "recent5Avg": 91.2,
+      "recent5Avg": 92,
       "recent5Starts": 5,
-      "twoYrAvg": 93.6,
-      "twoYrStarts": 21,
-      "bvpAdj": 2,
-      "lineupPA": 244,
-      "gamePk": 824003,
-      "gameLabel": "HOU @ LAA"
+      "twoYrAvg": 90.1,
+      "twoYrStarts": 36,
+      "bvpAdj": 1,
+      "lineupPA": 118,
+      "gamePk": 823026,
+      "gameLabel": "CHC @ STL"
     }
   ]
 }
