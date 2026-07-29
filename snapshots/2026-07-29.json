@@ -1,8 +1,8 @@
 {
   "date": "2026-07-29",
-  "savedAt": "2026-07-29T18:32:46.729Z",
+  "savedAt": "2026-07-29T22:29:37.898Z",
   "scanType": "afternoon",
-  "gamesScanned": 11,
+  "gamesScanned": 9,
   "totalGames": 16,
   "batters": [
     {
@@ -703,16 +703,16 @@
       "pitcherName": "Joe Ryan",
       "team": "MIN",
       "oppTeam": "KC",
-      "line": 93,
-      "overUnder": "OVER",
+      "line": 91,
+      "overUnder": "UNDER",
       "pitchScore": 72,
       "grade": "A",
       "recent5Avg": 93.4,
       "recent5Starts": 5,
       "twoYrAvg": 92,
       "twoYrStarts": 51,
-      "bvpAdj": 0,
-      "lineupPA": 176,
+      "bvpAdj": -2,
+      "lineupPA": 124,
       "gamePk": 823677,
       "gameLabel": "KC @ MIN"
     }
