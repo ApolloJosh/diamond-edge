@@ -1,8 +1,8 @@
 {
   "date": "2026-07-30",
-  "savedAt": "2026-07-30T17:03:41.618Z",
+  "savedAt": "2026-07-30T18:56:35.874Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 7,
   "totalGames": 10,
   "batters": [
     {
@@ -298,6 +298,19 @@
       "projectedK": 5,
       "gamePk": 823595,
       "gameLabel": "MIA @ NYM"
+    },
+    {
+      "pitcherId": 663556,
+      "pitcherName": "Shane McClanahan",
+      "team": "TB",
+      "oppTeam": "TEX",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.3,
+      "projectedIP": 5,
+      "projectedK": 4,
+      "gamePk": 822946,
+      "gameLabel": "TEX @ TB"
     },
     {
       "pitcherId": 690997,
