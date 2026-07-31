@@ -1,8 +1,8 @@
 {
   "date": "2026-07-31",
-  "savedAt": "2026-07-31T17:06:48.079Z",
+  "savedAt": "2026-07-31T18:54:51.876Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -84,22 +84,6 @@
       "bvpHR": 4,
       "gamePk": 823922,
       "gameLabel": "BOS @ LAD"
-    },
-    {
-      "batterId": 689414,
-      "batterName": "Liam Hicks",
-      "pitcherId": 642547,
-      "pitcherName": "Freddy Peralta",
-      "batterTeam": "MIA",
-      "pitcherTeam": "NYM",
-      "edgeScore": 84,
-      "grade": "A+",
-      "bvpAvg": ".333",
-      "bvpOps": "1.889",
-      "bvpPA": 18,
-      "bvpHR": 4,
-      "gamePk": 823593,
-      "gameLabel": "MIA @ NYM"
     },
     {
       "batterId": 669394,
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 824164,
       "gameLabel": "TEX @ HOU"
+    },
+    {
+      "batterId": 643217,
+      "batterName": "Andrew Benintendi",
+      "pitcherId": 607259,
+      "pitcherName": "Nick Martinez",
+      "batterTeam": "CWS",
+      "pitcherTeam": "TB",
+      "edgeScore": 69,
+      "grade": "B+",
+      "bvpAvg": ".429",
+      "bvpOps": "1.286",
+      "bvpPA": 14,
+      "bvpHR": 2,
+      "gamePk": 822945,
+      "gameLabel": "CWS @ TB"
     }
   ],
   "pitchers": [
@@ -324,19 +324,6 @@
       "projectedK": 5.5,
       "gamePk": 824164,
       "gameLabel": "TEX @ HOU"
-    },
-    {
-      "pitcherId": 642547,
-      "pitcherName": "Freddy Peralta",
-      "team": "NYM",
-      "oppTeam": "MIA",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 9,
-      "projectedIP": 5.1,
-      "projectedK": 4.5,
-      "gamePk": 823593,
-      "gameLabel": "MIA @ NYM"
     },
     {
       "pitcherId": 684007,
