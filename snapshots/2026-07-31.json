@@ -1,6 +1,6 @@
 {
   "date": "2026-07-31",
-  "savedAt": "2026-07-31T18:54:51.876Z",
+  "savedAt": "2026-07-31T22:33:40.471Z",
   "scanType": "afternoon",
   "gamesScanned": 14,
   "totalGames": 15,
@@ -166,22 +166,6 @@
       "gameLabel": "DET @ ATH"
     },
     {
-      "batterId": 641487,
-      "batterName": "J.P. Crawford",
-      "pitcherId": 805673,
-      "pitcherName": "Zebby Matthews",
-      "batterTeam": "SEA",
-      "pitcherTeam": "MIN",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.000",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 823111,
-      "gameLabel": "MIN @ SEA"
-    },
-    {
       "batterId": 682998,
       "batterName": "Corbin Carroll",
       "pitcherId": 676440,
@@ -244,6 +228,22 @@
       "bvpHR": 2,
       "gamePk": 822945,
       "gameLabel": "CWS @ TB"
+    },
+    {
+      "batterId": 666182,
+      "batterName": "Bo Bichette",
+      "pitcherId": 676083,
+      "pitcherName": "Janson Junk",
+      "batterTeam": "NYM",
+      "pitcherTeam": "MIA",
+      "edgeScore": 69,
+      "grade": "B+",
+      "bvpAvg": ".750",
+      "bvpOps": "1.500",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 823593,
+      "gameLabel": "MIA @ NYM"
     }
   ],
   "pitchers": [
@@ -255,7 +255,7 @@
       "whiffScore": 82,
       "grade": "A+",
       "k9": 11.1,
-      "projectedIP": 5.5,
+      "projectedIP": 5.3,
       "projectedK": 5.5,
       "gamePk": 824486,
       "gameLabel": "PIT @ CIN"
@@ -267,11 +267,24 @@
       "oppTeam": "PIT",
       "whiffScore": 78,
       "grade": "A",
-      "k9": 12.1,
-      "projectedIP": 5.3,
-      "projectedK": 6,
+      "k9": 11.9,
+      "projectedIP": 4.4,
+      "projectedK": 5,
       "gamePk": 824486,
       "gameLabel": "PIT @ CIN"
+    },
+    {
+      "pitcherId": 673540,
+      "pitcherName": "Kodai Senga",
+      "team": "NYM",
+      "oppTeam": "MIA",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.8,
+      "projectedIP": 5.7,
+      "projectedK": 6,
+      "gamePk": 823593,
+      "gameLabel": "MIA @ NYM"
     },
     {
       "pitcherId": 656302,
@@ -326,6 +339,19 @@
       "gameLabel": "TEX @ HOU"
     },
     {
+      "pitcherId": 663947,
+      "pitcherName": "Tyler Holton",
+      "team": "DET",
+      "oppTeam": "ATH",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7,
+      "projectedIP": 23.6,
+      "projectedK": 16,
+      "gamePk": 824975,
+      "gameLabel": "DET @ ATH"
+    },
+    {
       "pitcherId": 684007,
       "pitcherName": "Shota Imanaga",
       "team": "CHC",
@@ -352,19 +378,6 @@
       "gameLabel": "BOS @ LAD"
     },
     {
-      "pitcherId": 605488,
-      "pitcherName": "Jeffrey Springs",
-      "team": "ATH",
-      "oppTeam": "DET",
-      "whiffScore": 62,
-      "grade": "B+",
-      "k9": 7.4,
-      "projectedIP": 5,
-      "projectedK": 3.5,
-      "gamePk": 824975,
-      "gameLabel": "DET @ ATH"
-    },
-    {
       "pitcherId": 656492,
       "pitcherName": "Foster Griffin",
       "team": "WSH",
@@ -376,6 +389,19 @@
       "projectedK": 4.5,
       "gamePk": 824892,
       "gameLabel": "WSH @ ATL"
+    },
+    {
+      "pitcherId": 605488,
+      "pitcherName": "Jeffrey Springs",
+      "team": "ATH",
+      "oppTeam": "DET",
+      "whiffScore": 59,
+      "grade": "B",
+      "k9": 7.4,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 824975,
+      "gameLabel": "DET @ ATH"
     },
     {
       "pitcherId": 701542,
@@ -430,6 +456,19 @@
       "gameLabel": "KC @ COL"
     },
     {
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "team": "MIN",
+      "oppTeam": "SEA",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 7,
+      "projectedIP": 5.8,
+      "projectedK": 3.5,
+      "gamePk": 823111,
+      "gameLabel": "MIN @ SEA"
+    },
+    {
       "pitcherId": 699134,
       "pitcherName": "Bradgley Rodriguez",
       "team": "SD",
@@ -441,19 +480,6 @@
       "projectedK": 13.5,
       "gamePk": 823272,
       "gameLabel": "SF @ SD"
-    },
-    {
-      "pitcherId": 805673,
-      "pitcherName": "Zebby Matthews",
-      "team": "MIN",
-      "oppTeam": "SEA",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 7,
-      "projectedIP": 5.8,
-      "projectedK": 3.5,
-      "gamePk": 823111,
-      "gameLabel": "MIN @ SEA"
     },
     {
       "pitcherId": 693821,
@@ -514,54 +540,18 @@
       "pitcherName": "Hunter Brown",
       "team": "HOU",
       "oppTeam": "TEX",
-      "line": 97.5,
+      "line": 98.5,
       "overUnder": "OVER",
-      "pitchScore": 74,
+      "pitchScore": 76,
       "grade": "A",
       "recent5Avg": 93,
       "recent5Starts": 5,
       "twoYrAvg": 94.6,
       "twoYrStarts": 40,
-      "bvpAdj": 4,
-      "lineupPA": 218,
+      "bvpAdj": 5,
+      "lineupPA": 214,
       "gamePk": 824164,
       "gameLabel": "TEX @ HOU"
-    },
-    {
-      "pitcherId": 668881,
-      "pitcherName": "Hunter Greene",
-      "team": "CIN",
-      "oppTeam": "PIT",
-      "line": 92,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 92.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.9,
-      "twoYrStarts": 23,
-      "bvpAdj": 0,
-      "lineupPA": 122,
-      "gamePk": 824486,
-      "gameLabel": "PIT @ CIN"
-    },
-    {
-      "pitcherId": 694973,
-      "pitcherName": "Paul Skenes",
-      "team": "PIT",
-      "oppTeam": "CIN",
-      "line": 94.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 92.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 92.8,
-      "twoYrStarts": 54,
-      "bvpAdj": 2,
-      "lineupPA": 186,
-      "gamePk": 824486,
-      "gameLabel": "PIT @ CIN"
     },
     {
       "pitcherId": 543135,
@@ -582,22 +572,58 @@
       "gameLabel": "TEX @ HOU"
     },
     {
-      "pitcherId": 805673,
-      "pitcherName": "Zebby Matthews",
-      "team": "MIN",
-      "oppTeam": "SEA",
-      "line": 90,
-      "overUnder": "OVER",
-      "pitchScore": 69,
+      "pitcherId": 656492,
+      "pitcherName": "Foster Griffin",
+      "team": "WSH",
+      "oppTeam": "ATL",
+      "line": 96,
+      "overUnder": "UNDER",
+      "pitchScore": 67,
       "grade": "B+",
-      "recent5Avg": 89.8,
+      "recent5Avg": 99.8,
       "recent5Starts": 5,
-      "twoYrAvg": 88.1,
-      "twoYrStarts": 29,
-      "bvpAdj": 1,
+      "twoYrAvg": 94.1,
+      "twoYrStarts": 21,
+      "bvpAdj": -2,
+      "lineupPA": 80,
+      "gamePk": 824892,
+      "gameLabel": "WSH @ ATL"
+    },
+    {
+      "pitcherId": 608372,
+      "pitcherName": "Tomoyuki Sugano",
+      "team": "COL",
+      "oppTeam": "KC",
+      "line": 85,
+      "overUnder": "UNDER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 87.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 85.7,
+      "twoYrStarts": 48,
+      "bvpAdj": -2,
       "lineupPA": 24,
-      "gamePk": 823111,
-      "gameLabel": "MIN @ SEA"
+      "gamePk": 824325,
+      "gameLabel": "KC @ COL"
+    },
+    {
+      "pitcherId": 687931,
+      "pitcherName": "Carson Whisenhunt",
+      "team": "SF",
+      "oppTeam": "SD",
+      "line": 83.5,
+      "overUnder": "OVER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 84,
+      "recent5Starts": 5,
+      "twoYrAvg": 82.3,
+      "twoYrStarts": 8,
+      "bvpAdj": 0,
+      "lineupPA": 0,
+      "gamePk": 823272,
+      "gameLabel": "SF @ SD"
     }
   ]
 }
