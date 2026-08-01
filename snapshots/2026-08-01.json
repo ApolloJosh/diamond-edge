@@ -1,8 +1,8 @@
 {
   "date": "2026-08-01",
-  "savedAt": "2026-08-01T18:31:15.909Z",
+  "savedAt": "2026-08-01T22:27:22.822Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 11,
   "totalGames": 15,
   "batters": [
     {
@@ -365,19 +365,6 @@
       "gameLabel": "MIN @ SEA"
     },
     {
-      "pitcherId": 667755,
-      "pitcherName": "José Soriano",
-      "team": "LAA",
-      "oppTeam": "MIL",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 9.3,
-      "projectedIP": 5.6,
-      "projectedK": 5,
-      "gamePk": 824000,
-      "gameLabel": "MIL @ LAA"
-    },
-    {
       "pitcherId": 671096,
       "pitcherName": "Andrew Abbott",
       "team": "CIN",
@@ -547,6 +534,19 @@
       "gameLabel": "KC @ COL"
     },
     {
+      "pitcherId": 608718,
+      "pitcherName": "Brent Suter",
+      "team": "LAA",
+      "oppTeam": "MIL",
+      "whiffScore": 49,
+      "grade": "C",
+      "k9": 7.9,
+      "projectedIP": 30.6,
+      "projectedK": 23.5,
+      "gamePk": 824000,
+      "gameLabel": "MIL @ LAA"
+    },
+    {
       "pitcherId": 571945,
       "pitcherName": "Miles Mikolas",
       "team": "WSH",
@@ -584,7 +584,7 @@
       "pitcherName": "Andrew Abbott",
       "team": "CIN",
       "oppTeam": "PIT",
-      "line": 93.5,
+      "line": 95.5,
       "overUnder": "OVER",
       "pitchScore": 72,
       "grade": "A",
@@ -592,8 +592,8 @@
       "recent5Starts": 5,
       "twoYrAvg": 92.4,
       "twoYrStarts": 51,
-      "bvpAdj": 0,
-      "lineupPA": 144,
+      "bvpAdj": 2,
+      "lineupPA": 132,
       "gamePk": 824485,
       "gameLabel": "PIT @ CIN"
     },
