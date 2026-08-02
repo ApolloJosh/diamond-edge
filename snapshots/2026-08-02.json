@@ -1,8 +1,8 @@
 {
   "date": "2026-08-02",
-  "savedAt": "2026-08-02T18:32:04.315Z",
+  "savedAt": "2026-08-02T22:28:04.916Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 2,
   "totalGames": 15,
   "batters": [
     {
@@ -272,6 +272,19 @@
       "projectedK": 5.5,
       "gamePk": 824483,
       "gameLabel": "PIT @ CIN"
+    },
+    {
+      "pitcherId": 694819,
+      "pitcherName": "Jacob Misiorowski",
+      "team": "MIL",
+      "oppTeam": "LAA",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 13.8,
+      "projectedIP": 6,
+      "projectedK": 8,
+      "gamePk": 823996,
+      "gameLabel": "MIL @ LAA"
     },
     {
       "pitcherId": 676917,
