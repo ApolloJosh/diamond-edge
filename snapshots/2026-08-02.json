@@ -1,8 +1,8 @@
 {
   "date": "2026-08-02",
-  "savedAt": "2026-08-02T16:29:24.291Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-08-02T18:32:04.315Z",
+  "scanType": "afternoon",
+  "gamesScanned": 8,
   "totalGames": 15,
   "batters": [
     {
@@ -20,22 +20,6 @@
       "bvpHR": 4,
       "gamePk": 824163,
       "gameLabel": "TEX @ HOU"
-    },
-    {
-      "batterId": 646240,
-      "batterName": "Rafael Devers",
-      "pitcherId": 650633,
-      "pitcherName": "Michael King",
-      "batterTeam": "SF",
-      "pitcherTeam": "SD",
-      "edgeScore": 99,
-      "grade": "A+",
-      "bvpAvg": ".455",
-      "bvpOps": "1.600",
-      "bvpPA": 30,
-      "bvpHR": 4,
-      "gamePk": 823270,
-      "gameLabel": "SF @ SD"
     },
     {
       "batterId": 665487,
@@ -102,22 +86,6 @@
       "gameLabel": "MIN @ SEA"
     },
     {
-      "batterId": 592626,
-      "batterName": "Joc Pederson",
-      "pitcherId": 663567,
-      "pitcherName": "Peter Lambert",
-      "batterTeam": "TEX",
-      "pitcherTeam": "HOU",
-      "edgeScore": 79,
-      "grade": "A",
-      "bvpAvg": ".250",
-      "bvpOps": "1.142",
-      "bvpPA": 44,
-      "bvpHR": 4,
-      "gamePk": 824163,
-      "gameLabel": "TEX @ HOU"
-    },
-    {
       "batterId": 682928,
       "batterName": "CJ Abrams",
       "pitcherId": 702275,
@@ -132,6 +100,22 @@
       "bvpHR": 2,
       "gamePk": 824891,
       "gameLabel": "WSH @ ATL"
+    },
+    {
+      "batterId": 592626,
+      "batterName": "Joc Pederson",
+      "pitcherId": 663567,
+      "pitcherName": "Peter Lambert",
+      "batterTeam": "TEX",
+      "pitcherTeam": "HOU",
+      "edgeScore": 77,
+      "grade": "A",
+      "bvpAvg": ".242",
+      "bvpOps": "1.111",
+      "bvpPA": 45,
+      "bvpHR": 4,
+      "gamePk": 824163,
+      "gameLabel": "TEX @ HOU"
     },
     {
       "batterId": 596019,
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 824163,
       "gameLabel": "TEX @ HOU"
+    },
+    {
+      "batterId": 621020,
+      "batterName": "Dansby Swanson",
+      "pitcherId": 543037,
+      "pitcherName": "Gerrit Cole",
+      "batterTeam": "CHC",
+      "pitcherTeam": "NYY",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".364",
+      "bvpOps": "1.364",
+      "bvpPA": 22,
+      "bvpHR": 4,
+      "gamePk": 824648,
+      "gameLabel": "NYY @ CHC"
     }
   ],
   "pitchers": [
@@ -384,8 +384,8 @@
       "oppTeam": "TEX",
       "whiffScore": 63,
       "grade": "B+",
-      "k9": 8.7,
-      "projectedIP": 5.7,
+      "k9": 8.8,
+      "projectedIP": 5.5,
       "projectedK": 4.5,
       "gamePk": 824163,
       "gameLabel": "TEX @ HOU"
@@ -398,8 +398,8 @@
       "whiffScore": 63,
       "grade": "B+",
       "k9": 8.2,
-      "projectedIP": 5.7,
-      "projectedK": 4.5,
+      "projectedIP": 5.4,
+      "projectedK": 4,
       "gamePk": 824163,
       "gameLabel": "TEX @ HOU"
     },
@@ -488,24 +488,11 @@
       "oppTeam": "NYY",
       "whiffScore": 56,
       "grade": "B",
-      "k9": 6.7,
-      "projectedIP": 6.2,
-      "projectedK": 4,
+      "k9": 6.9,
+      "projectedIP": 5.9,
+      "projectedK": 3.5,
       "gamePk": 824648,
       "gameLabel": "NYY @ CHC"
-    },
-    {
-      "pitcherId": 650633,
-      "pitcherName": "Michael King",
-      "team": "SD",
-      "oppTeam": "SF",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 7.8,
-      "projectedIP": 5.7,
-      "projectedK": 4,
-      "gamePk": 823270,
-      "gameLabel": "SF @ SD"
     },
     {
       "pitcherId": 641743,
@@ -571,6 +558,19 @@
       "projectedK": 4,
       "gamePk": 823592,
       "gameLabel": "MIA @ NYM"
+    },
+    {
+      "pitcherId": 606996,
+      "pitcherName": "Kyle Hart",
+      "team": "SD",
+      "oppTeam": "SF",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 8,
+      "projectedIP": 13.4,
+      "projectedK": 10,
+      "gamePk": 823270,
+      "gameLabel": "SF @ SD"
     }
   ],
   "pitches": [
