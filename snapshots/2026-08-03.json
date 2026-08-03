@@ -1,10 +1,26 @@
 {
   "date": "2026-08-03",
-  "savedAt": "2026-08-03T19:08:05.493Z",
+  "savedAt": "2026-08-03T22:33:43.280Z",
   "scanType": "afternoon",
   "gamesScanned": 8,
   "totalGames": 8,
   "batters": [
+    {
+      "batterId": 646240,
+      "batterName": "Rafael Devers",
+      "pitcherId": 615698,
+      "pitcherName": "Cal Quantrill",
+      "batterTeam": "SF",
+      "pitcherTeam": "TEX",
+      "edgeScore": 98,
+      "grade": "A+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.462",
+      "bvpPA": 30,
+      "bvpHR": 2,
+      "gamePk": 822867,
+      "gameLabel": "SF @ TEX"
+    },
     {
       "batterId": 691406,
       "batterName": "Junior Caminero",
@@ -214,33 +230,17 @@
       "gameLabel": "PIT @ MIL"
     },
     {
-      "batterId": 641343,
-      "batterName": "Jake Bauers",
-      "pitcherId": 696149,
-      "pitcherName": "Bubba Chandler",
-      "batterTeam": "MIL",
-      "pitcherTeam": "PIT",
-      "edgeScore": 64,
+      "batterId": 691718,
+      "batterName": "Pete Crow-Armstrong",
+      "pitcherId": 680736,
+      "pitcherName": "Justin Wrobleski",
+      "batterTeam": "CHC",
+      "pitcherTeam": "LAD",
+      "edgeScore": 65,
       "grade": "B+",
       "bvpAvg": ".500",
-      "bvpOps": "1.750",
-      "bvpPA": 8,
-      "bvpHR": 0,
-      "gamePk": 823757,
-      "gameLabel": "PIT @ MIL"
-    },
-    {
-      "batterId": 605141,
-      "batterName": "Mookie Betts",
-      "pitcherId": 571510,
-      "pitcherName": "Matthew Boyd",
-      "batterTeam": "LAD",
-      "pitcherTeam": "CHC",
-      "edgeScore": 64,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": ".813",
-      "bvpPA": 38,
+      "bvpOps": "1.167",
+      "bvpPA": 6,
       "bvpHR": 0,
       "gamePk": 824647,
       "gameLabel": "LAD @ CHC"
@@ -339,6 +339,19 @@
       "gameLabel": "SF @ TEX"
     },
     {
+      "pitcherId": 680736,
+      "pitcherName": "Justin Wrobleski",
+      "team": "LAD",
+      "oppTeam": "CHC",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 7,
+      "projectedIP": 6.6,
+      "projectedK": 4,
+      "gamePk": 824647,
+      "gameLabel": "LAD @ CHC"
+    },
+    {
       "pitcherId": 650633,
       "pitcherName": "Michael King",
       "team": "SD",
@@ -363,6 +376,19 @@
       "projectedK": 2.5,
       "gamePk": 824160,
       "gameLabel": "TOR @ HOU"
+    },
+    {
+      "pitcherId": 615698,
+      "pitcherName": "Cal Quantrill",
+      "team": "TEX",
+      "oppTeam": "SF",
+      "whiffScore": 51,
+      "grade": "C",
+      "k9": 6,
+      "projectedIP": 9.7,
+      "projectedK": 5.5,
+      "gamePk": 822867,
+      "gameLabel": "SF @ TEX"
     },
     {
       "pitcherId": 547179,
