@@ -1,6 +1,6 @@
 {
   "date": "2026-08-03",
-  "savedAt": "2026-08-03T17:26:15.852Z",
+  "savedAt": "2026-08-03T19:08:05.493Z",
   "scanType": "afternoon",
   "gamesScanned": 8,
   "totalGames": 8,
@@ -291,8 +291,8 @@
       "pitcherName": "Michael McGreevy",
       "team": "STL",
       "oppTeam": "NYY",
-      "whiffScore": 62,
-      "grade": "B+",
+      "whiffScore": 58,
+      "grade": "B",
       "k9": 5.9,
       "projectedIP": 5.5,
       "projectedK": 3,
