@@ -1,6 +1,6 @@
 {
   "date": "2026-08-04",
-  "savedAt": "2026-08-04T19:09:28.004Z",
+  "savedAt": "2026-08-04T22:36:53.521Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -378,19 +378,6 @@
       "gameLabel": "NYM @ CLE"
     },
     {
-      "pitcherId": 663436,
-      "pitcherName": "Davis Martin",
-      "team": "CWS",
-      "oppTeam": "BOS",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 8.2,
-      "projectedIP": 5.6,
-      "projectedK": 4,
-      "gamePk": 824731,
-      "gameLabel": "CWS @ BOS"
-    },
-    {
       "pitcherId": 656550,
       "pitcherName": "Grant Holmes",
       "team": "ATL",
@@ -402,6 +389,19 @@
       "projectedK": 3.5,
       "gamePk": 824888,
       "gameLabel": "MIA @ ATL"
+    },
+    {
+      "pitcherId": 675512,
+      "pitcherName": "Troy Melton",
+      "team": "DET",
+      "oppTeam": "SEA",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 8.1,
+      "projectedIP": 6.1,
+      "projectedK": 4.5,
+      "gamePk": 823108,
+      "gameLabel": "DET @ SEA"
     },
     {
       "pitcherId": 657746,
@@ -454,6 +454,19 @@
       "projectedK": 5,
       "gamePk": 823756,
       "gameLabel": "PIT @ MIL"
+    },
+    {
+      "pitcherId": 663436,
+      "pitcherName": "Davis Martin",
+      "team": "CWS",
+      "oppTeam": "BOS",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.2,
+      "projectedIP": 5.6,
+      "projectedK": 4,
+      "gamePk": 824731,
+      "gameLabel": "CWS @ BOS"
     },
     {
       "pitcherId": 702056,
@@ -525,7 +538,7 @@
       "pitcherName": "Javier Assad",
       "team": "CHC",
       "oppTeam": "LAD",
-      "whiffScore": 49,
+      "whiffScore": 52,
       "grade": "C",
       "k9": 6.2,
       "projectedIP": 7.7,
@@ -588,7 +601,7 @@
       "twoYrAvg": 95.3,
       "twoYrStarts": 54,
       "bvpAdj": 4,
-      "lineupPA": 144,
+      "lineupPA": 124,
       "gamePk": 823432,
       "gameLabel": "WSH @ PHI"
     },
@@ -606,7 +619,7 @@
       "twoYrAvg": 92,
       "twoYrStarts": 52,
       "bvpAdj": -4,
-      "lineupPA": 208,
+      "lineupPA": 276,
       "gamePk": 824084,
       "gameLabel": "MIN @ KC"
     },
