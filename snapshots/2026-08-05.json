@@ -1,8 +1,8 @@
 {
   "date": "2026-08-05",
-  "savedAt": "2026-08-05T17:04:21.519Z",
+  "savedAt": "2026-08-05T19:04:06.928Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 13,
   "totalGames": 15,
   "batters": [
     {
@@ -300,6 +300,19 @@
       "gameLabel": "PIT @ MIL"
     },
     {
+      "pitcherId": 687931,
+      "pitcherName": "Carson Whisenhunt",
+      "team": "SF",
+      "oppTeam": "TEX",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.1,
+      "projectedIP": 4,
+      "projectedK": 3,
+      "gamePk": 822866,
+      "gameLabel": "SF @ TEX"
+    },
+    {
       "pitcherId": 701542,
       "pitcherName": "Will Warren",
       "team": "NYY",
@@ -324,19 +337,6 @@
       "projectedK": 5,
       "gamePk": 823106,
       "gameLabel": "DET @ SEA"
-    },
-    {
-      "pitcherId": 687931,
-      "pitcherName": "Carson Whisenhunt",
-      "team": "SF",
-      "oppTeam": "TEX",
-      "whiffScore": 66,
-      "grade": "B+",
-      "k9": 7.6,
-      "projectedIP": 4.8,
-      "projectedK": 3.5,
-      "gamePk": 822866,
-      "gameLabel": "SF @ TEX"
     },
     {
       "pitcherId": 686613,
