@@ -1,8 +1,8 @@
 {
   "date": "2026-08-05",
-  "savedAt": "2026-08-05T19:04:06.928Z",
+  "savedAt": "2026-08-05T22:35:18.938Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 11,
   "totalGames": 15,
   "batters": [
     {
@@ -456,6 +456,19 @@
       "gameLabel": "CWS @ BOS"
     },
     {
+      "pitcherId": 663554,
+      "pitcherName": "Casey Mize",
+      "team": "SD",
+      "oppTeam": "AZ",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.8,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
+      "gamePk": 825052,
+      "gameLabel": "SD @ AZ"
+    },
+    {
       "pitcherId": 665152,
       "pitcherName": "Dean Kremer",
       "team": "MIN",
@@ -467,19 +480,6 @@
       "projectedK": 4.5,
       "gamePk": 824082,
       "gameLabel": "MIN @ KC"
-    },
-    {
-      "pitcherId": 663554,
-      "pitcherName": "Casey Mize",
-      "team": "SD",
-      "oppTeam": "AZ",
-      "whiffScore": 57,
-      "grade": "B",
-      "k9": 8.8,
-      "projectedIP": 5.4,
-      "projectedK": 4.5,
-      "gamePk": 825052,
-      "gameLabel": "SD @ AZ"
     },
     {
       "pitcherId": 693821,
