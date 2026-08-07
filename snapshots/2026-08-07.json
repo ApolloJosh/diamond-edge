@@ -1,10 +1,26 @@
 {
   "date": "2026-08-07",
-  "savedAt": "2026-08-07T18:24:46.488Z",
+  "savedAt": "2026-08-07T22:06:50.603Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
+    {
+      "batterId": 516782,
+      "batterName": "Starling Marte",
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "batterTeam": "KC",
+      "pitcherTeam": "CHC",
+      "edgeScore": 99,
+      "grade": "A+",
+      "bvpAvg": ".533",
+      "bvpOps": "1.544",
+      "bvpPA": 36,
+      "bvpHR": 2,
+      "gamePk": 824081,
+      "gameLabel": "CHC @ KC"
+    },
     {
       "batterId": 571970,
       "batterName": "Max Muncy",
@@ -68,6 +84,22 @@
       "bvpHR": 4,
       "gamePk": 825051,
       "gameLabel": "LAD @ AZ"
+    },
+    {
+      "batterId": 677951,
+      "batterName": "Bobby Witt Jr.",
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "batterTeam": "KC",
+      "pitcherTeam": "CHC",
+      "edgeScore": 80,
+      "grade": "A+",
+      "bvpAvg": ".333",
+      "bvpOps": "1.133",
+      "bvpPA": 30,
+      "bvpHR": 4,
+      "gamePk": 824081,
+      "gameLabel": "CHC @ KC"
     },
     {
       "batterId": 624413,
@@ -212,38 +244,6 @@
       "bvpHR": 4,
       "gamePk": 823515,
       "gameLabel": "ATL @ NYY"
-    },
-    {
-      "batterId": 605141,
-      "batterName": "Mookie Betts",
-      "pitcherId": 518876,
-      "pitcherName": "Merrill Kelly",
-      "batterTeam": "LAD",
-      "pitcherTeam": "AZ",
-      "edgeScore": 70,
-      "grade": "A",
-      "bvpAvg": ".257",
-      "bvpOps": ".979",
-      "bvpPA": 80,
-      "bvpHR": 8,
-      "gamePk": 825051,
-      "gameLabel": "LAD @ AZ"
-    },
-    {
-      "batterId": 606466,
-      "batterName": "Ketel Marte",
-      "pitcherId": 808963,
-      "pitcherName": "Roki Sasaki",
-      "batterTeam": "AZ",
-      "pitcherTeam": "LAD",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "2.667",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 825051,
-      "gameLabel": "LAD @ AZ"
     }
   ],
   "pitchers": [
@@ -456,6 +456,19 @@
       "gameLabel": "ATL @ NYY"
     },
     {
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "team": "CHC",
+      "oppTeam": "KC",
+      "whiffScore": 57,
+      "grade": "B",
+      "k9": 9,
+      "projectedIP": 5.5,
+      "projectedK": 4.5,
+      "gamePk": 824081,
+      "gameLabel": "CHC @ KC"
+    },
+    {
       "pitcherId": 592662,
       "pitcherName": "Robbie Ray",
       "team": "SD",
@@ -590,27 +603,27 @@
       "twoYrAvg": 90.8,
       "twoYrStarts": 29,
       "bvpAdj": 0,
-      "lineupPA": 96,
+      "lineupPA": 102,
       "gamePk": 824566,
       "gameLabel": "CLE @ CWS"
     },
     {
-      "pitcherId": 669302,
-      "pitcherName": "Logan Gilbert",
-      "team": "SEA",
-      "oppTeam": "TB",
-      "line": 96,
-      "overUnder": "OVER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 94.2,
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "team": "CHC",
+      "oppTeam": "KC",
+      "line": 93,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 95.4,
       "recent5Starts": 5,
-      "twoYrAvg": 89.9,
-      "twoYrStarts": 47,
-      "bvpAdj": 3,
-      "lineupPA": 116,
-      "gamePk": 823103,
-      "gameLabel": "TB @ SEA"
+      "twoYrAvg": 94,
+      "twoYrStarts": 55,
+      "bvpAdj": -2,
+      "lineupPA": 154,
+      "gamePk": 824081,
+      "gameLabel": "CHC @ KC"
     }
   ]
 }
