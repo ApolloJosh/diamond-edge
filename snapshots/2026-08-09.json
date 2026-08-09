@@ -1,8 +1,8 @@
 {
   "date": "2026-08-09",
-  "savedAt": "2026-08-09T15:59:54.808Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-08-09T18:00:41.696Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -267,11 +267,24 @@
       "oppTeam": "ATH",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 12.6,
-      "projectedIP": 5.5,
-      "projectedK": 6.5,
+      "k9": 12.8,
+      "projectedIP": 36,
+      "projectedK": 44.5,
       "gamePk": 824724,
       "gameLabel": "ATH @ BOS"
+    },
+    {
+      "pitcherId": 687473,
+      "pitcherName": "Ryan Gusto",
+      "team": "MIA",
+      "oppTeam": "LAA",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8,
+      "projectedIP": 4.6,
+      "projectedK": 3.5,
+      "gamePk": 823835,
+      "gameLabel": "LAA @ MIA"
     },
     {
       "pitcherId": 687570,
@@ -293,37 +306,11 @@
       "oppTeam": "PIT",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 8.8,
-      "projectedIP": 9.7,
-      "projectedK": 8,
+      "k9": 8.9,
+      "projectedIP": 8.9,
+      "projectedK": 7.5,
       "gamePk": 823345,
       "gameLabel": "NYM @ PIT"
-    },
-    {
-      "pitcherId": 687473,
-      "pitcherName": "Ryan Gusto",
-      "team": "MIA",
-      "oppTeam": "LAA",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 7.8,
-      "projectedIP": 5,
-      "projectedK": 3.5,
-      "gamePk": 823835,
-      "gameLabel": "LAA @ MIA"
-    },
-    {
-      "pitcherId": 666200,
-      "pitcherName": "Jesús Luzardo",
-      "team": "PHI",
-      "oppTeam": "TOR",
-      "whiffScore": 68,
-      "grade": "B+",
-      "k9": 10.8,
-      "projectedIP": 5.9,
-      "projectedK": 6,
-      "gamePk": 823425,
-      "gameLabel": "TOR @ PHI"
     },
     {
       "pitcherId": 693855,
@@ -352,6 +339,19 @@
       "gameLabel": "DET @ SF"
     },
     {
+      "pitcherId": 666200,
+      "pitcherName": "Jesús Luzardo",
+      "team": "PHI",
+      "oppTeam": "TOR",
+      "whiffScore": 65,
+      "grade": "B+",
+      "k9": 10.8,
+      "projectedIP": 5.8,
+      "projectedK": 6,
+      "gamePk": 823425,
+      "gameLabel": "TOR @ PHI"
+    },
+    {
       "pitcherId": 664299,
       "pitcherName": "Cristian Javier",
       "team": "HOU",
@@ -371,9 +371,9 @@
       "oppTeam": "BOS",
       "whiffScore": 60,
       "grade": "B",
-      "k9": 8.2,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
+      "k9": 8.1,
+      "projectedIP": 5.5,
+      "projectedK": 4,
       "gamePk": 824724,
       "gameLabel": "ATH @ BOS"
     },
@@ -384,8 +384,8 @@
       "oppTeam": "ATL",
       "whiffScore": 57,
       "grade": "B",
-      "k9": 11,
-      "projectedIP": 5.8,
+      "k9": 11.1,
+      "projectedIP": 5.6,
       "projectedK": 6,
       "gamePk": 823513,
       "gameLabel": "ATL @ NYY"
@@ -411,7 +411,7 @@
       "whiffScore": 56,
       "grade": "B",
       "k9": 7.7,
-      "projectedIP": 5.1,
+      "projectedIP": 5,
       "projectedK": 3.5,
       "gamePk": 823513,
       "gameLabel": "ATL @ NYY"
@@ -436,9 +436,9 @@
       "oppTeam": "PHI",
       "whiffScore": 52,
       "grade": "C",
-      "k9": 6.8,
-      "projectedIP": 4.6,
-      "projectedK": 3,
+      "k9": 6.9,
+      "projectedIP": 4.3,
+      "projectedK": 2.5,
       "gamePk": 823425,
       "gameLabel": "TOR @ PHI"
     },
@@ -549,24 +549,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 666200,
-      "pitcherName": "Jesús Luzardo",
-      "team": "PHI",
-      "oppTeam": "TOR",
-      "line": 102,
-      "overUnder": "OVER",
-      "pitchScore": 76,
-      "grade": "A",
-      "recent5Avg": 97.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 95.3,
-      "twoYrStarts": 55,
-      "bvpAdj": 5,
-      "lineupPA": 72,
-      "gamePk": 823425,
-      "gameLabel": "TOR @ PHI"
-    },
-    {
       "pitcherId": 700241,
       "pitcherName": "Michael McGreevy",
       "team": "STL",
@@ -637,6 +619,24 @@
       "lineupPA": 190,
       "gamePk": 824078,
       "gameLabel": "CHC @ KC"
+    },
+    {
+      "pitcherId": 687570,
+      "pitcherName": "Connor Prielipp",
+      "team": "MIN",
+      "oppTeam": "MIL",
+      "line": 89,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 86.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 87.7,
+      "twoYrStarts": 15,
+      "bvpAdj": 2,
+      "lineupPA": 24,
+      "gamePk": 823751,
+      "gameLabel": "MIN @ MIL"
     }
   ]
 }
