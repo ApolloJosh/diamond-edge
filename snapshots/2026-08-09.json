@@ -1,8 +1,8 @@
 {
   "date": "2026-08-09",
-  "savedAt": "2026-08-09T18:00:41.696Z",
+  "savedAt": "2026-08-09T21:58:36.855Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 1,
   "totalGames": 15,
   "batters": [
     {
@@ -376,6 +376,19 @@
       "projectedK": 4,
       "gamePk": 824724,
       "gameLabel": "ATH @ BOS"
+    },
+    {
+      "pitcherId": 681190,
+      "pitcherName": "Randy Vásquez",
+      "team": "SD",
+      "oppTeam": "HOU",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 5.8,
+      "projectedIP": 5.6,
+      "projectedK": 3,
+      "gamePk": 823268,
+      "gameLabel": "HOU @ SD"
     },
     {
       "pitcherId": 693645,
