@@ -1,6 +1,6 @@
 {
   "date": "2026-08-11",
-  "savedAt": "2026-08-11T18:27:30.615Z",
+  "savedAt": "2026-08-11T22:12:29.299Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -100,6 +100,38 @@
       "bvpHR": 2,
       "gamePk": 823019,
       "gameLabel": "PHI @ STL"
+    },
+    {
+      "batterId": 664023,
+      "batterName": "Ian Happ",
+      "pitcherId": 663623,
+      "pitcherName": "Jake Irvin",
+      "batterTeam": "CHC",
+      "pitcherTeam": "WSH",
+      "edgeScore": 77,
+      "grade": "A",
+      "bvpAvg": ".333",
+      "bvpOps": "1.427",
+      "bvpPA": 26,
+      "bvpHR": 2,
+      "gamePk": 822697,
+      "gameLabel": "CHC @ WSH"
+    },
+    {
+      "batterId": 691718,
+      "batterName": "Pete Crow-Armstrong",
+      "pitcherId": 663623,
+      "pitcherName": "Jake Irvin",
+      "batterTeam": "CHC",
+      "pitcherTeam": "WSH",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".333",
+      "bvpOps": "1.141",
+      "bvpPA": 22,
+      "bvpHR": 2,
+      "gamePk": 822697,
+      "gameLabel": "CHC @ WSH"
     },
     {
       "batterId": 650333,
@@ -212,38 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823019,
       "gameLabel": "PHI @ STL"
-    },
-    {
-      "batterId": 657757,
-      "batterName": "Gavin Sheets",
-      "pitcherId": 690986,
-      "pitcherName": "Kyle Harrison",
-      "batterTeam": "SD",
-      "pitcherTeam": "MIL",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.600",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 823264,
-      "gameLabel": "MIL @ SD"
-    },
-    {
-      "batterId": 805999,
-      "batterName": "A.J. Ewing",
-      "pitcherId": 527048,
-      "pitcherName": "Martín Pérez",
-      "batterTeam": "NYM",
-      "pitcherTeam": "ATL",
-      "edgeScore": 67,
-      "grade": "B+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.800",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 824886,
-      "gameLabel": "NYM @ ATL"
     }
   ],
   "pitchers": [
@@ -363,6 +363,19 @@
       "projectedK": 4,
       "gamePk": 823917,
       "gameLabel": "KC @ LAD"
+    },
+    {
+      "pitcherId": 663623,
+      "pitcherName": "Jake Irvin",
+      "team": "WSH",
+      "oppTeam": "CHC",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 9,
+      "projectedIP": 4.8,
+      "projectedK": 4,
+      "gamePk": 822697,
+      "gameLabel": "CHC @ WSH"
     },
     {
       "pitcherId": 693433,
