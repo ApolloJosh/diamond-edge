@@ -1,8 +1,8 @@
 {
   "date": "2026-08-12",
-  "savedAt": "2026-08-12T16:28:28.644Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-08-12T18:28:11.078Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -365,6 +365,19 @@
       "gameLabel": "BOS @ TOR"
     },
     {
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "team": "STL",
+      "oppTeam": "PHI",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8,
+      "projectedIP": 4.9,
+      "projectedK": 3.5,
+      "gamePk": 823017,
+      "gameLabel": "PHI @ STL"
+    },
+    {
       "pitcherId": 687911,
       "pitcherName": "Bryan King",
       "team": "HOU",
@@ -575,7 +588,7 @@
       "twoYrAvg": 89.7,
       "twoYrStarts": 53,
       "bvpAdj": -4,
-      "lineupPA": 146,
+      "lineupPA": 140,
       "gamePk": 825047,
       "gameLabel": "COL @ AZ"
     },
