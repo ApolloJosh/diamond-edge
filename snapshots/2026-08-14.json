@@ -1,7 +1,7 @@
 {
   "date": "2026-08-14",
-  "savedAt": "2026-08-14T16:26:04.562Z",
-  "scanType": "morning",
+  "savedAt": "2026-08-14T18:26:39.937Z",
+  "scanType": "afternoon",
   "gamesScanned": 14,
   "totalGames": 14,
   "batters": [
@@ -134,6 +134,38 @@
       "gameLabel": "MIL @ LAD"
     },
     {
+      "batterId": 802415,
+      "batterName": "Chandler Simpson",
+      "pitcherId": 605135,
+      "pitcherName": "Chris Bassitt",
+      "batterTeam": "TB",
+      "pitcherTeam": "BAL",
+      "edgeScore": 75,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "1.125",
+      "bvpPA": 16,
+      "bvpHR": 0,
+      "gamePk": 822942,
+      "gameLabel": "BAL @ TB"
+    },
+    {
+      "batterId": 689414,
+      "batterName": "Liam Hicks",
+      "pitcherId": 605135,
+      "pitcherName": "Chris Bassitt",
+      "batterTeam": "TB",
+      "pitcherTeam": "BAL",
+      "edgeScore": 75,
+      "grade": "A",
+      "bvpAvg": "1.000",
+      "bvpOps": "2.000",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 822942,
+      "gameLabel": "BAL @ TB"
+    },
+    {
       "batterId": 677594,
       "batterName": "Julio Rodríguez",
       "pitcherId": 663567,
@@ -212,38 +244,6 @@
       "bvpHR": 2,
       "gamePk": 822942,
       "gameLabel": "BAL @ TB"
-    },
-    {
-      "batterId": 683002,
-      "batterName": "Gunnar Henderson",
-      "pitcherId": 571927,
-      "pitcherName": "Steven Matz",
-      "batterTeam": "BAL",
-      "pitcherTeam": "TB",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.500",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 822942,
-      "gameLabel": "BAL @ TB"
-    },
-    {
-      "batterId": 701358,
-      "batterName": "Cam Smith",
-      "pitcherId": 669923,
-      "pitcherName": "George Kirby",
-      "batterTeam": "HOU",
-      "pitcherTeam": "SEA",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.167",
-      "bvpPA": 18,
-      "bvpHR": 0,
-      "gamePk": 824159,
-      "gameLabel": "SEA @ HOU"
     }
   ],
   "pitchers": [
@@ -449,9 +449,9 @@
       "oppTeam": "STL",
       "whiffScore": 53,
       "grade": "C",
-      "k9": 7.3,
-      "projectedIP": 5.6,
-      "projectedK": 4,
+      "k9": 7.2,
+      "projectedIP": 5.2,
+      "projectedK": 3.5,
       "gamePk": 824643,
       "gameLabel": "STL @ CHC"
     },
@@ -532,27 +532,22 @@
       "projectedK": 3.5,
       "gamePk": 823993,
       "gameLabel": "KC @ LAA"
+    },
+    {
+      "pitcherId": 605135,
+      "pitcherName": "Chris Bassitt",
+      "team": "BAL",
+      "oppTeam": "TB",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 5.9,
+      "projectedIP": 5.6,
+      "projectedK": 3,
+      "gamePk": 822942,
+      "gameLabel": "BAL @ TB"
     }
   ],
   "pitches": [
-    {
-      "pitcherId": 605280,
-      "pitcherName": "Clay Holmes",
-      "team": "CHC",
-      "oppTeam": "STL",
-      "line": 94,
-      "overUnder": "OVER",
-      "pitchScore": 74,
-      "grade": "A",
-      "recent5Avg": 92.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 89.3,
-      "twoYrStarts": 41,
-      "bvpAdj": 3,
-      "lineupPA": 66,
-      "gamePk": 824643,
-      "gameLabel": "STL @ CHC"
-    },
     {
       "pitcherId": 607625,
       "pitcherName": "Seth Lugo",
@@ -624,6 +619,24 @@
       "lineupPA": 338,
       "gamePk": 824159,
       "gameLabel": "SEA @ HOU"
+    },
+    {
+      "pitcherId": 694297,
+      "pitcherName": "Brandon Pfaadt",
+      "team": "AZ",
+      "oppTeam": "ATL",
+      "line": 93,
+      "overUnder": "UNDER",
+      "pitchScore": 67,
+      "grade": "B+",
+      "recent5Avg": 91.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 95.9,
+      "twoYrStarts": 44,
+      "bvpAdj": 0,
+      "lineupPA": 202,
+      "gamePk": 824882,
+      "gameLabel": "AZ @ ATL"
     }
   ]
 }
