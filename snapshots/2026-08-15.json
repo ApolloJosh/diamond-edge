@@ -1,8 +1,8 @@
 {
   "date": "2026-08-15",
-  "savedAt": "2026-08-15T17:49:06.523Z",
+  "savedAt": "2026-08-15T21:46:57.988Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -623,6 +623,19 @@
       "projectedK": 2.5,
       "gamePk": 823184,
       "gameLabel": "COL @ SF"
+    },
+    {
+      "pitcherId": 593974,
+      "pitcherName": "Wandy Peralta",
+      "team": "SD",
+      "oppTeam": "CLE",
+      "whiffScore": 40,
+      "grade": "D",
+      "k9": 5.6,
+      "projectedIP": 15.3,
+      "projectedK": 8,
+      "gamePk": 824400,
+      "gameLabel": "SD @ CLE"
     }
   ],
   "pitches": [
