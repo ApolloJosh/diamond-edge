@@ -1,8 +1,8 @@
 {
   "date": "2026-08-16",
-  "savedAt": "2026-08-16T17:48:08.261Z",
+  "savedAt": "2026-08-16T21:45:45.226Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 2,
   "totalGames": 15,
   "batters": [
     {
@@ -545,6 +545,32 @@
       "projectedK": 2.5,
       "gamePk": 824965,
       "gameLabel": "TEX @ ATH"
+    },
+    {
+      "pitcherId": 687312,
+      "pitcherName": "Gabriel Hughes",
+      "team": "COL",
+      "oppTeam": "SF",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 7.9,
+      "projectedIP": 5.3,
+      "projectedK": 4,
+      "gamePk": 823182,
+      "gameLabel": "COL @ SF"
+    },
+    {
+      "pitcherId": 694918,
+      "pitcherName": "Blade Tidwell",
+      "team": "SF",
+      "oppTeam": "COL",
+      "whiffScore": 44,
+      "grade": "D",
+      "k9": 6.7,
+      "projectedIP": 9,
+      "projectedK": 5.5,
+      "gamePk": 823182,
+      "gameLabel": "COL @ SF"
     },
     {
       "pitcherId": 669432,
