@@ -1,6 +1,6 @@
 {
   "date": "2026-08-17",
-  "savedAt": "2026-08-17T17:57:01.255Z",
+  "savedAt": "2026-08-17T21:51:13.091Z",
   "scanType": "afternoon",
   "gamesScanned": 11,
   "totalGames": 11,
@@ -326,19 +326,6 @@
       "gameLabel": "CWS @ CHC"
     },
     {
-      "pitcherId": 686930,
-      "pitcherName": "Mason Barnett",
-      "team": "ATH",
-      "oppTeam": "KC",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 8.5,
-      "projectedIP": 12.7,
-      "projectedK": 10.5,
-      "gamePk": 824077,
-      "gameLabel": "ATH @ KC"
-    },
-    {
       "pitcherId": 669387,
       "pitcherName": "Carmen Mlodzinski",
       "team": "PIT",
@@ -378,6 +365,32 @@
       "gameLabel": "STL @ CIN"
     },
     {
+      "pitcherId": 592288,
+      "pitcherName": "Kent Emanuel",
+      "team": "CIN",
+      "oppTeam": "STL",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 7.2,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 824514,
+      "gameLabel": "STL @ CIN"
+    },
+    {
+      "pitcherId": 621111,
+      "pitcherName": "Walker Buehler",
+      "team": "SD",
+      "oppTeam": "NYM",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 7.9,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 823589,
+      "gameLabel": "SD @ NYM"
+    },
+    {
       "pitcherId": 669467,
       "pitcherName": "Andre Pallante",
       "team": "STL",
@@ -389,19 +402,6 @@
       "projectedK": 3.5,
       "gamePk": 824478,
       "gameLabel": "STL @ CIN"
-    },
-    {
-      "pitcherId": 621111,
-      "pitcherName": "Walker Buehler",
-      "team": "SD",
-      "oppTeam": "NYM",
-      "whiffScore": 59,
-      "grade": "B",
-      "k9": 7.9,
-      "projectedIP": 4.8,
-      "projectedK": 3.5,
-      "gamePk": 823589,
-      "gameLabel": "SD @ NYM"
     },
     {
       "pitcherId": 687064,
@@ -456,6 +456,19 @@
       "gameLabel": "ATH @ KC"
     },
     {
+      "pitcherId": 686930,
+      "pitcherName": "Mason Barnett",
+      "team": "ATH",
+      "oppTeam": "KC",
+      "whiffScore": 49,
+      "grade": "C",
+      "k9": 8.5,
+      "projectedIP": 12.7,
+      "projectedK": 10.5,
+      "gamePk": 824077,
+      "gameLabel": "ATH @ KC"
+    },
+    {
       "pitcherId": 608372,
       "pitcherName": "Tomoyuki Sugano",
       "team": "COL",
@@ -497,7 +510,7 @@
       "twoYrAvg": 86.8,
       "twoYrStarts": 48,
       "bvpAdj": 2,
-      "lineupPA": 66,
+      "lineupPA": 70,
       "gamePk": 823589,
       "gameLabel": "SD @ NYM"
     },
