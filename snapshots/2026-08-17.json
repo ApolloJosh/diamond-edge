@@ -1,7 +1,7 @@
 {
   "date": "2026-08-17",
-  "savedAt": "2026-08-17T15:51:23.231Z",
-  "scanType": "morning",
+  "savedAt": "2026-08-17T17:57:01.255Z",
+  "scanType": "afternoon",
   "gamesScanned": 11,
   "totalGames": 11,
   "batters": [
@@ -430,6 +430,19 @@
       "gameLabel": "MIA @ PHI"
     },
     {
+      "pitcherId": 527048,
+      "pitcherName": "Martín Pérez",
+      "team": "ATL",
+      "oppTeam": "MIN",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 6.8,
+      "projectedIP": 5.6,
+      "projectedK": 3.5,
+      "gamePk": 823668,
+      "gameLabel": "ATL @ MIN"
+    },
+    {
       "pitcherId": 608379,
       "pitcherName": "Michael Wacha",
       "team": "KC",
@@ -441,19 +454,6 @@
       "projectedK": 4,
       "gamePk": 824077,
       "gameLabel": "ATH @ KC"
-    },
-    {
-      "pitcherId": 527048,
-      "pitcherName": "Martín Pérez",
-      "team": "ATL",
-      "oppTeam": "MIN",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 6.8,
-      "projectedIP": 5.6,
-      "projectedK": 3.5,
-      "gamePk": 823668,
-      "gameLabel": "ATL @ MIN"
     },
     {
       "pitcherId": 608372,
