@@ -1,6 +1,6 @@
 {
   "date": "2026-08-18",
-  "savedAt": "2026-08-18T17:55:50.680Z",
+  "savedAt": "2026-08-18T21:49:01.216Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -417,6 +417,19 @@
       "gameLabel": "SEA @ MIL"
     },
     {
+      "pitcherId": 663542,
+      "pitcherName": "Bryan Hudson",
+      "team": "CWS",
+      "oppTeam": "CHC",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.7,
+      "projectedIP": 8.5,
+      "projectedK": 7,
+      "gamePk": 824639,
+      "gameLabel": "CWS @ CHC"
+    },
+    {
       "pitcherId": 518876,
       "pitcherName": "Merrill Kelly",
       "team": "AZ",
@@ -441,19 +454,6 @@
       "projectedK": 3.5,
       "gamePk": 824475,
       "gameLabel": "STL @ CIN"
-    },
-    {
-      "pitcherId": 641778,
-      "pitcherName": "Eric Lauer",
-      "team": "LAD",
-      "oppTeam": "COL",
-      "whiffScore": 51,
-      "grade": "C",
-      "k9": 5.8,
-      "projectedIP": 6.1,
-      "projectedK": 3,
-      "gamePk": 824319,
-      "gameLabel": "LAD @ COL"
     },
     {
       "pitcherId": 624133,
@@ -495,6 +495,19 @@
       "gameLabel": "MIA @ PHI"
     },
     {
+      "pitcherId": 663738,
+      "pitcherName": "Daniel Lynch IV",
+      "team": "KC",
+      "oppTeam": "ATH",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 7.2,
+      "projectedIP": 25,
+      "projectedK": 17.5,
+      "gamePk": 824075,
+      "gameLabel": "ATH @ KC"
+    },
+    {
       "pitcherId": 615698,
       "pitcherName": "Cal Quantrill",
       "team": "TEX",
@@ -506,6 +519,19 @@
       "projectedK": 5,
       "gamePk": 822859,
       "gameLabel": "WSH @ TEX"
+    },
+    {
+      "pitcherId": 641778,
+      "pitcherName": "Eric Lauer",
+      "team": "LAD",
+      "oppTeam": "COL",
+      "whiffScore": 44,
+      "grade": "D",
+      "k9": 5.8,
+      "projectedIP": 6.1,
+      "projectedK": 3,
+      "gamePk": 824319,
+      "gameLabel": "LAD @ COL"
     },
     {
       "pitcherId": 607259,
