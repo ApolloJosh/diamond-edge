@@ -1,8 +1,8 @@
 {
   "date": "2026-08-19",
-  "savedAt": "2026-08-19T17:52:10.584Z",
+  "savedAt": "2026-08-19T21:51:33.939Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -391,6 +391,19 @@
       "gameLabel": "SD @ NYM"
     },
     {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "ATH",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 7,
+      "projectedIP": 5.6,
+      "projectedK": 3.5,
+      "gamePk": 824076,
+      "gameLabel": "ATH @ KC"
+    },
+    {
       "pitcherId": 656876,
       "pitcherName": "Drew Rasmussen",
       "team": "TB",
@@ -493,6 +506,19 @@
       "projectedK": 4,
       "gamePk": 823424,
       "gameLabel": "MIA @ PHI"
+    },
+    {
+      "pitcherId": 605488,
+      "pitcherName": "Jeffrey Springs",
+      "team": "ATH",
+      "oppTeam": "KC",
+      "whiffScore": 49,
+      "grade": "C",
+      "k9": 7.3,
+      "projectedIP": 4.9,
+      "projectedK": 3.5,
+      "gamePk": 824076,
+      "gameLabel": "ATH @ KC"
     }
   ],
   "pitches": [
@@ -513,24 +539,6 @@
       "lineupPA": 92,
       "gamePk": 823424,
       "gameLabel": "MIA @ PHI"
-    },
-    {
-      "pitcherId": 701542,
-      "pitcherName": "Will Warren",
-      "team": "NYY",
-      "oppTeam": "BAL",
-      "line": 88.5,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 82.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 85.8,
-      "twoYrStarts": 56,
-      "bvpAdj": 5,
-      "lineupPA": 160,
-      "gamePk": 824801,
-      "gameLabel": "NYY @ BAL"
     },
     {
       "pitcherId": 694973,
@@ -567,6 +575,24 @@
       "lineupPA": 44,
       "gamePk": 824640,
       "gameLabel": "CWS @ CHC"
+    },
+    {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "ATH",
+      "line": 91.5,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 90.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.6,
+      "twoYrStarts": 51,
+      "bvpAdj": 1,
+      "lineupPA": 42,
+      "gamePk": 824076,
+      "gameLabel": "ATH @ KC"
     },
     {
       "pitcherId": 669160,
