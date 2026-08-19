@@ -1,8 +1,8 @@
 {
   "date": "2026-08-19",
-  "savedAt": "2026-08-19T15:59:10.292Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-08-19T17:52:10.584Z",
+  "scanType": "afternoon",
+  "gamesScanned": 13,
   "totalGames": 15,
   "batters": [
     {
@@ -261,19 +261,6 @@
       "gameLabel": "DET @ PIT"
     },
     {
-      "pitcherId": 671737,
-      "pitcherName": "Taj Bradley",
-      "team": "MIN",
-      "oppTeam": "ATL",
-      "whiffScore": 75,
-      "grade": "A",
-      "k9": 10,
-      "projectedIP": 5.6,
-      "projectedK": 5.5,
-      "gamePk": 823664,
-      "gameLabel": "ATL @ MIN"
-    },
-    {
       "pitcherId": 669302,
       "pitcherName": "Logan Gilbert",
       "team": "SEA",
@@ -287,15 +274,28 @@
       "gameLabel": "SEA @ MIL"
     },
     {
+      "pitcherId": 671737,
+      "pitcherName": "Taj Bradley",
+      "team": "MIN",
+      "oppTeam": "ATL",
+      "whiffScore": 71,
+      "grade": "A",
+      "k9": 9.9,
+      "projectedIP": 5.4,
+      "projectedK": 5,
+      "gamePk": 823664,
+      "gameLabel": "ATL @ MIN"
+    },
+    {
       "pitcherId": 700363,
       "pitcherName": "AJ Smith-Shawver",
       "team": "ATL",
       "oppTeam": "MIN",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 8.3,
-      "projectedIP": 4.1,
-      "projectedK": 3,
+      "k9": 8.4,
+      "projectedIP": 2.6,
+      "projectedK": 2,
       "gamePk": 823664,
       "gameLabel": "ATL @ MIN"
     },
