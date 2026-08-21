@@ -1,8 +1,8 @@
 {
   "date": "2026-08-21",
-  "savedAt": "2026-08-21T17:57:55.822Z",
+  "savedAt": "2026-08-21T21:50:05.842Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -84,6 +84,22 @@
       "bvpHR": 2,
       "gamePk": 825045,
       "gameLabel": "CIN @ AZ"
+    },
+    {
+      "batterId": 656941,
+      "batterName": "Kyle Schwarber",
+      "pitcherId": 690928,
+      "pitcherName": "Hunter Dobbins",
+      "batterTeam": "PHI",
+      "pitcherTeam": "STL",
+      "edgeScore": 77,
+      "grade": "A",
+      "bvpAvg": "1.000",
+      "bvpOps": "2.000",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 823420,
+      "gameLabel": "STL @ PHI"
     },
     {
       "batterId": 642715,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 824072,
       "gameLabel": "DET @ KC"
-    },
-    {
-      "batterId": 607043,
-      "batterName": "Brandon Nimmo",
-      "pitcherId": 672282,
-      "pitcherName": "Reid Detmers",
-      "batterTeam": "TEX",
-      "pitcherTeam": "LAA",
-      "edgeScore": 67,
-      "grade": "B+",
-      "bvpAvg": ".429",
-      "bvpOps": "1.413",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 822857,
-      "gameLabel": "LAA @ TEX"
     }
   ],
   "pitchers": [
@@ -430,6 +430,19 @@
       "gameLabel": "STL @ PHI"
     },
     {
+      "pitcherId": 690928,
+      "pitcherName": "Hunter Dobbins",
+      "team": "STL",
+      "oppTeam": "PHI",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.8,
+      "projectedIP": 7.1,
+      "projectedK": 6,
+      "gamePk": 823420,
+      "gameLabel": "STL @ PHI"
+    },
+    {
       "pitcherId": 676106,
       "pitcherName": "Emerson Hancock",
       "team": "SEA",
@@ -592,7 +605,7 @@
       "pitcherName": "Cam Schlittler",
       "team": "NYY",
       "oppTeam": "TOR",
-      "line": 99.5,
+      "line": 97.5,
       "overUnder": "OVER",
       "pitchScore": 76,
       "grade": "A",
@@ -600,8 +613,8 @@
       "recent5Starts": 5,
       "twoYrAvg": 91,
       "twoYrStarts": 40,
-      "bvpAdj": 7,
-      "lineupPA": 178,
+      "bvpAdj": 5,
+      "lineupPA": 170,
       "gamePk": 823510,
       "gameLabel": "TOR @ NYY"
     },
