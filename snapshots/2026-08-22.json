@@ -1,7 +1,7 @@
 {
   "date": "2026-08-22",
-  "savedAt": "2026-08-22T15:48:39.647Z",
-  "scanType": "morning",
+  "savedAt": "2026-08-22T17:49:19.534Z",
+  "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
@@ -391,19 +391,6 @@
       "gameLabel": "ATH @ HOU"
     },
     {
-      "pitcherId": 677960,
-      "pitcherName": "Ryan Weathers",
-      "team": "NYY",
-      "oppTeam": "TOR",
-      "whiffScore": 61,
-      "grade": "B",
-      "k9": 9.4,
-      "projectedIP": 5.6,
-      "projectedK": 5,
-      "gamePk": 823509,
-      "gameLabel": "TOR @ NYY"
-    },
-    {
       "pitcherId": 665152,
       "pitcherName": "Dean Kremer",
       "team": "MIN",
@@ -428,6 +415,19 @@
       "projectedK": 3.5,
       "gamePk": 823422,
       "gameLabel": "STL @ PHI"
+    },
+    {
+      "pitcherId": 677960,
+      "pitcherName": "Ryan Weathers",
+      "team": "NYY",
+      "oppTeam": "TOR",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 9.4,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
+      "gamePk": 823509,
+      "gameLabel": "TOR @ NYY"
     },
     {
       "pitcherId": 623454,
