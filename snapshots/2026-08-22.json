@@ -1,8 +1,8 @@
 {
   "date": "2026-08-22",
-  "savedAt": "2026-08-22T17:49:19.534Z",
+  "savedAt": "2026-08-22T21:47:22.774Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 12,
   "totalGames": 15,
   "batters": [
     {
@@ -597,7 +597,7 @@
       "pitcherName": "Cody Bradford",
       "team": "TEX",
       "oppTeam": "LAA",
-      "line": 71.5,
+      "line": 72.5,
       "overUnder": "UNDER",
       "pitchScore": 71,
       "grade": "A",
@@ -605,8 +605,8 @@
       "recent5Starts": 3,
       "twoYrAvg": 75.3,
       "twoYrStarts": 3,
-      "bvpAdj": -4,
-      "lineupPA": 68,
+      "bvpAdj": -3,
+      "lineupPA": 50,
       "gamePk": 822858,
       "gameLabel": "LAA @ TEX"
     },
