@@ -1,7 +1,7 @@
 {
   "date": "2026-08-23",
-  "savedAt": "2026-08-23T15:49:31.323Z",
-  "scanType": "morning",
+  "savedAt": "2026-08-23T17:48:47.194Z",
+  "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
   "batters": [
@@ -281,7 +281,7 @@
       "whiffScore": 75,
       "grade": "A",
       "k9": 10.4,
-      "projectedIP": 6.2,
+      "projectedIP": 6,
       "projectedK": 6,
       "gamePk": 823421,
       "gameLabel": "STL @ PHI"
@@ -294,7 +294,7 @@
       "whiffScore": 74,
       "grade": "A",
       "k9": 8.8,
-      "projectedIP": 5.6,
+      "projectedIP": 5.4,
       "projectedK": 4.5,
       "gamePk": 823507,
       "gameLabel": "TOR @ NYY"
@@ -365,19 +365,6 @@
       "gameLabel": "STL @ PHI"
     },
     {
-      "pitcherId": 607074,
-      "pitcherName": "Carlos Rodón",
-      "team": "NYY",
-      "oppTeam": "TOR",
-      "whiffScore": 65,
-      "grade": "B+",
-      "k9": 10,
-      "projectedIP": 5,
-      "projectedK": 4.5,
-      "gamePk": 823507,
-      "gameLabel": "TOR @ NYY"
-    },
-    {
       "pitcherId": 669199,
       "pitcherName": "Lake Bachar",
       "team": "PIT",
@@ -391,6 +378,19 @@
       "gameLabel": "PIT @ LAD"
     },
     {
+      "pitcherId": 607074,
+      "pitcherName": "Carlos Rodón",
+      "team": "NYY",
+      "oppTeam": "TOR",
+      "whiffScore": 61,
+      "grade": "B",
+      "k9": 10,
+      "projectedIP": 4.6,
+      "projectedK": 4.5,
+      "gamePk": 823507,
+      "gameLabel": "TOR @ NYY"
+    },
+    {
       "pitcherId": 669358,
       "pitcherName": "Shane Baz",
       "team": "BAL",
@@ -398,8 +398,8 @@
       "whiffScore": 60,
       "grade": "B",
       "k9": 8.2,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
+      "projectedIP": 5.6,
+      "projectedK": 4,
       "gamePk": 824799,
       "gameLabel": "TB @ BAL"
     },
@@ -489,7 +489,7 @@
       "whiffScore": 52,
       "grade": "C",
       "k9": 6.4,
-      "projectedIP": 5.1,
+      "projectedIP": 4.9,
       "projectedK": 3,
       "gamePk": 823827,
       "gameLabel": "WSH @ MIA"
@@ -580,36 +580,18 @@
       "gameLabel": "ATL @ MIL"
     },
     {
-      "pitcherId": 669358,
-      "pitcherName": "Shane Baz",
-      "team": "BAL",
-      "oppTeam": "TB",
-      "line": 94.5,
-      "overUnder": "OVER",
-      "pitchScore": 74,
-      "grade": "A",
-      "recent5Avg": 90.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 91,
-      "twoYrStarts": 56,
-      "bvpAdj": 4,
-      "lineupPA": 88,
-      "gamePk": 824799,
-      "gameLabel": "TB @ BAL"
-    },
-    {
       "pitcherId": 667755,
       "pitcherName": "José Soriano",
       "team": "TOR",
       "oppTeam": "NYY",
-      "line": 95,
+      "line": 94.5,
       "overUnder": "OVER",
       "pitchScore": 74,
       "grade": "A",
       "recent5Avg": 91,
       "recent5Starts": 5,
-      "twoYrAvg": 91.1,
-      "twoYrStarts": 56,
+      "twoYrAvg": 89.6,
+      "twoYrStarts": 57,
       "bvpAdj": 4,
       "lineupPA": 70,
       "gamePk": 823507,
@@ -650,6 +632,24 @@
       "lineupPA": 82,
       "gamePk": 823909,
       "gameLabel": "PIT @ LAD"
+    },
+    {
+      "pitcherId": 608372,
+      "pitcherName": "Tomoyuki Sugano",
+      "team": "COL",
+      "oppTeam": "CLE",
+      "line": 85.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 88.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 85.9,
+      "twoYrStarts": 52,
+      "bvpAdj": -2,
+      "lineupPA": 74,
+      "gamePk": 824315,
+      "gameLabel": "CLE @ COL"
     }
   ]
 }
