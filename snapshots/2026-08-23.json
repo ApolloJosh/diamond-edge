@@ -1,8 +1,8 @@
 {
   "date": "2026-08-23",
-  "savedAt": "2026-08-23T17:48:47.194Z",
+  "savedAt": "2026-08-23T21:47:35.174Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 2,
   "totalGames": 15,
   "batters": [
     {
@@ -150,6 +150,22 @@
       "gameLabel": "LAA @ TEX"
     },
     {
+      "batterId": 813841,
+      "batterName": "Jonah Cox",
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "batterTeam": "SF",
+      "pitcherTeam": "BOS",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".800",
+      "bvpOps": "2.800",
+      "bvpPA": 5,
+      "bvpHR": 2,
+      "gamePk": 824720,
+      "gameLabel": "SF @ BOS"
+    },
+    {
       "batterId": 545361,
       "batterName": "Mike Trout",
       "pitcherId": 615698,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823507,
       "gameLabel": "TOR @ NYY"
-    },
-    {
-      "batterId": 677587,
-      "batterName": "Brayan Rocchio",
-      "pitcherId": 608372,
-      "pitcherName": "Tomoyuki Sugano",
-      "batterTeam": "CLE",
-      "pitcherTeam": "COL",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.417",
-      "bvpPA": 8,
-      "bvpHR": 0,
-      "gamePk": 824315,
-      "gameLabel": "CLE @ COL"
     }
   ],
   "pitchers": [
@@ -558,6 +558,19 @@
       "projectedK": 2.5,
       "gamePk": 824315,
       "gameLabel": "CLE @ COL"
+    },
+    {
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "team": "BOS",
+      "oppTeam": "SF",
+      "whiffScore": 41,
+      "grade": "D",
+      "k9": 6.9,
+      "projectedIP": 5.8,
+      "projectedK": 3.5,
+      "gamePk": 824720,
+      "gameLabel": "SF @ BOS"
     }
   ],
   "pitches": [
