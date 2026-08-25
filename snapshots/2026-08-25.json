@@ -1,6 +1,6 @@
 {
   "date": "2026-08-25",
-  "savedAt": "2026-08-25T17:58:46.498Z",
+  "savedAt": "2026-08-25T21:53:46.003Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -36,6 +36,22 @@
       "bvpHR": 8,
       "gamePk": 822773,
       "gameLabel": "KC @ TOR"
+    },
+    {
+      "batterId": 669357,
+      "batterName": "Nolan Gorman",
+      "pitcherId": 605135,
+      "pitcherName": "Chris Bassitt",
+      "batterTeam": "STL",
+      "pitcherTeam": "BAL",
+      "edgeScore": 92,
+      "grade": "A+",
+      "bvpAvg": ".750",
+      "bvpOps": "3.800",
+      "bvpPA": 10,
+      "bvpHR": 6,
+      "gamePk": 823016,
+      "gameLabel": "BAL @ STL"
     },
     {
       "batterId": 670541,
@@ -228,25 +244,35 @@
       "bvpHR": 0,
       "gamePk": 822693,
       "gameLabel": "COL @ WSH"
-    },
-    {
-      "batterId": 518692,
-      "batterName": "Freddie Freeman",
-      "pitcherId": 693821,
-      "pitcherName": "Bryce Elder",
-      "batterTeam": "LAD",
-      "pitcherTeam": "ATL",
-      "edgeScore": 65,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": ".762",
-      "bvpPA": 28,
-      "bvpHR": 0,
-      "gamePk": 824881,
-      "gameLabel": "LAD @ ATL"
     }
   ],
   "pitchers": [
+    {
+      "pitcherId": 594798,
+      "pitcherName": "Jacob deGrom",
+      "team": "TEX",
+      "oppTeam": "CWS",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 11.2,
+      "projectedIP": 5.3,
+      "projectedK": 5.5,
+      "gamePk": 824556,
+      "gameLabel": "TEX @ CWS"
+    },
+    {
+      "pitcherId": 669461,
+      "pitcherName": "Matthew Liberatore",
+      "team": "STL",
+      "oppTeam": "BAL",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 9,
+      "projectedIP": 5,
+      "projectedK": 4,
+      "gamePk": 823016,
+      "gameLabel": "BAL @ STL"
+    },
     {
       "pitcherId": 668909,
       "pitcherName": "Gavin Williams",
@@ -300,19 +326,6 @@
       "gameLabel": "LAD @ ATL"
     },
     {
-      "pitcherId": 594798,
-      "pitcherName": "Jacob deGrom",
-      "team": "TEX",
-      "oppTeam": "CWS",
-      "whiffScore": 75,
-      "grade": "A",
-      "k9": 11.2,
-      "projectedIP": 5.3,
-      "projectedK": 5.5,
-      "gamePk": 824556,
-      "gameLabel": "TEX @ CWS"
-    },
-    {
       "pitcherId": 690986,
       "pitcherName": "Kyle Harrison",
       "team": "MIL",
@@ -350,6 +363,19 @@
       "projectedK": 4,
       "gamePk": 823259,
       "gameLabel": "PIT @ SD"
+    },
+    {
+      "pitcherId": 663969,
+      "pitcherName": "Tyler Phillips",
+      "team": "MIA",
+      "oppTeam": "BOS",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.1,
+      "projectedIP": 7.2,
+      "projectedK": 4.5,
+      "gamePk": 823826,
+      "gameLabel": "BOS @ MIA"
     },
     {
       "pitcherId": 669923,
@@ -512,8 +538,8 @@
       "pitcherName": "Chris Bassitt",
       "team": "BAL",
       "oppTeam": "STL",
-      "whiffScore": 45,
-      "grade": "C",
+      "whiffScore": 41,
+      "grade": "D",
       "k9": 6.2,
       "projectedIP": 5.6,
       "projectedK": 3,
