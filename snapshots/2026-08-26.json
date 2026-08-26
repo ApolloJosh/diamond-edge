@@ -1,8 +1,8 @@
 {
   "date": "2026-08-26",
-  "savedAt": "2026-08-26T16:36:42.827Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-08-26T19:23:50.530Z",
+  "scanType": "afternoon",
+  "gamesScanned": 14,
   "totalGames": 15,
   "batters": [
     {
@@ -261,19 +261,6 @@
       "gameLabel": "PHI @ SEA"
     },
     {
-      "pitcherId": 694738,
-      "pitcherName": "Landen Roupp",
-      "team": "SF",
-      "oppTeam": "CIN",
-      "whiffScore": 74,
-      "grade": "A",
-      "k9": 8.7,
-      "projectedIP": 5.4,
-      "projectedK": 4.5,
-      "gamePk": 823180,
-      "gameLabel": "CIN @ SF"
-    },
-    {
       "pitcherId": 680732,
       "pitcherName": "Sean Burke",
       "team": "CWS",
@@ -298,6 +285,19 @@
       "projectedK": 4,
       "gamePk": 824234,
       "gameLabel": "TB @ DET"
+    },
+    {
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "team": "SF",
+      "oppTeam": "CIN",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 7.1,
+      "projectedIP": 6.1,
+      "projectedK": 4,
+      "gamePk": 823180,
+      "gameLabel": "CIN @ SF"
     },
     {
       "pitcherId": 676282,
@@ -603,24 +603,6 @@
       "gameLabel": "CHC @ AZ"
     },
     {
-      "pitcherId": 694738,
-      "pitcherName": "Landen Roupp",
-      "team": "SF",
-      "oppTeam": "CIN",
-      "line": 91,
-      "overUnder": "OVER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 89.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 89.9,
-      "twoYrStarts": 47,
-      "bvpAdj": 1,
-      "lineupPA": 42,
-      "gamePk": 823180,
-      "gameLabel": "CIN @ SF"
-    },
-    {
       "pitcherId": 571510,
       "pitcherName": "Matthew Boyd",
       "team": "CHC",
@@ -637,6 +619,24 @@
       "lineupPA": 140,
       "gamePk": 825039,
       "gameLabel": "CHC @ AZ"
+    },
+    {
+      "pitcherId": 666200,
+      "pitcherName": "Jesús Luzardo",
+      "team": "PHI",
+      "oppTeam": "SEA",
+      "line": 105,
+      "overUnder": "OVER",
+      "pitchScore": 67,
+      "grade": "B+",
+      "recent5Avg": 103.4,
+      "recent5Starts": 5,
+      "twoYrAvg": 95.9,
+      "twoYrStarts": 58,
+      "bvpAdj": 4,
+      "lineupPA": 134,
+      "gamePk": 823096,
+      "gameLabel": "PHI @ SEA"
     }
   ]
 }
