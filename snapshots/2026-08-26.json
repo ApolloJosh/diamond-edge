@@ -1,8 +1,8 @@
 {
   "date": "2026-08-26",
-  "savedAt": "2026-08-26T19:23:50.530Z",
+  "savedAt": "2026-08-27T00:58:28.096Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 3,
   "totalGames": 15,
   "batters": [
     {
@@ -150,6 +150,22 @@
       "gameLabel": "CHC @ AZ"
     },
     {
+      "batterId": 669357,
+      "batterName": "Nolan Gorman",
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "batterTeam": "STL",
+      "pitcherTeam": "BAL",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": "1.000",
+      "bvpOps": "3.667",
+      "bvpPA": 5,
+      "bvpHR": 1,
+      "gamePk": 823015,
+      "gameLabel": "BAL @ STL"
+    },
+    {
       "batterId": 650489,
       "batterName": "Willi Castro",
       "pitcherId": 663362,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823096,
       "gameLabel": "PHI @ SEA"
-    },
-    {
-      "batterId": 624424,
-      "batterName": "Michael Conforto",
-      "pitcherId": 593958,
-      "pitcherName": "Eduardo Rodriguez",
-      "batterTeam": "CHC",
-      "pitcherTeam": "AZ",
-      "edgeScore": 65,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.400",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 825039,
-      "gameLabel": "CHC @ AZ"
     }
   ],
   "pitchers": [
@@ -480,6 +480,19 @@
       "projectedK": 9,
       "gamePk": 822692,
       "gameLabel": "COL @ WSH"
+    },
+    {
+      "pitcherId": 680694,
+      "pitcherName": "Kyle Bradish",
+      "team": "BAL",
+      "oppTeam": "STL",
+      "whiffScore": 49,
+      "grade": "C",
+      "k9": 8.4,
+      "projectedIP": 5.4,
+      "projectedK": 4,
+      "gamePk": 823015,
+      "gameLabel": "BAL @ STL"
     },
     {
       "pitcherId": 687473,
