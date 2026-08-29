@@ -1,8 +1,8 @@
 {
   "date": "2026-08-28",
-  "savedAt": "2026-08-29T01:07:14.755Z",
+  "savedAt": "2026-08-29T03:15:50.852Z",
   "scanType": "afternoon",
-  "gamesScanned": 4,
+  "gamesScanned": 1,
   "totalGames": 15,
   "batters": [
     {
@@ -441,6 +441,19 @@
       "projectedK": 4,
       "gamePk": 823666,
       "gameLabel": "CWS @ MIN"
+    },
+    {
+      "pitcherId": 701656,
+      "pitcherName": "Logan Henderson",
+      "team": "MIL",
+      "oppTeam": "TEX",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 10.1,
+      "projectedIP": 5.4,
+      "projectedK": 5,
+      "gamePk": 823744,
+      "gameLabel": "TEX @ MIL"
     },
     {
       "pitcherId": 663554,
