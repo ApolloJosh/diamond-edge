@@ -1,8 +1,8 @@
 {
   "date": "2026-08-29",
-  "savedAt": "2026-08-29T19:57:39.667Z",
+  "savedAt": "2026-08-29T23:31:20.408Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 5,
   "totalGames": 17,
   "batters": [
     {
@@ -372,8 +372,8 @@
       "whiffScore": 66,
       "grade": "B+",
       "k9": 8.2,
-      "projectedIP": 5.7,
-      "projectedK": 4.5,
+      "projectedIP": 5.4,
+      "projectedK": 4,
       "gamePk": 823501,
       "gameLabel": "BOS @ NYY"
     },
@@ -456,19 +456,6 @@
       "gameLabel": "CIN @ CHC"
     },
     {
-      "pitcherId": 615698,
-      "pitcherName": "Cal Quantrill",
-      "team": "TEX",
-      "oppTeam": "MIL",
-      "whiffScore": 55,
-      "grade": "B",
-      "k9": 6.5,
-      "projectedIP": 8.3,
-      "projectedK": 5,
-      "gamePk": 823741,
-      "gameLabel": "TEX @ MIL"
-    },
-    {
       "pitcherId": 607200,
       "pitcherName": "Erick Fedde",
       "team": "CWS",
@@ -480,6 +467,19 @@
       "projectedK": 5.5,
       "gamePk": 823665,
       "gameLabel": "CWS @ MIN"
+    },
+    {
+      "pitcherId": 615698,
+      "pitcherName": "Cal Quantrill",
+      "team": "TEX",
+      "oppTeam": "MIL",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 6.5,
+      "projectedIP": 8.3,
+      "projectedK": 5,
+      "gamePk": 823741,
+      "gameLabel": "TEX @ MIL"
     },
     {
       "pitcherId": 663738,
