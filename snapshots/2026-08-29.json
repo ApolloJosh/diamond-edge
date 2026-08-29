@@ -1,8 +1,8 @@
 {
   "date": "2026-08-29",
-  "savedAt": "2026-08-29T18:47:06.929Z",
+  "savedAt": "2026-08-29T19:57:39.667Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 15,
   "totalGames": 17,
   "batters": [
     {
@@ -86,6 +86,22 @@
       "gameLabel": "CIN @ CHC"
     },
     {
+      "batterId": 660271,
+      "batterName": "Shohei Ohtani",
+      "pitcherId": 672456,
+      "pitcherName": "Keider Montero",
+      "batterTeam": "LAD",
+      "pitcherTeam": "DET",
+      "edgeScore": 82,
+      "grade": "A+",
+      "bvpAvg": ".667",
+      "bvpOps": "3.000",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 824230,
+      "gameLabel": "LAD @ DET"
+    },
+    {
       "batterId": 683734,
       "batterName": "Andrew Vaughn",
       "pitcherId": 615698,
@@ -132,6 +148,38 @@
       "bvpHR": 0,
       "gamePk": 822936,
       "gameLabel": "SD @ TB"
+    },
+    {
+      "batterId": 657136,
+      "batterName": "Connor Wong",
+      "pitcherId": 607074,
+      "pitcherName": "Carlos Rodón",
+      "batterTeam": "BOS",
+      "pitcherTeam": "NYY",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".364",
+      "bvpOps": "1.189",
+      "bvpPA": 26,
+      "bvpHR": 2,
+      "gamePk": 823539,
+      "gameLabel": "BOS @ NYY"
+    },
+    {
+      "batterId": 664040,
+      "batterName": "Brandon Lowe",
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "batterTeam": "PIT",
+      "pitcherTeam": "STL",
+      "edgeScore": 74,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "2.100",
+      "bvpPA": 10,
+      "bvpHR": 2,
+      "gamePk": 823011,
+      "gameLabel": "PIT @ STL"
     },
     {
       "batterId": 624431,
@@ -196,54 +244,6 @@
       "bvpHR": 2,
       "gamePk": 824961,
       "gameLabel": "BAL @ ATH"
-    },
-    {
-      "batterId": 650333,
-      "batterName": "Luis Arraez",
-      "pitcherId": 696270,
-      "pitcherName": "Ryan Johnson",
-      "batterTeam": "PHI",
-      "pitcherTeam": "LAA",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.333",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 823986,
-      "gameLabel": "PHI @ LAA"
-    },
-    {
-      "batterId": 593428,
-      "batterName": "Xander Bogaerts",
-      "pitcherId": 607259,
-      "pitcherName": "Nick Martinez",
-      "batterTeam": "SD",
-      "pitcherTeam": "TB",
-      "edgeScore": 67,
-      "grade": "B+",
-      "bvpAvg": ".313",
-      "bvpOps": ".889",
-      "bvpPA": 36,
-      "bvpHR": 2,
-      "gamePk": 822936,
-      "gameLabel": "SD @ TB"
-    },
-    {
-      "batterId": 595978,
-      "batterName": "Austin Hedges",
-      "pitcherId": 663738,
-      "pitcherName": "Daniel Lynch IV",
-      "batterTeam": "CLE",
-      "pitcherTeam": "KC",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": "1.067",
-      "bvpPA": 20,
-      "bvpHR": 2,
-      "gamePk": 824392,
-      "gameLabel": "KC @ CLE"
     }
   ],
   "pitchers": [
@@ -287,6 +287,19 @@
       "gameLabel": "CIN @ CHC"
     },
     {
+      "pitcherId": 605483,
+      "pitcherName": "Blake Snell",
+      "team": "LAD",
+      "oppTeam": "DET",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 12.5,
+      "projectedIP": 5.2,
+      "projectedK": 6,
+      "gamePk": 824230,
+      "gameLabel": "LAD @ DET"
+    },
+    {
       "pitcherId": 667755,
       "pitcherName": "José Soriano",
       "team": "TOR",
@@ -300,6 +313,32 @@
       "gameLabel": "SEA @ TOR"
     },
     {
+      "pitcherId": 607074,
+      "pitcherName": "Carlos Rodón",
+      "team": "NYY",
+      "oppTeam": "BOS",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 9.6,
+      "projectedIP": 4.9,
+      "projectedK": 4.5,
+      "gamePk": 823539,
+      "gameLabel": "BOS @ NYY"
+    },
+    {
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "team": "STL",
+      "oppTeam": "PIT",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.2,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 823011,
+      "gameLabel": "PIT @ STL"
+    },
+    {
       "pitcherId": 676917,
       "pitcherName": "Cade Cavalli",
       "team": "WSH",
@@ -311,6 +350,19 @@
       "projectedK": 5,
       "gamePk": 822690,
       "gameLabel": "MIA @ WSH"
+    },
+    {
+      "pitcherId": 669199,
+      "pitcherName": "Lake Bachar",
+      "team": "PIT",
+      "oppTeam": "STL",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 9.2,
+      "projectedIP": 10.7,
+      "projectedK": 9.5,
+      "gamePk": 823011,
+      "gameLabel": "PIT @ STL"
     },
     {
       "pitcherId": 608331,
@@ -378,6 +430,19 @@
       "gameLabel": "COL @ ATL"
     },
     {
+      "pitcherId": 641927,
+      "pitcherName": "Bailey Ober",
+      "team": "MIN",
+      "oppTeam": "CWS",
+      "whiffScore": 59,
+      "grade": "B",
+      "k9": 6.3,
+      "projectedIP": 5.4,
+      "projectedK": 3,
+      "gamePk": 823665,
+      "gameLabel": "CWS @ MIN"
+    },
+    {
       "pitcherId": 671096,
       "pitcherName": "Andrew Abbott",
       "team": "CIN",
@@ -404,6 +469,19 @@
       "gameLabel": "TEX @ MIL"
     },
     {
+      "pitcherId": 607200,
+      "pitcherName": "Erick Fedde",
+      "team": "CWS",
+      "oppTeam": "MIN",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 6.4,
+      "projectedIP": 9.5,
+      "projectedK": 5.5,
+      "gamePk": 823665,
+      "gameLabel": "CWS @ MIN"
+    },
+    {
       "pitcherId": 663738,
       "pitcherName": "Daniel Lynch IV",
       "team": "KC",
@@ -415,6 +493,19 @@
       "projectedK": 9,
       "gamePk": 824392,
       "gameLabel": "KC @ CLE"
+    },
+    {
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "team": "BOS",
+      "oppTeam": "NYY",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 7.1,
+      "projectedIP": 5.8,
+      "projectedK": 4,
+      "gamePk": 823539,
+      "gameLabel": "BOS @ NYY"
     },
     {
       "pitcherId": 621111,
@@ -480,6 +571,19 @@
       "projectedK": 3,
       "gamePk": 823177,
       "gameLabel": "AZ @ SF"
+    },
+    {
+      "pitcherId": 672456,
+      "pitcherName": "Keider Montero",
+      "team": "DET",
+      "oppTeam": "LAD",
+      "whiffScore": 41,
+      "grade": "D",
+      "k9": 6,
+      "projectedIP": 6.3,
+      "projectedK": 3.5,
+      "gamePk": 824230,
+      "gameLabel": "LAD @ DET"
     }
   ],
   "pitches": [
