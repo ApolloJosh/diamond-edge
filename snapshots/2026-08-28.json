@@ -1,8 +1,8 @@
 {
   "date": "2026-08-28",
-  "savedAt": "2026-08-28T05:32:37.644Z",
-  "scanType": "morning",
-  "gamesScanned": 15,
+  "savedAt": "2026-08-29T00:04:14.826Z",
+  "scanType": "afternoon",
+  "gamesScanned": 6,
   "totalGames": 15,
   "batters": [
     {
@@ -311,6 +311,19 @@
       "projectedK": 3.5,
       "gamePk": 822935,
       "gameLabel": "SD @ TB"
+    },
+    {
+      "pitcherId": 682052,
+      "pitcherName": "Jacob Lopez",
+      "team": "ATH",
+      "oppTeam": "BAL",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.6,
+      "projectedIP": 5.2,
+      "projectedK": 4,
+      "gamePk": 824960,
+      "gameLabel": "BAL @ ATH"
     },
     {
       "pitcherId": 663776,
