@@ -1,8 +1,8 @@
 {
   "date": "2026-08-30",
-  "savedAt": "2026-08-30T19:59:26.500Z",
+  "savedAt": "2026-08-30T23:43:15.115Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 2,
   "totalGames": 14,
   "batters": [
     {
@@ -182,22 +182,6 @@
       "gameLabel": "BOS @ NYY"
     },
     {
-      "batterId": 701398,
-      "batterName": "Sal Stewart",
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "batterTeam": "CIN",
-      "pitcherTeam": "CHC",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.500",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 824636,
-      "gameLabel": "CIN @ CHC"
-    },
-    {
       "batterId": 592626,
       "batterName": "Joc Pederson",
       "pitcherId": 669160,
@@ -212,6 +196,22 @@
       "bvpHR": 0,
       "gamePk": 823740,
       "gameLabel": "TEX @ MIL"
+    },
+    {
+      "batterId": 701398,
+      "batterName": "Sal Stewart",
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "batterTeam": "CIN",
+      "pitcherTeam": "CHC",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "1.500",
+      "bvpPA": 12,
+      "bvpHR": 2,
+      "gamePk": 824636,
+      "gameLabel": "CIN @ CHC"
     },
     {
       "batterId": 680757,
@@ -274,19 +274,6 @@
       "gameLabel": "PHI @ LAA"
     },
     {
-      "pitcherId": 695505,
-      "pitcherName": "Chase Burns",
-      "team": "CIN",
-      "oppTeam": "CHC",
-      "whiffScore": 78,
-      "grade": "A",
-      "k9": 10.6,
-      "projectedIP": 5.6,
-      "projectedK": 5.5,
-      "gamePk": 824636,
-      "gameLabel": "CIN @ CHC"
-    },
-    {
       "pitcherId": 607192,
       "pitcherName": "Tyler Glasnow",
       "team": "LAD",
@@ -298,6 +285,19 @@
       "projectedK": 5.5,
       "gamePk": 824232,
       "gameLabel": "LAD @ DET"
+    },
+    {
+      "pitcherId": 695505,
+      "pitcherName": "Chase Burns",
+      "team": "CIN",
+      "oppTeam": "CHC",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.6,
+      "projectedIP": 5.6,
+      "projectedK": 5.5,
+      "gamePk": 824636,
+      "gameLabel": "CIN @ CHC"
     },
     {
       "pitcherId": 663855,
@@ -585,24 +585,6 @@
       "gameLabel": "PIT @ STL"
     },
     {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "CIN",
-      "line": 90.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 88.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 88.3,
-      "twoYrStarts": 51,
-      "bvpAdj": 2,
-      "lineupPA": 136,
-      "gamePk": 824636,
-      "gameLabel": "CIN @ CHC"
-    },
-    {
       "pitcherId": 624133,
       "pitcherName": "Ranger Suarez",
       "team": "BOS",
@@ -637,6 +619,24 @@
       "lineupPA": 167,
       "gamePk": 824393,
       "gameLabel": "KC @ CLE"
+    },
+    {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "CIN",
+      "line": 90.5,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 88.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 88.3,
+      "twoYrStarts": 51,
+      "bvpAdj": 2,
+      "lineupPA": 136,
+      "gamePk": 824636,
+      "gameLabel": "CIN @ CHC"
     }
   ]
 }
