@@ -1,8 +1,8 @@
 {
   "date": "2026-08-31",
-  "savedAt": "2026-08-31T22:01:22.513Z",
+  "savedAt": "2026-09-01T00:44:29.669Z",
   "scanType": "afternoon",
-  "gamesScanned": 12,
+  "gamesScanned": 4,
   "totalGames": 12,
   "batters": [
     {
@@ -166,6 +166,22 @@
       "gameLabel": "MIL @ CHC"
     },
     {
+      "batterId": 606466,
+      "batterName": "Ketel Marte",
+      "pitcherId": 605400,
+      "pitcherName": "Aaron Nola",
+      "batterTeam": "AZ",
+      "pitcherTeam": "PHI",
+      "edgeScore": 67,
+      "grade": "B+",
+      "bvpAvg": ".250",
+      "bvpOps": "1.107",
+      "bvpPA": 28,
+      "bvpHR": 4,
+      "gamePk": 825040,
+      "gameLabel": "PHI @ AZ"
+    },
+    {
       "batterId": 679529,
       "batterName": "Spencer Torkelson",
       "pitcherId": 671737,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 825040,
       "gameLabel": "PHI @ AZ"
-    },
-    {
-      "batterId": 701398,
-      "batterName": "Sal Stewart",
-      "pitcherId": 650633,
-      "pitcherName": "Michael King",
-      "batterTeam": "CIN",
-      "pitcherTeam": "SD",
-      "edgeScore": 62,
-      "grade": "B+",
-      "bvpAvg": ".333",
-      "bvpOps": "1.167",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 824473,
-      "gameLabel": "SD @ CIN"
     }
   ],
   "pitchers": [
@@ -285,6 +285,19 @@
       "projectedK": 5.5,
       "gamePk": 823663,
       "gameLabel": "DET @ MIN"
+    },
+    {
+      "pitcherId": 693855,
+      "pitcherName": "Ian Seymour",
+      "team": "TB",
+      "oppTeam": "NYM",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 11,
+      "projectedIP": 9.4,
+      "projectedK": 10,
+      "gamePk": 822932,
+      "gameLabel": "NYM @ TB"
     },
     {
       "pitcherId": 801139,
@@ -346,8 +359,8 @@
       "whiffScore": 60,
       "grade": "B",
       "k9": 7.4,
-      "projectedIP": 11.9,
-      "projectedK": 8.5,
+      "projectedIP": 10.5,
+      "projectedK": 7.5,
       "gamePk": 824314,
       "gameLabel": "BAL @ COL"
     },
@@ -467,6 +480,19 @@
       "projectedK": 4.5,
       "gamePk": 825040,
       "gameLabel": "PHI @ AZ"
+    },
+    {
+      "pitcherId": 476594,
+      "pitcherName": "Robert Stock",
+      "team": "NYM",
+      "oppTeam": "TB",
+      "whiffScore": 54,
+      "grade": "C",
+      "k9": 8.7,
+      "projectedIP": 4.3,
+      "projectedK": 3.5,
+      "gamePk": 822932,
+      "gameLabel": "NYM @ TB"
     }
   ],
   "pitches": [
