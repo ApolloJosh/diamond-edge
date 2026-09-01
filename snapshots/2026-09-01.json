@@ -1,6 +1,6 @@
 {
   "date": "2026-09-01",
-  "savedAt": "2026-09-01T18:45:10.034Z",
+  "savedAt": "2026-09-01T20:07:48.311Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -551,7 +551,7 @@
       "pitcherName": "Michael McGreevy",
       "team": "STL",
       "oppTeam": "LAD",
-      "whiffScore": 49,
+      "whiffScore": 45,
       "grade": "C",
       "k9": 6.2,
       "projectedIP": 5.5,
@@ -561,24 +561,6 @@
     }
   ],
   "pitches": [
-    {
-      "pitcherId": 668909,
-      "pitcherName": "Gavin Williams",
-      "team": "CLE",
-      "oppTeam": "TOR",
-      "line": 96,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 88,
-      "recent5Starts": 5,
-      "twoYrAvg": 93.9,
-      "twoYrStarts": 58,
-      "bvpAdj": 6,
-      "lineupPA": 96,
-      "gamePk": 824391,
-      "gameLabel": "TOR @ CLE"
-    },
     {
       "pitcherId": 669022,
       "pitcherName": "MacKenzie Gore",
@@ -616,6 +598,24 @@
       "gameLabel": "NYY @ LAA"
     },
     {
+      "pitcherId": 668909,
+      "pitcherName": "Gavin Williams",
+      "team": "CLE",
+      "oppTeam": "TOR",
+      "line": 93,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 88,
+      "recent5Starts": 5,
+      "twoYrAvg": 93.9,
+      "twoYrStarts": 58,
+      "bvpAdj": 3,
+      "lineupPA": 104,
+      "gamePk": 824391,
+      "gameLabel": "TOR @ CLE"
+    },
+    {
       "pitcherId": 700241,
       "pitcherName": "Michael McGreevy",
       "team": "STL",
@@ -629,7 +629,7 @@
       "twoYrAvg": 89.9,
       "twoYrStarts": 42,
       "bvpAdj": -4,
-      "lineupPA": 76,
+      "lineupPA": 86,
       "gamePk": 823908,
       "gameLabel": "STL @ LAD"
     },
