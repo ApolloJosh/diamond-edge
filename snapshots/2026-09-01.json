@@ -1,8 +1,8 @@
 {
   "date": "2026-09-01",
-  "savedAt": "2026-09-01T20:07:48.311Z",
+  "savedAt": "2026-09-01T23:28:47.961Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 9,
   "totalGames": 15,
   "batters": [
     {
@@ -230,20 +230,20 @@
       "gameLabel": "ATH @ TEX"
     },
     {
-      "batterId": 668709,
-      "batterName": "JJ Bleday",
-      "pitcherId": 681190,
-      "pitcherName": "Randy Vásquez",
-      "batterTeam": "CIN",
-      "pitcherTeam": "SD",
-      "edgeScore": 70,
+      "batterId": 666971,
+      "batterName": "Lourdes Gurriel Jr.",
+      "pitcherId": 666200,
+      "pitcherName": "Jesús Luzardo",
+      "batterTeam": "AZ",
+      "pitcherTeam": "PHI",
+      "edgeScore": 71,
       "grade": "A",
       "bvpAvg": ".667",
-      "bvpOps": "1.467",
-      "bvpPA": 10,
+      "bvpOps": "1.500",
+      "bvpPA": 12,
       "bvpHR": 0,
-      "gamePk": 824472,
-      "gameLabel": "SD @ CIN"
+      "gamePk": 825038,
+      "gameLabel": "PHI @ AZ"
     }
   ],
   "pitchers": [
