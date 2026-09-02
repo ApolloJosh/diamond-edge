@@ -1,6 +1,6 @@
 {
   "date": "2026-09-02",
-  "savedAt": "2026-09-02T18:54:56.099Z",
+  "savedAt": "2026-09-02T20:03:28.984Z",
   "scanType": "afternoon",
   "gamesScanned": 13,
   "totalGames": 15,
@@ -36,6 +36,22 @@
       "bvpHR": 4,
       "gamePk": 824390,
       "gameLabel": "TOR @ CLE"
+    },
+    {
+      "batterId": 695734,
+      "batterName": "Daylen Lile",
+      "pitcherId": 656550,
+      "pitcherName": "Grant Holmes",
+      "batterTeam": "WSH",
+      "pitcherTeam": "ATL",
+      "edgeScore": 89,
+      "grade": "A+",
+      "bvpAvg": ".667",
+      "bvpOps": "3.111",
+      "bvpPA": 9,
+      "bvpHR": 4,
+      "gamePk": 822686,
+      "gameLabel": "ATL @ WSH"
     },
     {
       "batterId": 669394,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 823660,
       "gameLabel": "DET @ MIN"
-    },
-    {
-      "batterId": 673548,
-      "batterName": "Seiya Suzuki",
-      "pitcherId": 694819,
-      "pitcherName": "Jacob Misiorowski",
-      "batterTeam": "CHC",
-      "pitcherTeam": "MIL",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".375",
-      "bvpOps": "1.194",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 824634,
-      "gameLabel": "MIL @ CHC"
     }
   ],
   "pitchers": [
@@ -365,6 +365,19 @@
       "gameLabel": "ATH @ TEX"
     },
     {
+      "pitcherId": 663554,
+      "pitcherName": "Casey Mize",
+      "team": "SD",
+      "oppTeam": "CIN",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.9,
+      "projectedIP": 5.1,
+      "projectedK": 3.5,
+      "gamePk": 824470,
+      "gameLabel": "SD @ CIN"
+    },
+    {
       "pitcherId": 663776,
       "pitcherName": "Patrick Sandoval",
       "team": "BOS",
@@ -391,6 +404,19 @@
       "gameLabel": "DET @ MIN"
     },
     {
+      "pitcherId": 695418,
+      "pitcherName": "Brad Lord",
+      "team": "WSH",
+      "oppTeam": "ATL",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.6,
+      "projectedIP": 14.6,
+      "projectedK": 12,
+      "gamePk": 822686,
+      "gameLabel": "ATL @ WSH"
+    },
+    {
       "pitcherId": 669432,
       "pitcherName": "Trevor Rogers",
       "team": "BAL",
@@ -402,6 +428,19 @@
       "projectedK": 4,
       "gamePk": 824312,
       "gameLabel": "BAL @ COL"
+    },
+    {
+      "pitcherId": 656550,
+      "pitcherName": "Grant Holmes",
+      "team": "ATL",
+      "oppTeam": "WSH",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 7.1,
+      "projectedIP": 5,
+      "projectedK": 3.5,
+      "gamePk": 822686,
+      "gameLabel": "ATL @ WSH"
     },
     {
       "pitcherId": 676282,
@@ -424,8 +463,8 @@
       "whiffScore": 60,
       "grade": "B",
       "k9": 7.8,
-      "projectedIP": 5.4,
-      "projectedK": 4,
+      "projectedIP": 5.2,
+      "projectedK": 3.5,
       "gamePk": 825037,
       "gameLabel": "PHI @ AZ"
     },
@@ -454,6 +493,19 @@
       "projectedK": 2.5,
       "gamePk": 824312,
       "gameLabel": "BAL @ COL"
+    },
+    {
+      "pitcherId": 682227,
+      "pitcherName": "Brandon Williamson",
+      "team": "CIN",
+      "oppTeam": "SD",
+      "whiffScore": 58,
+      "grade": "B",
+      "k9": 6.5,
+      "projectedIP": 4.7,
+      "projectedK": 2.5,
+      "gamePk": 824470,
+      "gameLabel": "SD @ CIN"
     },
     {
       "pitcherId": 623454,
@@ -515,8 +567,8 @@
       "whiffScore": 48,
       "grade": "C",
       "k9": 5.3,
-      "projectedIP": 5.5,
-      "projectedK": 2.5,
+      "projectedIP": 64,
+      "projectedK": 33,
       "gamePk": 825037,
       "gameLabel": "PHI @ AZ"
     }
@@ -539,6 +591,24 @@
       "lineupPA": 192,
       "gamePk": 823660,
       "gameLabel": "DET @ MIN"
+    },
+    {
+      "pitcherId": 682227,
+      "pitcherName": "Brandon Williamson",
+      "team": "CIN",
+      "oppTeam": "SD",
+      "line": 84.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 83.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 86.4,
+      "twoYrStarts": 7,
+      "bvpAdj": 0,
+      "lineupPA": 2070,
+      "gamePk": 824470,
+      "gameLabel": "SD @ CIN"
     },
     {
       "pitcherId": 656302,
@@ -593,24 +663,6 @@
       "lineupPA": 80,
       "gamePk": 824717,
       "gameLabel": "SEA @ BOS"
-    },
-    {
-      "pitcherId": 694819,
-      "pitcherName": "Jacob Misiorowski",
-      "team": "MIL",
-      "oppTeam": "CHC",
-      "line": 92.5,
-      "overUnder": "OVER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 92,
-      "recent5Starts": 5,
-      "twoYrAvg": 88,
-      "twoYrStarts": 39,
-      "bvpAdj": 2,
-      "lineupPA": 132,
-      "gamePk": 824634,
-      "gameLabel": "MIL @ CHC"
     }
   ]
 }
