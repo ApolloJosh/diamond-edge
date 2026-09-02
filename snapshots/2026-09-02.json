@@ -1,8 +1,8 @@
 {
   "date": "2026-09-02",
-  "savedAt": "2026-09-02T20:03:28.984Z",
+  "savedAt": "2026-09-02T23:30:14.436Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 6,
   "totalGames": 15,
   "batters": [
     {
@@ -391,19 +391,6 @@
       "gameLabel": "SEA @ BOS"
     },
     {
-      "pitcherId": 665152,
-      "pitcherName": "Dean Kremer",
-      "team": "MIN",
-      "oppTeam": "DET",
-      "whiffScore": 63,
-      "grade": "B+",
-      "k9": 8.8,
-      "projectedIP": 5.2,
-      "projectedK": 4,
-      "gamePk": 823660,
-      "gameLabel": "DET @ MIN"
-    },
-    {
       "pitcherId": 695418,
       "pitcherName": "Brad Lord",
       "team": "WSH",
@@ -415,6 +402,19 @@
       "projectedK": 12,
       "gamePk": 822686,
       "gameLabel": "ATL @ WSH"
+    },
+    {
+      "pitcherId": 665152,
+      "pitcherName": "Dean Kremer",
+      "team": "MIN",
+      "oppTeam": "DET",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.8,
+      "projectedIP": 5.2,
+      "projectedK": 4,
+      "gamePk": 823660,
+      "gameLabel": "DET @ MIN"
     },
     {
       "pitcherId": 669432,
