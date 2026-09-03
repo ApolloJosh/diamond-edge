@@ -1,8 +1,8 @@
 {
   "date": "2026-09-03",
-  "savedAt": "2026-09-03T20:04:52.567Z",
+  "savedAt": "2026-09-03T23:27:31.989Z",
   "scanType": "afternoon",
-  "gamesScanned": 9,
+  "gamesScanned": 6,
   "totalGames": 9,
   "batters": [
     {
@@ -38,6 +38,22 @@
       "gameLabel": "BOS @ BAL"
     },
     {
+      "batterId": 665489,
+      "batterName": "Vladimir Guerrero Jr.",
+      "pitcherId": 676440,
+      "pitcherName": "Tanner Bibee",
+      "batterTeam": "TOR",
+      "pitcherTeam": "CLE",
+      "edgeScore": 80,
+      "grade": "A+",
+      "bvpAvg": ".444",
+      "bvpOps": "1.323",
+      "bvpPA": 22,
+      "bvpHR": 2,
+      "gamePk": 824388,
+      "gameLabel": "TOR @ CLE"
+    },
+    {
       "batterId": 668227,
       "batterName": "Randy Arozarena",
       "pitcherId": 678022,
@@ -54,18 +70,18 @@
       "gameLabel": "ATH @ SEA"
     },
     {
-      "batterId": 665489,
-      "batterName": "Vladimir Guerrero Jr.",
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "batterTeam": "TOR",
-      "pitcherTeam": "CLE",
-      "edgeScore": 80,
-      "grade": "A+",
-      "bvpAvg": ".444",
-      "bvpOps": "1.323",
-      "bvpPA": 22,
-      "bvpHR": 2,
+      "batterId": 608070,
+      "batterName": "José Ramírez",
+      "pitcherId": 667755,
+      "pitcherName": "José Soriano",
+      "batterTeam": "CLE",
+      "pitcherTeam": "TOR",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".276",
+      "bvpOps": "1.172",
+      "bvpPA": 29,
+      "bvpHR": 6,
       "gamePk": 824388,
       "gameLabel": "TOR @ CLE"
     },
@@ -84,22 +100,6 @@
       "bvpHR": 2,
       "gamePk": 824796,
       "gameLabel": "BOS @ BAL"
-    },
-    {
-      "batterId": 608070,
-      "batterName": "José Ramírez",
-      "pitcherId": 667755,
-      "pitcherName": "José Soriano",
-      "batterTeam": "CLE",
-      "pitcherTeam": "TOR",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".276",
-      "bvpOps": "1.172",
-      "bvpPA": 29,
-      "bvpHR": 6,
-      "gamePk": 824388,
-      "gameLabel": "TOR @ CLE"
     },
     {
       "batterId": 624413,
@@ -198,22 +198,6 @@
       "gameLabel": "STL @ LAD"
     },
     {
-      "batterId": 677649,
-      "batterName": "Ezequiel Duran",
-      "pitcherId": 663556,
-      "pitcherName": "Shane McClanahan",
-      "batterTeam": "TEX",
-      "pitcherTeam": "TB",
-      "edgeScore": 61,
-      "grade": "B",
-      "bvpAvg": ".200",
-      "bvpOps": "1.229",
-      "bvpPA": 14,
-      "bvpHR": 2,
-      "gamePk": 822853,
-      "gameLabel": "TB @ TEX"
-    },
-    {
       "batterId": 808982,
       "batterName": "Jung Hoo Lee",
       "pitcherId": 669199,
@@ -244,6 +228,22 @@
       "bvpHR": 0,
       "gamePk": 824388,
       "gameLabel": "TOR @ CLE"
+    },
+    {
+      "batterId": 677649,
+      "batterName": "Ezequiel Duran",
+      "pitcherId": 663556,
+      "pitcherName": "Shane McClanahan",
+      "batterTeam": "TEX",
+      "pitcherTeam": "TB",
+      "edgeScore": 61,
+      "grade": "B",
+      "bvpAvg": ".200",
+      "bvpOps": "1.229",
+      "bvpPA": 14,
+      "bvpHR": 2,
+      "gamePk": 822853,
+      "gameLabel": "TB @ TEX"
     }
   ],
   "pitchers": [
@@ -274,19 +274,6 @@
       "gameLabel": "STL @ LAD"
     },
     {
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "team": "CHC",
-      "oppTeam": "MIL",
-      "whiffScore": 74,
-      "grade": "A",
-      "k9": 9,
-      "projectedIP": 5.5,
-      "projectedK": 4.5,
-      "gamePk": 824632,
-      "gameLabel": "MIL @ CHC"
-    },
-    {
       "pitcherId": 686613,
       "pitcherName": "Hunter Brown",
       "team": "HOU",
@@ -298,6 +285,19 @@
       "projectedK": 5,
       "gamePk": 824144,
       "gameLabel": "CWS @ HOU"
+    },
+    {
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "team": "CHC",
+      "oppTeam": "MIL",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
+      "gamePk": 824632,
+      "gameLabel": "MIL @ CHC"
     },
     {
       "pitcherId": 669199,
@@ -410,8 +410,8 @@
       "oppTeam": "BOS",
       "whiffScore": 45,
       "grade": "C",
-      "k9": 7.1,
-      "projectedIP": 5.7,
+      "k9": 7.2,
+      "projectedIP": 5.5,
       "projectedK": 3.5,
       "gamePk": 824796,
       "gameLabel": "BOS @ BAL"
@@ -450,6 +450,24 @@
       "gameLabel": "TB @ TEX"
     },
     {
+      "pitcherId": 676440,
+      "pitcherName": "Tanner Bibee",
+      "team": "CLE",
+      "oppTeam": "TOR",
+      "line": 91.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 94,
+      "recent5Starts": 5,
+      "twoYrAvg": 93.2,
+      "twoYrStarts": 60,
+      "bvpAdj": -2,
+      "lineupPA": 93,
+      "gamePk": 824388,
+      "gameLabel": "TOR @ CLE"
+    },
+    {
       "pitcherId": 687562,
       "pitcherName": "Jake Bennett",
       "team": "BOS",
@@ -466,24 +484,6 @@
       "lineupPA": 36,
       "gamePk": 824796,
       "gameLabel": "BOS @ BAL"
-    },
-    {
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "team": "CHC",
-      "oppTeam": "MIL",
-      "line": 96,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 94.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 94,
-      "twoYrStarts": 60,
-      "bvpAdj": 2,
-      "lineupPA": 224,
-      "gamePk": 824632,
-      "gameLabel": "MIL @ CHC"
     },
     {
       "pitcherId": 645261,
@@ -504,22 +504,22 @@
       "gameLabel": "MIA @ KC"
     },
     {
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "team": "CLE",
-      "oppTeam": "TOR",
-      "line": 91.5,
+      "pitcherId": 701656,
+      "pitcherName": "Logan Henderson",
+      "team": "MIL",
+      "oppTeam": "CHC",
+      "line": 76.5,
       "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 94,
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 75.8,
       "recent5Starts": 5,
-      "twoYrAvg": 93.2,
-      "twoYrStarts": 60,
-      "bvpAdj": -2,
-      "lineupPA": 93,
-      "gamePk": 824388,
-      "gameLabel": "TOR @ CLE"
+      "twoYrAvg": 77.7,
+      "twoYrStarts": 20,
+      "bvpAdj": 0,
+      "lineupPA": 0,
+      "gamePk": 824632,
+      "gameLabel": "MIL @ CHC"
     }
   ]
 }
