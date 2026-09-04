@@ -1,8 +1,8 @@
 {
   "date": "2026-09-04",
-  "savedAt": "2026-09-04T19:49:14.024Z",
+  "savedAt": "2026-09-04T23:11:43.301Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 13,
   "totalGames": 16,
   "batters": [
     {
@@ -450,8 +450,8 @@
       "whiffScore": 59,
       "grade": "B",
       "k9": 8,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
+      "projectedIP": 5.6,
+      "projectedK": 4,
       "gamePk": 824797,
       "gameLabel": "BOS @ BAL"
     },
@@ -629,24 +629,6 @@
       "gameLabel": "AZ @ HOU"
     },
     {
-      "pitcherId": 669358,
-      "pitcherName": "Shane Baz",
-      "team": "BAL",
-      "oppTeam": "BOS",
-      "line": 91,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 88.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.9,
-      "twoYrStarts": 58,
-      "bvpAdj": 2,
-      "lineupPA": 198,
-      "gamePk": 824797,
-      "gameLabel": "BOS @ BAL"
-    },
-    {
       "pitcherId": 695076,
       "pitcherName": "Rhett Lowder",
       "team": "CIN",
@@ -663,6 +645,24 @@
       "lineupPA": 126,
       "gamePk": 824471,
       "gameLabel": "MIL @ CIN"
+    },
+    {
+      "pitcherId": 607259,
+      "pitcherName": "Nick Martinez",
+      "team": "TB",
+      "oppTeam": "TEX",
+      "line": 91,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 85,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.9,
+      "twoYrStarts": 52,
+      "bvpAdj": 4,
+      "lineupPA": 74,
+      "gamePk": 822852,
+      "gameLabel": "TB @ TEX"
     }
   ]
 }
