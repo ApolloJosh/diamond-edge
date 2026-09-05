@@ -1,8 +1,8 @@
 {
   "date": "2026-09-05",
-  "savedAt": "2026-09-05T19:21:17.089Z",
+  "savedAt": "2026-09-05T23:09:29.015Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 11,
   "totalGames": 15,
   "batters": [
     {
@@ -150,6 +150,22 @@
       "gameLabel": "ATH @ SEA"
     },
     {
+      "batterId": 661388,
+      "batterName": "William Contreras",
+      "pitcherId": 671096,
+      "pitcherName": "Andrew Abbott",
+      "batterTeam": "MIL",
+      "pitcherTeam": "CIN",
+      "edgeScore": 79,
+      "grade": "A",
+      "bvpAvg": ".317",
+      "bvpOps": ".934",
+      "bvpPA": 43,
+      "bvpHR": 3,
+      "gamePk": 824468,
+      "gameLabel": "MIL @ CIN"
+    },
+    {
       "batterId": 642201,
       "batterName": "Eli White",
       "pitcherId": 605135,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 822850,
       "gameLabel": "TB @ TEX"
-    },
-    {
-      "batterId": 681198,
-      "batterName": "TJ Rumfield",
-      "pitcherId": 669461,
-      "pitcherName": "Matthew Liberatore",
-      "batterTeam": "COL",
-      "pitcherTeam": "STL",
-      "edgeScore": 75,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.000",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 824310,
-      "gameLabel": "STL @ COL"
     }
   ],
   "pitchers": [
@@ -293,8 +293,8 @@
       "oppTeam": "LAA",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 9.2,
-      "projectedIP": 5.9,
+      "k9": 9.3,
+      "projectedIP": 5.8,
       "projectedK": 5,
       "gamePk": 823335,
       "gameLabel": "LAA @ PIT"
@@ -306,9 +306,9 @@
       "oppTeam": "PIT",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 9,
-      "projectedIP": 4.8,
-      "projectedK": 4,
+      "k9": 9.1,
+      "projectedIP": 4.4,
+      "projectedK": 3.5,
       "gamePk": 823335,
       "gameLabel": "LAA @ PIT"
     },
@@ -320,8 +320,8 @@
       "whiffScore": 70,
       "grade": "A",
       "k9": 8.5,
-      "projectedIP": 4.9,
-      "projectedK": 4,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
       "gamePk": 824468,
       "gameLabel": "MIL @ CIN"
     },
@@ -417,6 +417,19 @@
       "gameLabel": "STL @ COL"
     },
     {
+      "pitcherId": 671096,
+      "pitcherName": "Andrew Abbott",
+      "team": "CIN",
+      "oppTeam": "MIL",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 7.1,
+      "projectedIP": 5.2,
+      "projectedK": 3.5,
+      "gamePk": 824468,
+      "gameLabel": "MIL @ CIN"
+    },
+    {
       "pitcherId": 641743,
       "pitcherName": "Anthony Kay",
       "team": "CWS",
@@ -430,19 +443,6 @@
       "gameLabel": "MIN @ CWS"
     },
     {
-      "pitcherId": 671096,
-      "pitcherName": "Andrew Abbott",
-      "team": "CIN",
-      "oppTeam": "MIL",
-      "whiffScore": 58,
-      "grade": "B",
-      "k9": 7,
-      "projectedIP": 5.3,
-      "projectedK": 3.5,
-      "gamePk": 824468,
-      "gameLabel": "MIL @ CIN"
-    },
-    {
       "pitcherId": 605135,
       "pitcherName": "Chris Bassitt",
       "team": "BAL",
@@ -450,7 +450,7 @@
       "whiffScore": 58,
       "grade": "B",
       "k9": 6.2,
-      "projectedIP": 5.7,
+      "projectedIP": 5.3,
       "projectedK": 3,
       "gamePk": 824795,
       "gameLabel": "BOS @ BAL"
@@ -615,14 +615,14 @@
       "pitcherName": "Chris Bassitt",
       "team": "BAL",
       "oppTeam": "BOS",
-      "line": 94.5,
+      "line": 93.5,
       "overUnder": "OVER",
       "pitchScore": 71,
       "grade": "A",
       "recent5Avg": 87.4,
       "recent5Starts": 5,
-      "twoYrAvg": 93.1,
-      "twoYrStarts": 45,
+      "twoYrAvg": 91.1,
+      "twoYrStarts": 46,
       "bvpAdj": 5,
       "lineupPA": 268,
       "gamePk": 824795,
