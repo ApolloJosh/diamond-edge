@@ -1,8 +1,8 @@
 {
   "date": "2026-09-06",
-  "savedAt": "2026-09-06T17:39:32.737Z",
+  "savedAt": "2026-09-06T19:26:57.644Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 7,
   "totalGames": 15,
   "batters": [
     {
@@ -86,6 +86,22 @@
       "gameLabel": "ATL @ PHI"
     },
     {
+      "batterId": 663886,
+      "batterName": "Tyler Stephenson",
+      "pitcherId": 690986,
+      "pitcherName": "Kyle Harrison",
+      "batterTeam": "CIN",
+      "pitcherTeam": "MIL",
+      "edgeScore": 84,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "2.400",
+      "bvpPA": 10,
+      "bvpHR": 4,
+      "gamePk": 824469,
+      "gameLabel": "MIL @ CIN"
+    },
+    {
       "batterId": 660670,
       "batterName": "Ronald Acuña Jr.",
       "pitcherId": 605400,
@@ -132,6 +148,22 @@
       "bvpHR": 0,
       "gamePk": 823417,
       "gameLabel": "ATL @ PHI"
+    },
+    {
+      "batterId": 668930,
+      "batterName": "Brice Turang",
+      "pitcherId": 663903,
+      "pitcherName": "Brady Singer",
+      "batterTeam": "MIL",
+      "pitcherTeam": "CIN",
+      "edgeScore": 78,
+      "grade": "A",
+      "bvpAvg": ".385",
+      "bvpOps": "1.163",
+      "bvpPA": 34,
+      "bvpHR": 0,
+      "gamePk": 824469,
+      "gameLabel": "MIL @ CIN"
     },
     {
       "batterId": 695600,
@@ -212,38 +244,6 @@
       "bvpHR": 2,
       "gamePk": 824385,
       "gameLabel": "DET @ CLE"
-    },
-    {
-      "batterId": 665052,
-      "batterName": "Griffin Conine",
-      "pitcherId": 605280,
-      "pitcherName": "Clay Holmes",
-      "batterTeam": "MIA",
-      "pitcherTeam": "CHC",
-      "edgeScore": 74,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.125",
-      "bvpPA": 16,
-      "bvpHR": 0,
-      "gamePk": 823822,
-      "gameLabel": "CHC @ MIA"
-    },
-    {
-      "batterId": 686948,
-      "batterName": "Drake Baldwin",
-      "pitcherId": 605400,
-      "pitcherName": "Aaron Nola",
-      "batterTeam": "ATL",
-      "pitcherTeam": "PHI",
-      "edgeScore": 73,
-      "grade": "A",
-      "bvpAvg": ".600",
-      "bvpOps": "1.267",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 823417,
-      "gameLabel": "ATL @ PHI"
     }
   ],
   "pitchers": [
@@ -285,6 +285,19 @@
       "projectedK": 6.5,
       "gamePk": 824385,
       "gameLabel": "DET @ CLE"
+    },
+    {
+      "pitcherId": 690986,
+      "pitcherName": "Kyle Harrison",
+      "team": "MIL",
+      "oppTeam": "CIN",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.9,
+      "projectedIP": 4.8,
+      "projectedK": 5,
+      "gamePk": 824469,
+      "gameLabel": "MIL @ CIN"
     },
     {
       "pitcherId": 693433,
@@ -345,8 +358,8 @@
       "oppTeam": "COL",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 8.2,
-      "projectedIP": 5,
+      "k9": 8.3,
+      "projectedIP": 4.8,
       "projectedK": 3.5,
       "gamePk": 824309,
       "gameLabel": "STL @ COL"
@@ -441,6 +454,19 @@
       "projectedK": 3,
       "gamePk": 824552,
       "gameLabel": "MIN @ CWS"
+    },
+    {
+      "pitcherId": 663903,
+      "pitcherName": "Brady Singer",
+      "team": "CIN",
+      "oppTeam": "MIL",
+      "whiffScore": 59,
+      "grade": "B",
+      "k9": 7.4,
+      "projectedIP": 5.2,
+      "projectedK": 3.5,
+      "gamePk": 824469,
+      "gameLabel": "MIL @ CIN"
     },
     {
       "pitcherId": 663542,
@@ -540,14 +566,32 @@
       "oppTeam": "STL",
       "whiffScore": 45,
       "grade": "C",
-      "k9": 7.3,
-      "projectedIP": 11,
-      "projectedK": 7.5,
+      "k9": 7.2,
+      "projectedIP": 9.9,
+      "projectedK": 7,
       "gamePk": 824309,
       "gameLabel": "STL @ COL"
     }
   ],
   "pitches": [
+    {
+      "pitcherId": 690986,
+      "pitcherName": "Kyle Harrison",
+      "team": "MIL",
+      "oppTeam": "CIN",
+      "line": 94.5,
+      "overUnder": "OVER",
+      "pitchScore": 73,
+      "grade": "A",
+      "recent5Avg": 90,
+      "recent5Starts": 5,
+      "twoYrAvg": 88.4,
+      "twoYrStarts": 29,
+      "bvpAdj": 5,
+      "lineupPA": 66,
+      "gamePk": 824469,
+      "gameLabel": "MIL @ CIN"
+    },
     {
       "pitcherId": 693433,
       "pitcherName": "Bryan Woo",
@@ -619,24 +663,6 @@
       "lineupPA": 100,
       "gamePk": 823822,
       "gameLabel": "CHC @ MIA"
-    },
-    {
-      "pitcherId": 650633,
-      "pitcherName": "Michael King",
-      "team": "SD",
-      "oppTeam": "NYY",
-      "line": 99.5,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 94,
-      "recent5Starts": 5,
-      "twoYrAvg": 88.9,
-      "twoYrStarts": 43,
-      "bvpAdj": 7,
-      "lineupPA": 76,
-      "gamePk": 823253,
-      "gameLabel": "NYY @ SD"
     }
   ]
 }
