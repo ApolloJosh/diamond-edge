@@ -1,8 +1,8 @@
 {
   "date": "2026-09-07",
-  "savedAt": "2026-09-07T20:44:56.125Z",
+  "savedAt": "2026-09-07T23:40:07.776Z",
   "scanType": "afternoon",
-  "gamesScanned": 10,
+  "gamesScanned": 3,
   "totalGames": 11,
   "batters": [
     {
@@ -54,22 +54,6 @@
       "gameLabel": "LAA @ BOS"
     },
     {
-      "batterId": 676475,
-      "batterName": "Alec Burleson",
-      "pitcherId": 657277,
-      "pitcherName": "Logan Webb",
-      "batterTeam": "STL",
-      "pitcherTeam": "SF",
-      "edgeScore": 76,
-      "grade": "A",
-      "bvpAvg": ".444",
-      "bvpOps": "1.222",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 823175,
-      "gameLabel": "STL @ SF"
-    },
-    {
       "batterId": 547180,
       "batterName": "Bryce Harper",
       "pitcherId": 656550,
@@ -116,6 +100,22 @@
       "bvpHR": 6,
       "gamePk": 824715,
       "gameLabel": "LAA @ BOS"
+    },
+    {
+      "batterId": 676475,
+      "batterName": "Alec Burleson",
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "batterTeam": "STL",
+      "pitcherTeam": "SF",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".444",
+      "bvpOps": "1.222",
+      "bvpPA": 18,
+      "bvpHR": 2,
+      "gamePk": 823175,
+      "gameLabel": "STL @ SF"
     },
     {
       "batterId": 668904,
@@ -248,6 +248,19 @@
   ],
   "pitchers": [
     {
+      "pitcherId": 686218,
+      "pitcherName": "Emmet Sheehan",
+      "team": "LAD",
+      "oppTeam": "CIN",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 10.2,
+      "projectedIP": 4.8,
+      "projectedK": 4.5,
+      "gamePk": 823902,
+      "gameLabel": "CIN @ LAD"
+    },
+    {
       "pitcherId": 601713,
       "pitcherName": "Nick Pivetta",
       "team": "SD",
@@ -287,19 +300,6 @@
       "gameLabel": "MIN @ DET"
     },
     {
-      "pitcherId": 656302,
-      "pitcherName": "Dylan Cease",
-      "team": "TOR",
-      "oppTeam": "ATH",
-      "whiffScore": 74,
-      "grade": "A",
-      "k9": 12.7,
-      "projectedIP": 6,
-      "projectedK": 7,
-      "gamePk": 824958,
-      "gameLabel": "TOR @ ATH"
-    },
-    {
       "pitcherId": 666200,
       "pitcherName": "Jesús Luzardo",
       "team": "PHI",
@@ -311,6 +311,19 @@
       "projectedK": 6.5,
       "gamePk": 823415,
       "gameLabel": "ATL @ PHI"
+    },
+    {
+      "pitcherId": 656302,
+      "pitcherName": "Dylan Cease",
+      "team": "TOR",
+      "oppTeam": "ATH",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 12.7,
+      "projectedIP": 6,
+      "projectedK": 7,
+      "gamePk": 824958,
+      "gameLabel": "TOR @ ATH"
     },
     {
       "pitcherId": 695505,
@@ -404,19 +417,6 @@
       "gameLabel": "CLE @ BAL"
     },
     {
-      "pitcherId": 657277,
-      "pitcherName": "Logan Webb",
-      "team": "SF",
-      "oppTeam": "STL",
-      "whiffScore": 59,
-      "grade": "B",
-      "k9": 7.2,
-      "projectedIP": 6,
-      "projectedK": 4,
-      "gamePk": 823175,
-      "gameLabel": "STL @ SF"
-    },
-    {
       "pitcherId": 656550,
       "pitcherName": "Grant Holmes",
       "team": "ATL",
@@ -428,6 +428,19 @@
       "projectedK": 3.5,
       "gamePk": 823415,
       "gameLabel": "ATL @ PHI"
+    },
+    {
+      "pitcherId": 657277,
+      "pitcherName": "Logan Webb",
+      "team": "SF",
+      "oppTeam": "STL",
+      "whiffScore": 59,
+      "grade": "B",
+      "k9": 7.2,
+      "projectedIP": 6,
+      "projectedK": 4,
+      "gamePk": 823175,
+      "gameLabel": "STL @ SF"
     },
     {
       "pitcherId": 682052,
