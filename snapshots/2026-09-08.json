@@ -1,8 +1,8 @@
 {
   "date": "2026-09-08",
-  "savedAt": "2026-09-08T20:09:50.325Z",
+  "savedAt": "2026-09-08T23:33:23.679Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -52,6 +52,22 @@
       "bvpHR": 4,
       "gamePk": 823738,
       "gameLabel": "CHC @ MIL"
+    },
+    {
+      "batterId": 608369,
+      "batterName": "Corey Seager",
+      "pitcherId": 682243,
+      "pitcherName": "Bryce Miller",
+      "batterTeam": "TEX",
+      "pitcherTeam": "SEA",
+      "edgeScore": 90,
+      "grade": "A+",
+      "bvpAvg": ".429",
+      "bvpOps": "1.886",
+      "bvpPA": 20,
+      "bvpHR": 4,
+      "gamePk": 823092,
+      "gameLabel": "TEX @ SEA"
     },
     {
       "batterId": 663586,
@@ -182,6 +198,22 @@
       "gameLabel": "NYM @ MIA"
     },
     {
+      "batterId": 694497,
+      "batterName": "Evan Carter",
+      "pitcherId": 682243,
+      "pitcherName": "Bryce Miller",
+      "batterTeam": "TEX",
+      "pitcherTeam": "SEA",
+      "edgeScore": 77,
+      "grade": "A",
+      "bvpAvg": ".400",
+      "bvpOps": "2.171",
+      "bvpPA": 14,
+      "bvpHR": 4,
+      "gamePk": 823092,
+      "gameLabel": "TEX @ SEA"
+    },
+    {
       "batterId": 543760,
       "batterName": "Marcus Semien",
       "pitcherId": 645261,
@@ -198,49 +230,17 @@
       "gameLabel": "NYM @ MIA"
     },
     {
-      "batterId": 677008,
-      "batterName": "Heston Kjerstad",
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "batterTeam": "BAL",
-      "pitcherTeam": "CLE",
-      "edgeScore": 73,
+      "batterId": 607043,
+      "batterName": "Brandon Nimmo",
+      "pitcherId": 682243,
+      "pitcherName": "Bryce Miller",
+      "batterTeam": "TEX",
+      "pitcherTeam": "SEA",
+      "edgeScore": 74,
       "grade": "A",
       "bvpAvg": ".600",
-      "bvpOps": "2.067",
+      "bvpOps": "1.667",
       "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 824792,
-      "gameLabel": "CLE @ BAL"
-    },
-    {
-      "batterId": 650402,
-      "batterName": "Gleyber Torres",
-      "pitcherId": 665152,
-      "pitcherName": "Dean Kremer",
-      "batterTeam": "DET",
-      "pitcherTeam": "MIN",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".313",
-      "bvpOps": ".853",
-      "bvpPA": 70,
-      "bvpHR": 2,
-      "gamePk": 824228,
-      "gameLabel": "MIN @ DET"
-    },
-    {
-      "batterId": 621493,
-      "batterName": "Taylor Ward",
-      "pitcherId": 615698,
-      "pitcherName": "Cal Quantrill",
-      "batterTeam": "SEA",
-      "pitcherTeam": "TEX",
-      "edgeScore": 72,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.000",
-      "bvpPA": 20,
       "bvpHR": 0,
       "gamePk": 823092,
       "gameLabel": "TEX @ SEA"
@@ -306,8 +306,8 @@
       "oppTeam": "NYY",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 7.2,
-      "projectedIP": 5.2,
+      "k9": 7.4,
+      "projectedIP": 4.8,
       "projectedK": 3.5,
       "gamePk": 823500,
       "gameLabel": "COL @ NYY"
@@ -346,7 +346,7 @@
       "whiffScore": 66,
       "grade": "B+",
       "k9": 8.6,
-      "projectedIP": 5.3,
+      "projectedIP": 5.1,
       "projectedK": 4,
       "gamePk": 824875,
       "gameLabel": "TB @ ATL"
@@ -449,11 +449,37 @@
       "oppTeam": "TB",
       "whiffScore": 60,
       "grade": "B",
-      "k9": 7.6,
-      "projectedIP": 4.3,
-      "projectedK": 3,
+      "k9": 7.7,
+      "projectedIP": 3.6,
+      "projectedK": 2.5,
       "gamePk": 824875,
       "gameLabel": "TB @ ATL"
+    },
+    {
+      "pitcherId": 682243,
+      "pitcherName": "Bryce Miller",
+      "team": "SEA",
+      "oppTeam": "TEX",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.7,
+      "projectedIP": 5.8,
+      "projectedK": 4.5,
+      "gamePk": 823092,
+      "gameLabel": "TEX @ SEA"
+    },
+    {
+      "pitcherId": 694738,
+      "pitcherName": "Landen Roupp",
+      "team": "SF",
+      "oppTeam": "STL",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.5,
+      "projectedIP": 5.3,
+      "projectedK": 4,
+      "gamePk": 823174,
+      "gameLabel": "STL @ SF"
     },
     {
       "pitcherId": 615698,
@@ -508,19 +534,6 @@
       "gameLabel": "AZ @ KC"
     },
     {
-      "pitcherId": 694738,
-      "pitcherName": "Landen Roupp",
-      "team": "SF",
-      "oppTeam": "STL",
-      "whiffScore": 49,
-      "grade": "C",
-      "k9": 8.5,
-      "projectedIP": 5.3,
-      "projectedK": 4,
-      "gamePk": 823174,
-      "gameLabel": "STL @ SF"
-    },
-    {
       "pitcherId": 645261,
       "pitcherName": "Sandy Alcantara",
       "team": "MIA",
@@ -565,6 +578,24 @@
       "lineupPA": 110,
       "gamePk": 824714,
       "gameLabel": "LAA @ BOS"
+    },
+    {
+      "pitcherId": 682243,
+      "pitcherName": "Bryce Miller",
+      "team": "SEA",
+      "oppTeam": "TEX",
+      "line": 94.5,
+      "overUnder": "OVER",
+      "pitchScore": 76,
+      "grade": "A",
+      "recent5Avg": 88.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 87.8,
+      "twoYrStarts": 35,
+      "bvpAdj": 6,
+      "lineupPA": 124,
+      "gamePk": 823092,
+      "gameLabel": "TEX @ SEA"
     },
     {
       "pitcherId": 665152,
@@ -619,24 +650,6 @@
       "lineupPA": 110,
       "gamePk": 824792,
       "gameLabel": "CLE @ BAL"
-    },
-    {
-      "pitcherId": 669713,
-      "pitcherName": "Hayden Wesneski",
-      "team": "HOU",
-      "oppTeam": "PHI",
-      "line": 86.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 87.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 84.7,
-      "twoYrStarts": 13,
-      "bvpAdj": 0,
-      "lineupPA": 112,
-      "gamePk": 823414,
-      "gameLabel": "HOU @ PHI"
     }
   ]
 }
