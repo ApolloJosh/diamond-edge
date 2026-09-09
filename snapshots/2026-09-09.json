@@ -1,6 +1,6 @@
 {
   "date": "2026-09-09",
-  "savedAt": "2026-09-09T18:49:13.911Z",
+  "savedAt": "2026-09-09T19:58:44.191Z",
   "scanType": "afternoon",
   "gamesScanned": 14,
   "totalGames": 15,
@@ -20,6 +20,38 @@
       "bvpHR": 6,
       "gamePk": 823497,
       "gameLabel": "COL @ NYY"
+    },
+    {
+      "batterId": 690993,
+      "batterName": "Colt Keith",
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "batterTeam": "DET",
+      "pitcherTeam": "MIN",
+      "edgeScore": 92,
+      "grade": "A+",
+      "bvpAvg": ".571",
+      "bvpOps": "1.952",
+      "bvpPA": 18,
+      "bvpHR": 2,
+      "gamePk": 824226,
+      "gameLabel": "MIN @ DET"
+    },
+    {
+      "batterId": 650490,
+      "batterName": "Yandy Díaz",
+      "pitcherId": 625643,
+      "pitcherName": "Reynaldo López",
+      "batterTeam": "TB",
+      "pitcherTeam": "ATL",
+      "edgeScore": 87,
+      "grade": "A+",
+      "bvpAvg": ".556",
+      "bvpOps": "1.192",
+      "bvpPA": 22,
+      "bvpHR": 0,
+      "gamePk": 824871,
+      "gameLabel": "TB @ ATL"
     },
     {
       "batterId": 683734,
@@ -118,6 +150,22 @@
       "gameLabel": "CHC @ MIL"
     },
     {
+      "batterId": 693307,
+      "batterName": "Dillon Dingler",
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "batterTeam": "DET",
+      "pitcherTeam": "MIN",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.400",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 824226,
+      "gameLabel": "MIN @ DET"
+    },
+    {
       "batterId": 641355,
       "batterName": "Cody Bellinger",
       "pitcherId": 608372,
@@ -196,54 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823172,
       "gameLabel": "STL @ SF"
-    },
-    {
-      "batterId": 677587,
-      "batterName": "Brayan Rocchio",
-      "pitcherId": 669358,
-      "pitcherName": "Shane Baz",
-      "batterTeam": "CLE",
-      "pitcherTeam": "BAL",
-      "edgeScore": 60,
-      "grade": "B",
-      "bvpAvg": ".500",
-      "bvpOps": "1.250",
-      "bvpPA": 8,
-      "bvpHR": 0,
-      "gamePk": 824791,
-      "gameLabel": "CLE @ BAL"
-    },
-    {
-      "batterId": 666182,
-      "batterName": "Bo Bichette",
-      "pitcherId": 676083,
-      "pitcherName": "Janson Junk",
-      "batterTeam": "NYM",
-      "pitcherTeam": "MIA",
-      "edgeScore": 60,
-      "grade": "B",
-      "bvpAvg": ".429",
-      "bvpOps": ".857",
-      "bvpPA": 14,
-      "bvpHR": 0,
-      "gamePk": 823818,
-      "gameLabel": "NYM @ MIA"
-    },
-    {
-      "batterId": 642350,
-      "batterName": "Jose Siri",
-      "pitcherId": 687562,
-      "pitcherName": "Jake Bennett",
-      "batterTeam": "LAA",
-      "pitcherTeam": "BOS",
-      "edgeScore": 60,
-      "grade": "B",
-      "bvpAvg": ".333",
-      "bvpOps": "1.667",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 824713,
-      "gameLabel": "LAA @ BOS"
     }
   ],
   "pitchers": [
@@ -352,6 +352,19 @@
       "gameLabel": "LAA @ BOS"
     },
     {
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "team": "MIN",
+      "oppTeam": "DET",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 7.5,
+      "projectedIP": 5.7,
+      "projectedK": 4,
+      "gamePk": 824226,
+      "gameLabel": "MIN @ DET"
+    },
+    {
       "pitcherId": 701542,
       "pitcherName": "Will Warren",
       "team": "NYY",
@@ -437,7 +450,7 @@
       "whiffScore": 49,
       "grade": "C",
       "k9": 6.3,
-      "projectedIP": 5.6,
+      "projectedIP": 5.4,
       "projectedK": 3,
       "gamePk": 823172,
       "gameLabel": "STL @ SF"
@@ -456,6 +469,19 @@
       "gameLabel": "NYM @ MIA"
     },
     {
+      "pitcherId": 625643,
+      "pitcherName": "Reynaldo López",
+      "team": "ATL",
+      "oppTeam": "TB",
+      "whiffScore": 46,
+      "grade": "C",
+      "k9": 8.3,
+      "projectedIP": 6.5,
+      "projectedK": 5,
+      "gamePk": 824871,
+      "gameLabel": "TB @ ATL"
+    },
+    {
       "pitcherId": 694918,
       "pitcherName": "Blade Tidwell",
       "team": "SF",
@@ -463,10 +489,23 @@
       "whiffScore": 45,
       "grade": "C",
       "k9": 7.6,
-      "projectedIP": 7,
-      "projectedK": 5,
+      "projectedIP": 6.2,
+      "projectedK": 4.5,
       "gamePk": 823172,
       "gameLabel": "STL @ SF"
+    },
+    {
+      "pitcherId": 672456,
+      "pitcherName": "Keider Montero",
+      "team": "DET",
+      "oppTeam": "MIN",
+      "whiffScore": 45,
+      "grade": "C",
+      "k9": 6,
+      "projectedIP": 6.1,
+      "projectedK": 3.5,
+      "gamePk": 824226,
+      "gameLabel": "MIN @ DET"
     },
     {
       "pitcherId": 674003,
@@ -496,6 +535,24 @@
     }
   ],
   "pitches": [
+    {
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "team": "MIN",
+      "oppTeam": "DET",
+      "line": 95,
+      "overUnder": "OVER",
+      "pitchScore": 76,
+      "grade": "A",
+      "recent5Avg": 88,
+      "recent5Starts": 5,
+      "twoYrAvg": 88.5,
+      "twoYrStarts": 37,
+      "bvpAdj": 7,
+      "lineupPA": 87,
+      "gamePk": 824226,
+      "gameLabel": "MIN @ DET"
+    },
     {
       "pitcherId": 669358,
       "pitcherName": "Shane Baz",
@@ -567,24 +624,6 @@
       "lineupPA": 282,
       "gamePk": 823739,
       "gameLabel": "CHC @ MIL"
-    },
-    {
-      "pitcherId": 656492,
-      "pitcherName": "Foster Griffin",
-      "team": "CLE",
-      "oppTeam": "BAL",
-      "line": 93.5,
-      "overUnder": "OVER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 92.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 93,
-      "twoYrStarts": 28,
-      "bvpAdj": 1,
-      "lineupPA": 30,
-      "gamePk": 824791,
-      "gameLabel": "CLE @ BAL"
     }
   ]
 }
