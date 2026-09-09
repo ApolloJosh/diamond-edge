@@ -1,8 +1,8 @@
 {
   "date": "2026-09-09",
-  "savedAt": "2026-09-09T19:58:44.191Z",
+  "savedAt": "2026-09-09T23:27:16.922Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 6,
   "totalGames": 15,
   "batters": [
     {
@@ -102,6 +102,22 @@
       "gameLabel": "AZ @ KC"
     },
     {
+      "batterId": 693307,
+      "batterName": "Dillon Dingler",
+      "pitcherId": 805673,
+      "pitcherName": "Zebby Matthews",
+      "batterTeam": "DET",
+      "pitcherTeam": "MIN",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".600",
+      "bvpOps": "1.400",
+      "bvpPA": 10,
+      "bvpHR": 0,
+      "gamePk": 824226,
+      "gameLabel": "MIN @ DET"
+    },
+    {
       "batterId": 678662,
       "batterName": "Ezequiel Tovar",
       "pitcherId": 701542,
@@ -148,22 +164,6 @@
       "bvpHR": 2,
       "gamePk": 823739,
       "gameLabel": "CHC @ MIL"
-    },
-    {
-      "batterId": 693307,
-      "batterName": "Dillon Dingler",
-      "pitcherId": 805673,
-      "pitcherName": "Zebby Matthews",
-      "batterTeam": "DET",
-      "pitcherTeam": "MIN",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.400",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 824226,
-      "gameLabel": "MIN @ DET"
     },
     {
       "batterId": 641355,
@@ -267,9 +267,9 @@
       "oppTeam": "ATL",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 9.6,
-      "projectedIP": 5,
-      "projectedK": 4.5,
+      "k9": 9.5,
+      "projectedIP": 4.8,
+      "projectedK": 4,
       "gamePk": 824871,
       "gameLabel": "TB @ ATL"
     },
@@ -372,7 +372,7 @@
       "whiffScore": 63,
       "grade": "B+",
       "k9": 8.8,
-      "projectedIP": 5.2,
+      "projectedIP": 5.1,
       "projectedK": 4,
       "gamePk": 823497,
       "gameLabel": "COL @ NYY"
@@ -410,8 +410,8 @@
       "oppTeam": "NYY",
       "whiffScore": 55,
       "grade": "B",
-      "k9": 5.4,
-      "projectedIP": 5.2,
+      "k9": 5.6,
+      "projectedIP": 5.1,
       "projectedK": 2.5,
       "gamePk": 823497,
       "gameLabel": "COL @ NYY"
@@ -476,8 +476,8 @@
       "whiffScore": 46,
       "grade": "C",
       "k9": 8.3,
-      "projectedIP": 6.5,
-      "projectedK": 5,
+      "projectedIP": 6,
+      "projectedK": 4.5,
       "gamePk": 824871,
       "gameLabel": "TB @ ATL"
     },
