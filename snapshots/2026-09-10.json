@@ -1,8 +1,8 @@
 {
   "date": "2026-09-10",
-  "savedAt": "2026-09-10T19:59:49.704Z",
+  "savedAt": "2026-09-10T23:20:32.130Z",
   "scanType": "afternoon",
-  "gamesScanned": 5,
+  "gamesScanned": 2,
   "totalGames": 5,
   "batters": [
     {
@@ -124,11 +124,11 @@
       "pitcherName": "Max Fried",
       "batterTeam": "COL",
       "pitcherTeam": "NYY",
-      "edgeScore": 70,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.000",
-      "bvpPA": 16,
+      "edgeScore": 69,
+      "grade": "B+",
+      "bvpAvg": ".471",
+      "bvpOps": ".941",
+      "bvpPA": 17,
       "bvpHR": 0,
       "gamePk": 823499,
       "gameLabel": "COL @ NYY"
@@ -319,8 +319,8 @@
       "oppTeam": "COL",
       "whiffScore": 66,
       "grade": "B+",
-      "k9": 8.2,
-      "projectedIP": 5.6,
+      "k9": 8.3,
+      "projectedIP": 5.3,
       "projectedK": 4,
       "gamePk": 823499,
       "gameLabel": "COL @ NYY"
@@ -333,7 +333,7 @@
       "whiffScore": 66,
       "grade": "B+",
       "k9": 6.8,
-      "projectedIP": 5.1,
+      "projectedIP": 4.8,
       "projectedK": 3,
       "gamePk": 823499,
       "gameLabel": "COL @ NYY"
