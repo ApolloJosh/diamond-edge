@@ -1,8 +1,8 @@
 {
   "date": "2026-09-12",
-  "savedAt": "2026-09-12T17:48:08.180Z",
+  "savedAt": "2026-09-12T19:36:15.481Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 13,
   "totalGames": 15,
   "batters": [
     {
@@ -36,6 +36,22 @@
       "bvpHR": 2,
       "gamePk": 822768,
       "gameLabel": "BAL @ TOR"
+    },
+    {
+      "batterId": 553993,
+      "batterName": "Eugenio Suárez",
+      "pitcherId": 675660,
+      "pitcherName": "Shane Drohan",
+      "batterTeam": "CIN",
+      "pitcherTeam": "MIL",
+      "edgeScore": 89,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "2.314",
+      "bvpPA": 14,
+      "bvpHR": 2,
+      "gamePk": 823737,
+      "gameLabel": "CIN @ MIL"
     },
     {
       "batterId": 607208,
@@ -150,6 +166,22 @@
       "gameLabel": "BAL @ TOR"
     },
     {
+      "batterId": 682829,
+      "batterName": "Elly De La Cruz",
+      "pitcherId": 675660,
+      "pitcherName": "Shane Drohan",
+      "batterTeam": "CIN",
+      "pitcherTeam": "MIL",
+      "edgeScore": 75,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "1.000",
+      "bvpPA": 16,
+      "bvpHR": 0,
+      "gamePk": 823737,
+      "gameLabel": "CIN @ MIL"
+    },
+    {
       "batterId": 643396,
       "batterName": "Isiah Kiner-Falefa",
       "pitcherId": 677976,
@@ -204,46 +236,14 @@
       "pitcherName": "Spencer Miles",
       "batterTeam": "BAL",
       "pitcherTeam": "TOR",
-      "edgeScore": 67,
+      "edgeScore": 69,
       "grade": "B+",
       "bvpAvg": ".667",
-      "bvpOps": "1.333",
-      "bvpPA": 6,
+      "bvpOps": "1.381",
+      "bvpPA": 7,
       "bvpHR": 0,
       "gamePk": 822768,
       "gameLabel": "BAL @ TOR"
-    },
-    {
-      "batterId": 666310,
-      "batterName": "Bo Naylor",
-      "pitcherId": 663903,
-      "pitcherName": "Brady Singer",
-      "batterTeam": "MIL",
-      "pitcherTeam": "CIN",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".357",
-      "bvpOps": "1.114",
-      "bvpPA": 30,
-      "bvpHR": 2,
-      "gamePk": 823737,
-      "gameLabel": "CIN @ MIL"
-    },
-    {
-      "batterId": 677587,
-      "batterName": "Brayan Rocchio",
-      "pitcherId": 687570,
-      "pitcherName": "Connor Prielipp",
-      "batterTeam": "CLE",
-      "pitcherTeam": "MIN",
-      "edgeScore": 65,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.400",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 823657,
-      "gameLabel": "CLE @ MIN"
     }
   ],
   "pitchers": [
@@ -300,6 +300,19 @@
       "gameLabel": "SEA @ ATH"
     },
     {
+      "pitcherId": 675660,
+      "pitcherName": "Shane Drohan",
+      "team": "MIL",
+      "oppTeam": "CIN",
+      "whiffScore": 71,
+      "grade": "A",
+      "k9": 9.1,
+      "projectedIP": 6.7,
+      "projectedK": 5.5,
+      "gamePk": 823737,
+      "gameLabel": "CIN @ MIL"
+    },
+    {
       "pitcherId": 695611,
       "pitcherName": "Gage Jump",
       "team": "ATH",
@@ -319,9 +332,9 @@
       "oppTeam": "BAL",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 8.3,
-      "projectedIP": 14.5,
-      "projectedK": 11.5,
+      "k9": 8.5,
+      "projectedIP": 12.7,
+      "projectedK": 10.5,
       "gamePk": 822768,
       "gameLabel": "BAL @ TOR"
     },
@@ -456,6 +469,19 @@
       "gameLabel": "CWS @ STL"
     },
     {
+      "pitcherId": 685299,
+      "pitcherName": "Tanner Gordon",
+      "team": "COL",
+      "oppTeam": "DET",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7.5,
+      "projectedIP": 9.7,
+      "projectedK": 7,
+      "gamePk": 824224,
+      "gameLabel": "COL @ DET"
+    },
+    {
       "pitcherId": 677958,
       "pitcherName": "Kumar Rocker",
       "team": "TEX",
@@ -482,6 +508,19 @@
       "gameLabel": "SD @ SF"
     },
     {
+      "pitcherId": 641835,
+      "pitcherName": "Tim Mayza",
+      "team": "PHI",
+      "oppTeam": "ATL",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 8.7,
+      "projectedIP": 15.3,
+      "projectedK": 12.5,
+      "gamePk": 824870,
+      "gameLabel": "PHI @ ATL"
+    },
+    {
       "pitcherId": 605280,
       "pitcherName": "Clay Holmes",
       "team": "CHC",
@@ -501,8 +540,8 @@
       "oppTeam": "TOR",
       "whiffScore": 46,
       "grade": "C",
-      "k9": 8.3,
-      "projectedIP": 5.4,
+      "k9": 8.2,
+      "projectedIP": 5.3,
       "projectedK": 4,
       "gamePk": 822768,
       "gameLabel": "BAL @ TOR"
@@ -539,24 +578,6 @@
       "lineupPA": 52,
       "gamePk": 824712,
       "gameLabel": "KC @ BOS"
-    },
-    {
-      "pitcherId": 680694,
-      "pitcherName": "Kyle Bradish",
-      "team": "BAL",
-      "oppTeam": "TOR",
-      "line": 93,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 92.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.2,
-      "twoYrStarts": 34,
-      "bvpAdj": 1,
-      "lineupPA": 196,
-      "gamePk": 822768,
-      "gameLabel": "BAL @ TOR"
     },
     {
       "pitcherId": 663567,
@@ -611,6 +632,24 @@
       "lineupPA": 74,
       "gamePk": 825035,
       "gameLabel": "TEX @ AZ"
+    },
+    {
+      "pitcherId": 693433,
+      "pitcherName": "Bryan Woo",
+      "team": "SEA",
+      "oppTeam": "ATH",
+      "line": 91,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 88.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.6,
+      "twoYrStarts": 57,
+      "bvpAdj": 2,
+      "lineupPA": 188,
+      "gamePk": 824955,
+      "gameLabel": "SEA @ ATH"
     }
   ]
 }
