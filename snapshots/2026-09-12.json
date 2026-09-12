@@ -1,8 +1,8 @@
 {
   "date": "2026-09-12",
-  "savedAt": "2026-09-12T19:36:15.481Z",
+  "savedAt": "2026-09-12T23:12:03.626Z",
   "scanType": "afternoon",
-  "gamesScanned": 13,
+  "gamesScanned": 6,
   "totalGames": 15,
   "batters": [
     {
@@ -68,6 +68,22 @@
       "bvpHR": 0,
       "gamePk": 824870,
       "gameLabel": "PHI @ ATL"
+    },
+    {
+      "batterId": 673962,
+      "batterName": "Josh Jung",
+      "pitcherId": 694297,
+      "pitcherName": "Brandon Pfaadt",
+      "batterTeam": "TEX",
+      "pitcherTeam": "AZ",
+      "edgeScore": 80,
+      "grade": "A+",
+      "bvpAvg": ".500",
+      "bvpOps": "2.500",
+      "bvpPA": 8,
+      "bvpHR": 4,
+      "gamePk": 825035,
+      "gameLabel": "TEX @ AZ"
     },
     {
       "batterId": 668901,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 824870,
       "gameLabel": "PHI @ ATL"
-    },
-    {
-      "batterId": 624413,
-      "batterName": "Pete Alonso",
-      "pitcherId": 693686,
-      "pitcherName": "Spencer Miles",
-      "batterTeam": "BAL",
-      "pitcherTeam": "TOR",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.381",
-      "bvpPA": 7,
-      "bvpHR": 0,
-      "gamePk": 822768,
-      "gameLabel": "BAL @ TOR"
     }
   ],
   "pitchers": [
@@ -298,6 +298,19 @@
       "projectedK": 5,
       "gamePk": 824955,
       "gameLabel": "SEA @ ATH"
+    },
+    {
+      "pitcherId": 674841,
+      "pitcherName": "Andrew Alvarez",
+      "team": "WSH",
+      "oppTeam": "LAA",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 8.7,
+      "projectedIP": 6.8,
+      "projectedK": 5.5,
+      "gamePk": 822685,
+      "gameLabel": "LAA @ WSH"
     },
     {
       "pitcherId": 675660,
@@ -404,6 +417,19 @@
       "gameLabel": "PHI @ ATL"
     },
     {
+      "pitcherId": 700712,
+      "pitcherName": "Walbert Ureña",
+      "team": "LAA",
+      "oppTeam": "WSH",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.6,
+      "projectedIP": 5.5,
+      "projectedK": 4.5,
+      "gamePk": 822685,
+      "gameLabel": "LAA @ WSH"
+    },
+    {
       "pitcherId": 663567,
       "pitcherName": "Peter Lambert",
       "team": "HOU",
@@ -430,19 +456,6 @@
       "gameLabel": "CIN @ MIL"
     },
     {
-      "pitcherId": 694297,
-      "pitcherName": "Brandon Pfaadt",
-      "team": "AZ",
-      "oppTeam": "TEX",
-      "whiffScore": 58,
-      "grade": "B",
-      "k9": 5.9,
-      "projectedIP": 7.3,
-      "projectedK": 4,
-      "gamePk": 825035,
-      "gameLabel": "TEX @ AZ"
-    },
-    {
       "pitcherId": 663969,
       "pitcherName": "Tyler Phillips",
       "team": "MIA",
@@ -454,6 +467,19 @@
       "projectedK": 4.5,
       "gamePk": 823819,
       "gameLabel": "LAD @ MIA"
+    },
+    {
+      "pitcherId": 685299,
+      "pitcherName": "Tanner Gordon",
+      "team": "COL",
+      "oppTeam": "DET",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7.5,
+      "projectedIP": 9.7,
+      "projectedK": 7,
+      "gamePk": 824224,
+      "gameLabel": "COL @ DET"
     },
     {
       "pitcherId": 681517,
@@ -469,17 +495,17 @@
       "gameLabel": "CWS @ STL"
     },
     {
-      "pitcherId": 685299,
-      "pitcherName": "Tanner Gordon",
-      "team": "COL",
-      "oppTeam": "DET",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 7.5,
-      "projectedIP": 9.7,
-      "projectedK": 7,
-      "gamePk": 824224,
-      "gameLabel": "COL @ DET"
+      "pitcherId": 694297,
+      "pitcherName": "Brandon Pfaadt",
+      "team": "AZ",
+      "oppTeam": "TEX",
+      "whiffScore": 54,
+      "grade": "C",
+      "k9": 5.9,
+      "projectedIP": 7.3,
+      "projectedK": 4,
+      "gamePk": 825035,
+      "gameLabel": "TEX @ AZ"
     },
     {
       "pitcherId": 677958,
@@ -620,16 +646,16 @@
       "pitcherName": "Brandon Pfaadt",
       "team": "AZ",
       "oppTeam": "TEX",
-      "line": 95.5,
-      "overUnder": "OVER",
+      "line": 93.5,
+      "overUnder": "UNDER",
       "pitchScore": 72,
       "grade": "A",
       "recent5Avg": 92.8,
       "recent5Starts": 5,
       "twoYrAvg": 95.6,
       "twoYrStarts": 49,
-      "bvpAdj": 2,
-      "lineupPA": 74,
+      "bvpAdj": 0,
+      "lineupPA": 76,
       "gamePk": 825035,
       "gameLabel": "TEX @ AZ"
     },
@@ -647,7 +673,7 @@
       "twoYrAvg": 89.6,
       "twoYrStarts": 57,
       "bvpAdj": 2,
-      "lineupPA": 188,
+      "lineupPA": 198,
       "gamePk": 824955,
       "gameLabel": "SEA @ ATH"
     }
