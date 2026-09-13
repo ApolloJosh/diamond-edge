@@ -1,8 +1,8 @@
 {
   "date": "2026-09-13",
-  "savedAt": "2026-09-13T18:18:43.267Z",
+  "savedAt": "2026-09-13T19:42:13.785Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -70,6 +70,22 @@
       "gameLabel": "TEX @ AZ"
     },
     {
+      "batterId": 671739,
+      "batterName": "Michael Harris II",
+      "pitcherId": 691725,
+      "pitcherName": "Andrew Painter",
+      "batterTeam": "ATL",
+      "pitcherTeam": "PHI",
+      "edgeScore": 85,
+      "grade": "A+",
+      "bvpAvg": "1.000",
+      "bvpOps": "3.333",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 824869,
+      "gameLabel": "PHI @ ATL"
+    },
+    {
       "batterId": 671732,
       "batterName": "Lawrence Butler",
       "pitcherId": 682243,
@@ -134,6 +150,38 @@
       "gameLabel": "CIN @ MIL"
     },
     {
+      "batterId": 547180,
+      "batterName": "Bryce Harper",
+      "pitcherId": 656550,
+      "pitcherName": "Grant Holmes",
+      "batterTeam": "PHI",
+      "pitcherTeam": "ATL",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".333",
+      "bvpOps": "1.433",
+      "bvpPA": 20,
+      "bvpHR": 2,
+      "gamePk": 824869,
+      "gameLabel": "PHI @ ATL"
+    },
+    {
+      "batterId": 665489,
+      "batterName": "Vladimir Guerrero Jr.",
+      "pitcherId": 669432,
+      "pitcherName": "Trevor Rogers",
+      "batterTeam": "TOR",
+      "pitcherTeam": "BAL",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".444",
+      "bvpOps": "1.028",
+      "bvpPA": 24,
+      "bvpHR": 0,
+      "gamePk": 822764,
+      "gameLabel": "BAL @ TOR"
+    },
+    {
       "batterId": 668227,
       "batterName": "Randy Arozarena",
       "pitcherId": 682052,
@@ -148,6 +196,22 @@
       "bvpHR": 0,
       "gamePk": 824952,
       "gameLabel": "SEA @ ATH"
+    },
+    {
+      "batterId": 672960,
+      "batterName": "Kazuma Okamoto",
+      "pitcherId": 669432,
+      "pitcherName": "Trevor Rogers",
+      "batterTeam": "TOR",
+      "pitcherTeam": "BAL",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".375",
+      "bvpOps": "1.944",
+      "bvpPA": 9,
+      "bvpHR": 3,
+      "gamePk": 822764,
+      "gameLabel": "BAL @ TOR"
     },
     {
       "batterId": 606466,
@@ -180,85 +244,34 @@
       "bvpHR": 6,
       "gamePk": 824952,
       "gameLabel": "SEA @ ATH"
-    },
-    {
-      "batterId": 683953,
-      "batterName": "Travis Bazzana",
-      "pitcherId": 657746,
-      "pitcherName": "Joe Ryan",
-      "batterTeam": "CLE",
-      "pitcherTeam": "MIN",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.500",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 823658,
-      "gameLabel": "CLE @ MIN"
-    },
-    {
-      "batterId": 667472,
-      "batterName": "Dane Myers",
-      "pitcherId": 688107,
-      "pitcherName": "Robert Gasser",
-      "batterTeam": "CIN",
-      "pitcherTeam": "MIL",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.250",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 823734,
-      "gameLabel": "CIN @ MIL"
-    },
-    {
-      "batterId": 663886,
-      "batterName": "Tyler Stephenson",
-      "pitcherId": 688107,
-      "pitcherName": "Robert Gasser",
-      "batterTeam": "CIN",
-      "pitcherTeam": "MIL",
-      "edgeScore": 64,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.750",
-      "bvpPA": 8,
-      "bvpHR": 0,
-      "gamePk": 823734,
-      "gameLabel": "CIN @ MIL"
-    },
-    {
-      "batterId": 663538,
-      "batterName": "Nico Hoerner",
-      "pitcherId": 696149,
-      "pitcherName": "Bubba Chandler",
-      "batterTeam": "CHC",
-      "pitcherTeam": "PIT",
-      "edgeScore": 63,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.000",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824628,
-      "gameLabel": "PIT @ CHC"
     }
   ],
   "pitchers": [
     {
-      "pitcherId": 601713,
-      "pitcherName": "Nick Pivetta",
-      "team": "SD",
-      "oppTeam": "SF",
-      "whiffScore": 75,
+      "pitcherId": 656302,
+      "pitcherName": "Dylan Cease",
+      "team": "TOR",
+      "oppTeam": "BAL",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 12.8,
+      "projectedIP": 5.9,
+      "projectedK": 7,
+      "gamePk": 822764,
+      "gameLabel": "BAL @ TOR"
+    },
+    {
+      "pitcherId": 693645,
+      "pitcherName": "Cam Schlittler",
+      "team": "NYY",
+      "oppTeam": "NYM",
+      "whiffScore": 78,
       "grade": "A",
       "k9": 11.1,
-      "projectedIP": 4.2,
-      "projectedK": 4.5,
-      "gamePk": 823171,
-      "gameLabel": "SD @ SF"
+      "projectedIP": 5.9,
+      "projectedK": 6,
+      "gamePk": 823495,
+      "gameLabel": "NYM @ NYY"
     },
     {
       "pitcherId": 657746,
@@ -300,6 +313,32 @@
       "gameLabel": "KC @ BOS"
     },
     {
+      "pitcherId": 642547,
+      "pitcherName": "Freddy Peralta",
+      "team": "TB",
+      "oppTeam": "HOU",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.3,
+      "projectedIP": 5.3,
+      "projectedK": 4,
+      "gamePk": 822928,
+      "gameLabel": "HOU @ TB"
+    },
+    {
+      "pitcherId": 601713,
+      "pitcherName": "Nick Pivetta",
+      "team": "SD",
+      "oppTeam": "SF",
+      "whiffScore": 68,
+      "grade": "B+",
+      "k9": 11.1,
+      "projectedIP": 4.2,
+      "projectedK": 4.5,
+      "gamePk": 823171,
+      "gameLabel": "SD @ SF"
+    },
+    {
       "pitcherId": 688107,
       "pitcherName": "Robert Gasser",
       "team": "MIL",
@@ -313,6 +352,19 @@
       "gameLabel": "CIN @ MIL"
     },
     {
+      "pitcherId": 691587,
+      "pitcherName": "Eury Pérez",
+      "team": "MIA",
+      "oppTeam": "LAD",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 9.7,
+      "projectedIP": 5.3,
+      "projectedK": 5,
+      "gamePk": 823815,
+      "gameLabel": "LAD @ MIA"
+    },
+    {
       "pitcherId": 682052,
       "pitcherName": "Jacob Lopez",
       "team": "ATH",
@@ -324,6 +376,19 @@
       "projectedK": 4,
       "gamePk": 824952,
       "gameLabel": "SEA @ ATH"
+    },
+    {
+      "pitcherId": 681035,
+      "pitcherName": "Christian Scott",
+      "team": "NYM",
+      "oppTeam": "NYY",
+      "whiffScore": 64,
+      "grade": "B+",
+      "k9": 10.9,
+      "projectedIP": 4.8,
+      "projectedK": 5,
+      "gamePk": 823495,
+      "gameLabel": "NYM @ NYY"
     },
     {
       "pitcherId": 571510,
@@ -365,6 +430,32 @@
       "gameLabel": "SEA @ ATH"
     },
     {
+      "pitcherId": 695549,
+      "pitcherName": "Jackson Jobe",
+      "team": "DET",
+      "oppTeam": "COL",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.8,
+      "projectedIP": 4.9,
+      "projectedK": 4,
+      "gamePk": 824225,
+      "gameLabel": "COL @ DET"
+    },
+    {
+      "pitcherId": 680570,
+      "pitcherName": "Grayson Rodriguez",
+      "team": "LAA",
+      "oppTeam": "WSH",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.2,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 822682,
+      "gameLabel": "LAA @ WSH"
+    },
+    {
       "pitcherId": 676440,
       "pitcherName": "Tanner Bibee",
       "team": "CLE",
@@ -391,6 +482,19 @@
       "gameLabel": "SD @ SF"
     },
     {
+      "pitcherId": 669432,
+      "pitcherName": "Trevor Rogers",
+      "team": "BAL",
+      "oppTeam": "TOR",
+      "whiffScore": 57,
+      "grade": "B",
+      "k9": 8.2,
+      "projectedIP": 5.6,
+      "projectedK": 4,
+      "gamePk": 822764,
+      "gameLabel": "BAL @ TOR"
+    },
+    {
       "pitcherId": 593958,
       "pitcherName": "Eduardo Rodriguez",
       "team": "AZ",
@@ -404,6 +508,19 @@
       "gameLabel": "TEX @ AZ"
     },
     {
+      "pitcherId": 656550,
+      "pitcherName": "Grant Holmes",
+      "team": "ATL",
+      "oppTeam": "PHI",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 7,
+      "projectedIP": 5,
+      "projectedK": 3,
+      "gamePk": 824869,
+      "gameLabel": "PHI @ ATL"
+    },
+    {
       "pitcherId": 700241,
       "pitcherName": "Michael McGreevy",
       "team": "STL",
@@ -415,6 +532,32 @@
       "projectedK": 3,
       "gamePk": 823008,
       "gameLabel": "CWS @ STL"
+    },
+    {
+      "pitcherId": 691725,
+      "pitcherName": "Andrew Painter",
+      "team": "PHI",
+      "oppTeam": "ATL",
+      "whiffScore": 49,
+      "grade": "C",
+      "k9": 7.8,
+      "projectedIP": 5.5,
+      "projectedK": 4,
+      "gamePk": 824869,
+      "gameLabel": "PHI @ ATL"
+    },
+    {
+      "pitcherId": 669713,
+      "pitcherName": "Hayden Wesneski",
+      "team": "HOU",
+      "oppTeam": "TB",
+      "whiffScore": 42,
+      "grade": "D",
+      "k9": 7,
+      "projectedIP": 5.4,
+      "projectedK": 3.5,
+      "gamePk": 822928,
+      "gameLabel": "HOU @ TB"
     },
     {
       "pitcherId": 615698,
@@ -450,6 +593,24 @@
       "gameLabel": "SEA @ ATH"
     },
     {
+      "pitcherId": 656302,
+      "pitcherName": "Dylan Cease",
+      "team": "TOR",
+      "oppTeam": "BAL",
+      "line": 100,
+      "overUnder": "OVER",
+      "pitchScore": 74,
+      "grade": "A",
+      "recent5Avg": 94.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 97.8,
+      "twoYrStarts": 60,
+      "bvpAdj": 4,
+      "lineupPA": 97,
+      "gamePk": 822764,
+      "gameLabel": "BAL @ TOR"
+    },
+    {
       "pitcherId": 615698,
       "pitcherName": "Cal Quantrill",
       "team": "TEX",
@@ -468,6 +629,24 @@
       "gameLabel": "TEX @ AZ"
     },
     {
+      "pitcherId": 691725,
+      "pitcherName": "Andrew Painter",
+      "team": "PHI",
+      "oppTeam": "ATL",
+      "line": 92.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 95,
+      "recent5Starts": 5,
+      "twoYrAvg": 92.8,
+      "twoYrStarts": 21,
+      "bvpAdj": -2,
+      "lineupPA": 103,
+      "gamePk": 824869,
+      "gameLabel": "PHI @ ATL"
+    },
+    {
       "pitcherId": 682243,
       "pitcherName": "Bryce Miller",
       "team": "SEA",
@@ -484,42 +663,6 @@
       "lineupPA": 82,
       "gamePk": 824952,
       "gameLabel": "SEA @ ATH"
-    },
-    {
-      "pitcherId": 657746,
-      "pitcherName": "Joe Ryan",
-      "team": "MIN",
-      "oppTeam": "CLE",
-      "line": 86,
-      "overUnder": "UNDER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 86,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.7,
-      "twoYrStarts": 54,
-      "bvpAdj": -2,
-      "lineupPA": 298,
-      "gamePk": 823658,
-      "gameLabel": "CLE @ MIN"
-    },
-    {
-      "pitcherId": 676440,
-      "pitcherName": "Tanner Bibee",
-      "team": "CLE",
-      "oppTeam": "MIN",
-      "line": 87,
-      "overUnder": "UNDER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 87.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 92.7,
-      "twoYrStarts": 61,
-      "bvpAdj": -2,
-      "lineupPA": 178,
-      "gamePk": 823658,
-      "gameLabel": "CLE @ MIN"
     }
   ]
 }
