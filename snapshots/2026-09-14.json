@@ -1,8 +1,8 @@
 {
   "date": "2026-09-14",
-  "savedAt": "2026-09-14T21:01:47.044Z",
+  "savedAt": "2026-09-14T23:56:52.783Z",
   "scanType": "afternoon",
-  "gamesScanned": 10,
+  "gamesScanned": 6,
   "totalGames": 10,
   "batters": [
     {
@@ -172,11 +172,11 @@
       "pitcherName": "David Peterson",
       "batterTeam": "ATL",
       "pitcherTeam": "CHC",
-      "edgeScore": 71,
+      "edgeScore": 70,
       "grade": "A",
-      "bvpAvg": ".304",
-      "bvpOps": ".945",
-      "bvpPA": 60,
+      "bvpAvg": ".298",
+      "bvpOps": ".927",
+      "bvpPA": 61,
       "bvpHR": 2,
       "gamePk": 824629,
       "gameLabel": "ATL @ CHC"
@@ -294,8 +294,8 @@
       "whiffScore": 70,
       "grade": "A",
       "k9": 8.4,
-      "projectedIP": 6.3,
-      "projectedK": 5,
+      "projectedIP": 5.9,
+      "projectedK": 4.5,
       "gamePk": 824629,
       "gameLabel": "ATL @ CHC"
     },
@@ -307,8 +307,8 @@
       "whiffScore": 67,
       "grade": "B+",
       "k9": 8,
-      "projectedIP": 6.6,
-      "projectedK": 5,
+      "projectedIP": 6.3,
+      "projectedK": 4.5,
       "gamePk": 824629,
       "gameLabel": "ATL @ CHC"
     },
@@ -319,8 +319,8 @@
       "oppTeam": "NYY",
       "whiffScore": 67,
       "grade": "B+",
-      "k9": 8.7,
-      "projectedIP": 5.1,
+      "k9": 8.6,
+      "projectedIP": 4.8,
       "projectedK": 4,
       "gamePk": 823656,
       "gameLabel": "NYY @ MIN"
@@ -333,8 +333,8 @@
       "whiffScore": 67,
       "grade": "B+",
       "k9": 8.9,
-      "projectedIP": 5.3,
-      "projectedK": 4.5,
+      "projectedIP": 5.1,
+      "projectedK": 4,
       "gamePk": 823656,
       "gameLabel": "NYY @ MIN"
     },
@@ -391,6 +391,19 @@
       "gameLabel": "BAL @ NYM"
     },
     {
+      "pitcherId": 687273,
+      "pitcherName": "Quinn Mathews",
+      "team": "STL",
+      "oppTeam": "SF",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.2,
+      "projectedIP": 4.5,
+      "projectedK": 3.5,
+      "gamePk": 823006,
+      "gameLabel": "SF @ STL"
+    },
+    {
       "pitcherId": 666157,
       "pitcherName": "Nick Lodolo",
       "team": "CIN",
@@ -402,19 +415,6 @@
       "projectedK": 3.5,
       "gamePk": 824465,
       "gameLabel": "LAD @ CIN"
-    },
-    {
-      "pitcherId": 687273,
-      "pitcherName": "Quinn Mathews",
-      "team": "STL",
-      "oppTeam": "SF",
-      "whiffScore": 57,
-      "grade": "B",
-      "k9": 8.2,
-      "projectedIP": 5,
-      "projectedK": 4,
-      "gamePk": 823006,
-      "gameLabel": "SF @ STL"
     },
     {
       "pitcherId": 669203,
@@ -489,24 +489,6 @@
       "gameLabel": "LAD @ CIN"
     },
     {
-      "pitcherId": 687273,
-      "pitcherName": "Quinn Mathews",
-      "team": "STL",
-      "oppTeam": "SF",
-      "line": 97.5,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 98.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 98.5,
-      "twoYrStarts": 6,
-      "bvpAdj": -1,
-      "lineupPA": 36,
-      "gamePk": 823006,
-      "gameLabel": "SF @ STL"
-    },
-    {
       "pitcherId": 672282,
       "pitcherName": "Reid Detmers",
       "team": "LAA",
@@ -559,6 +541,24 @@
       "lineupPA": 74,
       "gamePk": 822765,
       "gameLabel": "DET @ TOR"
+    },
+    {
+      "pitcherId": 608372,
+      "pitcherName": "Tomoyuki Sugano",
+      "team": "COL",
+      "oppTeam": "SD",
+      "line": 84.5,
+      "overUnder": "UNDER",
+      "pitchScore": 71,
+      "grade": "A",
+      "recent5Avg": 92.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 86.4,
+      "twoYrStarts": 56,
+      "bvpAdj": -6,
+      "lineupPA": 62,
+      "gamePk": 824308,
+      "gameLabel": "SD @ COL"
     }
   ]
 }
