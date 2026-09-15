@@ -1,6 +1,6 @@
 {
   "date": "2026-09-15",
-  "savedAt": "2026-09-15T19:09:37.895Z",
+  "savedAt": "2026-09-15T20:24:53.721Z",
   "scanType": "afternoon",
   "gamesScanned": 15,
   "totalGames": 15,
@@ -182,6 +182,22 @@
       "gameLabel": "KC @ HOU"
     },
     {
+      "batterId": 661388,
+      "batterName": "William Contreras",
+      "pitcherId": 669199,
+      "pitcherName": "Lake Bachar",
+      "batterTeam": "MIL",
+      "pitcherTeam": "PIT",
+      "edgeScore": 72,
+      "grade": "A",
+      "bvpAvg": ".500",
+      "bvpOps": "2.667",
+      "bvpPA": 6,
+      "bvpHR": 2,
+      "gamePk": 823333,
+      "gameLabel": "MIL @ PIT"
+    },
+    {
       "batterId": 683766,
       "batterName": "Christian Koss",
       "pitcherId": 669467,
@@ -228,22 +244,6 @@
       "bvpHR": 0,
       "gamePk": 822683,
       "gameLabel": "PHI @ WSH"
-    },
-    {
-      "batterId": 624413,
-      "batterName": "Pete Alonso",
-      "pitcherId": 640455,
-      "pitcherName": "Sean Manaea",
-      "batterTeam": "BAL",
-      "pitcherTeam": "NYM",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "2.750",
-      "bvpPA": 8,
-      "bvpHR": 2,
-      "gamePk": 823574,
-      "gameLabel": "BAL @ NYM"
     }
   ],
   "pitchers": [
