@@ -1,8 +1,8 @@
 {
   "date": "2026-09-15",
-  "savedAt": "2026-09-15T20:24:53.721Z",
+  "savedAt": "2026-09-15T23:36:05.021Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 10,
   "totalGames": 15,
   "batters": [
     {
@@ -345,8 +345,8 @@
       "oppTeam": "BAL",
       "whiffScore": 74,
       "grade": "A",
-      "k9": 8.5,
-      "projectedIP": 8.3,
+      "k9": 8.6,
+      "projectedIP": 7.9,
       "projectedK": 6.5,
       "gamePk": 823574,
       "gameLabel": "BAL @ NYM"
@@ -508,19 +508,6 @@
       "gameLabel": "SEA @ LAA"
     },
     {
-      "pitcherId": 676083,
-      "pitcherName": "Janson Junk",
-      "team": "MIA",
-      "oppTeam": "AZ",
-      "whiffScore": 56,
-      "grade": "B",
-      "k9": 6,
-      "projectedIP": 5,
-      "projectedK": 2.5,
-      "gamePk": 825030,
-      "gameLabel": "MIA @ AZ"
-    },
-    {
       "pitcherId": 669467,
       "pitcherName": "Andre Pallante",
       "team": "STL",
@@ -554,8 +541,8 @@
       "whiffScore": 52,
       "grade": "C",
       "k9": 8.9,
-      "projectedIP": 8,
-      "projectedK": 6.5,
+      "projectedIP": 7.4,
+      "projectedK": 6,
       "gamePk": 822762,
       "gameLabel": "DET @ TOR"
     },
@@ -586,15 +573,28 @@
       "gameLabel": "MIA @ AZ"
     },
     {
+      "pitcherId": 676083,
+      "pitcherName": "Janson Junk",
+      "team": "MIA",
+      "oppTeam": "AZ",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 6,
+      "projectedIP": 5,
+      "projectedK": 2.5,
+      "gamePk": 825030,
+      "gameLabel": "MIA @ AZ"
+    },
+    {
       "pitcherId": 669358,
       "pitcherName": "Shane Baz",
       "team": "BAL",
       "oppTeam": "NYM",
       "whiffScore": 48,
       "grade": "C",
-      "k9": 8,
-      "projectedIP": 5.8,
-      "projectedK": 4.5,
+      "k9": 7.9,
+      "projectedIP": 5.7,
+      "projectedK": 4,
       "gamePk": 823574,
       "gameLabel": "BAL @ NYM"
     },
@@ -681,7 +681,7 @@
       "twoYrAvg": 94.9,
       "twoYrStarts": 48,
       "bvpAdj": 3,
-      "lineupPA": 116,
+      "lineupPA": 130,
       "gamePk": 824143,
       "gameLabel": "KC @ HOU"
     },
