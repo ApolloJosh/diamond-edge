@@ -1,8 +1,8 @@
 {
   "date": "2026-09-16",
-  "savedAt": "2026-09-16T20:22:49.141Z",
+  "savedAt": "2026-09-16T23:44:55.283Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 6,
   "totalGames": 15,
   "batters": [
     {
@@ -417,19 +417,6 @@
       "gameLabel": "BAL @ NYM"
     },
     {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "ATL",
-      "whiffScore": 60,
-      "grade": "B",
-      "k9": 8.7,
-      "projectedIP": 5.6,
-      "projectedK": 4.5,
-      "gamePk": 824626,
-      "gameLabel": "ATL @ CHC"
-    },
-    {
       "pitcherId": 805673,
       "pitcherName": "Zebby Matthews",
       "team": "MIN",
@@ -441,6 +428,19 @@
       "projectedK": 4,
       "gamePk": 823655,
       "gameLabel": "NYY @ MIN"
+    },
+    {
+      "pitcherId": 684007,
+      "pitcherName": "Shota Imanaga",
+      "team": "CHC",
+      "oppTeam": "ATL",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.7,
+      "projectedIP": 5.6,
+      "projectedK": 4.5,
+      "gamePk": 824626,
+      "gameLabel": "ATL @ CHC"
     },
     {
       "pitcherId": 518876,
@@ -549,24 +549,6 @@
   ],
   "pitches": [
     {
-      "pitcherId": 669923,
-      "pitcherName": "George Kirby",
-      "team": "SEA",
-      "oppTeam": "LAA",
-      "line": 96,
-      "overUnder": "OVER",
-      "pitchScore": 74,
-      "grade": "A",
-      "recent5Avg": 92.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 91.3,
-      "twoYrStarts": 51,
-      "bvpAdj": 4,
-      "lineupPA": 164,
-      "gamePk": 823979,
-      "gameLabel": "SEA @ LAA"
-    },
-    {
       "pitcherId": 805673,
       "pitcherName": "Zebby Matthews",
       "team": "MIN",
@@ -583,6 +565,24 @@
       "lineupPA": 87,
       "gamePk": 823655,
       "gameLabel": "NYY @ MIN"
+    },
+    {
+      "pitcherId": 669923,
+      "pitcherName": "George Kirby",
+      "team": "SEA",
+      "oppTeam": "LAA",
+      "line": 96,
+      "overUnder": "OVER",
+      "pitchScore": 74,
+      "grade": "A",
+      "recent5Avg": 92.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 91.3,
+      "twoYrStarts": 51,
+      "bvpAdj": 4,
+      "lineupPA": 164,
+      "gamePk": 823979,
+      "gameLabel": "SEA @ LAA"
     },
     {
       "pitcherId": 605135,
@@ -603,24 +603,6 @@
       "gameLabel": "BAL @ NYM"
     },
     {
-      "pitcherId": 684007,
-      "pitcherName": "Shota Imanaga",
-      "team": "CHC",
-      "oppTeam": "ATL",
-      "line": 87,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 89.4,
-      "recent5Starts": 5,
-      "twoYrAvg": 88.6,
-      "twoYrStarts": 54,
-      "bvpAdj": -2,
-      "lineupPA": 126,
-      "gamePk": 824626,
-      "gameLabel": "ATL @ CHC"
-    },
-    {
       "pitcherId": 518876,
       "pitcherName": "Merrill Kelly",
       "team": "AZ",
@@ -637,6 +619,24 @@
       "lineupPA": 116,
       "gamePk": 825031,
       "gameLabel": "MIA @ AZ"
+    },
+    {
+      "pitcherId": 687562,
+      "pitcherName": "Jake Bennett",
+      "team": "BOS",
+      "oppTeam": "TEX",
+      "line": 79.5,
+      "overUnder": "UNDER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 79,
+      "recent5Starts": 5,
+      "twoYrAvg": 81.2,
+      "twoYrStarts": 18,
+      "bvpAdj": 0,
+      "lineupPA": 0,
+      "gamePk": 822846,
+      "gameLabel": "BOS @ TEX"
     }
   ]
 }
