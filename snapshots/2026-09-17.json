@@ -1,8 +1,8 @@
 {
   "date": "2026-09-17",
-  "savedAt": "2026-09-17T19:12:41.121Z",
+  "savedAt": "2026-09-17T20:30:40.859Z",
   "scanType": "afternoon",
-  "gamesScanned": 6,
+  "gamesScanned": 8,
   "totalGames": 9,
   "batters": [
     {
@@ -150,6 +150,22 @@
       "gameLabel": "DET @ CWS"
     },
     {
+      "batterId": 518692,
+      "batterName": "Freddie Freeman",
+      "pitcherId": 663903,
+      "pitcherName": "Brady Singer",
+      "batterTeam": "LAD",
+      "pitcherTeam": "CIN",
+      "edgeScore": 71,
+      "grade": "A",
+      "bvpAvg": ".333",
+      "bvpOps": "1.083",
+      "bvpPA": 24,
+      "bvpHR": 2,
+      "gamePk": 824464,
+      "gameLabel": "LAD @ CIN"
+    },
+    {
       "batterId": 545361,
       "batterName": "Mike Trout",
       "pitcherId": 671737,
@@ -164,6 +180,22 @@
       "bvpHR": 0,
       "gamePk": 823978,
       "gameLabel": "MIN @ LAA"
+    },
+    {
+      "batterId": 663743,
+      "batterName": "Nick Fortes",
+      "pitcherId": 605488,
+      "pitcherName": "Jeffrey Springs",
+      "batterTeam": "TB",
+      "pitcherTeam": "ATH",
+      "edgeScore": 70,
+      "grade": "A",
+      "bvpAvg": ".750",
+      "bvpOps": "1.750",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 822924,
+      "gameLabel": "ATH @ TB"
     },
     {
       "batterId": 663330,
@@ -198,52 +230,20 @@
       "gameLabel": "DET @ CWS"
     },
     {
-      "batterId": 543877,
-      "batterName": "Christian Vázquez",
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "batterTeam": "HOU",
-      "pitcherTeam": "KC",
-      "edgeScore": 67,
-      "grade": "B+",
-      "bvpAvg": ".300",
-      "bvpOps": "1.300",
-      "bvpPA": 20,
-      "bvpHR": 4,
-      "gamePk": 824141,
-      "gameLabel": "KC @ HOU"
-    },
-    {
-      "batterId": 664761,
-      "batterName": "Alec Bohm",
-      "pitcherId": 690997,
-      "pitcherName": "Nolan McLean",
-      "batterTeam": "PHI",
-      "pitcherTeam": "NYM",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".600",
-      "bvpOps": "1.200",
-      "bvpPA": 10,
-      "bvpHR": 0,
-      "gamePk": 823573,
-      "gameLabel": "PHI @ NYM"
-    },
-    {
-      "batterId": 670623,
-      "batterName": "Isaac Paredes",
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "batterTeam": "HOU",
-      "pitcherTeam": "KC",
-      "edgeScore": 65,
+      "batterId": 553993,
+      "batterName": "Eugenio Suárez",
+      "pitcherId": 680736,
+      "pitcherName": "Justin Wrobleski",
+      "batterTeam": "CIN",
+      "pitcherTeam": "LAD",
+      "edgeScore": 68,
       "grade": "B+",
       "bvpAvg": ".500",
-      "bvpOps": "1.167",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824141,
-      "gameLabel": "KC @ HOU"
+      "bvpOps": "1.750",
+      "bvpPA": 8,
+      "bvpHR": 2,
+      "gamePk": 824464,
+      "gameLabel": "LAD @ CIN"
     }
   ],
   "pitchers": [
@@ -259,6 +259,19 @@
       "projectedK": 5.5,
       "gamePk": 823978,
       "gameLabel": "MIN @ LAA"
+    },
+    {
+      "pitcherId": 690986,
+      "pitcherName": "Kyle Harrison",
+      "team": "MIL",
+      "oppTeam": "PIT",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 10.9,
+      "projectedIP": 4.7,
+      "projectedK": 4.5,
+      "gamePk": 823334,
+      "gameLabel": "MIL @ PIT"
     },
     {
       "pitcherId": 690997,
@@ -300,6 +313,19 @@
       "gameLabel": "BOS @ TEX"
     },
     {
+      "pitcherId": 696062,
+      "pitcherName": "Wilber Dotel",
+      "team": "PIT",
+      "oppTeam": "MIL",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 9.2,
+      "projectedIP": 18.6,
+      "projectedK": 16.5,
+      "gamePk": 823334,
+      "gameLabel": "MIL @ PIT"
+    },
+    {
       "pitcherId": 685299,
       "pitcherName": "Tanner Gordon",
       "team": "COL",
@@ -311,6 +337,19 @@
       "projectedK": 7,
       "gamePk": 824305,
       "gameLabel": "SD @ COL"
+    },
+    {
+      "pitcherId": 656876,
+      "pitcherName": "Drew Rasmussen",
+      "team": "TB",
+      "oppTeam": "ATH",
+      "whiffScore": 63,
+      "grade": "B+",
+      "k9": 8.9,
+      "projectedIP": 5.7,
+      "projectedK": 4.5,
+      "gamePk": 822924,
+      "gameLabel": "ATH @ TB"
     },
     {
       "pitcherId": 650633,
@@ -339,6 +378,19 @@
       "gameLabel": "DET @ CWS"
     },
     {
+      "pitcherId": 605488,
+      "pitcherName": "Jeffrey Springs",
+      "team": "ATH",
+      "oppTeam": "TB",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7.1,
+      "projectedIP": 4.9,
+      "projectedK": 3,
+      "gamePk": 822924,
+      "gameLabel": "ATH @ TB"
+    },
+    {
       "pitcherId": 607200,
       "pitcherName": "Erick Fedde",
       "team": "CWS",
@@ -352,6 +404,19 @@
       "gameLabel": "DET @ CWS"
     },
     {
+      "pitcherId": 663903,
+      "pitcherName": "Brady Singer",
+      "team": "CIN",
+      "oppTeam": "LAD",
+      "whiffScore": 53,
+      "grade": "C",
+      "k9": 7.3,
+      "projectedIP": 5.1,
+      "projectedK": 3.5,
+      "gamePk": 824464,
+      "gameLabel": "LAD @ CIN"
+    },
+    {
       "pitcherId": 607625,
       "pitcherName": "Seth Lugo",
       "team": "KC",
@@ -363,6 +428,19 @@
       "projectedK": 3.5,
       "gamePk": 824141,
       "gameLabel": "KC @ HOU"
+    },
+    {
+      "pitcherId": 680736,
+      "pitcherName": "Justin Wrobleski",
+      "team": "LAD",
+      "oppTeam": "CIN",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 7.5,
+      "projectedIP": 6.2,
+      "projectedK": 4.5,
+      "gamePk": 824464,
+      "gameLabel": "LAD @ CIN"
     },
     {
       "pitcherId": 641302,
@@ -434,40 +512,40 @@
       "gameLabel": "DET @ CWS"
     },
     {
-      "pitcherId": 690997,
-      "pitcherName": "Nolan McLean",
-      "team": "NYM",
-      "oppTeam": "PHI",
-      "line": 99.5,
+      "pitcherId": 690986,
+      "pitcherName": "Kyle Harrison",
+      "team": "MIL",
+      "oppTeam": "PIT",
+      "line": 88,
       "overUnder": "OVER",
-      "pitchScore": 67,
+      "pitchScore": 69,
       "grade": "B+",
-      "recent5Avg": 98.8,
+      "recent5Avg": 82,
       "recent5Starts": 5,
-      "twoYrAvg": 94.3,
-      "twoYrStarts": 37,
-      "bvpAdj": 2,
-      "lineupPA": 88,
-      "gamePk": 823573,
-      "gameLabel": "PHI @ NYM"
+      "twoYrAvg": 87.7,
+      "twoYrStarts": 30,
+      "bvpAdj": 4,
+      "lineupPA": 3676,
+      "gamePk": 823334,
+      "gameLabel": "MIL @ PIT"
     },
     {
-      "pitcherId": 605400,
-      "pitcherName": "Aaron Nola",
-      "team": "PHI",
-      "oppTeam": "NYM",
-      "line": 101,
+      "pitcherId": 663903,
+      "pitcherName": "Brady Singer",
+      "team": "CIN",
+      "oppTeam": "LAD",
+      "line": 95,
       "overUnder": "OVER",
-      "pitchScore": 66,
+      "pitchScore": 69,
       "grade": "B+",
-      "recent5Avg": 98,
+      "recent5Avg": 93.2,
       "recent5Starts": 5,
-      "twoYrAvg": 92,
-      "twoYrStarts": 47,
-      "bvpAdj": 5,
-      "lineupPA": 414,
-      "gamePk": 823573,
-      "gameLabel": "PHI @ NYM"
+      "twoYrAvg": 90.1,
+      "twoYrStarts": 62,
+      "bvpAdj": 3,
+      "lineupPA": 94,
+      "gamePk": 824464,
+      "gameLabel": "LAD @ CIN"
     }
   ]
 }
