@@ -1,8 +1,8 @@
 {
   "date": "2026-09-17",
-  "savedAt": "2026-09-17T20:30:40.859Z",
+  "savedAt": "2026-09-17T23:37:07.887Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 5,
   "totalGames": 9,
   "batters": [
     {
@@ -134,22 +134,6 @@
       "gameLabel": "SD @ COL"
     },
     {
-      "batterId": 678246,
-      "batterName": "Miguel Vargas",
-      "pitcherId": 664285,
-      "pitcherName": "Framber Valdez",
-      "batterTeam": "CWS",
-      "pitcherTeam": "DET",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".364",
-      "bvpOps": "1.136",
-      "bvpPA": 28,
-      "bvpHR": 0,
-      "gamePk": 824548,
-      "gameLabel": "DET @ CWS"
-    },
-    {
       "batterId": 518692,
       "batterName": "Freddie Freeman",
       "pitcherId": 663903,
@@ -166,20 +150,20 @@
       "gameLabel": "LAD @ CIN"
     },
     {
-      "batterId": 545361,
-      "batterName": "Mike Trout",
-      "pitcherId": 671737,
-      "pitcherName": "Taj Bradley",
-      "batterTeam": "LAA",
-      "pitcherTeam": "MIN",
-      "edgeScore": 70,
+      "batterId": 678246,
+      "batterName": "Miguel Vargas",
+      "pitcherId": 664285,
+      "pitcherName": "Framber Valdez",
+      "batterTeam": "CWS",
+      "pitcherTeam": "DET",
+      "edgeScore": 71,
       "grade": "A",
-      "bvpAvg": ".600",
-      "bvpOps": "1.267",
-      "bvpPA": 12,
+      "bvpAvg": ".364",
+      "bvpOps": "1.136",
+      "bvpPA": 28,
       "bvpHR": 0,
-      "gamePk": 823978,
-      "gameLabel": "MIN @ LAA"
+      "gamePk": 824548,
+      "gameLabel": "DET @ CWS"
     },
     {
       "batterId": 663743,
@@ -198,6 +182,22 @@
       "gameLabel": "ATH @ TB"
     },
     {
+      "batterId": 545361,
+      "batterName": "Mike Trout",
+      "pitcherId": 671737,
+      "pitcherName": "Taj Bradley",
+      "batterTeam": "LAA",
+      "pitcherTeam": "MIN",
+      "edgeScore": 70,
+      "grade": "A",
+      "bvpAvg": ".600",
+      "bvpOps": "1.267",
+      "bvpPA": 12,
+      "bvpHR": 0,
+      "gamePk": 823978,
+      "gameLabel": "MIN @ LAA"
+    },
+    {
       "batterId": 663330,
       "batterName": "Jahmai Jones",
       "pitcherId": 641302,
@@ -214,22 +214,6 @@
       "gameLabel": "BOS @ TEX"
     },
     {
-      "batterId": 693307,
-      "batterName": "Dillon Dingler",
-      "pitcherId": 607200,
-      "pitcherName": "Erick Fedde",
-      "batterTeam": "DET",
-      "pitcherTeam": "CWS",
-      "edgeScore": 68,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.750",
-      "bvpPA": 8,
-      "bvpHR": 2,
-      "gamePk": 824548,
-      "gameLabel": "DET @ CWS"
-    },
-    {
       "batterId": 553993,
       "batterName": "Eugenio Suárez",
       "pitcherId": 680736,
@@ -244,22 +228,25 @@
       "bvpHR": 2,
       "gamePk": 824464,
       "gameLabel": "LAD @ CIN"
+    },
+    {
+      "batterId": 693307,
+      "batterName": "Dillon Dingler",
+      "pitcherId": 607200,
+      "pitcherName": "Erick Fedde",
+      "batterTeam": "DET",
+      "pitcherTeam": "CWS",
+      "edgeScore": 68,
+      "grade": "B+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.750",
+      "bvpPA": 8,
+      "bvpHR": 2,
+      "gamePk": 824548,
+      "gameLabel": "DET @ CWS"
     }
   ],
   "pitchers": [
-    {
-      "pitcherId": 671737,
-      "pitcherName": "Taj Bradley",
-      "team": "MIN",
-      "oppTeam": "LAA",
-      "whiffScore": 82,
-      "grade": "A+",
-      "k9": 10.3,
-      "projectedIP": 5.7,
-      "projectedK": 5.5,
-      "gamePk": 823978,
-      "gameLabel": "MIN @ LAA"
-    },
     {
       "pitcherId": 690986,
       "pitcherName": "Kyle Harrison",
@@ -274,6 +261,19 @@
       "gameLabel": "MIL @ PIT"
     },
     {
+      "pitcherId": 671737,
+      "pitcherName": "Taj Bradley",
+      "team": "MIN",
+      "oppTeam": "LAA",
+      "whiffScore": 82,
+      "grade": "A+",
+      "k9": 10.3,
+      "projectedIP": 5.7,
+      "projectedK": 5.5,
+      "gamePk": 823978,
+      "gameLabel": "MIN @ LAA"
+    },
+    {
       "pitcherId": 690997,
       "pitcherName": "Nolan McLean",
       "team": "NYM",
@@ -281,10 +281,23 @@
       "whiffScore": 74,
       "grade": "A",
       "k9": 9.9,
-      "projectedIP": 5.7,
-      "projectedK": 5.5,
+      "projectedIP": 5.6,
+      "projectedK": 5,
       "gamePk": 823573,
       "gameLabel": "PHI @ NYM"
+    },
+    {
+      "pitcherId": 696062,
+      "pitcherName": "Wilber Dotel",
+      "team": "PIT",
+      "oppTeam": "MIL",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 9.2,
+      "projectedIP": 18.6,
+      "projectedK": 16.5,
+      "gamePk": 823334,
+      "gameLabel": "MIL @ PIT"
     },
     {
       "pitcherId": 605400,
@@ -294,7 +307,7 @@
       "whiffScore": 70,
       "grade": "A",
       "k9": 9.2,
-      "projectedIP": 5.4,
+      "projectedIP": 5.2,
       "projectedK": 4.5,
       "gamePk": 823573,
       "gameLabel": "PHI @ NYM"
@@ -311,19 +324,6 @@
       "projectedK": 4.5,
       "gamePk": 822845,
       "gameLabel": "BOS @ TEX"
-    },
-    {
-      "pitcherId": 696062,
-      "pitcherName": "Wilber Dotel",
-      "team": "PIT",
-      "oppTeam": "MIL",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 9.2,
-      "projectedIP": 18.6,
-      "projectedK": 16.5,
-      "gamePk": 823334,
-      "gameLabel": "MIL @ PIT"
     },
     {
       "pitcherId": 685299,
@@ -417,19 +417,6 @@
       "gameLabel": "LAD @ CIN"
     },
     {
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "team": "KC",
-      "oppTeam": "HOU",
-      "whiffScore": 52,
-      "grade": "C",
-      "k9": 6.9,
-      "projectedIP": 5.5,
-      "projectedK": 3.5,
-      "gamePk": 824141,
-      "gameLabel": "KC @ HOU"
-    },
-    {
       "pitcherId": 680736,
       "pitcherName": "Justin Wrobleski",
       "team": "LAD",
@@ -441,6 +428,19 @@
       "projectedK": 4.5,
       "gamePk": 824464,
       "gameLabel": "LAD @ CIN"
+    },
+    {
+      "pitcherId": 607625,
+      "pitcherName": "Seth Lugo",
+      "team": "KC",
+      "oppTeam": "HOU",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 6.9,
+      "projectedIP": 5.3,
+      "projectedK": 3.5,
+      "gamePk": 824141,
+      "gameLabel": "KC @ HOU"
     },
     {
       "pitcherId": 641302,
@@ -474,24 +474,6 @@
       "lineupPA": 70,
       "gamePk": 823978,
       "gameLabel": "MIN @ LAA"
-    },
-    {
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "team": "KC",
-      "oppTeam": "HOU",
-      "line": 92.5,
-      "overUnder": "OVER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 93.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.9,
-      "twoYrStarts": 56,
-      "bvpAdj": 0,
-      "lineupPA": 206,
-      "gamePk": 824141,
-      "gameLabel": "KC @ HOU"
     },
     {
       "pitcherId": 664285,
@@ -546,6 +528,24 @@
       "lineupPA": 94,
       "gamePk": 824464,
       "gameLabel": "LAD @ CIN"
+    },
+    {
+      "pitcherId": 605400,
+      "pitcherName": "Aaron Nola",
+      "team": "PHI",
+      "oppTeam": "NYM",
+      "line": 88.5,
+      "overUnder": "OVER",
+      "pitchScore": 66,
+      "grade": "B+",
+      "recent5Avg": 80.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 90.3,
+      "twoYrStarts": 48,
+      "bvpAdj": 5,
+      "lineupPA": 414,
+      "gamePk": 823573,
+      "gameLabel": "PHI @ NYM"
     }
   ]
 }
