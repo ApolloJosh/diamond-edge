@@ -1,8 +1,8 @@
 {
   "date": "2026-09-19",
-  "savedAt": "2026-09-19T19:32:36.855Z",
+  "savedAt": "2026-09-19T23:22:52.551Z",
   "scanType": "afternoon",
-  "gamesScanned": 14,
+  "gamesScanned": 8,
   "totalGames": 15,
   "batters": [
     {
@@ -372,7 +372,7 @@
       "whiffScore": 63,
       "grade": "B+",
       "k9": 8.5,
-      "projectedIP": 5.6,
+      "projectedIP": 5.5,
       "projectedK": 4.5,
       "gamePk": 822843,
       "gameLabel": "TOR @ TEX"
@@ -528,8 +528,8 @@
       "whiffScore": 52,
       "grade": "C",
       "k9": 6.7,
-      "projectedIP": 7.7,
-      "projectedK": 5,
+      "projectedIP": 7.3,
+      "projectedK": 4.5,
       "gamePk": 822843,
       "gameLabel": "TOR @ TEX"
     },
@@ -551,11 +551,11 @@
       "pitcherName": "Hayden Wesneski",
       "team": "HOU",
       "oppTeam": "ATL",
-      "whiffScore": 49,
+      "whiffScore": 45,
       "grade": "C",
-      "k9": 7,
-      "projectedIP": 5.4,
-      "projectedK": 3.5,
+      "k9": 6.9,
+      "projectedIP": 4.9,
+      "projectedK": 3,
       "gamePk": 824137,
       "gameLabel": "ATL @ HOU"
     },
@@ -567,7 +567,7 @@
       "whiffScore": 44,
       "grade": "D",
       "k9": 6.3,
-      "projectedIP": 5.5,
+      "projectedIP": 5.3,
       "projectedK": 3,
       "gamePk": 823003,
       "gameLabel": "WSH @ STL"
@@ -591,24 +591,6 @@
       "lineupPA": 50,
       "gamePk": 824545,
       "gameLabel": "DET @ CWS"
-    },
-    {
-      "pitcherId": 669713,
-      "pitcherName": "Hayden Wesneski",
-      "team": "HOU",
-      "oppTeam": "ATL",
-      "line": 79,
-      "overUnder": "UNDER",
-      "pitchScore": 74,
-      "grade": "A",
-      "recent5Avg": 83.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 83,
-      "twoYrStarts": 15,
-      "bvpAdj": -4,
-      "lineupPA": 70,
-      "gamePk": 824137,
-      "gameLabel": "ATL @ HOU"
     },
     {
       "pitcherId": 694297,
@@ -663,6 +645,24 @@
       "lineupPA": 42,
       "gamePk": 824380,
       "gameLabel": "ATH @ CLE"
+    },
+    {
+      "pitcherId": 672282,
+      "pitcherName": "Reid Detmers",
+      "team": "LAA",
+      "oppTeam": "MIN",
+      "line": 99,
+      "overUnder": "OVER",
+      "pitchScore": 69,
+      "grade": "B+",
+      "recent5Avg": 96.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 93,
+      "twoYrStarts": 30,
+      "bvpAdj": 4,
+      "lineupPA": 58,
+      "gamePk": 823976,
+      "gameLabel": "MIN @ LAA"
     }
   ]
 }
