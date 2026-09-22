@@ -1,8 +1,8 @@
 {
   "date": "2026-09-21",
-  "savedAt": "2026-09-21T21:12:30.771Z",
+  "savedAt": "2026-09-22T00:13:54.030Z",
   "scanType": "afternoon",
-  "gamesScanned": 3,
+  "gamesScanned": 2,
   "totalGames": 3,
   "batters": [
     {
@@ -328,6 +328,42 @@
       "lineupPA": 54,
       "gamePk": 824787,
       "gameLabel": "TOR @ BAL"
+    },
+    {
+      "pitcherId": 689981,
+      "pitcherName": "River Ryan",
+      "team": "DET",
+      "oppTeam": "WSH",
+      "line": 43,
+      "overUnder": "UNDER",
+      "pitchScore": 57,
+      "grade": "B",
+      "recent5Avg": 43,
+      "recent5Starts": 1,
+      "twoYrAvg": 43,
+      "twoYrStarts": 1,
+      "bvpAdj": 0,
+      "lineupPA": 0,
+      "gamePk": 824221,
+      "gameLabel": "WSH @ DET"
+    },
+    {
+      "pitcherId": 687792,
+      "pitcherName": "DJ Herz",
+      "team": "WSH",
+      "oppTeam": "DET",
+      "line": 63,
+      "overUnder": "UNDER",
+      "pitchScore": 57,
+      "grade": "B",
+      "recent5Avg": 63,
+      "recent5Starts": 1,
+      "twoYrAvg": 63,
+      "twoYrStarts": 1,
+      "bvpAdj": 0,
+      "lineupPA": 0,
+      "gamePk": 824221,
+      "gameLabel": "WSH @ DET"
     }
   ]
 }
