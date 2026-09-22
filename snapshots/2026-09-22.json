@@ -1,8 +1,8 @@
 {
   "date": "2026-09-22",
-  "savedAt": "2026-09-22T19:03:43.557Z",
+  "savedAt": "2026-09-22T20:26:46.447Z",
   "scanType": "afternoon",
-  "gamesScanned": 15,
+  "gamesScanned": 16,
   "totalGames": 16,
   "batters": [
     {
@@ -134,6 +134,38 @@
       "gameLabel": "TOR @ BAL"
     },
     {
+      "batterId": 622761,
+      "batterName": "Jorge Mateo",
+      "pitcherId": 607074,
+      "pitcherName": "Carlos Rodón",
+      "batterTeam": "TB",
+      "pitcherTeam": "NYY",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".471",
+      "bvpOps": "1.467",
+      "bvpPA": 19,
+      "bvpHR": 2,
+      "gamePk": 823543,
+      "gameLabel": "TB @ NYY"
+    },
+    {
+      "batterId": 700250,
+      "batterName": "Ben Rice",
+      "pitcherId": 607259,
+      "pitcherName": "Nick Martinez",
+      "batterTeam": "NYY",
+      "pitcherTeam": "TB",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": ".438",
+      "bvpOps": "1.276",
+      "bvpPA": 19,
+      "bvpHR": 0,
+      "gamePk": 823543,
+      "gameLabel": "TB @ NYY"
+    },
+    {
       "batterId": 663728,
       "batterName": "Cal Raleigh",
       "pitcherId": 664299,
@@ -198,52 +230,20 @@
       "gameLabel": "LAA @ ATH"
     },
     {
-      "batterId": 703520,
-      "batterName": "Brett Bateman",
-      "pitcherId": 605135,
-      "pitcherName": "Chris Bassitt",
-      "batterTeam": "TOR",
-      "pitcherTeam": "BAL",
-      "edgeScore": 68,
+      "batterId": 669224,
+      "batterName": "Austin Wells",
+      "pitcherId": 607259,
+      "pitcherName": "Nick Martinez",
+      "batterTeam": "NYY",
+      "pitcherTeam": "TB",
+      "edgeScore": 69,
       "grade": "B+",
-      "bvpAvg": ".667",
-      "bvpOps": "1.333",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 824785,
-      "gameLabel": "TOR @ BAL"
-    },
-    {
-      "batterId": 664702,
-      "batterName": "Myles Straw",
-      "pitcherId": 605135,
-      "pitcherName": "Chris Bassitt",
-      "batterTeam": "TOR",
-      "pitcherTeam": "BAL",
-      "edgeScore": 67,
-      "grade": "B+",
-      "bvpAvg": ".385",
-      "bvpOps": ".813",
-      "bvpPA": 32,
-      "bvpHR": 0,
-      "gamePk": 824785,
-      "gameLabel": "TOR @ BAL"
-    },
-    {
-      "batterId": 687462,
-      "batterName": "Spencer Horwitz",
-      "pitcherId": 669467,
-      "pitcherName": "Andre Pallante",
-      "batterTeam": "PIT",
-      "pitcherTeam": "STL",
-      "edgeScore": 66,
-      "grade": "B+",
-      "bvpAvg": ".375",
-      "bvpOps": "1.125",
-      "bvpPA": 16,
-      "bvpHR": 2,
-      "gamePk": 823328,
-      "gameLabel": "STL @ PIT"
+      "bvpAvg": ".400",
+      "bvpOps": "2.000",
+      "bvpPA": 10,
+      "bvpHR": 4,
+      "gamePk": 823543,
+      "gameLabel": "TB @ NYY"
     }
   ],
   "pitchers": [
@@ -311,6 +311,19 @@
       "projectedK": 4.5,
       "gamePk": 822840,
       "gameLabel": "NYM @ TEX"
+    },
+    {
+      "pitcherId": 607074,
+      "pitcherName": "Carlos Rodón",
+      "team": "NYY",
+      "oppTeam": "TB",
+      "whiffScore": 68,
+      "grade": "B+",
+      "k9": 9.7,
+      "projectedIP": 5.3,
+      "projectedK": 4.5,
+      "gamePk": 823543,
+      "gameLabel": "TB @ NYY"
     },
     {
       "pitcherId": 800048,
@@ -454,6 +467,19 @@
       "projectedK": 4.5,
       "gamePk": 824624,
       "gameLabel": "MIA @ CHC"
+    },
+    {
+      "pitcherId": 607259,
+      "pitcherName": "Nick Martinez",
+      "team": "TB",
+      "oppTeam": "NYY",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 5.5,
+      "projectedIP": 5.9,
+      "projectedK": 3,
+      "gamePk": 823543,
+      "gameLabel": "TB @ NYY"
     },
     {
       "pitcherId": 608331,
@@ -603,6 +629,24 @@
       "gameLabel": "TOR @ BAL"
     },
     {
+      "pitcherId": 607074,
+      "pitcherName": "Carlos Rodón",
+      "team": "NYY",
+      "oppTeam": "TB",
+      "line": 96,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 93.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 94.9,
+      "twoYrStarts": 49,
+      "bvpAdj": 2,
+      "lineupPA": 113,
+      "gamePk": 823543,
+      "gameLabel": "TB @ NYY"
+    },
+    {
       "pitcherId": 800048,
       "pitcherName": "Parker Messick",
       "team": "CLE",
@@ -619,24 +663,6 @@
       "lineupPA": 50,
       "gamePk": 824709,
       "gameLabel": "CLE @ BOS"
-    },
-    {
-      "pitcherId": 664299,
-      "pitcherName": "Cristian Javier",
-      "team": "HOU",
-      "oppTeam": "SEA",
-      "line": 92.5,
-      "overUnder": "OVER",
-      "pitchScore": 71,
-      "grade": "A",
-      "recent5Avg": 84,
-      "recent5Starts": 5,
-      "twoYrAvg": 88.5,
-      "twoYrStarts": 19,
-      "bvpAdj": 7,
-      "lineupPA": 146,
-      "gamePk": 823089,
-      "gameLabel": "HOU @ SEA"
     }
   ]
 }
