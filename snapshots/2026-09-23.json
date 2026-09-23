@@ -1,8 +1,8 @@
 {
   "date": "2026-09-23",
-  "savedAt": "2026-09-23T20:38:45.302Z",
+  "savedAt": "2026-09-23T23:53:40.435Z",
   "scanType": "afternoon",
-  "gamesScanned": 16,
+  "gamesScanned": 9,
   "totalGames": 16,
   "batters": [
     {
@@ -102,22 +102,6 @@
       "gameLabel": "HOU @ SEA"
     },
     {
-      "batterId": 672640,
-      "batterName": "Otto Lopez",
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "batterTeam": "MIA",
-      "pitcherTeam": "CHC",
-      "edgeScore": 79,
-      "grade": "A",
-      "bvpAvg": ".667",
-      "bvpOps": "1.333",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824625,
-      "gameLabel": "MIA @ CHC"
-    },
-    {
       "batterId": 661388,
       "batterName": "William Contreras",
       "pitcherId": 605400,
@@ -132,6 +116,22 @@
       "bvpHR": 2,
       "gamePk": 823410,
       "gameLabel": "MIL @ PHI"
+    },
+    {
+      "batterId": 672640,
+      "batterName": "Otto Lopez",
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "batterTeam": "MIA",
+      "pitcherTeam": "CHC",
+      "edgeScore": 78,
+      "grade": "A",
+      "bvpAvg": ".615",
+      "bvpOps": "1.231",
+      "bvpPA": 13,
+      "bvpHR": 0,
+      "gamePk": 824625,
+      "gameLabel": "MIA @ CHC"
     },
     {
       "batterId": 670623,
@@ -274,6 +274,19 @@
       "gameLabel": "STL @ PIT"
     },
     {
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "team": "CHC",
+      "oppTeam": "MIA",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 9.3,
+      "projectedIP": 5.4,
+      "projectedK": 4.5,
+      "gamePk": 824625,
+      "gameLabel": "MIA @ CHC"
+    },
+    {
       "pitcherId": 690997,
       "pitcherName": "Nolan McLean",
       "team": "NYM",
@@ -313,17 +326,17 @@
       "gameLabel": "TB @ NYY"
     },
     {
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "team": "CHC",
-      "oppTeam": "MIA",
+      "pitcherId": 453286,
+      "pitcherName": "Max Scherzer",
+      "team": "TOR",
+      "oppTeam": "BAL",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 9.3,
-      "projectedIP": 5.5,
-      "projectedK": 5,
-      "gamePk": 824625,
-      "gameLabel": "MIA @ CHC"
+      "k9": 7.1,
+      "projectedIP": 4.5,
+      "projectedK": 3,
+      "gamePk": 824785,
+      "gameLabel": "TOR @ BAL"
     },
     {
       "pitcherId": 605488,
@@ -352,17 +365,17 @@
       "gameLabel": "SD @ LAD"
     },
     {
-      "pitcherId": 453286,
-      "pitcherName": "Max Scherzer",
-      "team": "TOR",
-      "oppTeam": "BAL",
+      "pitcherId": 687570,
+      "pitcherName": "Connor Prielipp",
+      "team": "MIN",
+      "oppTeam": "SF",
       "whiffScore": 70,
       "grade": "A",
-      "k9": 7.1,
-      "projectedIP": 4.5,
-      "projectedK": 3,
-      "gamePk": 824785,
-      "gameLabel": "TOR @ BAL"
+      "k9": 9.2,
+      "projectedIP": 5.7,
+      "projectedK": 5,
+      "gamePk": 823168,
+      "gameLabel": "MIN @ SF"
     },
     {
       "pitcherId": 663542,
@@ -372,8 +385,8 @@
       "whiffScore": 67,
       "grade": "B+",
       "k9": 8.1,
-      "projectedIP": 8.1,
-      "projectedK": 6,
+      "projectedIP": 7.2,
+      "projectedK": 5.5,
       "gamePk": 824060,
       "gameLabel": "CWS @ KC"
     },
@@ -404,19 +417,6 @@
       "gameLabel": "LAA @ ATH"
     },
     {
-      "pitcherId": 687473,
-      "pitcherName": "Ryan Gusto",
-      "team": "MIA",
-      "oppTeam": "CHC",
-      "whiffScore": 62,
-      "grade": "B+",
-      "k9": 7.5,
-      "projectedIP": 4.8,
-      "projectedK": 3.5,
-      "gamePk": 824625,
-      "gameLabel": "MIA @ CHC"
-    },
-    {
       "pitcherId": 664285,
       "pitcherName": "Framber Valdez",
       "team": "DET",
@@ -428,6 +428,19 @@
       "projectedK": 3.5,
       "gamePk": 824223,
       "gameLabel": "WSH @ DET"
+    },
+    {
+      "pitcherId": 687473,
+      "pitcherName": "Ryan Gusto",
+      "team": "MIA",
+      "oppTeam": "CHC",
+      "whiffScore": 62,
+      "grade": "B+",
+      "k9": 7.6,
+      "projectedIP": 4.6,
+      "projectedK": 3,
+      "gamePk": 824625,
+      "gameLabel": "MIA @ CHC"
     },
     {
       "pitcherId": 669199,
@@ -528,7 +541,7 @@
       "whiffScore": 56,
       "grade": "B",
       "k9": 7,
-      "projectedIP": 5.5,
+      "projectedIP": 5.3,
       "projectedK": 3.5,
       "gamePk": 824060,
       "gameLabel": "CWS @ KC"
@@ -560,6 +573,19 @@
       "gameLabel": "NYM @ TEX"
     },
     {
+      "pitcherId": 702885,
+      "pitcherName": "Cesar Perdomo",
+      "team": "SF",
+      "oppTeam": "MIN",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 5.1,
+      "projectedIP": 6.1,
+      "projectedK": 3,
+      "gamePk": 823168,
+      "gameLabel": "MIN @ SF"
+    },
+    {
       "pitcherId": 605135,
       "pitcherName": "Chris Bassitt",
       "team": "BAL",
@@ -574,6 +600,24 @@
     }
   ],
   "pitches": [
+    {
+      "pitcherId": 687473,
+      "pitcherName": "Ryan Gusto",
+      "team": "MIA",
+      "oppTeam": "CHC",
+      "line": 92.5,
+      "overUnder": "OVER",
+      "pitchScore": 76,
+      "grade": "A",
+      "recent5Avg": 86.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 89,
+      "twoYrStarts": 35,
+      "bvpAdj": 5,
+      "lineupPA": 64,
+      "gamePk": 824625,
+      "gameLabel": "MIA @ CHC"
+    },
     {
       "pitcherId": 669461,
       "pitcherName": "Matthew Liberatore",
@@ -627,24 +671,6 @@
       "lineupPA": 300,
       "gamePk": 823410,
       "gameLabel": "MIL @ PHI"
-    },
-    {
-      "pitcherId": 607625,
-      "pitcherName": "Seth Lugo",
-      "team": "KC",
-      "oppTeam": "CWS",
-      "line": 90,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 89.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 90.6,
-      "twoYrStarts": 57,
-      "bvpAdj": 0,
-      "lineupPA": 212,
-      "gamePk": 824060,
-      "gameLabel": "CWS @ KC"
     },
     {
       "pitcherId": 700712,
