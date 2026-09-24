@@ -1,8 +1,8 @@
 {
   "date": "2026-09-24",
-  "savedAt": "2026-09-24T19:26:58.897Z",
+  "savedAt": "2026-09-24T20:42:14.024Z",
   "scanType": "afternoon",
-  "gamesScanned": 8,
+  "gamesScanned": 11,
   "totalGames": 12,
   "batters": [
     {
@@ -52,6 +52,54 @@
       "bvpHR": 4,
       "gamePk": 823493,
       "gameLabel": "TB @ NYY"
+    },
+    {
+      "batterId": 665833,
+      "batterName": "Oneil Cruz",
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "batterTeam": "PIT",
+      "pitcherTeam": "STL",
+      "edgeScore": 86,
+      "grade": "A+",
+      "bvpAvg": ".444",
+      "bvpOps": "1.389",
+      "bvpPA": 20,
+      "bvpHR": 2,
+      "gamePk": 823326,
+      "gameLabel": "STL @ PIT"
+    },
+    {
+      "batterId": 643217,
+      "batterName": "Andrew Benintendi",
+      "pitcherId": 677976,
+      "pitcherName": "Randy Dobnak",
+      "batterTeam": "CWS",
+      "pitcherTeam": "KC",
+      "edgeScore": 86,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "2.345",
+      "bvpPA": 11,
+      "bvpHR": 4,
+      "gamePk": 824059,
+      "gameLabel": "CWS @ KC"
+    },
+    {
+      "batterId": 621438,
+      "batterName": "Tyrone Taylor",
+      "pitcherId": 663969,
+      "pitcherName": "Tyler Phillips",
+      "batterTeam": "CHC",
+      "pitcherTeam": "MIA",
+      "edgeScore": 85,
+      "grade": "A+",
+      "bvpAvg": ".600",
+      "bvpOps": "2.067",
+      "bvpPA": 12,
+      "bvpHR": 2,
+      "gamePk": 824623,
+      "gameLabel": "MIA @ CHC"
     },
     {
       "batterId": 608070,
@@ -166,84 +214,36 @@
       "gameLabel": "CIN @ ATL"
     },
     {
-      "batterId": 641355,
-      "batterName": "Cody Bellinger",
-      "pitcherId": 693855,
-      "pitcherName": "Ian Seymour",
-      "batterTeam": "NYY",
-      "pitcherTeam": "TB",
-      "edgeScore": 77,
-      "grade": "A",
-      "bvpAvg": ".600",
-      "bvpOps": "2.000",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 823493,
-      "gameLabel": "TB @ NYY"
-    },
-    {
-      "batterId": 703607,
-      "batterName": "Henry Bolte",
-      "pitcherId": 663567,
-      "pitcherName": "Peter Lambert",
-      "batterTeam": "ATH",
-      "pitcherTeam": "HOU",
-      "edgeScore": 76,
-      "grade": "A",
-      "bvpAvg": "1.000",
-      "bvpOps": "2.333",
-      "bvpPA": 6,
+      "batterId": 676475,
+      "batterName": "Alec Burleson",
+      "pitcherId": 694973,
+      "pitcherName": "Paul Skenes",
+      "batterTeam": "STL",
+      "pitcherTeam": "PIT",
+      "edgeScore": 80,
+      "grade": "A+",
+      "bvpAvg": ".400",
+      "bvpOps": ".879",
+      "bvpPA": 42,
       "bvpHR": 0,
-      "gamePk": 824950,
-      "gameLabel": "HOU @ ATH"
+      "gamePk": 823326,
+      "gameLabel": "STL @ PIT"
     },
     {
-      "batterId": 669257,
-      "batterName": "Will Smith",
-      "pitcherId": 601713,
-      "pitcherName": "Nick Pivetta",
-      "batterTeam": "LAD",
-      "pitcherTeam": "SD",
-      "edgeScore": 73,
+      "batterId": 664040,
+      "batterName": "Brandon Lowe",
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "batterTeam": "PIT",
+      "pitcherTeam": "STL",
+      "edgeScore": 78,
       "grade": "A",
-      "bvpAvg": ".429",
-      "bvpOps": "1.375",
-      "bvpPA": 16,
+      "bvpAvg": ".556",
+      "bvpOps": "2.081",
+      "bvpPA": 11,
       "bvpHR": 2,
-      "gamePk": 823895,
-      "gameLabel": "SD @ LAD"
-    },
-    {
-      "batterId": 621493,
-      "batterName": "Taylor Ward",
-      "pitcherId": 680570,
-      "pitcherName": "Grayson Rodriguez",
-      "batterTeam": "SEA",
-      "pitcherTeam": "LAA",
-      "edgeScore": 71,
-      "grade": "A",
-      "bvpAvg": ".375",
-      "bvpOps": "1.319",
-      "bvpPA": 18,
-      "bvpHR": 2,
-      "gamePk": 823087,
-      "gameLabel": "LAA @ SEA"
-    },
-    {
-      "batterId": 682829,
-      "batterName": "Elly De La Cruz",
-      "pitcherId": 641816,
-      "pitcherName": "Tyler Mahle",
-      "batterTeam": "CIN",
-      "pitcherTeam": "ATL",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "2.667",
-      "bvpPA": 6,
-      "bvpHR": 2,
-      "gamePk": 824866,
-      "gameLabel": "CIN @ ATL"
+      "gamePk": 823326,
+      "gameLabel": "STL @ PIT"
     }
   ],
   "pitchers": [
@@ -272,6 +272,19 @@
       "projectedK": 6,
       "gamePk": 823895,
       "gameLabel": "SD @ LAD"
+    },
+    {
+      "pitcherId": 694973,
+      "pitcherName": "Paul Skenes",
+      "team": "PIT",
+      "oppTeam": "STL",
+      "whiffScore": 75,
+      "grade": "A",
+      "k9": 10.3,
+      "projectedIP": 5.4,
+      "projectedK": 5,
+      "gamePk": 823326,
+      "gameLabel": "STL @ PIT"
     },
     {
       "pitcherId": 675660,
@@ -313,6 +326,19 @@
       "gameLabel": "LAA @ SEA"
     },
     {
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "team": "STL",
+      "oppTeam": "PIT",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.5,
+      "projectedIP": 4.7,
+      "projectedK": 3.5,
+      "gamePk": 823326,
+      "gameLabel": "STL @ PIT"
+    },
+    {
       "pitcherId": 693645,
       "pitcherName": "Cam Schlittler",
       "team": "NYY",
@@ -337,6 +363,19 @@
       "projectedK": 4,
       "gamePk": 823895,
       "gameLabel": "SD @ LAD"
+    },
+    {
+      "pitcherId": 689818,
+      "pitcherName": "David Sandlin",
+      "team": "CWS",
+      "oppTeam": "KC",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 8.9,
+      "projectedIP": 6.7,
+      "projectedK": 5.5,
+      "gamePk": 824059,
+      "gameLabel": "CWS @ KC"
     },
     {
       "pitcherId": 641816,
@@ -404,6 +443,19 @@
       "gameLabel": "AZ @ COL"
     },
     {
+      "pitcherId": 677976,
+      "pitcherName": "Randy Dobnak",
+      "team": "KC",
+      "oppTeam": "CWS",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 5.9,
+      "projectedIP": 5.7,
+      "projectedK": 3,
+      "gamePk": 824059,
+      "gameLabel": "CWS @ KC"
+    },
+    {
       "pitcherId": 685299,
       "pitcherName": "Tanner Gordon",
       "team": "COL",
@@ -415,6 +467,19 @@
       "projectedK": 6,
       "gamePk": 824298,
       "gameLabel": "AZ @ COL"
+    },
+    {
+      "pitcherId": 663969,
+      "pitcherName": "Tyler Phillips",
+      "team": "MIA",
+      "oppTeam": "CHC",
+      "whiffScore": 52,
+      "grade": "C",
+      "k9": 7.2,
+      "projectedIP": 6.3,
+      "projectedK": 4,
+      "gamePk": 824623,
+      "gameLabel": "MIA @ CHC"
     },
     {
       "pitcherId": 691725,
@@ -468,6 +533,24 @@
       "gameLabel": "LAA @ SEA"
     },
     {
+      "pitcherId": 694973,
+      "pitcherName": "Paul Skenes",
+      "team": "PIT",
+      "oppTeam": "STL",
+      "line": 90.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 89.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 92,
+      "twoYrStarts": 64,
+      "bvpAdj": 0,
+      "lineupPA": 187,
+      "gamePk": 823326,
+      "gameLabel": "STL @ PIT"
+    },
+    {
       "pitcherId": 680570,
       "pitcherName": "Grayson Rodriguez",
       "team": "LAA",
@@ -502,24 +585,6 @@
       "lineupPA": 198,
       "gamePk": 824866,
       "gameLabel": "CIN @ ATL"
-    },
-    {
-      "pitcherId": 663567,
-      "pitcherName": "Peter Lambert",
-      "team": "HOU",
-      "oppTeam": "ATH",
-      "line": 97,
-      "overUnder": "OVER",
-      "pitchScore": 69,
-      "grade": "B+",
-      "recent5Avg": 95.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 94.1,
-      "twoYrStarts": 27,
-      "bvpAdj": 2,
-      "lineupPA": 32,
-      "gamePk": 824950,
-      "gameLabel": "HOU @ ATH"
     }
   ]
 }
