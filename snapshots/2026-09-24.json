@@ -1,8 +1,8 @@
 {
   "date": "2026-09-24",
-  "savedAt": "2026-09-24T20:42:14.024Z",
+  "savedAt": "2026-09-24T23:57:40.373Z",
   "scanType": "afternoon",
-  "gamesScanned": 11,
+  "gamesScanned": 4,
   "totalGames": 12,
   "batters": [
     {
@@ -300,6 +300,19 @@
       "gameLabel": "MIL @ PHI"
     },
     {
+      "pitcherId": 681517,
+      "pitcherName": "Kyle Leahy",
+      "team": "STL",
+      "oppTeam": "PIT",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 8.5,
+      "projectedIP": 4.7,
+      "projectedK": 3.5,
+      "gamePk": 823326,
+      "gameLabel": "STL @ PIT"
+    },
+    {
       "pitcherId": 693433,
       "pitcherName": "Bryan Woo",
       "team": "SEA",
@@ -324,19 +337,6 @@
       "projectedK": 3.5,
       "gamePk": 823087,
       "gameLabel": "LAA @ SEA"
-    },
-    {
-      "pitcherId": 681517,
-      "pitcherName": "Kyle Leahy",
-      "team": "STL",
-      "oppTeam": "PIT",
-      "whiffScore": 70,
-      "grade": "A",
-      "k9": 8.5,
-      "projectedIP": 4.7,
-      "projectedK": 3.5,
-      "gamePk": 823326,
-      "gameLabel": "STL @ PIT"
     },
     {
       "pitcherId": 693645,
@@ -515,24 +515,6 @@
       "gameLabel": "MIL @ PHI"
     },
     {
-      "pitcherId": 693433,
-      "pitcherName": "Bryan Woo",
-      "team": "SEA",
-      "oppTeam": "LAA",
-      "line": 89,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 88.6,
-      "recent5Starts": 5,
-      "twoYrAvg": 89.4,
-      "twoYrStarts": 59,
-      "bvpAdj": 0,
-      "lineupPA": 120,
-      "gamePk": 823087,
-      "gameLabel": "LAA @ SEA"
-    },
-    {
       "pitcherId": 694973,
       "pitcherName": "Paul Skenes",
       "team": "PIT",
@@ -549,6 +531,24 @@
       "lineupPA": 187,
       "gamePk": 823326,
       "gameLabel": "STL @ PIT"
+    },
+    {
+      "pitcherId": 693433,
+      "pitcherName": "Bryan Woo",
+      "team": "SEA",
+      "oppTeam": "LAA",
+      "line": 89,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 88.6,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.4,
+      "twoYrStarts": 59,
+      "bvpAdj": 0,
+      "lineupPA": 120,
+      "gamePk": 823087,
+      "gameLabel": "LAA @ SEA"
     },
     {
       "pitcherId": 680570,
