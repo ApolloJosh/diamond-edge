@@ -1,8 +1,8 @@
 {
   "date": "2026-09-25",
-  "savedAt": "2026-09-25T19:27:57.041Z",
+  "savedAt": "2026-09-25T20:42:05.138Z",
   "scanType": "afternoon",
-  "gamesScanned": 16,
+  "gamesScanned": 15,
   "totalGames": 17,
   "batters": [
     {
@@ -214,6 +214,22 @@
       "gameLabel": "STL @ MIL"
     },
     {
+      "batterId": 575929,
+      "batterName": "Willson Contreras",
+      "pitcherId": 605280,
+      "pitcherName": "Clay Holmes",
+      "batterTeam": "BOS",
+      "pitcherTeam": "CHC",
+      "edgeScore": 77,
+      "grade": "A",
+      "bvpAvg": ".455",
+      "bvpOps": ".909",
+      "bvpPA": 22,
+      "bvpHR": 0,
+      "gamePk": 824703,
+      "gameLabel": "CHC @ BOS"
+    },
+    {
       "batterId": 700250,
       "batterName": "Ben Rice",
       "pitcherId": 687064,
@@ -228,22 +244,6 @@
       "bvpHR": 2,
       "gamePk": 823489,
       "gameLabel": "BAL @ NYY"
-    },
-    {
-      "batterId": 665742,
-      "batterName": "Juan Soto",
-      "pitcherId": 674841,
-      "pitcherName": "Andrew Alvarez",
-      "batterTeam": "NYM",
-      "pitcherTeam": "WSH",
-      "edgeScore": 76,
-      "grade": "A",
-      "bvpAvg": ".500",
-      "bvpOps": "1.750",
-      "bvpPA": 8,
-      "bvpHR": 2,
-      "gamePk": 822681,
-      "gameLabel": "NYM @ WSH"
     }
   ],
   "pitchers": [
@@ -521,6 +521,19 @@
       "gameLabel": "AZ @ SD"
     },
     {
+      "pitcherId": 605280,
+      "pitcherName": "Clay Holmes",
+      "team": "CHC",
+      "oppTeam": "BOS",
+      "whiffScore": 55,
+      "grade": "B",
+      "k9": 6.9,
+      "projectedIP": 5.6,
+      "projectedK": 3.5,
+      "gamePk": 824703,
+      "gameLabel": "CHC @ BOS"
+    },
+    {
       "pitcherId": 687064,
       "pitcherName": "Brandon Young",
       "team": "BAL",
@@ -532,6 +545,19 @@
       "projectedK": 4,
       "gamePk": 823489,
       "gameLabel": "BAL @ NYY"
+    },
+    {
+      "pitcherId": 687941,
+      "pitcherName": "Alec Gamboa",
+      "team": "BOS",
+      "oppTeam": "CHC",
+      "whiffScore": 48,
+      "grade": "C",
+      "k9": 6.3,
+      "projectedIP": 11,
+      "projectedK": 6.5,
+      "gamePk": 824703,
+      "gameLabel": "CHC @ BOS"
     },
     {
       "pitcherId": 666157,
