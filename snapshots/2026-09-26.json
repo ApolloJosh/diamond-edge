@@ -1,8 +1,8 @@
 {
   "date": "2026-09-26",
-  "savedAt": "2026-09-26T18:41:17.183Z",
+  "savedAt": "2026-09-26T20:06:10.716Z",
   "scanType": "afternoon",
-  "gamesScanned": 11,
+  "gamesScanned": 13,
   "totalGames": 13,
   "batters": [
     {
@@ -134,6 +134,22 @@
       "gameLabel": "CLE @ KC"
     },
     {
+      "batterId": 665742,
+      "batterName": "Juan Soto",
+      "pitcherId": 813349,
+      "pitcherName": "Connelly Early",
+      "batterTeam": "NYM",
+      "pitcherTeam": "WSH",
+      "edgeScore": 69,
+      "grade": "B+",
+      "bvpAvg": ".246",
+      "bvpOps": ".809",
+      "bvpPA": 316,
+      "bvpHR": 18,
+      "gamePk": 822678,
+      "gameLabel": "NYM @ WSH"
+    },
+    {
       "batterId": 668227,
       "batterName": "Randy Arozarena",
       "pitcherId": 696270,
@@ -198,6 +214,22 @@
       "gameLabel": "COL @ CWS"
     },
     {
+      "batterId": 701807,
+      "batterName": "Carson Benge",
+      "pitcherId": 813349,
+      "pitcherName": "Connelly Early",
+      "batterTeam": "NYM",
+      "pitcherTeam": "WSH",
+      "edgeScore": 64,
+      "grade": "B+",
+      "bvpAvg": ".246",
+      "bvpOps": ".809",
+      "bvpPA": 316,
+      "bvpHR": 18,
+      "gamePk": 822678,
+      "gameLabel": "NYM @ WSH"
+    },
+    {
       "batterId": 607208,
       "batterName": "Trea Turner",
       "pitcherId": 643377,
@@ -212,38 +244,6 @@
       "bvpHR": 0,
       "gamePk": 823407,
       "gameLabel": "TB @ PHI"
-    },
-    {
-      "batterId": 665161,
-      "batterName": "Jeremy Peña",
-      "pitcherId": 678022,
-      "pitcherName": "Jack Perkins",
-      "batterTeam": "HOU",
-      "pitcherTeam": "ATH",
-      "edgeScore": 63,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": "1.100",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 824949,
-      "gameLabel": "HOU @ ATH"
-    },
-    {
-      "batterId": 670032,
-      "batterName": "Nicky Lopez",
-      "pitcherId": 641927,
-      "pitcherName": "Bailey Ober",
-      "batterTeam": "TEX",
-      "pitcherTeam": "MIN",
-      "edgeScore": 62,
-      "grade": "B+",
-      "bvpAvg": ".400",
-      "bvpOps": ".800",
-      "bvpPA": 20,
-      "bvpHR": 0,
-      "gamePk": 823653,
-      "gameLabel": "TEX @ MIN"
     }
   ],
   "pitchers": [
@@ -261,6 +261,19 @@
       "gameLabel": "LAD @ SF"
     },
     {
+      "pitcherId": 489446,
+      "pitcherName": "Kirby Yates",
+      "team": "PIT",
+      "oppTeam": "DET",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 10.4,
+      "projectedIP": 42.1,
+      "projectedK": 42.5,
+      "gamePk": 824219,
+      "gameLabel": "PIT @ DET"
+    },
+    {
       "pitcherId": 643377,
       "pitcherName": "Griffin Jax",
       "team": "TB",
@@ -272,6 +285,19 @@
       "projectedK": 4.5,
       "gamePk": 823407,
       "gameLabel": "TB @ PHI"
+    },
+    {
+      "pitcherId": 804636,
+      "pitcherName": "Jonah Tong",
+      "team": "NYM",
+      "oppTeam": "WSH",
+      "whiffScore": 74,
+      "grade": "A",
+      "k9": 10,
+      "projectedIP": 7.6,
+      "projectedK": 7,
+      "gamePk": 822678,
+      "gameLabel": "NYM @ WSH"
     },
     {
       "pitcherId": 678022,
@@ -300,6 +326,19 @@
       "gameLabel": "LAA @ SEA"
     },
     {
+      "pitcherId": 434378,
+      "pitcherName": "Justin Verlander",
+      "team": "DET",
+      "oppTeam": "PIT",
+      "whiffScore": 70,
+      "grade": "A",
+      "k9": 7,
+      "projectedIP": 4.5,
+      "projectedK": 3,
+      "gamePk": 824219,
+      "gameLabel": "PIT @ DET"
+    },
+    {
       "pitcherId": 669160,
       "pitcherName": "Dustin May",
       "team": "MIL",
@@ -311,6 +350,19 @@
       "projectedK": 4,
       "gamePk": 823733,
       "gameLabel": "STL @ MIL"
+    },
+    {
+      "pitcherId": 813349,
+      "pitcherName": "Connelly Early",
+      "team": "WSH",
+      "oppTeam": "NYM",
+      "whiffScore": 66,
+      "grade": "B+",
+      "k9": 8.9,
+      "projectedIP": 5.2,
+      "projectedK": 4.5,
+      "gamePk": 822678,
+      "gameLabel": "NYM @ WSH"
     },
     {
       "pitcherId": 641927,
@@ -378,6 +430,19 @@
       "gameLabel": "CLE @ KC"
     },
     {
+      "pitcherId": 621111,
+      "pitcherName": "Walker Buehler",
+      "team": "SD",
+      "oppTeam": "AZ",
+      "whiffScore": 56,
+      "grade": "B",
+      "k9": 7.7,
+      "projectedIP": 4.8,
+      "projectedK": 3.5,
+      "gamePk": 823245,
+      "gameLabel": "AZ @ SD"
+    },
+    {
       "pitcherId": 543135,
       "pitcherName": "Nathan Eovaldi",
       "team": "TEX",
@@ -389,19 +454,6 @@
       "projectedK": 5.5,
       "gamePk": 823653,
       "gameLabel": "TEX @ MIN"
-    },
-    {
-      "pitcherId": 621111,
-      "pitcherName": "Walker Buehler",
-      "team": "SD",
-      "oppTeam": "AZ",
-      "whiffScore": 53,
-      "grade": "C",
-      "k9": 7.7,
-      "projectedIP": 4.8,
-      "projectedK": 3.5,
-      "gamePk": 823245,
-      "gameLabel": "AZ @ SD"
     },
     {
       "pitcherId": 500779,
@@ -455,6 +507,24 @@
       "gameLabel": "TEX @ MIN"
     },
     {
+      "pitcherId": 434378,
+      "pitcherName": "Justin Verlander",
+      "team": "DET",
+      "oppTeam": "PIT",
+      "line": 92.5,
+      "overUnder": "OVER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 90.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 89.6,
+      "twoYrStarts": 31,
+      "bvpAdj": 2,
+      "lineupPA": 82,
+      "gamePk": 824219,
+      "gameLabel": "PIT @ DET"
+    },
+    {
       "pitcherId": 676440,
       "pitcherName": "Tanner Bibee",
       "team": "CLE",
@@ -489,24 +559,6 @@
       "lineupPA": 28,
       "gamePk": 823653,
       "gameLabel": "TEX @ MIN"
-    },
-    {
-      "pitcherId": 687273,
-      "pitcherName": "Quinn Mathews",
-      "team": "STL",
-      "oppTeam": "MIL",
-      "line": 99,
-      "overUnder": "OVER",
-      "pitchScore": 66,
-      "grade": "B+",
-      "recent5Avg": 99,
-      "recent5Starts": 5,
-      "twoYrAvg": 98.3,
-      "twoYrStarts": 8,
-      "bvpAdj": 0,
-      "lineupPA": 0,
-      "gamePk": 823733,
-      "gameLabel": "STL @ MIL"
     }
   ]
 }
