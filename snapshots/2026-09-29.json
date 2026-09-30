@@ -1,8 +1,8 @@
 {
   "date": "2026-09-29",
-  "savedAt": "2026-09-29T21:31:04.207Z",
+  "savedAt": "2026-09-30T00:40:38.589Z",
   "scanType": "afternoon",
-  "gamesScanned": 4,
+  "gamesScanned": 2,
   "totalGames": 4,
   "batters": [
     {
@@ -54,22 +54,6 @@
       "gameLabel": "CHC @ SD"
     },
     {
-      "batterId": 669720,
-      "batterName": "Austin Hays",
-      "pitcherId": 571510,
-      "pitcherName": "Matthew Boyd",
-      "batterTeam": "SD",
-      "pitcherTeam": "CHC",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".500",
-      "bvpOps": "1.333",
-      "bvpPA": 12,
-      "bvpHR": 0,
-      "gamePk": 849843,
-      "gameLabel": "CHC @ SD"
-    },
-    {
       "batterId": 643289,
       "batterName": "Mauricio Dubón",
       "pitcherId": 666200,
@@ -84,6 +68,22 @@
       "bvpHR": 0,
       "gamePk": 849845,
       "gameLabel": "PHI @ ATL"
+    },
+    {
+      "batterId": 669720,
+      "batterName": "Austin Hays",
+      "pitcherId": 571510,
+      "pitcherName": "Matthew Boyd",
+      "batterTeam": "SD",
+      "pitcherTeam": "CHC",
+      "edgeScore": 69,
+      "grade": "B+",
+      "bvpAvg": ".500",
+      "bvpOps": "1.333",
+      "bvpPA": 12,
+      "bvpHR": 0,
+      "gamePk": 849843,
+      "gameLabel": "CHC @ SD"
     },
     {
       "batterId": 664761,
@@ -346,24 +346,6 @@
       "gameLabel": "BOS @ NYY"
     },
     {
-      "pitcherId": 571510,
-      "pitcherName": "Matthew Boyd",
-      "team": "CHC",
-      "oppTeam": "SD",
-      "line": 87,
-      "overUnder": "UNDER",
-      "pitchScore": 72,
-      "grade": "A",
-      "recent5Avg": 89.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 88.7,
-      "twoYrStarts": 53,
-      "bvpAdj": -2,
-      "lineupPA": 212,
-      "gamePk": 849843,
-      "gameLabel": "CHC @ SD"
-    },
-    {
       "pitcherId": 519242,
       "pitcherName": "Chris Sale",
       "team": "ATL",
@@ -380,6 +362,24 @@
       "lineupPA": 332,
       "gamePk": 849845,
       "gameLabel": "PHI @ ATL"
+    },
+    {
+      "pitcherId": 571510,
+      "pitcherName": "Matthew Boyd",
+      "team": "CHC",
+      "oppTeam": "SD",
+      "line": 87,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 89.2,
+      "recent5Starts": 5,
+      "twoYrAvg": 88.7,
+      "twoYrStarts": 53,
+      "bvpAdj": -2,
+      "lineupPA": 212,
+      "gamePk": 849843,
+      "gameLabel": "CHC @ SD"
     },
     {
       "pitcherId": 801139,
