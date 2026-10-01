@@ -1,8 +1,8 @@
 {
   "date": "2026-09-30",
-  "savedAt": "2026-09-30T21:31:03.447Z",
+  "savedAt": "2026-10-01T00:43:25.518Z",
   "scanType": "afternoon",
-  "gamesScanned": 3,
+  "gamesScanned": 1,
   "totalGames": 4,
   "batters": [
     {
@@ -54,22 +54,6 @@
       "gameLabel": "BOS @ NYY"
     },
     {
-      "batterId": 665487,
-      "batterName": "Fernando Tatis Jr.",
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "batterTeam": "SD",
-      "pitcherTeam": "CHC",
-      "edgeScore": 88,
-      "grade": "A+",
-      "bvpAvg": ".348",
-      "bvpOps": "1.027",
-      "bvpPA": 48,
-      "bvpHR": 4,
-      "gamePk": 849842,
-      "gameLabel": "CHC @ SD"
-    },
-    {
       "batterId": 663586,
       "batterName": "Austin Riley",
       "pitcherId": 650911,
@@ -84,6 +68,22 @@
       "bvpHR": 2,
       "gamePk": 849841,
       "gameLabel": "PHI @ ATL"
+    },
+    {
+      "batterId": 665487,
+      "batterName": "Fernando Tatis Jr.",
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "batterTeam": "SD",
+      "pitcherTeam": "CHC",
+      "edgeScore": 88,
+      "grade": "A+",
+      "bvpAvg": ".348",
+      "bvpOps": "1.027",
+      "bvpPA": 48,
+      "bvpHR": 4,
+      "gamePk": 849842,
+      "gameLabel": "CHC @ SD"
     },
     {
       "batterId": 663757,
@@ -214,22 +214,6 @@
       "gameLabel": "PHI @ ATL"
     },
     {
-      "batterId": 621020,
-      "batterName": "Dansby Swanson",
-      "pitcherId": 601713,
-      "pitcherName": "Nick Pivetta",
-      "batterTeam": "CHC",
-      "pitcherTeam": "SD",
-      "edgeScore": 69,
-      "grade": "B+",
-      "bvpAvg": ".294",
-      "bvpOps": ".814",
-      "bvpPA": 70,
-      "bvpHR": 4,
-      "gamePk": 849842,
-      "gameLabel": "CHC @ SD"
-    },
-    {
       "batterId": 656941,
       "batterName": "Kyle Schwarber",
       "pitcherId": 641816,
@@ -244,6 +228,22 @@
       "bvpHR": 4,
       "gamePk": 849841,
       "gameLabel": "PHI @ ATL"
+    },
+    {
+      "batterId": 621020,
+      "batterName": "Dansby Swanson",
+      "pitcherId": 601713,
+      "pitcherName": "Nick Pivetta",
+      "batterTeam": "CHC",
+      "pitcherTeam": "SD",
+      "edgeScore": 69,
+      "grade": "B+",
+      "bvpAvg": ".294",
+      "bvpOps": ".814",
+      "bvpPA": 70,
+      "bvpHR": 4,
+      "gamePk": 849842,
+      "gameLabel": "CHC @ SD"
     }
   ],
   "pitchers": [
@@ -390,24 +390,6 @@
       "gameLabel": "BOS @ NYY"
     },
     {
-      "pitcherId": 592332,
-      "pitcherName": "Kevin Gausman",
-      "team": "CHC",
-      "oppTeam": "SD",
-      "line": 99.5,
-      "overUnder": "OVER",
-      "pitchScore": 67,
-      "grade": "B+",
-      "recent5Avg": 98.8,
-      "recent5Starts": 5,
-      "twoYrAvg": 94.3,
-      "twoYrStarts": 64,
-      "bvpAdj": 2,
-      "lineupPA": 394,
-      "gamePk": 849842,
-      "gameLabel": "CHC @ SD"
-    },
-    {
       "pitcherId": 641816,
       "pitcherName": "Tyler Mahle",
       "team": "ATL",
@@ -442,6 +424,24 @@
       "lineupPA": 292,
       "gamePk": 849841,
       "gameLabel": "PHI @ ATL"
+    },
+    {
+      "pitcherId": 592332,
+      "pitcherName": "Kevin Gausman",
+      "team": "CHC",
+      "oppTeam": "SD",
+      "line": 99.5,
+      "overUnder": "OVER",
+      "pitchScore": 67,
+      "grade": "B+",
+      "recent5Avg": 98.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 94.3,
+      "twoYrStarts": 64,
+      "bvpAdj": 2,
+      "lineupPA": 394,
+      "gamePk": 849842,
+      "gameLabel": "CHC @ SD"
     }
   ]
 }
