@@ -1,8 +1,8 @@
 {
   "date": "2026-10-03",
-  "savedAt": "2026-10-03T18:47:56.326Z",
+  "savedAt": "2026-10-03T20:07:22.335Z",
   "scanType": "afternoon",
-  "gamesScanned": 3,
+  "gamesScanned": 4,
   "totalGames": 4,
   "batters": [
     {
@@ -20,6 +20,22 @@
       "bvpHR": 4,
       "gamePk": 849835,
       "gameLabel": "NYY @ TB"
+    },
+    {
+      "batterId": 545341,
+      "batterName": "Randal Grichuk",
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "batterTeam": "CWS",
+      "pitcherTeam": "CLE",
+      "edgeScore": 81,
+      "grade": "A+",
+      "bvpAvg": ".417",
+      "bvpOps": "1.167",
+      "bvpPA": 24,
+      "bvpHR": 0,
+      "gamePk": 849829,
+      "gameLabel": "CWS @ CLE"
     },
     {
       "batterId": 645277,
@@ -118,6 +134,22 @@
       "gameLabel": "SD @ MIL"
     },
     {
+      "batterId": 608070,
+      "batterName": "José Ramírez",
+      "pitcherId": 696146,
+      "pitcherName": "Hagen Smith",
+      "batterTeam": "CLE",
+      "pitcherTeam": "CWS",
+      "edgeScore": 60,
+      "grade": "B",
+      "bvpAvg": ".500",
+      "bvpOps": "1.667",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 849829,
+      "gameLabel": "CWS @ CLE"
+    },
+    {
       "batterId": 519317,
       "batterName": "Giancarlo Stanton",
       "pitcherId": 656876,
@@ -150,6 +182,38 @@
       "gameLabel": "NYY @ TB"
     },
     {
+      "batterId": 695731,
+      "batterName": "Braden Montgomery",
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "batterTeam": "CWS",
+      "pitcherTeam": "CLE",
+      "edgeScore": 59,
+      "grade": "B",
+      "bvpAvg": ".333",
+      "bvpOps": "1.333",
+      "bvpPA": 16,
+      "bvpHR": 2,
+      "gamePk": 849829,
+      "gameLabel": "CWS @ CLE"
+    },
+    {
+      "batterId": 808959,
+      "batterName": "Munetaka Murakami",
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "batterTeam": "CWS",
+      "pitcherTeam": "CLE",
+      "edgeScore": 58,
+      "grade": "B",
+      "bvpAvg": ".250",
+      "bvpOps": "1.250",
+      "bvpPA": 8,
+      "bvpHR": 2,
+      "gamePk": 849829,
+      "gameLabel": "CWS @ CLE"
+    },
+    {
       "batterId": 609280,
       "batterName": "Miguel Andujar",
       "pitcherId": 694819,
@@ -180,70 +244,6 @@
       "bvpHR": 0,
       "gamePk": 849828,
       "gameLabel": "ATL @ LAD"
-    },
-    {
-      "batterId": 669221,
-      "batterName": "Sean Murphy",
-      "pitcherId": 669373,
-      "pitcherName": "Tarik Skubal",
-      "batterTeam": "ATL",
-      "pitcherTeam": "LAD",
-      "edgeScore": 54,
-      "grade": "C",
-      "bvpAvg": ".250",
-      "bvpOps": "1.125",
-      "bvpPA": 24,
-      "bvpHR": 2,
-      "gamePk": 849828,
-      "gameLabel": "ATL @ LAD"
-    },
-    {
-      "batterId": 671218,
-      "batterName": "Heliot Ramos",
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "batterTeam": "NYY",
-      "pitcherTeam": "TB",
-      "edgeScore": 53,
-      "grade": "C",
-      "bvpAvg": ".333",
-      "bvpOps": "1.000",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 849835,
-      "gameLabel": "NYY @ TB"
-    },
-    {
-      "batterId": 596142,
-      "batterName": "Gary Sánchez",
-      "pitcherId": 592662,
-      "pitcherName": "Robbie Ray",
-      "batterTeam": "MIL",
-      "pitcherTeam": "SD",
-      "edgeScore": 53,
-      "grade": "C",
-      "bvpAvg": ".200",
-      "bvpOps": "1.073",
-      "bvpPA": 22,
-      "bvpHR": 4,
-      "gamePk": 849830,
-      "gameLabel": "SD @ MIL"
-    },
-    {
-      "batterId": 669242,
-      "batterName": "Tommy Edman",
-      "pitcherId": 689266,
-      "pitcherName": "Dylan Dodd",
-      "batterTeam": "LAD",
-      "pitcherTeam": "ATL",
-      "edgeScore": 51,
-      "grade": "C",
-      "bvpAvg": ".333",
-      "bvpOps": ".667",
-      "bvpPA": 6,
-      "bvpHR": 0,
-      "gamePk": 849828,
-      "gameLabel": "ATL @ LAD"
     }
   ],
   "pitchers": [
@@ -259,6 +259,19 @@
       "projectedK": 5,
       "gamePk": 849835,
       "gameLabel": "NYY @ TB"
+    },
+    {
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "team": "CLE",
+      "oppTeam": "CWS",
+      "whiffScore": 78,
+      "grade": "A",
+      "k9": 9.3,
+      "projectedIP": 5.8,
+      "projectedK": 5,
+      "gamePk": 849829,
+      "gameLabel": "CWS @ CLE"
     },
     {
       "pitcherId": 669373,
@@ -285,6 +298,19 @@
       "projectedK": 7,
       "gamePk": 849830,
       "gameLabel": "SD @ MIL"
+    },
+    {
+      "pitcherId": 696146,
+      "pitcherName": "Hagen Smith",
+      "team": "CWS",
+      "oppTeam": "CLE",
+      "whiffScore": 68,
+      "grade": "B+",
+      "k9": 13.2,
+      "projectedIP": 28,
+      "projectedK": 36,
+      "gamePk": 849829,
+      "gameLabel": "CWS @ CLE"
     },
     {
       "pitcherId": 592662,
@@ -364,6 +390,24 @@
       "gameLabel": "NYY @ TB"
     },
     {
+      "pitcherId": 800048,
+      "pitcherName": "Parker Messick",
+      "team": "CLE",
+      "oppTeam": "CWS",
+      "line": 89.5,
+      "overUnder": "UNDER",
+      "pitchScore": 72,
+      "grade": "A",
+      "recent5Avg": 88.8,
+      "recent5Starts": 5,
+      "twoYrAvg": 91.6,
+      "twoYrStarts": 39,
+      "bvpAdj": 0,
+      "lineupPA": 188,
+      "gamePk": 849829,
+      "gameLabel": "CWS @ CLE"
+    },
+    {
       "pitcherId": 694819,
       "pitcherName": "Jacob Misiorowski",
       "team": "MIL",
@@ -398,24 +442,6 @@
       "lineupPA": 152,
       "gamePk": 849830,
       "gameLabel": "SD @ MIL"
-    },
-    {
-      "pitcherId": 656876,
-      "pitcherName": "Drew Rasmussen",
-      "team": "TB",
-      "oppTeam": "NYY",
-      "line": 92.5,
-      "overUnder": "OVER",
-      "pitchScore": 56,
-      "grade": "B",
-      "recent5Avg": 95.2,
-      "recent5Starts": 5,
-      "twoYrAvg": 81.6,
-      "twoYrStarts": 61,
-      "bvpAdj": 2,
-      "lineupPA": 266,
-      "gamePk": 849835,
-      "gameLabel": "NYY @ TB"
     }
   ]
 }
