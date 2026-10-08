@@ -1,8 +1,8 @@
 {
   "date": "2026-10-07",
-  "savedAt": "2026-10-07T22:12:58.874Z",
+  "savedAt": "2026-10-08T01:12:09.780Z",
   "scanType": "afternoon",
-  "gamesScanned": 4,
+  "gamesScanned": 1,
   "totalGames": 4,
   "batters": [
     {
@@ -182,22 +182,6 @@
       "gameLabel": "LAD @ ATL"
     },
     {
-      "batterId": 641343,
-      "batterName": "Jake Bauers",
-      "pitcherId": 621111,
-      "pitcherName": "Walker Buehler",
-      "batterTeam": "MIL",
-      "pitcherTeam": "SD",
-      "edgeScore": 60,
-      "grade": "B",
-      "bvpAvg": ".200",
-      "bvpOps": "1.000",
-      "bvpPA": 10,
-      "bvpHR": 2,
-      "gamePk": 849827,
-      "gameLabel": "MIL @ SD"
-    },
-    {
       "batterId": 672275,
       "batterName": "Patrick Bailey",
       "pitcherId": 656794,
@@ -212,6 +196,22 @@
       "bvpHR": 0,
       "gamePk": 849833,
       "gameLabel": "CLE @ CWS"
+    },
+    {
+      "batterId": 641343,
+      "batterName": "Jake Bauers",
+      "pitcherId": 621111,
+      "pitcherName": "Walker Buehler",
+      "batterTeam": "MIL",
+      "pitcherTeam": "SD",
+      "edgeScore": 60,
+      "grade": "B",
+      "bvpAvg": ".200",
+      "bvpOps": "1.000",
+      "bvpPA": 10,
+      "bvpHR": 2,
+      "gamePk": 849827,
+      "gameLabel": "MIL @ SD"
     },
     {
       "batterId": 676609,
