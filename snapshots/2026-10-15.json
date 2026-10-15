@@ -1,8 +1,8 @@
 {
   "date": "2026-10-15",
-  "savedAt": "2026-10-15T20:29:21.322Z",
+  "savedAt": "2026-10-15T23:45:23.236Z",
   "scanType": "afternoon",
-  "gamesScanned": 2,
+  "gamesScanned": 1,
   "totalGames": 2,
   "batters": [
     {
@@ -118,22 +118,6 @@
       "gameLabel": "MIL @ LAD"
     },
     {
-      "batterId": 681624,
-      "batterName": "Andy Pages",
-      "pitcherId": 675660,
-      "pitcherName": "Shane Drohan",
-      "batterTeam": "LAD",
-      "pitcherTeam": "MIL",
-      "edgeScore": 55,
-      "grade": "B",
-      "bvpAvg": ".167",
-      "bvpOps": ".833",
-      "bvpPA": 12,
-      "bvpHR": 2,
-      "gamePk": 849810,
-      "gameLabel": "MIL @ LAD"
-    },
-    {
       "batterId": 608070,
       "batterName": "José Ramírez",
       "pitcherId": 643377,
@@ -148,6 +132,22 @@
       "bvpHR": 0,
       "gamePk": 849818,
       "gameLabel": "TB @ CLE"
+    },
+    {
+      "batterId": 681624,
+      "batterName": "Andy Pages",
+      "pitcherId": 675660,
+      "pitcherName": "Shane Drohan",
+      "batterTeam": "LAD",
+      "pitcherTeam": "MIL",
+      "edgeScore": 55,
+      "grade": "B",
+      "bvpAvg": ".167",
+      "bvpOps": ".833",
+      "bvpPA": 12,
+      "bvpHR": 2,
+      "gamePk": 849810,
+      "gameLabel": "MIL @ LAD"
     },
     {
       "batterId": 663656,
@@ -198,22 +198,6 @@
       "gameLabel": "TB @ CLE"
     },
     {
-      "batterId": 606192,
-      "batterName": "Teoscar Hernández",
-      "pitcherId": 675660,
-      "pitcherName": "Shane Drohan",
-      "batterTeam": "LAD",
-      "pitcherTeam": "MIL",
-      "edgeScore": 49,
-      "grade": "C",
-      "bvpAvg": ".250",
-      "bvpOps": ".500",
-      "bvpPA": 8,
-      "bvpHR": 0,
-      "gamePk": 849810,
-      "gameLabel": "MIL @ LAD"
-    },
-    {
       "batterId": 676356,
       "batterName": "Jonny DeLuca",
       "pitcherId": 668909,
@@ -228,6 +212,22 @@
       "bvpHR": 0,
       "gamePk": 849818,
       "gameLabel": "TB @ CLE"
+    },
+    {
+      "batterId": 606192,
+      "batterName": "Teoscar Hernández",
+      "pitcherId": 675660,
+      "pitcherName": "Shane Drohan",
+      "batterTeam": "LAD",
+      "pitcherTeam": "MIL",
+      "edgeScore": 49,
+      "grade": "C",
+      "bvpAvg": ".250",
+      "bvpOps": ".500",
+      "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 849810,
+      "gameLabel": "MIL @ LAD"
     },
     {
       "batterId": 682657,
@@ -261,19 +261,6 @@
       "gameLabel": "MIL @ LAD"
     },
     {
-      "pitcherId": 675660,
-      "pitcherName": "Shane Drohan",
-      "team": "MIL",
-      "oppTeam": "LAD",
-      "whiffScore": 67,
-      "grade": "B+",
-      "k9": 9,
-      "projectedIP": 6.5,
-      "projectedK": 5.5,
-      "gamePk": 849810,
-      "gameLabel": "MIL @ LAD"
-    },
-    {
       "pitcherId": 643377,
       "pitcherName": "Griffin Jax",
       "team": "TB",
@@ -285,6 +272,19 @@
       "projectedK": 4,
       "gamePk": 849818,
       "gameLabel": "TB @ CLE"
+    },
+    {
+      "pitcherId": 675660,
+      "pitcherName": "Shane Drohan",
+      "team": "MIL",
+      "oppTeam": "LAD",
+      "whiffScore": 67,
+      "grade": "B+",
+      "k9": 9,
+      "projectedIP": 6.5,
+      "projectedK": 5.5,
+      "gamePk": 849810,
+      "gameLabel": "MIL @ LAD"
     },
     {
       "pitcherId": 668909,
