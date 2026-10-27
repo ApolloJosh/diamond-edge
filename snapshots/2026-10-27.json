@@ -1,10 +1,26 @@
 {
   "date": "2026-10-27",
-  "savedAt": "2026-10-27T20:11:18.947Z",
+  "savedAt": "2026-10-27T21:26:56.335Z",
   "scanType": "afternoon",
   "gamesScanned": 1,
   "totalGames": 1,
   "batters": [
+    {
+      "batterId": 650490,
+      "batterName": "Yandy Díaz",
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "batterTeam": "TB",
+      "pitcherTeam": "MIL",
+      "edgeScore": 76,
+      "grade": "A",
+      "bvpAvg": "1.000",
+      "bvpOps": "2.333",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 849803,
+      "gameLabel": "MIL @ TB"
+    },
     {
       "batterId": 641343,
       "batterName": "Jake Bauers",
@@ -38,6 +54,22 @@
       "gameLabel": "MIL @ TB"
     },
     {
+      "batterId": 666018,
+      "batterName": "Jonathan Aranda",
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "batterTeam": "TB",
+      "pitcherTeam": "MIL",
+      "edgeScore": 56,
+      "grade": "B",
+      "bvpAvg": ".333",
+      "bvpOps": "1.000",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 849803,
+      "gameLabel": "MIL @ TB"
+    },
+    {
       "batterId": 661388,
       "batterName": "William Contreras",
       "pitcherId": 643377,
@@ -54,6 +86,22 @@
       "gameLabel": "MIL @ TB"
     },
     {
+      "batterId": 656775,
+      "batterName": "Cedric Mullins",
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "batterTeam": "TB",
+      "pitcherTeam": "MIL",
+      "edgeScore": 53,
+      "grade": "C",
+      "bvpAvg": ".333",
+      "bvpOps": "1.000",
+      "bvpPA": 6,
+      "bvpHR": 0,
+      "gamePk": 849803,
+      "gameLabel": "MIL @ TB"
+    },
+    {
       "batterId": 668930,
       "batterName": "Brice Turang",
       "pitcherId": 643377,
@@ -65,6 +113,22 @@
       "bvpAvg": ".333",
       "bvpOps": ".667",
       "bvpPA": 8,
+      "bvpHR": 0,
+      "gamePk": 849803,
+      "gameLabel": "MIL @ TB"
+    },
+    {
+      "batterId": 691406,
+      "batterName": "Junior Caminero",
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "batterTeam": "TB",
+      "pitcherTeam": "MIL",
+      "edgeScore": 50,
+      "grade": "C",
+      "bvpAvg": ".000",
+      "bvpOps": ".000",
+      "bvpPA": 6,
       "bvpHR": 0,
       "gamePk": 849803,
       "gameLabel": "MIL @ TB"
@@ -96,6 +160,19 @@
       "grade": "B+",
       "k9": 9.3,
       "projectedIP": 4.9,
+      "projectedK": 4,
+      "gamePk": 849803,
+      "gameLabel": "MIL @ TB"
+    },
+    {
+      "pitcherId": 669160,
+      "pitcherName": "Dustin May",
+      "team": "MIL",
+      "oppTeam": "TB",
+      "whiffScore": 60,
+      "grade": "B",
+      "k9": 8.9,
+      "projectedIP": 4.7,
       "projectedK": 4,
       "gamePk": 849803,
       "gameLabel": "MIL @ TB"
